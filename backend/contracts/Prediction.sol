@@ -1,4 +1,9 @@
+//Use Price Feeds For Players to Consistenly Pay $100 in ETH Using ETH and USDC Price Feeds
+//Chainlink Adapters to Call API To Check the current Round and Obtain Final World Cup Winners
+//Chainlink Keepers to call Chainlink Adapters function every 24 hours and have a 5 minute gap for Chainlink Adapters to submit data from API
+//Use Chainlink VRF to select between the predictors who obtain the same points
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -11,25 +16,34 @@ pragma solidity ^0.8.17;
 //4. After Round 16, You Can't Swap Your Current 4 Teams, but you can rearrange the order of them
 //5. Whoever has the correct order wins, those won't don't have the correct order will lose MOST LIKELY WILL CHANGE AROUND
 //6. Take 10% of the prize pot as personal earnings
-contract WCNFTFantasy is ERC1155 {
+contract WCNFTFantasy is ERC1155, Ownable {
     uint constant POINTS_FOR_FIRST_TEAM = 200;
     uint constant POINTS_FOR_SECOND_TEAM = 100;
     uint constant POINTS_FOR_THIRD_TEAM = 50;
     uint constant POINTS_FOR_FOURTH_TEAM = 25;
     uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
-//Maybe burn the nfts for the team if they get swapped out in the users prediction
+    //Top 3 Predictors are able to receive money from the prize pot
+    //If Predictors manage to accumulate the same amount of points, it will split based on how many predictors got the same amount 
+    //Maybe burn the nfts for the team if they get swapped out in the users prediction
+    //After the World Cup has ended, predictors will have 24 hours to be able to deposit their points to be eligible to win money from the prize pot
 struct TopPredictions {
      bytes teamOne;
      bytes teamTwo;
      bytes teamThree;
      bytes teamFour;
-
      bytes teamFive;
      bytes teamSix;
 }
+
     mapping(address => TopPredictions) predictors;
     mapping(address => bool) alreadyMinted;
     mapping(address => bool) extraTwoTeamsMinted;
+    mapping(address => bool) changedOrderForTop32;
+    mapping(address => bool) changedOrderForTop16;
+    mapping(address => bool) changedOrderForTop8;
+    mapping(address => bool) changedOrderForTop4;
+    mapping(address => bool) depositedPoints;
+    mapping(address => uint) balances; 
    //Structs //Enums
    //Use Chainlink Keepers to Change Enum Phasse
    enum GamePhases {
@@ -37,9 +51,15 @@ struct TopPredictions {
     TOP32,
     TOP16,
     TOP8,
-    TOP4
+    TOP4,
+    WORLD_CUP_FINISHED
 }
    GamePhases public currentPhase;
+
+   modifier afterEvent {
+     require(currentPhase == GamePhases.WORLD_CUP_FINISHED,"CAN_WITHDRAW_ONLY_AFTER_EVENT");
+     _;
+   }
 
     bytes[32] worldCupTeams;
 
@@ -98,11 +118,14 @@ struct TopPredictions {
     //ADD_MINTING_FUNCTIONALITY
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.Mint, "INITIAL_MINTING_PHASE_OVER");
+
+     if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
+       revert("CANT_HAVE_DUPLICATE_TEAMS");
+     }
      bool teamOneConfirmed;
      bool teamTwoConfirmed;
      bool teamThreeConfirmed;
      bool teamFourConfirmed;
-     //Make sure users don't have duplicate teams
      for(uint i = 0; i <= 31; i++) {
        if(teamOneConfirmed == false && keccak256(abi.encode(_teamOne)) == keccak256(worldCupTeams[i])) {
          teamOneConfirmed == true;
@@ -137,6 +160,7 @@ struct TopPredictions {
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+     require(keccak256(abi.encode(_teamFive)) != keccak256(abi.encode(_teamSix)), "CANT_HAVE_DUPLICATE_TEAMS");
      bool teamFiveConfirmed;
      bool teamSixConfirmed;
      for(uint i = 0; i <= 31; i++) {
@@ -159,6 +183,8 @@ struct TopPredictions {
    }
 
     function changeOrderForTop32(uint _scenario) external {
+    require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
@@ -175,11 +201,13 @@ struct TopPredictions {
        predictors[msg.sender].teamOne = teamFour;
        predictors[msg.sender].teamFour = teamOne;
      } else if(_scenario == 4) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamFive = predictors[msg.sender].teamFive;
        predictors[msg.sender].teamOne = teamFive;
        predictors[msg.sender].teamFive = teamOne;
      } else if(_scenario == 5) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamSix = predictors[msg.sender].teamSix;
        predictors[msg.sender].teamOne = teamSix;
@@ -195,11 +223,13 @@ struct TopPredictions {
        predictors[msg.sender].teamTwo = teamFour;
        predictors[msg.sender].teamFour = teamTwo;
      } else if(_scenario == 8) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
        bytes memory teamFive = predictors[msg.sender].teamFive;
        predictors[msg.sender].teamTwo = teamFive;
        predictors[msg.sender].teamFive = teamTwo;
      } else if(_scenario == 9) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
        bytes memory teamSix = predictors[msg.sender].teamSix;
        predictors[msg.sender].teamTwo = teamSix;
@@ -210,26 +240,209 @@ struct TopPredictions {
        predictors[msg.sender].teamThree = teamFour;
        predictors[msg.sender].teamFour = teamThree;
      } else if(_scenario == 11) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamThree = predictors[msg.sender].teamThree;
        bytes memory teamFive = predictors[msg.sender].teamFive;
        predictors[msg.sender].teamThree = teamFive;
        predictors[msg.sender].teamFive = teamThree;
      } else if(_scenario == 12) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamThree = predictors[msg.sender].teamThree;
        bytes memory teamSix = predictors[msg.sender].teamSix;
        predictors[msg.sender].teamThree = teamSix;
        predictors[msg.sender].teamSix = teamThree;
      } else if(_scenario == 13) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamFour = predictors[msg.sender].teamFour;
        bytes memory teamFive = predictors[msg.sender].teamFive;
        predictors[msg.sender].teamFour = teamFive;
        predictors[msg.sender].teamFive = teamFour;
      } else if(_scenario == 14) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
        bytes memory teamFour = predictors[msg.sender].teamFour;
        bytes memory teamSix = predictors[msg.sender].teamSix;
        predictors[msg.sender].teamFour = teamSix;
        predictors[msg.sender].teamSix = teamFour;
      }
+     changedOrderForTop32[msg.sender] = true;
     } 
+
+    function changeOrderForTop16(uint _scenario) external {
+    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+     if(_scenario == 1) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       predictors[msg.sender].teamOne = teamTwo;
+       predictors[msg.sender].teamTwo = teamOne;
+     } else if(_scenario == 2) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamOne = teamThree;
+       predictors[msg.sender].teamThree = teamOne;
+     } else if(_scenario == 3) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamOne = teamFour;
+       predictors[msg.sender].teamFour = teamOne;
+     } else if(_scenario == 4) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamFive = predictors[msg.sender].teamFive;
+       predictors[msg.sender].teamOne = teamFive;
+       predictors[msg.sender].teamFive = teamOne;
+     } else if(_scenario == 5) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamSix = predictors[msg.sender].teamSix;
+       predictors[msg.sender].teamOne = teamSix;
+       predictors[msg.sender].teamSix = teamOne;
+     } else if(_scenario == 6) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamTwo = teamThree;
+       predictors[msg.sender].teamThree = teamTwo;
+     } else if(_scenario == 7) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamTwo = teamFour;
+       predictors[msg.sender].teamFour = teamTwo;
+     } else if(_scenario == 8) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamFive = predictors[msg.sender].teamFive;
+       predictors[msg.sender].teamTwo = teamFive;
+       predictors[msg.sender].teamFive = teamTwo;
+     } else if(_scenario == 9) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamSix = predictors[msg.sender].teamSix;
+       predictors[msg.sender].teamTwo = teamSix;
+       predictors[msg.sender].teamSix = teamTwo;
+     } else if(_scenario == 10) {
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamThree = teamFour;
+       predictors[msg.sender].teamFour = teamThree;
+     } else if(_scenario == 11) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       bytes memory teamFive = predictors[msg.sender].teamFive;
+       predictors[msg.sender].teamThree = teamFive;
+       predictors[msg.sender].teamFive = teamThree;
+     } else if(_scenario == 12) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       bytes memory teamSix = predictors[msg.sender].teamSix;
+       predictors[msg.sender].teamThree = teamSix;
+       predictors[msg.sender].teamSix = teamThree;
+     } else if(_scenario == 13) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       bytes memory teamFive = predictors[msg.sender].teamFive;
+       predictors[msg.sender].teamFour = teamFive;
+       predictors[msg.sender].teamFive = teamFour;
+     } else if(_scenario == 14) {
+       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       bytes memory teamSix = predictors[msg.sender].teamSix;
+       predictors[msg.sender].teamFour = teamSix;
+       predictors[msg.sender].teamSix = teamFour;
+     }
+     changedOrderForTop16[msg.sender] = true;
+    } 
+    
+     function changeOrderForTop8(uint _scenario) external {
+    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+     if(_scenario == 1) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       predictors[msg.sender].teamOne = teamTwo;
+       predictors[msg.sender].teamTwo = teamOne;
+     } else if(_scenario == 2) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamOne = teamThree;
+       predictors[msg.sender].teamThree = teamOne;
+     } else if(_scenario == 3) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamOne = teamFour;
+       predictors[msg.sender].teamFour = teamOne;
+     } else if(_scenario == 4) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamTwo = teamThree;
+       predictors[msg.sender].teamThree = teamTwo;
+     } else if(_scenario == 5) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamTwo = teamFour;
+       predictors[msg.sender].teamFour = teamTwo;
+     } else if(_scenario == 6) {
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamThree = teamFour;
+       predictors[msg.sender].teamFour = teamThree;
+     }
+     changedOrderForTop8[msg.sender] = true;
+    } 
+    
+    function changeOrderForTop4(uint _scenario) external {
+    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+     if(_scenario == 1) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       predictors[msg.sender].teamOne = teamTwo;
+       predictors[msg.sender].teamTwo = teamOne;
+     } else if(_scenario == 2) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamOne = teamThree;
+       predictors[msg.sender].teamThree = teamOne;
+     } else if(_scenario == 3) {
+       bytes memory teamOne = predictors[msg.sender].teamOne;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamOne = teamFour;
+       predictors[msg.sender].teamFour = teamOne;
+     } else if(_scenario == 4) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       predictors[msg.sender].teamTwo = teamThree;
+       predictors[msg.sender].teamThree = teamTwo;
+     } else if(_scenario == 5) {
+       bytes memory teamTwo = predictors[msg.sender].teamTwo;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamTwo = teamFour;
+       predictors[msg.sender].teamFour = teamTwo;
+     } else if(_scenario == 6) {
+       bytes memory teamThree = predictors[msg.sender].teamThree;
+       bytes memory teamFour = predictors[msg.sender].teamFour;
+       predictors[msg.sender].teamThree = teamFour;
+       predictors[msg.sender].teamFour = teamThree;
+     }
+     changedOrderForTop4[msg.sender] = true;
+    } 
+
+  
+
+
+   function receiveBackMoney() external {
+     require(balances[msg.sender] != 0, "YOU_HAVE_NO_BALANCE");
+     uint amount = balances[msg.sender];
+     (bool sent, ) = payable(msg.sender).call{value:amount}("");
+     require(sent, "FAILED_TO_SEND_FUNDS");
+   }
+
+
+
+   function withdraw() external onlyOwner afterEvent {
+        address _owner = owner();
+        uint256 amount = address(this).balance;
+        (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
+        require(sent, "Failed to send Funds");
+    }
     
 }
