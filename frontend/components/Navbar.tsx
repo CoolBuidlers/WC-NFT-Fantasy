@@ -37,7 +37,7 @@ const Navbar = () => {
           </a>
         )}
         {/* <Image src={logo} width={290} height={200} alt="logo"/> */}
-        <div className="flex space-x-2 items-center w-auto width">
+        <div className="flex items-start justify-start space-x-2 w-auto">
             <Image src={logo} alt="logo"/>
           </div>
       </div>
