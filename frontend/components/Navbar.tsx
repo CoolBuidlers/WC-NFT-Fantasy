@@ -36,32 +36,30 @@ const Navbar = () => {
             <MdClose className="text-2xl text-white" />
           </a>
         )}
-        {/* <Image src={logo} width={290} height={200} alt="logo"/> */}
         <div className="flex items-start justify-start space-x-2 w-auto">
             <Image src={logo} alt="logo"/>
           </div>
       </div>
       <ul className="hidden lg:flex justify-around items-center basis-2/5 text-lg">
         <Link href="/">
-          <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+          <button className="cursor-pointer shadow-sm hover:ease-in duration-400 hover:bg-[#c743b1] hover:border-t-2 hover:border-[#DB00B6] transition-all text-skin-muted">
             HOME
           </button>
         </Link>
         <Link
           href="/"
-          className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted"
         >
-          <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+          <button className="cursor-pointer hover:border-y- hover:border-black transition-all text-skin-muted">
             MINT
           </button>
         </Link>
         <Link href="/">
-          <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+          <button className="cursor-pointer hover:border-y- hover:border-black transition-all text-skin-muted">
             ROADMAP
           </button>
         </Link>
         <Link href="/">
-          <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+          <button className="cursor-pointer hover:border-y- hover:border-black transition-all text-skin-muted">
             TEAM
           </button>
         </Link>

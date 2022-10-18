@@ -14,7 +14,7 @@ module.exports = {
       //   "tickets-img": "url('../public/img/WC.png')",
       // },
       animation: {
-        text: "text 5s ease infinite",
+        text: "text 3.1s ease infinite",
       },
       keyframes: {
         text: {
