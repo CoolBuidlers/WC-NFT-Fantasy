@@ -10,11 +10,25 @@ module.exports = {
       fontFamily: {
         Novo: ["Nova Square", "sans-serif"],
       },
-      // backgroundImage: {
-      //   "tickets-img": "url('../public/img/WC.png')",
-      // },
+      backgroundImage: {
+        countdown: "url('../public/img/countdown.svg')",
+      },
+      colors: {
+        "shade-1": "#F20089",
+        "shade-2": "#E500A4",
+        "shade-3": "#DB00B6",
+        "shade-4": "#D100D1",
+        "shade-5": "#BC00DD",
+        "shade-6": "#B100E8",
+        "shade-7": "#A100F2",
+        "shade-8": "#8900F2",
+        "shade-9": "#6A00F4",
+        "shade-10": "#2D00F7",
+        "shade-bg": "#14032F",
+      },
       animation: {
-        text: "text 3.1s ease infinite",
+        text: "text 3s ease infinite",
+        "text-hover": "text 2s ease infinite",
       },
       keyframes: {
         text: {
