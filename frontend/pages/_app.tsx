@@ -4,6 +4,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,
   RainbowKitProvider,
+  darkTheme
 } from '@rainbow-me/rainbowkit';
 import {
   chain,
@@ -14,7 +15,7 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 const { chains, provider } = configureChains(
-  [chain.polygonMumbai],
+  [chain.goerli],
   [
     alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()
@@ -32,10 +33,17 @@ const wagmiClient = createClient({
   provider
 })
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider chains={chains} modalSize="compact" theme={darkTheme({
+        accentColor: '#262A53',
+        accentColorForeground: 'white',
+        borderRadius: 'small',
+        fontStack: 'rounded',
+
+      })}>
       <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>
