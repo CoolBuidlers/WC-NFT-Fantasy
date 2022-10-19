@@ -2,6 +2,7 @@
 //Chainlink Adapters to Call API To Check the current Round and Obtain Final World Cup Winners
 //Chainlink Keepers to call Chainlink Adapters function every 24 hours and have a 5 minute gap for Chainlink Adapters to submit data from API
 //Use Chainlink VRF to select between the predictors who obtain the same points
+//Limit the amount of players that can enter to 100
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -444,5 +445,6 @@ struct TopPredictions {
         (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
         require(sent, "Failed to send Funds");
     }
-    
+    receive() external payable{}
+    fallback() external payable{}
 }
