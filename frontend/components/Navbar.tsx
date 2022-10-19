@@ -91,7 +91,7 @@ const Navbar = () => {
              to-[#F20089] blur-lg transition-all"
             ></div>
             <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
-              MINT
+              ACTIVITY
             </button>
           </div>
         </Link>
