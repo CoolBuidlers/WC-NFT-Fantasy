@@ -18,15 +18,21 @@ pragma solidity ^0.8.17;
 //5. Whoever has the correct order wins, those won't don't have the correct order will lose MOST LIKELY WILL CHANGE AROUND
 //6. Take 10% of the prize pot as personal earnings
 contract WCNFTFantasy is ERC1155, Ownable {
+   //Amount of points rewarded for each correct guess when the 4 teams are finalized
     uint constant POINTS_FOR_FIRST_TEAM = 200;
     uint constant POINTS_FOR_SECOND_TEAM = 100;
     uint constant POINTS_FOR_THIRD_TEAM = 50;
     uint constant POINTS_FOR_FOURTH_TEAM = 25;
     uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
+
+
     //Top 3 Predictors are able to receive money from the prize pot
     //If Predictors manage to accumulate the same amount of points, it will split based on how many predictors got the same amount 
     //Maybe burn the nfts for the team if they get swapped out in the users prediction
     //After the World Cup has ended, predictors will have 24 hours to be able to deposit their points to be eligible to win money from the prize pot
+
+
+//An object that defined the prediction of the top teams
 struct TopPredictions {
      bytes teamOne;
      bytes teamTwo;
@@ -36,17 +42,19 @@ struct TopPredictions {
      bytes teamSix;
 }
 
-    mapping(address => TopPredictions) predictors;
-    mapping(address => bool) alreadyMinted;
-    mapping(address => bool) extraTwoTeamsMinted;
-    mapping(address => bool) changedOrderForTop32;
-    mapping(address => bool) changedOrderForTop16;
-    mapping(address => bool) changedOrderForTop8;
-    mapping(address => bool) changedOrderForTop4;
-    mapping(address => bool) depositedPoints;
-    mapping(address => uint) balances; 
-   //Structs //Enums
-   //Use Chainlink Keepers to Change Enum Phasse
+    mapping(address => TopPredictions) predictors; //keeps track of all users predictions
+    mapping(address => bool) alreadyMinted; //checks if user has minted their first 4 teams for inital minting phase
+    mapping(address => bool) extraTwoTeamsMinted; //check if user has minted extra 2 teams
+    mapping(address => bool) changedOrderForTop32; //check if user has changed team order for top 32
+    mapping(address => bool) changedOrderForTop16; //check if user has changed team order for top 16
+    mapping(address => bool) changedOrderForTop8; //check if user has changed team order for top 8
+    mapping(address => bool) changedOrderForTop4; //check if user has changed team order for top 4
+    mapping(address => bool) depositedPoints; //checks if user has already deposited their points to potentially get chosen as winner
+    mapping(address => uint) balances; //keeps track of the amount of money each user has deposited
+
+   //Use Chainlink Keepers to Change Enum Phase
+
+   //Used to keep track of the phases of the worldcup
    enum GamePhases {
     Mint, 
     TOP32,
@@ -57,11 +65,12 @@ struct TopPredictions {
 }
    GamePhases public currentPhase;
 
+//Makes sure you can only interact with function after the world cup finishes
    modifier afterEvent {
      require(currentPhase == GamePhases.WORLD_CUP_FINISHED,"CAN_WITHDRAW_ONLY_AFTER_EVENT");
      _;
    }
-
+    //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
 
      constructor() ERC1155("") {
@@ -115,14 +124,17 @@ struct TopPredictions {
          worldCupTeams[31] = abi.encode("Korea Republic");
     }
 
+  //mint first 4 teams before the worldcup starts
    function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable {
     //ADD_MINTING_FUNCTIONALITY
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.Mint, "INITIAL_MINTING_PHASE_OVER");
-
+    
+    //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
      }
+     //boolean values have to equal true to confirm that the teams entered as arguments in the function are valid and are within the worldcupteam array
      bool teamOneConfirmed;
      bool teamTwoConfirmed;
      bool teamThreeConfirmed;
@@ -156,8 +168,10 @@ struct TopPredictions {
        alreadyMinted[msg.sender] = true;
      }
    }
-
+  
+  //Same concept as the function above 
    function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable {
+    //MAKE SURE TEAMS AREN'T IDENITICAL TO OTHER 4 TEAMS MINTED
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
@@ -186,6 +200,7 @@ struct TopPredictions {
     function changeOrderForTop32(uint _scenario) external {
     require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
@@ -356,6 +371,7 @@ struct TopPredictions {
      function changeOrderForTop8(uint _scenario) external {
     require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
@@ -393,6 +409,7 @@ struct TopPredictions {
     function changeOrderForTop4(uint _scenario) external {
     require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
