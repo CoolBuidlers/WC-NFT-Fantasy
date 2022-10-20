@@ -24,7 +24,7 @@ const Hero = () => {
           </p>
           <div>
             <Link href="/Usage">
-              <span className="play-btn py-4 px-6 animate-text cursor-pointer hover:animate-text-hover ">
+              <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
                 PlayGame
               </span>
             </Link>

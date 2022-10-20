@@ -12,5 +12,80 @@
         background: linear-gradient(260.38deg, #E500A4 16.46%, #8900F2 68.36%);
     }
 
+    .countdown {
+        background-position-x: -400px;
+
+        background-size: 245vw;
+        height: 300px;
+
+    }
+
+    .timer {
+        margin-top: 2rem;
+    }
+
+    @media screen and (min-width: 380px) {
+        .timer {
+            margin-top: 5rem;
+        }
+    }
+
+    @media screen and (min-width: 500px) {
+        .countdown {
+            background-position-x: -400px;
+
+            background-size: 190vw;
+            height: 350px;
+
+        }
+    }
+
+    @media screen and (min-width: 800px) {
+        .countdown {
+            background-position-x: -400px;
+
+            background-size: 190vw;
+            height: 450px;
+
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+        .countdown {
+            background-position-x: -400px;
+
+            background-size: 150vw;
+            height: 600px;
+
+        }
+    }
+
+    @media screen and (min-width: 1600px) {
+        .countdown {
+            background-position-x: -400px;
+
+            background-size: 140vw;
+
+        }
+    }
+
+    @media screen and (min-width: 1780px) {
+        .countdown {
+            background-position-x: -400px;
+
+            background-size: 123vw;
+
+        }
+    }
+
+    @media screen and (min-width: 2000px) {
+        .countdown {
+            background-position-x: -400px;
+
+            height: 800px;
+
+        }
+    }
+
 
 }
