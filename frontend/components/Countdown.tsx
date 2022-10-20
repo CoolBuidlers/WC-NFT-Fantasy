@@ -60,7 +60,7 @@ const Countdown = ({}: Props) => {
         className="countdown bg-countdown bg-no-repeat 
       relative min-w-screen flex justify-center md:justify-between items-start md:items-center px-4"
       >
-        <div className="timer text-white md:mt-0">
+        <div className="timer text-white md:mt-0 lg:pl-10 lg:pb-5">
           <p className="md:text-3xl mb-6 text-xl">Tournament starts in</p>
           <p className="md:text-6xl text-2xl">{timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} : {timeLeft.seconds}</p>
         </div>
