@@ -1,10 +1,9 @@
 type Props = {};
 import { useState, useEffect } from "react";
 import { TimeLeft } from "../interfaces/Countdown";
-import Ball from "../public/img/ball.jpg";
+import Ball from "../public/img/ball.png";
 import Image from "next/image";
 const Countdown = ({}: Props) => {
-
   const calculateTimeLeft = (): TimeLeft => {
     let year: number = new Date().getFullYear();
     const difference: number = +new Date(`${year}-11-20`) - +new Date();
@@ -58,15 +57,21 @@ const Countdown = ({}: Props) => {
     <section>
       <div
         className="countdown bg-countdown bg-no-repeat 
-      relative min-w-screen flex justify-center md:justify-between items-start md:items-center px-4"
+      relative min-w-screen xl:flex justify-center md:justify-between items-start md:items-center px-6 xl:pt-0"
       >
-        <div className="timer text-white md:mt-0 lg:pl-10 lg:pb-5">
+        <div className="text-white flex flex-col justify-center  items-center">
           <p className="md:text-3xl mb-6 text-xl">Tournament starts in</p>
-          <p className="md:text-6xl text-2xl">{timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} : {timeLeft.seconds}</p>
+          <p className="md:text-6xl text-2xl">
+            {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
+            {timeLeft.seconds}
+          </p>
+        </div>
+        <div className="absolute md:left-[60%] md:bottom-20 top-[70%] md:top-0 flex justify-center items-center">
+          <Image src={Ball} width={700} height={700} />
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default Countdown;

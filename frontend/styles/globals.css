@@ -17,6 +17,8 @@
 
         background-size: 245vw;
         height: 300px;
+        padding-top: 60px;
+
 
     }
 
@@ -36,6 +38,7 @@
 
             background-size: 190vw;
             height: 350px;
+            padding-top: 70px;
 
         }
     }
@@ -46,6 +49,7 @@
 
             background-size: 190vw;
             height: 450px;
+            padding-top: 150px;
 
         }
     }
