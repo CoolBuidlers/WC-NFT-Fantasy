@@ -67,7 +67,7 @@ const Countdown = ({}: Props) => {
           </p>
         </div>
         <div className="absolute md:left-[60%] md:bottom-20 top-[70%] md:top-0 flex justify-center items-center ">
-          <Image src={Ball} width={700} height={700} className="animate-spin" />
+          <Image src={Ball} width={700} height={700} className="animate-spin" alt="spinning-ball" />
         </div>
       </div>
     </section>
