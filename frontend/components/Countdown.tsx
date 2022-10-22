@@ -61,7 +61,7 @@ const Countdown = ({}: Props) => {
         className="text-white 
       w-full -z-10 "
       >
-        <Image src={bg} layout="responsive" priority />
+        <Image src={bg} layout="responsive" alt="rolling-ball" />
 
         <div className="absolute bottom-[23%] left-[25%] sm:left-[10%]">
           <p className="md:text-3xl mb:mb-6 text-lg sm:text-xl">
@@ -74,6 +74,7 @@ const Countdown = ({}: Props) => {
           </div>
       <div className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 ">
         <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px] animate-spin " />
+      </div>
       </div>
     </section>
   );

@@ -18,8 +18,8 @@ const Mint = () => {
           </span>
         </div>
         <Link href="/">
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[30%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
-            PlayGame
+          <span className="play-btn text-center py-4 w-[90%] sm:w-[15%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
+            Mint
           </span>
         </Link>
       </div>
