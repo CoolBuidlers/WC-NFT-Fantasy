@@ -19,7 +19,7 @@ const Hero = () => {
           </h2>
           <p className="text-base text-skin-muted dark:text-skin-darkMuted lg:text-2xl sm:mb-14 mb-10">
             Purchase Team cards as NFTs and use them for prediction and play
-            other games to earn extra points to earn your chance to win a grand
+            other games to gain extra points and earn your chance to win a grand
             prize!
           </p>
           <div>
