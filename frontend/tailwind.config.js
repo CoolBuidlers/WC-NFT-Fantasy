@@ -6,6 +6,18 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+
+      md: "768px",
+
+      lg: "1024px",
+
+      xl: "1280px",
+
+      "2xl": "1536px",
+      "3xl": "2000px",
+    },
     extend: {
       fontFamily: {
         Novo: ["Nova Square", "sans-serif"],
@@ -29,11 +41,11 @@ module.exports = {
       animation: {
         text: "text 3s ease infinite",
         "text-hover": "text 2s ease infinite",
-        spin: "spin 5s linear infinite",
+        spin: "spin 20s linear infinite",
       },
       keyframes: {
         spin: {
-          to: {
+          "100%": {
             transform: "rotate(360deg)",
           },
         },

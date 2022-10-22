@@ -1,8 +1,10 @@
 type Props = {};
 import { useState, useEffect } from "react";
 import { TimeLeft } from "../interfaces/Countdown";
-import Ball from "../public/img/ball.png";
+import Ball from "../public/img/ball.svg";
 import Image from "next/image";
+import bg from "../public/img/bg.png";
+
 const Countdown = ({}: Props) => {
   const calculateTimeLeft = (): TimeLeft => {
     let year: number = new Date().getFullYear();
@@ -54,21 +56,25 @@ const Countdown = ({}: Props) => {
   });
 
   return (
-    <section>
+    <section className="relative ">
       <div
-        className="countdown bg-countdown bg-no-repeat 
-      relative min-w-screen xl:flex justify-center md:justify-between items-start md:items-center px-6 xl:pt-0"
+        className="text-white 
+      w-full -z-10 "
       >
-        <div className="text-white flex flex-col justify-center  items-center">
-          <p className="md:text-3xl mb-6 text-xl">Tournament starts in</p>
-          <p className="md:text-6xl text-2xl">
+        <Image src={bg} layout="responsive" priority />
+
+        <div className="absolute bottom-[23%] left-[25%] sm:left-[10%]">
+          <p className="md:text-3xl mb:mb-6 text-lg sm:text-xl">
+            Tournament starts in
+          </p>
+          <p className="md:text-6xl text-xl sm:text-2xl">
             {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
             {timeLeft.seconds}
           </p>
         </div>
-        <div className="absolute md:left-[60%] md:bottom-20 top-[70%] md:top-0 flex justify-center items-center ">
-          <Image src={Ball} width={700} height={700} className="animate-spin" />
-        </div>
+      </div>
+      <div className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 ">
+        <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px] animate-spin " />
       </div>
     </section>
   );
