@@ -69,7 +69,7 @@ struct TopPredictions {
 
    //Used to keep track of the phases of the worldcup
    enum GamePhases {
-    Mint, 
+    MINT, 
     TOP32,
     TOP16,
     TOP8,
@@ -88,7 +88,7 @@ struct TopPredictions {
     bytes[32] worldCupTeams;
 
      constructor() ERC1155("")  {
-        currentPhase = GamePhases.Mint;
+        currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -142,7 +142,7 @@ struct TopPredictions {
    function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable {
     //ADD_MINTING_FUNCTIONALITY
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
-     require(currentPhase == GamePhases.Mint, "INITIAL_MINTING_PHASE_OVER");
+     require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
     
     //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
@@ -462,11 +462,15 @@ struct TopPredictions {
         bool hasLink = LinkTokenInterface(linkAddress).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
         bool eventHasStarted = block.timestamp > INITIAL_MINTING_PHASE_DEADLINE;
         bool oneDayPassed = block.timestamp > oneDay;
-        //bool numberIsZero = randomNumber == 0;
         upkeepNeeded = hasLink && eventHasStarted && oneDayPassed;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
+      if(currentPhase == GamePhases.MINT) {
+        currentPhase == GamePhases.TOP32;
+        oneDay = block.timestamp + 24 hours;
+      }
+      
       // require(LINK.balanceOf(address(this)) >= _chainlinkFee, "MORE_LINK");
       // requestRandomness(_keyHash, _chainlinkFee);
     }

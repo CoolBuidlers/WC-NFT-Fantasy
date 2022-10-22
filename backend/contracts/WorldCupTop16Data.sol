@@ -1,16 +1,13 @@
 import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 contract WorldCupTop16Data is ChainlinkClient, ConfirmedOwner {
   using Chainlink for Chainlink.Request;
-   uint256 public teamOne;
-   uint public teamTwo;
    bytes32 private jobId;
    uint256 private fee;
-   event RequestTop16(bytes32 indexed requestId, uint team1, uint team2, uint team3, uint team4, uint team5, uint team6, uint team7, uint team8, uint team9, uint team10, uint team11, uint team12, uint team13, uint team14, uint team15, uint team16);
+   event ReceiveTeamTop16(bytes32 indexed requestId, uint256 teamId);
 
    constructor() ConfirmedOwner(msg.sender) {
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
@@ -19,73 +16,247 @@ contract WorldCupTop16Data is ChainlinkClient, ConfirmedOwner {
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
-     function requestStandingsTop16() public returns (bytes32 requestId) {
-        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+    function receiveTeamOneStanding() private returns(bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamOne.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,0,0,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+    
+    function receiveTeamOne(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+     function receiveTeamTwoStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamTwo.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,0,1,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamTwo(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+     function receiveTeamThreeStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamThree.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,0,2,team_id');
-        
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamThree(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+     function receiveTeamFourStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFour.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,0,3,team_id');
-        
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamFour(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+       function receiveTeamFiveStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFive.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,1,0,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamFive(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamSixStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamSix.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,1,1,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamSix(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+    function receiveTeamSevenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamSeven.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,1,2,team_id');
-        
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamSeven(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamEightStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamEight.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,1,3,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamEight(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamNineStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamNine.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,2,0,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamNine(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamTenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamTen.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,2,1,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamTen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamElevenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamEleven.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,2,2,team_id');
-        
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamEleven(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+      function receiveTeamTwelveStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamTwelve.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,2,3,team_id');
 
-         req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamTwelve(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+     function receiveTeamThirteenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamThirteen.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,3,0,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamThirteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+    function receiveTeamFourteenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFourteen.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,3,1,team_id');
 
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamFourteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+     function receiveTeamFifteenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFifteen.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,3,2,team_id');
-        
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamFifteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
+    }
+
+    function receiveTeamSixteenStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamSixteen.selector);
+      
+        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEY&season_id=3072');
         req.add('path', 'data,standings,3,3,team_id');
 
         req.addInt('times', 1);
         return sendChainlinkRequest(req, fee);
     }
 
-    
-     function requestCurrentRound() public returns (bytes32 requestId) {
-        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/standings?apikey=API_KEYb&season_id=3072');
-        req.add('path', 'data,standings,0,0,team_id');
-        req.addInt('times', 1);
-        return sendChainlinkRequest(req, fee);
+     function receiveTeamSixteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        emit ReceiveTeamTop16(_requestId, _teamId);
     }
 
-    function fulfill(bytes32 _requestId, uint256 _team1, uint256 _team2, uint256 _team3, uint256 _team4, uint256 _team5, uint256 _team6, uint256 _team7, uint256 _team8, uint256 _team9, uint256 _team10, uint256 _team11, uint256 _team12, uint256 _team13, uint256 _team14, uint256 _team15, uint256 _team16) public recordChainlinkFulfillment(_requestId) {
-        teamOne = _team1;
-        teamTwo = _team2;
-        emit RequestTop16(_requestId, _team1, _team2, _team3, _team4, _team5, _team6, _team7, _team8, _team9, _team10, _team11, _team12, _team13, _team14, _team15, _team16);
+      function fetchTop16Teams() public {
+        receiveTeamOneStanding();
+        receiveTeamTwoStanding();
+        receiveTeamThreeStanding();
+        receiveTeamFourStanding();
+        receiveTeamFiveStanding();
+        receiveTeamSixStanding();
+        receiveTeamSevenStanding();
+        receiveTeamEightStanding();
+        receiveTeamNineStanding();
+        receiveTeamTenStanding();
+        receiveTeamElevenStanding();
+        receiveTeamTwelveStanding();
+        receiveTeamThirteenStanding();
+        receiveTeamFourteenStanding();
+        receiveTeamFifteenStanding();
+        receiveTeamSixteenStanding();
     }
 
      function withdrawLink() public onlyOwner {
