@@ -5,6 +5,17 @@
 //Limit the amount of players that can enter to 100
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
+import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
+import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
+import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
+import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
+//Events can be used to display all of the players in the game, the current round in the worldcup, total prize pot amount in the contract, current teams in the world cup
+
+ interface KeeperCompatibleInterface {
+    function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
+    function performUpkeep(bytes calldata performData) external;
+}
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -24,6 +35,8 @@ contract WCNFTFantasy is ERC1155, Ownable {
     uint constant POINTS_FOR_THIRD_TEAM = 50;
     uint constant POINTS_FOR_FOURTH_TEAM = 25;
     uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
+    uint public oneDay;
+    uint public waitFiveMinutes;
 
 
     //Top 3 Predictors are able to receive money from the prize pot
@@ -70,10 +83,11 @@ struct TopPredictions {
      require(currentPhase == GamePhases.WORLD_CUP_FINISHED,"CAN_WITHDRAW_ONLY_AFTER_EVENT");
      _;
    }
+    address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
 
-     constructor() ERC1155("") {
+     constructor() ERC1155("")  {
         currentPhase = GamePhases.Mint;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -171,7 +185,6 @@ struct TopPredictions {
   
   //Same concept as the function above 
    function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable {
-    //MAKE SURE TEAMS AREN'T IDENITICAL TO OTHER 4 TEAMS MINTED
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
@@ -444,7 +457,19 @@ struct TopPredictions {
      changedOrderForTop4[msg.sender] = true;
     } 
 
-  
+
+   function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
+        bool hasLink = LinkTokenInterface(linkAddress).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
+        bool eventHasStarted = block.timestamp > INITIAL_MINTING_PHASE_DEADLINE;
+        bool oneDayPassed = block.timestamp > oneDay;
+        //bool numberIsZero = randomNumber == 0;
+        upkeepNeeded = hasLink && eventHasStarted && oneDayPassed;
+    }
+
+     function performUpkeep(bytes calldata /*performData*/) external {
+      // require(LINK.balanceOf(address(this)) >= _chainlinkFee, "MORE_LINK");
+      // requestRandomness(_keyHash, _chainlinkFee);
+    }
 
 
    function receiveBackMoney() external {
