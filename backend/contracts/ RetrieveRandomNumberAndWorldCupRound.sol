@@ -6,7 +6,14 @@ import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "../interfaces/IPrediction.sol";
+import "../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol";
+import "../interfaces/IWorldCupData.sol";
 
+ interface KeeperCompatibleInterface {
+    function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
+    function performUpkeep(bytes calldata performData) external;
+}
 
 contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOwner {
     using Strings for uint256;
@@ -22,6 +29,9 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
         bool exists;
         uint256[] randomWords;
     }
+    address predictionAddress;
+    address randomNumberAndRoundAddress;
+    address worldCupData16Address;
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
@@ -39,7 +49,10 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
     uint32 numWords = 1;
 
-    constructor(uint64 subscriptionId) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
+    constructor(uint64 subscriptionId, address _predictionAddress, address _randomNumberAndRoundAddress, address _worldCupData16Address) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
+        predictionAddress = _predictionAddress;
+        randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
+        worldCupData16Address = _worldCupData16Address;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
@@ -77,8 +90,9 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
         RequestStatus memory request = s_requests[_requestId];
         return (request.fulfilled, request.randomWords[0]);
     }
-
+   
     function fetchCurrentRound() public returns (bytes32 requestId) {
+        require(msg.sender == predictionAddress, "USER_CANT_CALL_THIS_FUNCTION");
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfillRound.selector);
         req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/rounds?apikey=API_KEY&season_id=3072');
         req.add('path', string(abi.encodePacked('data,', arrayNumber.toString(),",",'is_current')));
@@ -88,12 +102,16 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
      function fulfillRound(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
        if(_volume == 1 && arrayNumber == 5) {
+        IWorldCupData(worldCupData16Address).fetchTop16Teams();
+        IPrediction(predictionAddress).changeThePhase();
          emit RoundChanged(_requestId, block.timestamp, 16);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 6) {
+          IPrediction(predictionAddress).changeThePhase();
          emit RoundChanged(_requestId, block.timestamp, 8);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 7) {
+          IPrediction(predictionAddress).changeThePhase();
           emit RoundChanged(_requestId, block.timestamp, 4);
           arrayNumber++;
        }

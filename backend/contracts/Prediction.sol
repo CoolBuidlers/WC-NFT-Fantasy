@@ -1,6 +1,4 @@
 //Use Price Feeds For Players to Consistenly Pay $100 in ETH Using ETH and USDC Price Feeds
-//Chainlink Adapters to Call API To Check the current Round and Obtain Final World Cup Winners
-//Chainlink Keepers to call Chainlink Adapters function every 24 hours and have a 5 minute gap for Chainlink Adapters to submit data from API
 //Use Chainlink VRF to select between the predictors who obtain the same points
 //Limit the amount of players that can enter to 100
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -10,6 +8,7 @@ import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
+import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 //Events can be used to display all of the players in the game, the current round in the worldcup, total prize pot amount in the contract, current teams in the world cup
 
  interface KeeperCompatibleInterface {
@@ -35,6 +34,7 @@ contract WCNFTFantasy is ERC1155, Ownable {
     uint constant POINTS_FOR_THIRD_TEAM = 50;
     uint constant POINTS_FOR_FOURTH_TEAM = 25;
     uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
+    uint constant WORLD_CUP_ENDS = 1669096800;
     uint public oneDay;
     uint public waitFiveMinutes;
 
@@ -43,8 +43,12 @@ contract WCNFTFantasy is ERC1155, Ownable {
     //If Predictors manage to accumulate the same amount of points, it will split based on how many predictors got the same amount 
     //Maybe burn the nfts for the team if they get swapped out in the users prediction
     //After the World Cup has ended, predictors will have 24 hours to be able to deposit their points to be eligible to win money from the prize pot
-
-
+bytes firstPlaceTeam;
+bytes secondPlaceTeam;
+bytes thirdPlaceTeam;
+bytes fourthPlaceTeam;
+address randomAndRoundAddress;
+address worldCupDataAddress;
 //An object that defined the prediction of the top teams
 struct TopPredictions {
      bytes teamOne;
@@ -54,7 +58,7 @@ struct TopPredictions {
      bytes teamFive;
      bytes teamSix;
 }
-
+  
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
     mapping(address => bool) alreadyMinted; //checks if user has minted their first 4 teams for inital minting phase
     mapping(address => bool) extraTwoTeamsMinted; //check if user has minted extra 2 teams
@@ -87,7 +91,8 @@ struct TopPredictions {
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
 
-     constructor() ERC1155("")  {
+     constructor(address _worldCupDataAddress) ERC1155("")  {
+        worldCupDataAddress = _worldCupDataAddress;
         currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -462,19 +467,23 @@ struct TopPredictions {
         bool hasLink = LinkTokenInterface(linkAddress).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
         bool eventHasStarted = block.timestamp > INITIAL_MINTING_PHASE_DEADLINE;
         bool oneDayPassed = block.timestamp > oneDay;
-        upkeepNeeded = hasLink && eventHasStarted && oneDayPassed;
+        bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
+        upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
       if(currentPhase == GamePhases.MINT) {
-        currentPhase == GamePhases.TOP32;
+        currentPhase = GamePhases.TOP32;
         oneDay = block.timestamp + 24 hours;
+      } else if(currentPhase != GamePhases.TOP4) {
+         oneDay = block.timestamp + 24 hours;
+         IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
+      } else if(currentPhase == GamePhases.TOP4) {
+         if(block.timestamp > WORLD_CUP_ENDS) {
+           currentPhase = GamePhases.WORLD_CUP_FINISHED;
+         }
       }
-      
-      // require(LINK.balanceOf(address(this)) >= _chainlinkFee, "MORE_LINK");
-      // requestRandomness(_keyHash, _chainlinkFee);
     }
-
 
    function receiveBackMoney() external {
      require(balances[msg.sender] != 0, "YOU_HAVE_NO_BALANCE");
@@ -483,7 +492,92 @@ struct TopPredictions {
      require(sent, "FAILED_TO_SEND_FUNDS");
    }
 
+  function setRandomAndRoundAddress(address _randomAndRoundAddress) external onlyOwner {
+     randomAndRoundAddress = _randomAndRoundAddress;
+  }
 
+  function changeThePhase() public {
+     require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
+     if(currentPhase == GamePhases.TOP32) {
+       currentPhase = GamePhases.TOP16;
+     } else if(currentPhase == GamePhases.TOP16) {
+        currentPhase = GamePhases.TOP8;
+     } else if(currentPhase == GamePhases.TOP8) {
+       currentPhase = GamePhases.TOP4;
+     }
+  }
+
+  function setFirstPlaceTeam(uint _teamId) public {
+  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+      /*
+    14219 - IC Play-Off 1
+    14220 - IC Play-Off 2
+
+    Costa Rica
+    Australia
+    */
+   if(_teamId == 12550) {
+    firstPlaceTeam =  worldCupTeams[1];
+   } else if(_teamId == 3080) {
+     firstPlaceTeam =  worldCupTeams[3];
+   } else if(_teamId == 12279) {
+     firstPlaceTeam = worldCupTeams[0];
+   } else if(_teamId == 56) {
+     firstPlaceTeam = worldCupTeams[2];
+   } else if(_teamId == 12302) {
+     firstPlaceTeam = worldCupTeams[4];
+   } else if(_teamId == 12396) {
+     firstPlaceTeam = worldCupTeams[5];
+   } else if(_teamId == 7850) {
+     firstPlaceTeam = worldCupTeams[6];
+   } else if(_teamId == 14218) {
+     firstPlaceTeam = worldCupTeams[7];
+   } else if(_teamId == 12502) {
+     firstPlaceTeam = worldCupTeams[8];
+   } else if(_teamId == 12473) {
+      firstPlaceTeam = worldCupTeams[10];
+   } else if(_teamId == 3011) {
+     firstPlaceTeam = worldCupTeams[11];
+   } else if(_teamId == 767) {
+     firstPlaceTeam = worldCupTeams[9];
+   } else if(_teamId == 3008) {
+     firstPlaceTeam = worldCupTeams[14];
+   } else if(_teamId == 12300) {
+     firstPlaceTeam = worldCupTeams[12];
+   } else if(_teamId == 73) {
+     firstPlaceTeam = worldCupTeams[15];
+   } else if(_teamId == 3017) {
+     firstPlaceTeam = worldCupTeams[18];
+   } else if(_teamId == 12397) {
+     firstPlaceTeam = worldCupTeams[19];
+   } else if(_teamId == 3024) {
+     firstPlaceTeam = worldCupTeams[16];
+   } else if(_teamId == 3054) {
+     firstPlaceTeam = worldCupTeams[20];
+   } else if(_teamId == 7835) {
+     firstPlaceTeam = worldCupTeams[21];
+   } else if(_teamId == 3026) {
+     firstPlaceTeam = worldCupTeams[23];
+   } else if(_teamId == 52) {
+     firstPlaceTeam = worldCupTeams[22];
+   } else if(_teamId == 12504) {
+     firstPlaceTeam = worldCupTeams[24];
+   } else if(_teamId == 85) {
+     firstPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3036) {
+     firstPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3064) {
+     firstPlaceTeam = worldCupTeams[26];
+  } else if(_teamId == 95) {
+     firstPlaceTeam = worldCupTeams[29];
+  } else if(_teamId == 755) {
+    firstPlaceTeam = worldCupTeams[31];
+  } else if(_teamId == 12299) {
+    firstPlaceTeam = worldCupTeams[28];
+  } else if(_teamId == 12501) {
+    firstPlaceTeam = worldCupTeams[30];
+  }
+}
 
    function withdraw() external onlyOwner afterEvent {
         address _owner = owner();
@@ -491,6 +585,7 @@ struct TopPredictions {
         (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
         require(sent, "Failed to send Funds");
     }
+    
     receive() external payable{}
     fallback() external payable{}
 }
