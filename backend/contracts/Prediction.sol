@@ -3,8 +3,9 @@
 //Chainlink Keepers to call Chainlink Adapters function every 24 hours and have a 5 minute gap for Chainlink Adapters to submit data from API
 //Use Chainlink VRF to select between the predictors who obtain the same points
 //Limit the amount of players that can enter to 100
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+// import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol";
+import "@thirdweb-dev/contracts/base/ERC1155LazyMint.sol";
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -17,7 +18,7 @@ pragma solidity ^0.8.17;
 //4. After Round 16, You Can't Swap Your Current 4 Teams, but you can rearrange the order of them
 //5. Whoever has the correct order wins, those won't don't have the correct order will lose MOST LIKELY WILL CHANGE AROUND
 //6. Take 10% of the prize pot as personal earnings
-contract WCNFTFantasy is ERC1155, Ownable {
+contract WCNFTFantasy is ERC1155LazyMint {
     uint constant POINTS_FOR_FIRST_TEAM = 200;
     uint constant POINTS_FOR_SECOND_TEAM = 100;
     uint constant POINTS_FOR_THIRD_TEAM = 50;
@@ -27,14 +28,15 @@ contract WCNFTFantasy is ERC1155, Ownable {
     //If Predictors manage to accumulate the same amount of points, it will split based on how many predictors got the same amount 
     //Maybe burn the nfts for the team if they get swapped out in the users prediction
     //After the World Cup has ended, predictors will have 24 hours to be able to deposit their points to be eligible to win money from the prize pot
-struct TopPredictions {
+    event levelUp(address indexed account, uint256 level);
+    struct TopPredictions {
      bytes teamOne;
      bytes teamTwo;
      bytes teamThree;
      bytes teamFour;
      bytes teamFive;
      bytes teamSix;
-}
+    }
 
     mapping(address => TopPredictions) predictors;
     mapping(address => bool) alreadyMinted;
@@ -64,7 +66,17 @@ struct TopPredictions {
 
     bytes[32] worldCupTeams;
 
-     constructor() ERC1155("") {
+     constructor(
+      string memory _name,
+      string memory _symbol
+     )
+     ERC1155LazyMint(
+      _name,
+      _symbol,
+      msg.sender,
+      0
+     )
+     {
         currentPhase = GamePhases.Mint;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -425,9 +437,60 @@ struct TopPredictions {
        predictors[msg.sender].teamFour = teamThree;
      }
      changedOrderForTop4[msg.sender] = true;
+    }
+
+    // Claim a level 1 NFT to start playing but only
+    function claimLevel1Nft() public {
+      // The claim function requires a reciever address which will be the deployer again
+      // and then we will set the tokenId as 0 since it will be a level1 nft and the amount will be 1
+      claim(msg.sender, 0 , 1);
+      emit levelUp(msg.sender, 1);
     } 
 
-  
+    function verifyClaim(
+      address _claimer,
+      uint256 _tokenId,
+      uint256 _quantity
+    ) public view override {
+      require(_tokenId == 0, "Only level 1 NFTs can be claimed!");
+      require(_quantity == 1, "Only 1 NFT can be claimed!");
+      require(_claimer == msg.sender, "Only caller can claim!");
+    } 
+
+    // _burn requires address, id, and the amount
+    // _mint requires the address, id, and the quantity with extra empty params i added
+    function upgradeToLevel2() public {
+      _burn(msg.sender, 0, 1);
+      _mint(msg.sender, 1, 1, "");
+    }
+
+    function upgradeToLevel3() public {
+      _burn(msg.sender, 1, 1);
+      _mint(msg.sender, 2, 1, "");
+    }
+
+    function upgradeToLevel4() public {
+      _burn(msg.sender, 2, 1);
+      _mint(msg.sender, 3, 1, "");
+    }
+
+    // This function could also have been used but i prefer the ones created above
+    // function burn(
+    //   address account,
+    //   uint256 id,
+    //   uint256 amount
+    // ) external override
+    // {
+    //   require(
+    //     msg.sender == account, "NOT TOKEN OWNER"
+    //   );
+    //   _burn(account, id, amount);
+    //   if (id == 1) {
+    //     _mint(account, 2, 1, "");
+    //     emit levelUp(account, 2);
+    //   }
+    // }
+
 
 
    function receiveBackMoney() external {
