@@ -462,16 +462,19 @@ contract WCNFTFantasy is ERC1155LazyMint {
     function upgradeToLevel2() public {
       _burn(msg.sender, 0, 1);
       _mint(msg.sender, 1, 1, "");
+      emit levelUp(msg.sender, 2);
     }
 
     function upgradeToLevel3() public {
       _burn(msg.sender, 1, 1);
       _mint(msg.sender, 2, 1, "");
+      emit levelUp(msg.sender, 3);
     }
 
     function upgradeToLevel4() public {
       _burn(msg.sender, 2, 1);
       _mint(msg.sender, 3, 1, "");
+      emit levelUp(msg.sender, 4);
     }
 
     // This function could also have been used but i prefer the ones created above
