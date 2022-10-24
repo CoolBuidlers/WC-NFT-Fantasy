@@ -32,6 +32,8 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     address predictionAddress;
     address randomNumberAndRoundAddress;
     address worldCupData16Address;
+    address worldCupData8Address;
+    address worldCupData4Address;
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
@@ -47,12 +49,14 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
     uint16 requestConfirmations = 3;
 
-    uint32 numWords = 1;
+    uint32 numWords = 3;
 
-    constructor(uint64 subscriptionId, address _predictionAddress, address _randomNumberAndRoundAddress, address _worldCupData16Address) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
+    constructor(uint64 subscriptionId, address _predictionAddress, address _randomNumberAndRoundAddress, address _worldCupData16Address, address _worldCupData8Address, address _worldCupData4Address) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
         predictionAddress = _predictionAddress;
         randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
         worldCupData16Address = _worldCupData16Address;
+        worldCupData8Address = _worldCupData8Address;
+        worldCupData4Address = _worldCupData4Address;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
@@ -62,7 +66,8 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     }
 
     // Assumes the subscription is funded sufficiently.
-    function requestRandomWords() public onlyOwner returns (uint256 requestId) {
+    function requestRandomWords() public returns (uint256 requestId) {
+        require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
         // Will revert if subscription is not set and funded.
         requestId = COORDINATOR.requestRandomWords(
             keyHash,
@@ -85,10 +90,10 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
         emit RequestFulfilled(_requestId, _randomWords);
     }
 
-    function getRequestStatus(uint256 _requestId) public view returns (bool fulfilled, uint256 randomWords) {
-        require(s_requests[_requestId].exists, 'request not found');
-        RequestStatus memory request = s_requests[_requestId];
-        return (request.fulfilled, request.randomWords[0]);
+    function getRequestStatus() public view returns (bool fulfilled, uint256[] memory randomWords) {
+        require(s_requests[lastRequestId].exists, 'request not found');
+        RequestStatus memory request = s_requests[lastRequestId];
+        return (request.fulfilled, request.randomWords);
     }
    
     function fetchCurrentRound() public returns (bytes32 requestId) {
@@ -102,16 +107,18 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
      function fulfillRound(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
        if(_volume == 1 && arrayNumber == 5) {
-        IWorldCupData(worldCupData16Address).fetchTop16Teams();
         IPrediction(predictionAddress).changeThePhase();
+        IWorldCupData(worldCupData16Address).fetchTop16Teams();
          emit RoundChanged(_requestId, block.timestamp, 16);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 6) {
-          IPrediction(predictionAddress).changeThePhase();
+        IPrediction(predictionAddress).changeThePhase();
+        IWorldCupData(worldCupData8Address).fetchTop8Teams();
          emit RoundChanged(_requestId, block.timestamp, 8);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 7) {
           IPrediction(predictionAddress).changeThePhase();
+          IWorldCupData(worldCupData4Address).fetchTop4Teams();
           emit RoundChanged(_requestId, block.timestamp, 4);
           arrayNumber++;
        }

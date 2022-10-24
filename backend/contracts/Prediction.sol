@@ -1,6 +1,4 @@
 //Use Price Feeds For Players to Consistenly Pay $100 in ETH Using ETH and USDC Price Feeds
-//Use Chainlink VRF to select between the predictors who obtain the same points
-//Limit the amount of players that can enter to 100
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
@@ -18,37 +16,24 @@ import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-
-//set 5 minutes for chainlink adapters to have a response after being called
-//Chainlink Keepers will call chainlink adapters function after a certain period of time
-//1. All Teams are in ERC1155, Users Mint 4 Teams in Order
-//2. Users Can Mint Two More Teams After Initial Minting Phase Is Over
-//3. After Each Round A User Can Either Swap Between their 4 teams or swap one of the teams for a new one
-//4. After Round 16, You Can't Swap Your Current 4 Teams, but you can rearrange the order of them
-//5. Whoever has the correct order wins, those won't don't have the correct order will lose MOST LIKELY WILL CHANGE AROUND
-//6. Take 10% of the prize pot as personal earnings
+//only get first 4 teams for worldCupData4
 contract WCNFTFantasy is ERC1155, Ownable {
    //Amount of points rewarded for each correct guess when the 4 teams are finalized
-    uint constant POINTS_FOR_FIRST_TEAM = 200;
-    uint constant POINTS_FOR_SECOND_TEAM = 100;
-    uint constant POINTS_FOR_THIRD_TEAM = 50;
-    uint constant POINTS_FOR_FOURTH_TEAM = 25;
     uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
     uint constant WORLD_CUP_ENDS = 1669096800;
     uint public oneDay;
-    uint public waitFiveMinutes;
 
-
-    //Top 3 Predictors are able to receive money from the prize pot
-    //If Predictors manage to accumulate the same amount of points, it will split based on how many predictors got the same amount 
-    //Maybe burn the nfts for the team if they get swapped out in the users prediction
-    //After the World Cup has ended, predictors will have 24 hours to be able to deposit their points to be eligible to win money from the prize pot
 bytes firstPlaceTeam;
 bytes secondPlaceTeam;
 bytes thirdPlaceTeam;
 bytes fourthPlaceTeam;
 address randomAndRoundAddress;
-address worldCupDataAddress;
+address worldCupData16Address;
+address worldCupData8Address;
+address worldCupData4Address;
+address payable[] predictorsWithBiggestPoints;
+address payable[] predictorsWithSecondBiggestPoints;
+address payable[] predictorsWithThirdBiggestPoints;
 //An object that defined the prediction of the top teams
 struct TopPredictions {
      bytes teamOne;
@@ -57,8 +42,20 @@ struct TopPredictions {
      bytes teamFour;
      bytes teamFive;
      bytes teamSix;
+     uint predictorIndex;
 }
-  
+  struct Points {
+     uint points;
+     address payable predictor;
+  }
+    uint predictorPointIndex;
+    Points[100] predictorPoints;
+    uint highestAmountOfPoints;
+    uint secondHighestAmountOfPoints;
+    uint thirdHighestAmountOfPoints;
+    address payable winnerOne;
+    address payable winnerTwo;
+    address payable winnerThree;
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
     mapping(address => bool) alreadyMinted; //checks if user has minted their first 4 teams for inital minting phase
     mapping(address => bool) extraTwoTeamsMinted; //check if user has minted extra 2 teams
@@ -69,7 +66,6 @@ struct TopPredictions {
     mapping(address => bool) depositedPoints; //checks if user has already deposited their points to potentially get chosen as winner
     mapping(address => uint) balances; //keeps track of the amount of money each user has deposited
 
-   //Use Chainlink Keepers to Change Enum Phase
 
    //Used to keep track of the phases of the worldcup
    enum GamePhases {
@@ -78,6 +74,7 @@ struct TopPredictions {
     TOP16,
     TOP8,
     TOP4,
+    CHOOSE_WINNERS,
     WORLD_CUP_FINISHED
 }
    GamePhases public currentPhase;
@@ -87,12 +84,19 @@ struct TopPredictions {
      require(currentPhase == GamePhases.WORLD_CUP_FINISHED,"CAN_WITHDRAW_ONLY_AFTER_EVENT");
      _;
    }
+
+   modifier onlyWhenNotPaused {
+     require(paused == false, "CONTRACT_IS_PAUSED");
+     _;
+   }
     address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
+    bool paused;
+    bool canReceiveRefund;
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
 
-     constructor(address _worldCupDataAddress) ERC1155("")  {
-        worldCupDataAddress = _worldCupDataAddress;
+     constructor(address _worldCupData16Address) ERC1155("")  {
+        worldCupData16Address = _worldCupData16Address;
         currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -148,7 +152,7 @@ struct TopPredictions {
     //ADD_MINTING_FUNCTIONALITY
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
-    
+     require(predictorPoints.length != 100, "CANT_ENTER_ANYMORE");
     //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
@@ -184,7 +188,11 @@ struct TopPredictions {
      if(teamOneConfirmed != true || teamTwoConfirmed != true || teamThreeConfirmed != true || teamFourConfirmed != true) {
       revert("TEAMS_MUST_BE_VALID");
      } else {
-       alreadyMinted[msg.sender] = true;
+      Points storage playerPoints = predictorPoints[predictorPointIndex];
+      playerPoints.predictor = payable(msg.sender);
+      predictors[msg.sender].predictorIndex = predictorPointIndex;
+      alreadyMinted[msg.sender] = true;
+      predictorPointIndex++;
      }
    }
   
@@ -218,6 +226,7 @@ struct TopPredictions {
     function changeOrderForTop32(uint _scenario) external {
     require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    require(changedOrderForTop32[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
     //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
@@ -304,6 +313,7 @@ struct TopPredictions {
     function changeOrderForTop16(uint _scenario) external {
     require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    require(changedOrderForTop16[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
        bytes memory teamTwo = predictors[msg.sender].teamTwo;
@@ -387,8 +397,9 @@ struct TopPredictions {
     } 
     
      function changeOrderForTop8(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(currentPhase == GamePhases.TOP8, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    require(changedOrderForTop8[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
     //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
@@ -425,8 +436,9 @@ struct TopPredictions {
     } 
     
     function changeOrderForTop4(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    require(currentPhase == GamePhases.TOP4, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
+    require(changedOrderForTop4[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
     //Conditional statements specify each swapping possibility in swapping different teams for top 32
      if(_scenario == 1) {
        bytes memory teamOne = predictors[msg.sender].teamOne;
@@ -480,17 +492,15 @@ struct TopPredictions {
          IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
       } else if(currentPhase == GamePhases.TOP4) {
          if(block.timestamp > WORLD_CUP_ENDS) {
-           currentPhase = GamePhases.WORLD_CUP_FINISHED;
+          IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).requestRandomWords();
+          currentPhase = GamePhases.CHOOSE_WINNERS;
+          oneDay = block.timestamp + 24 hours;
          }
+      } else if(currentPhase == GamePhases.CHOOSE_WINNERS) {
+          retrievePredictorPoints();
+          currentPhase = GamePhases.WORLD_CUP_FINISHED;
       }
     }
-
-   function receiveBackMoney() external {
-     require(balances[msg.sender] != 0, "YOU_HAVE_NO_BALANCE");
-     uint amount = balances[msg.sender];
-     (bool sent, ) = payable(msg.sender).call{value:amount}("");
-     require(sent, "FAILED_TO_SEND_FUNDS");
-   }
 
   function setRandomAndRoundAddress(address _randomAndRoundAddress) external onlyOwner {
      randomAndRoundAddress = _randomAndRoundAddress;
@@ -508,7 +518,8 @@ struct TopPredictions {
   }
 
   function setFirstPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  require(msg.sender == worldCupData16Address 
+  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -578,6 +589,307 @@ struct TopPredictions {
     firstPlaceTeam = worldCupTeams[30];
   }
 }
+
+ function setSecondPlaceTeam(uint _teamId) public {
+  require(msg.sender == worldCupData16Address 
+  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+      /*
+    14219 - IC Play-Off 1
+    14220 - IC Play-Off 2
+
+    Costa Rica
+    Australia
+    */
+   if(_teamId == 12550) {
+    secondPlaceTeam =  worldCupTeams[1];
+   } else if(_teamId == 3080) {
+     secondPlaceTeam=  worldCupTeams[3];
+   } else if(_teamId == 12279) {
+     secondPlaceTeam = worldCupTeams[0];
+   } else if(_teamId == 56) {
+     secondPlaceTeam = worldCupTeams[2];
+   } else if(_teamId == 12302) {
+     secondPlaceTeam = worldCupTeams[4];
+   } else if(_teamId == 12396) {
+     secondPlaceTeam = worldCupTeams[5];
+   } else if(_teamId == 7850) {
+     secondPlaceTeam = worldCupTeams[6];
+   } else if(_teamId == 14218) {
+     secondPlaceTeam = worldCupTeams[7];
+   } else if(_teamId == 12502) {
+     secondPlaceTeam = worldCupTeams[8];
+   } else if(_teamId == 12473) {
+      secondPlaceTeam = worldCupTeams[10];
+   } else if(_teamId == 3011) {
+     secondPlaceTeam = worldCupTeams[11];
+   } else if(_teamId == 767) {
+     secondPlaceTeam = worldCupTeams[9];
+   } else if(_teamId == 3008) {
+     secondPlaceTeam = worldCupTeams[14];
+   } else if(_teamId == 12300) {
+     secondPlaceTeam = worldCupTeams[12];
+   } else if(_teamId == 73) {
+     secondPlaceTeam = worldCupTeams[15];
+   } else if(_teamId == 3017) {
+     secondPlaceTeam = worldCupTeams[18];
+   } else if(_teamId == 12397) {
+     secondPlaceTeam = worldCupTeams[19];
+   } else if(_teamId == 3024) {
+     secondPlaceTeam = worldCupTeams[16];
+   } else if(_teamId == 3054) {
+     secondPlaceTeam = worldCupTeams[20];
+   } else if(_teamId == 7835) {
+     secondPlaceTeam = worldCupTeams[21];
+   } else if(_teamId == 3026) {
+     secondPlaceTeam = worldCupTeams[23];
+   } else if(_teamId == 52) {
+     secondPlaceTeam = worldCupTeams[22];
+   } else if(_teamId == 12504) {
+     secondPlaceTeam = worldCupTeams[24];
+   } else if(_teamId == 85) {
+     secondPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3036) {
+     secondPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3064) {
+     secondPlaceTeam = worldCupTeams[26];
+  } else if(_teamId == 95) {
+     secondPlaceTeam = worldCupTeams[29];
+  } else if(_teamId == 755) {
+    secondPlaceTeam = worldCupTeams[31];
+  } else if(_teamId == 12299) {
+    secondPlaceTeam = worldCupTeams[28];
+  } else if(_teamId == 12501) {
+    secondPlaceTeam = worldCupTeams[30];
+  }
+}
+
+ function setThirdPlaceTeam(uint _teamId) public {
+  require(msg.sender == worldCupData16Address 
+  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+      /*
+    14219 - IC Play-Off 1
+    14220 - IC Play-Off 2
+
+    Costa Rica
+    Australia
+    */
+   if(_teamId == 12550) {
+    thirdPlaceTeam  =  worldCupTeams[1];
+   } else if(_teamId == 3080) {
+     thirdPlaceTeam  =  worldCupTeams[3];
+   } else if(_teamId == 12279) {
+     thirdPlaceTeam  = worldCupTeams[0];
+   } else if(_teamId == 56) {
+     thirdPlaceTeam  = worldCupTeams[2];
+   } else if(_teamId == 12302) {
+     thirdPlaceTeam  = worldCupTeams[4];
+   } else if(_teamId == 12396) {
+     thirdPlaceTeam  = worldCupTeams[5];
+   } else if(_teamId == 7850) {
+     thirdPlaceTeam  = worldCupTeams[6];
+   } else if(_teamId == 14218) {
+     thirdPlaceTeam  = worldCupTeams[7];
+   } else if(_teamId == 12502) {
+     thirdPlaceTeam  = worldCupTeams[8];
+   } else if(_teamId == 12473) {
+      thirdPlaceTeam  = worldCupTeams[10];
+   } else if(_teamId == 3011) {
+     thirdPlaceTeam  = worldCupTeams[11];
+   } else if(_teamId == 767) {
+     thirdPlaceTeam  = worldCupTeams[9];
+   } else if(_teamId == 3008) {
+     thirdPlaceTeam  = worldCupTeams[14];
+   } else if(_teamId == 12300) {
+     thirdPlaceTeam  = worldCupTeams[12];
+   } else if(_teamId == 73) {
+     thirdPlaceTeam  = worldCupTeams[15];
+   } else if(_teamId == 3017) {
+     thirdPlaceTeam  = worldCupTeams[18];
+   } else if(_teamId == 12397) {
+     thirdPlaceTeam  = worldCupTeams[19];
+   } else if(_teamId == 3024) {
+     thirdPlaceTeam  = worldCupTeams[16];
+   } else if(_teamId == 3054) {
+     thirdPlaceTeam  = worldCupTeams[20];
+   } else if(_teamId == 7835) {
+     thirdPlaceTeam  = worldCupTeams[21];
+   } else if(_teamId == 3026) {
+     thirdPlaceTeam  = worldCupTeams[23];
+   } else if(_teamId == 52) {
+     thirdPlaceTeam  = worldCupTeams[22];
+   } else if(_teamId == 12504) {
+     thirdPlaceTeam  = worldCupTeams[24];
+   } else if(_teamId == 85) {
+     thirdPlaceTeam  = worldCupTeams[27];
+  } else if(_teamId == 3036) {
+     thirdPlaceTeam  = worldCupTeams[27];
+  } else if(_teamId == 3064) {
+     thirdPlaceTeam  = worldCupTeams[26];
+  } else if(_teamId == 95) {
+     thirdPlaceTeam  = worldCupTeams[29];
+  } else if(_teamId == 755) {
+    thirdPlaceTeam  = worldCupTeams[31];
+  } else if(_teamId == 12299) {
+    thirdPlaceTeam  = worldCupTeams[28];
+  } else if(_teamId == 12501) {
+    thirdPlaceTeam  = worldCupTeams[30];
+  }
+}
+
+ function setFourthPlaceTeam(uint _teamId) public {
+  require(msg.sender == worldCupData16Address 
+  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+      /*
+    14219 - IC Play-Off 1
+    14220 - IC Play-Off 2
+
+    Costa Rica
+    Australia
+    */
+   if(_teamId == 12550) {
+    fourthPlaceTeam =  worldCupTeams[1];
+   } else if(_teamId == 3080) {
+     fourthPlaceTeam =  worldCupTeams[3];
+   } else if(_teamId == 12279) {
+     fourthPlaceTeam = worldCupTeams[0];
+   } else if(_teamId == 56) {
+     fourthPlaceTeam = worldCupTeams[2];
+   } else if(_teamId == 12302) {
+     fourthPlaceTeam = worldCupTeams[4];
+   } else if(_teamId == 12396) {
+     fourthPlaceTeam = worldCupTeams[5];
+   } else if(_teamId == 7850) {
+     fourthPlaceTeam = worldCupTeams[6];
+   } else if(_teamId == 14218) {
+     fourthPlaceTeam = worldCupTeams[7];
+   } else if(_teamId == 12502) {
+     fourthPlaceTeam = worldCupTeams[8];
+   } else if(_teamId == 12473) {
+      fourthPlaceTeam = worldCupTeams[10];
+   } else if(_teamId == 3011) {
+     fourthPlaceTeam = worldCupTeams[11];
+   } else if(_teamId == 767) {
+     fourthPlaceTeam = worldCupTeams[9];
+   } else if(_teamId == 3008) {
+     fourthPlaceTeam = worldCupTeams[14];
+   } else if(_teamId == 12300) {
+     fourthPlaceTeam = worldCupTeams[12];
+   } else if(_teamId == 73) {
+     fourthPlaceTeam = worldCupTeams[15];
+   } else if(_teamId == 3017) {
+     fourthPlaceTeam = worldCupTeams[18];
+   } else if(_teamId == 12397) {
+     fourthPlaceTeam = worldCupTeams[19];
+   } else if(_teamId == 3024) {
+     fourthPlaceTeam = worldCupTeams[16];
+   } else if(_teamId == 3054) {
+     fourthPlaceTeam = worldCupTeams[20];
+   } else if(_teamId == 7835) {
+     fourthPlaceTeam = worldCupTeams[21];
+   } else if(_teamId == 3026) {
+     fourthPlaceTeam = worldCupTeams[23];
+   } else if(_teamId == 52) {
+     fourthPlaceTeam = worldCupTeams[22];
+   } else if(_teamId == 12504) {
+     fourthPlaceTeam = worldCupTeams[24];
+   } else if(_teamId == 85) {
+     fourthPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3036) {
+     fourthPlaceTeam = worldCupTeams[27];
+  } else if(_teamId == 3064) {
+     fourthPlaceTeam = worldCupTeams[26];
+  } else if(_teamId == 95) {
+     fourthPlaceTeam = worldCupTeams[29];
+  } else if(_teamId == 755) {
+    fourthPlaceTeam = worldCupTeams[31];
+  } else if(_teamId == 12299) {
+    fourthPlaceTeam = worldCupTeams[28];
+  } else if(_teamId == 12501) {
+    fourthPlaceTeam = worldCupTeams[30];
+  }
+}
+
+function depositPoints() external {
+  require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS_ANYMORE");
+  require(depositedPoints[msg.sender] == false, "CANT_DEPOSIT_POINTS_TWICE");
+  require(alreadyMinted[msg.sender] == true, "NEVER_MINTED");
+  uint index = predictors[msg.sender].predictorIndex;
+  Points storage predictor = predictorPoints[index];
+  if(keccak256(predictors[msg.sender].teamOne) == keccak256(firstPlaceTeam)) {
+     predictor.points += 200;
+  }
+   if(keccak256(predictors[msg.sender].teamTwo) == keccak256(secondPlaceTeam)) {
+     predictor.points += 100;
+  }
+   if(keccak256(predictors[msg.sender].teamThree) == keccak256(thirdPlaceTeam)) {
+     predictor.points += 50;
+  }
+   if(keccak256(predictors[msg.sender].teamFour) == keccak256(fourthPlaceTeam)) {
+     predictor.points += 25;
+  }
+  depositedPoints[msg.sender] = true;
+}
+
+function retrievePredictorPoints() private {
+ for(uint i = 0; i<=predictorPointIndex; i++) {
+  Points memory pointer = predictorPoints[i];
+   if(pointer.points > highestAmountOfPoints) {
+     highestAmountOfPoints = pointer.points;
+   } else if(pointer.points > secondHighestAmountOfPoints) {
+      secondHighestAmountOfPoints = pointer.points;
+   } else if(pointer.points > thirdHighestAmountOfPoints) {
+     thirdHighestAmountOfPoints = pointer.points;
+   }
+ }
+ getWinnerCandidates();
+}
+
+function getWinnerCandidates() private {
+ for(uint i = 0; i<=predictorPointIndex; i++) {
+  Points memory pointer = predictorPoints[i];
+    if(pointer.points == highestAmountOfPoints) {
+       predictorsWithBiggestPoints.push(pointer.predictor);
+    } else if(pointer.points == highestAmountOfPoints) {
+       predictorsWithSecondBiggestPoints.push(pointer.predictor);
+    } else if(pointer.points == thirdHighestAmountOfPoints) {
+      predictorsWithThirdBiggestPoints.push(pointer.predictor);
+    }
+ }
+ chooseWinners();
+}
+
+function chooseWinners() private {
+  (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+  if(fulfilled == true) {
+    winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
+    winnerTwo = predictorsWithBiggestPoints[randomWords[1] % predictorsWithBiggestPoints.length];
+    winnerThree = predictorsWithBiggestPoints[randomWords[2] % predictorsWithBiggestPoints.length];
+  }
+  (bool sent, ) = winnerOne.call{value: ((address(this).balance * 40)/100)}("");
+  require(sent, "Failed to send Funds");
+  (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 30)/100)}("");
+  require(sentTwo, "Failed to send Funds");
+  (bool sentThree, ) = winnerTwo.call{value: ((address(this).balance * 20)/100)}("");
+  require(sentThree, "Failed to send Funds");
+}
+
+function setPause(bool _paused) external onlyOwner {
+     paused = _paused;
+   }
+
+function setRefund(bool _canReceiveRefund) external onlyOwner {
+    canReceiveRefund = _canReceiveRefund;
+  }
+
+
+ function receiveBackMoney() external {
+     require(balances[msg.sender] != 0, "YOU_HAVE_NO_BALANCE");
+     require(canReceiveRefund == true, "NO_REFUNDS_AT_THIS_TIME");
+     uint amount = balances[msg.sender];
+     (bool sent, ) = payable(msg.sender).call{value:amount}("");
+     require(sent, "FAILED_TO_SEND_FUNDS");
+   }
+
 
    function withdraw() external onlyOwner afterEvent {
         address _owner = owner();

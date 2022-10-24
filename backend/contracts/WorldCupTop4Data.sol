@@ -1,15 +1,20 @@
 import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
+import "../interfaces/IPrediction.sol";
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
 contract WorldCupTop4Data is ChainlinkClient, ConfirmedOwner {
   using Chainlink for Chainlink.Request;
+  address predictionAddress;
+  address randomNumberAndRoundAddress;
    bytes32 private jobId;
    uint256 private fee;
    event ReceiveTeamTop4(bytes32 indexed requestId, uint256 teamId);
 
-   constructor() ConfirmedOwner(msg.sender) {
+   constructor(address _predictionAddress, address _randomNumberAndRoundAddress) ConfirmedOwner(msg.sender) {
+        predictionAddress = _predictionAddress;
+        randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         jobId = 'ca98366cc7314957b8c012c72f05aeeb';
@@ -28,6 +33,7 @@ contract WorldCupTop4Data is ChainlinkClient, ConfirmedOwner {
     }
     
     function receiveTeamOne(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setFirstPlaceTeam(_teamId);
         emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
@@ -42,6 +48,7 @@ contract WorldCupTop4Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamTwo(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setSecondPlaceTeam(_teamId);
         emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
@@ -56,6 +63,7 @@ contract WorldCupTop4Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamThree(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setThirdPlaceTeam(_teamId);
         emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
@@ -70,10 +78,12 @@ contract WorldCupTop4Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamFour(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+         IPrediction(predictionAddress).setFourthPlaceTeam(_teamId);
         emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
     function fetchTop4Teams() public {
+        require(msg.sender == randomNumberAndRoundAddress, "USER_CANT_CALL_FUNCTION");
         receiveTeamOneStanding();
         receiveTeamTwoStanding();
         receiveTeamThreeStanding();

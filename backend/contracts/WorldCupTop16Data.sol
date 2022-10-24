@@ -47,6 +47,7 @@ contract WorldCupTop16Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamTwo(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setSecondPlaceTeam(_teamId);
         emit ReceiveTeamTop16(_requestId, _teamId);
     }
 
@@ -61,6 +62,7 @@ contract WorldCupTop16Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamThree(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setThirdPlaceTeam(_teamId);
         emit ReceiveTeamTop16(_requestId, _teamId);
     }
 
@@ -75,6 +77,7 @@ contract WorldCupTop16Data is ChainlinkClient, ConfirmedOwner {
     }
 
      function receiveTeamFour(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
+        IPrediction(predictionAddress).setFourthPlaceTeam(_teamId);
         emit ReceiveTeamTop16(_requestId, _teamId);
     }
 
