@@ -71,10 +71,10 @@ const Countdown = ({}: Props) => {
             {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
             {timeLeft.seconds}
           </p>
-          </div>
-      <div className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 ">
-        <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px] animate-spin " />
-      </div>
+        </div>
+        <div className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 ">
+          <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px]  " />
+        </div>
       </div>
     </section>
   );
