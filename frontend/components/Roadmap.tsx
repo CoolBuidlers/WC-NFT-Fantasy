@@ -10,9 +10,9 @@ const Roadmap = () => {
               className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
               ></div>
-            <button className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
               Roadmap
-            </button>
+            </h1>
           </div>
         </div>
         {/* Roadmap div with transitions ends here */}
