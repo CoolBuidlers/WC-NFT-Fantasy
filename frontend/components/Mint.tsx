@@ -13,7 +13,7 @@ const Mint = () => {
 
       <div className="">
         <div className="max-w-sm relative mx-auto">
-          <Image src={CardBg} layout="responsive" />
+          <Image src={CardBg} layout="responsive" alt="CardImage"/>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <Neymar className="text-[26rem]" />
           </div>
