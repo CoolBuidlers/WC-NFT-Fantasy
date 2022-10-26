@@ -3,6 +3,7 @@ import Countdown from "../components/Countdown";
 import Hero from "../components/Hero";
 import Mint from "../components/Mint";
 import Navbar from "../components/Navbar";
+import Roadmap from "../components/Roadmap";
 
 const Home: NextPage = () => {
   return (
@@ -11,6 +12,7 @@ const Home: NextPage = () => {
       <Hero />
       <Countdown />
       <Mint />
+      <Roadmap />
     </div>
   );
 };
