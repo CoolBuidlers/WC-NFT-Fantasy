@@ -1,5 +1,3 @@
-//Use Price Feeds For Players to Consistenly Pay $100 in ETH Using ETH and USDC Price Feeds
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
@@ -7,7 +5,6 @@ import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
-//Events can be used to display all of the players in the game, the current round in the worldcup, total prize pot amount in the contract, current teams in the world cup
 
  interface KeeperCompatibleInterface {
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
@@ -16,27 +13,33 @@ import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-//only get first 4 teams for worldCupData4
-contract WCNFTFantasy is ERC1155, Ownable {
-   //Amount of points rewarded for each correct guess when the 4 teams are finalized
-    uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
-    uint constant WORLD_CUP_ENDS = 1669096800;
-    uint public oneDay;
+
+contract WCNFTFantasy is Ownable {
+
 event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint round);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
-bytes firstPlaceTeam;
-bytes secondPlaceTeam;
-bytes thirdPlaceTeam;
-bytes fourthPlaceTeam;
+event AllPredictors(address smartContract, address predictor);
 address randomAndRoundAddress;
-address worldCupData16Address;
-address worldCupData8Address;
 address worldCupData4Address;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
+address public constant linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
+bytes firstPlaceTeam;
+bytes secondPlaceTeam;
+bytes thirdPlaceTeam;
+bytes fourthPlaceTeam;
+uint highestAmountOfPoints;
+uint secondHighestAmountOfPoints;
+uint thirdHighestAmountOfPoints;
+//Amount of points rewarded for each correct guess when the 4 teams are finalized
+uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
+uint constant WORLD_CUP_ENDS = 1669096800;
+uint public oneDay;
+bool paused;
+bool canReceiveRefund;
 //An object that defined the prediction of the top teams
 struct TopPredictions {
      bytes teamOne;
@@ -53,9 +56,8 @@ struct TopPredictions {
   }
     uint predictorPointIndex;
     Points[100] predictorPoints;
-    uint highestAmountOfPoints;
-    uint secondHighestAmountOfPoints;
-    uint thirdHighestAmountOfPoints;
+    //An array that stores all the world cup teams
+    bytes[32] worldCupTeams;
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
     mapping(address => bool) alreadyMinted; //checks if user has minted their first 4 teams for inital minting phase
     mapping(address => bool) extraTwoTeamsMinted; //check if user has minted extra 2 teams
@@ -89,14 +91,8 @@ struct TopPredictions {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
-    address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
-    bool paused;
-    bool canReceiveRefund;
-    //An array that stores all the world cup teams
-    bytes[32] worldCupTeams;
 
-     constructor(address _worldCupData16Address) ERC1155("")  {
-        worldCupData16Address = _worldCupData16Address;
+     constructor() {
         currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -194,6 +190,7 @@ struct TopPredictions {
       alreadyMinted[msg.sender] = true;
       predictorPointIndex++;
       emit FirstFourTeamsMinted(msg.sender, abi.encode(_teamOne), abi.encode(_teamTwo), abi.encode(_teamThree), abi.encode(_teamFour));
+      emit AllPredictors(address(this), msg.sender);
      }
    }
   
@@ -548,6 +545,10 @@ struct TopPredictions {
      randomAndRoundAddress = _randomAndRoundAddress;
   }
 
+  function setWorldCupDataAddress(address _worldCupData4Address) external onlyOwner {
+    worldCupData4Address = _worldCupData4Address;
+  }
+
   function changeThePhase() public {
      require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
      if(currentPhase == GamePhases.TOP32) {
@@ -560,8 +561,7 @@ struct TopPredictions {
   }
 
   function setFirstPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData16Address 
-  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -633,8 +633,7 @@ struct TopPredictions {
 }
 
  function setSecondPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData16Address 
-  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -706,8 +705,7 @@ struct TopPredictions {
 }
 
  function setThirdPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData16Address 
-  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -779,8 +777,7 @@ struct TopPredictions {
 }
 
  function setFourthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData16Address 
-  || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
+  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -939,7 +936,6 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
      (bool sent, ) = payable(msg.sender).call{value:amount}("");
      require(sent, "FAILED_TO_SEND_FUNDS");
    }
-
 
    function withdraw() external onlyOwner afterEvent {
         address _owner = owner();

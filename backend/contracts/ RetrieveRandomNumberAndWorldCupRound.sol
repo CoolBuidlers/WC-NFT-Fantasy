@@ -10,11 +10,6 @@ import "../interfaces/IPrediction.sol";
 import "../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol";
 import "../interfaces/IWorldCupData.sol";
 
- interface KeeperCompatibleInterface {
-    function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
-    function performUpkeep(bytes calldata performData) external;
-}
-
 contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOwner {
     using Strings for uint256;
     using Chainlink for Chainlink.Request;
@@ -122,10 +117,6 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
           emit RoundChanged(_requestId, block.timestamp, 4);
           arrayNumber++;
        }
-    }
-
-    function returnArrayNumber() public view returns(uint) {
-        return arrayNumber;
     }
     
      function withdrawLink() external onlyOwner {
