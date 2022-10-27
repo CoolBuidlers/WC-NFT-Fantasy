@@ -37,24 +37,24 @@ const Mint = () => {
         </Carousel>
       </div>
 
-      <div className="text-white text-4xl sm:flex justify-between px-6">
-        <div className="relative group w-fit">
+      <div className="text-white text-4xl sm:flex justify-center items-center px-6 pt-20">
+        <Link href="/">
+          <span className="play-btn text-center py-4 w-[90%] sm:w-[15%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mr-32">
+            Mint
+          </span>
+        </Link>
+        <div className="relative group w-fit text-center">
           <div
             className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
           ></div>
-          <span className="relative border-t-2 border-[#D100D1] py-1 transition-all divide-x divide-white">
+          <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
             0.050 | 0.04 $
           </span>
         </div>
-        <Link href="/">
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[15%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
-            Mint
-          </span>
-        </Link>
       </div>
-      <div className=" max-w-2xl my-20">
-        <p className="text-white text-2xl">
+      <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
+        <p className="text-white text-2xl ">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus in
           at faucibus blandit egestas congue. Felis, feugia t viverra quis
           felis.
