@@ -6,7 +6,7 @@ const ChosenTeams = () => {
     <div>
         <div>
             <div className='flex items-center justify-between px-5 py-5'>
-                <h3 className='text-3xl lg:text-4xl text-white'>Selected NFTs</h3>
+                <h3 className='text-3xl lg:text-4xl text-white'>Selected Teams</h3>
                 <div className="relative inline-block">
             <div
               className="absolute -inset-1 bg-[#D100D1]
