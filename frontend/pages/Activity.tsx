@@ -1,5 +1,6 @@
 import React from 'react'
 import ActivityTable from '../components/ActivityTable'
+import Footer from '../components/Footer'
 import LevelSection from '../components/LevelSection'
 import Navbar from '../components/Navbar'
 
@@ -22,9 +23,10 @@ const Activity = () => {
             In this section, you can see all the activity
             going on in our dApp with the prize pot, the address of the players and their levelling up as well as the round and the current Teams</p>
             <div className='py-10'>
-            <ActivityTable />
             <LevelSection />
+            <ActivityTable />
             </div>
+            <Footer />
     </main>
   )
 }
