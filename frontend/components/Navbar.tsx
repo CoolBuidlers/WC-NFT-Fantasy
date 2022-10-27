@@ -84,7 +84,7 @@ const Navbar = () => {
             </button>
           </div>
         </Link>
-        <Link href="/">
+        <Link href="/Activity">
           <div className="cursor-pointer relative group py-0.5 px-0.5 ">
             <div
               className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
@@ -139,7 +139,7 @@ const Navbar = () => {
                 TEAM
               </button>
             </Link>
-            <Link href="/">
+            <Link href="/Activity">
               <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
                 ACTIVITY
               </button>

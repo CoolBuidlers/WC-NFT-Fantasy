@@ -5,8 +5,8 @@ import Ball from "../public/img/ball.svg";
 import Image from "next/image";
 import bg from "../public/img/bg.png";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+// import ScrollTrigger from "gsap/ScrollTrigger";
+// gsap.registerPlugin(ScrollTrigger);
 const Countdown = ({}: Props) => {
   const textRef = useRef(null);
   const footballRef = useRef(null);
