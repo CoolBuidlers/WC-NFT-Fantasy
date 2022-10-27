@@ -1,12 +1,13 @@
 import React from 'react'
 import ActivityTable from '../components/ActivityTable'
+import LevelSection from '../components/LevelSection'
 import Navbar from '../components/Navbar'
 
 const Activity = () => {
   return (
     <main>
         <Navbar />
-        <div className='flex justify-center py-14'> 
+        <div className='flex justify-center py-8'> 
         <div className="relative inline-block">
             <div
               className="absolute -inset-1 bg-[#D100D1]
@@ -22,6 +23,7 @@ const Activity = () => {
             going on in our dApp with the prize pot, the address of the players and their levelling up as well as the round and the current Teams</p>
             <div className='py-10'>
             <ActivityTable />
+            <LevelSection />
             </div>
     </main>
   )
