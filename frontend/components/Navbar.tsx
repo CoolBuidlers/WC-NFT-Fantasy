@@ -6,10 +6,27 @@ import { MdClose } from "react-icons/md";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import logo from "../public/img/logo.png";
+import * as Scroll from "react-scroll";
 
 const Navbar = () => {
   // --------- States here -------------
   const [expand, setExpand] = useState<boolean>(false);
+  let scroll = Scroll.animateScroll;
+
+  const allScrolls = {
+    home: (): void => {
+      scroll.scrollTo(0)
+    },
+    mint: (): void => {
+      scroll.scrollTo(1600)
+    },
+    roadmap: (): void => {
+      scroll.scrollTo(3050)
+    },
+    Team: (): void => {
+      scroll.scrollTo(4500)
+    }
+  }
 
   return (
     <nav className="max-w-full bg-[#14032F] flex justify-between items-center px-6  lg:flex lg:justify-around lg:px-0 font-plus relative lg:items-center text-white">
@@ -46,7 +63,9 @@ const Navbar = () => {
               className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-lg transition-all"
             ></div>
-            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
+            onClick={allScrolls.home}
+            >
               HOME
             </button>
           </div>
@@ -57,7 +76,9 @@ const Navbar = () => {
               className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-lg transition-all"
             ></div>
-            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
+            onClick={allScrolls.mint}
+            >
               MINT
             </button>
           </div>
@@ -68,7 +89,9 @@ const Navbar = () => {
               className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-lg transition-all"
             ></div>
-            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
+            onClick={allScrolls.roadmap}
+            >
               ROADMAP
             </button>
           </div>
@@ -79,7 +102,9 @@ const Navbar = () => {
               className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-lg transition-all"
             ></div>
-            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
+            onClick={allScrolls.Team}
+            >
               TEAM
             </button>
           </div>
