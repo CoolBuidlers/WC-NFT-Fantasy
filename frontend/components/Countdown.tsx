@@ -1,11 +1,33 @@
 type Props = {};
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TimeLeft } from "../interfaces/Countdown";
 import Ball from "../public/img/ball.svg";
 import Image from "next/image";
 import bg from "../public/img/bg.png";
-
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 const Countdown = ({}: Props) => {
+  const textRef = useRef(null);
+  const footballRef = useRef(null);
+  useEffect(() => {
+    const el = textRef.current;
+    gsap.fromTo(el, { rotationX: "200vw" }, { rotationX: 0, duration: 3 });
+  }, []);
+  useEffect(() => {
+    const el = footballRef.current;
+    gsap.fromTo(
+      el,
+      { x: "-100vw" },
+      {
+        x: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: el,
+        },
+      }
+    );
+  }, []);
   const calculateTimeLeft = (): TimeLeft => {
     let year: number = new Date().getFullYear();
     const difference: number = +new Date(`${year}-11-20`) - +new Date();
@@ -61,9 +83,13 @@ const Countdown = ({}: Props) => {
         className="text-white 
       w-full -z-10 "
       >
-        <Image src={bg} layout="responsive" alt="rolling-ball" />
-
-        <div className="absolute bottom-[23%] left-[25%] sm:left-[10%]">
+        <div>
+          <Image src={bg} layout="responsive" alt="background" />
+        </div>
+        <div
+          className="absolute bottom-[23%] left-[25%] sm:left-[10%]"
+          ref={textRef}
+        >
           <p className="md:text-3xl mb:mb-6 text-lg sm:text-xl">
             Tournament starts in
           </p>
@@ -72,7 +98,10 @@ const Countdown = ({}: Props) => {
             {timeLeft.seconds}
           </p>
         </div>
-        <div className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 ">
+        <div
+          className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 "
+          ref={footballRef}
+        >
           <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px]  " />
         </div>
       </div>
