@@ -1,4 +1,5 @@
 import React from 'react'
+import ActivityTable from '../components/ActivityTable'
 import Navbar from '../components/Navbar'
 
 const Activity = () => {
@@ -16,10 +17,12 @@ const Activity = () => {
             </h1>
           </div>
         </div>
-        <p className='text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto'>In this section, you can see all the activity
-            going on in our dApp of tickets being purchased,
-            reselling, with their IDs, Types, Addresses and
-            Seat levels</p>
+        <p className='text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto'>
+            In this section, you can see all the activity
+            going on in our dApp with the prize pot, the address of the players and their levelling up as well as the round and the current Teams</p>
+            <div className='py-10'>
+            <ActivityTable />
+            </div>
     </main>
   )
 }
