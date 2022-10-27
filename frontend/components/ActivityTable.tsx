@@ -3,7 +3,7 @@ import React from 'react'
 const ActivityTable = () => {
   return (
     
-<div className="overflow-x-auto relative shadow-2xl shadow-[#8900F2] border-[6px] border-white mx-5">
+<div className="overflow-x-auto relative shadow-2xl shadow-[#8900F2] border-x-[6px] border-t-[6px] border-b-[4px] border-white mx-5">
     <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-lg text-white uppercase bg-[#8900F2] text-center">
             <tr>
