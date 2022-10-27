@@ -2,7 +2,7 @@ import React from 'react'
 
 const Roadmap = () => {
   return (
-    <div className='py-20 border-8 border-dashed border-[#DB00B6] '>
+    <div className='py-20 border-8 border-dashed border-[#DB00B6]'>
         {/* Roadmap div with transitions starts here */}
         <div className='flex justify-center pb-40'> 
         <div className="relative inline-block">
