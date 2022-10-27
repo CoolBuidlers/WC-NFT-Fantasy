@@ -15,7 +15,7 @@ import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 pragma solidity ^0.8.17;
 
 contract WCNFTFantasy is Ownable {
-
+  
 event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint round);

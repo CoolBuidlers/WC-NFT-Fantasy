@@ -16,6 +16,9 @@
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
     "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.3"
+    "@thirdweb-dev/contracts": "^3.1.11",
+    "@thirdweb-dev/sdk": "^3.4.1",
+    "dotenv": "^16.0.3",
+    "thirdweb": "^0.8.8"
   }
 }
