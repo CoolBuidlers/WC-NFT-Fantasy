@@ -13,7 +13,17 @@ const Countdown = ({}: Props) => {
   gsap.registerPlugin(ScrollTrigger);
   useEffect(() => {
     const el = textRef.current;
-    gsap.fromTo(el, { rotationX: "200vw" }, { rotationX: 0, duration: 3 });
+    gsap.fromTo(
+      el,
+      { rotationX: "200vw" },
+      {
+        rotationX: 0,
+        duration: 4,
+        scrollTrigger: {
+          trigger: el,
+        },
+      }
+    );
   }, []);
   useEffect(() => {
     const el = footballRef.current;
@@ -22,9 +32,11 @@ const Countdown = ({}: Props) => {
       { x: "-100vw" },
       {
         x: 0,
-        duration: 1,
+        duration: 2,
+        ease: "bounce.out",
         scrollTrigger: {
           trigger: el,
+          start: "80% 100%",
         },
       }
     );
@@ -84,7 +96,7 @@ const Countdown = ({}: Props) => {
         className="text-white 
       w-full -z-10 "
       >
-        <div>
+        <div className="w-full ">
           <Image src={bg} layout="responsive" alt="background" />
         </div>
         <div
@@ -100,10 +112,10 @@ const Countdown = ({}: Props) => {
           </p>
         </div>
         <div
-          className="absolute top-[100%] xl:-top-20 left-2 xl:left-[58%] 3xl:left-[71%] 3xl:bottom-[18%] bottom-1 z-4 "
+          className="absolute xl:top-[0%] xl:left-[70%] z-4 "
           ref={footballRef}
         >
-          <Ball className="lg:text-[600px] 3xl:text-[48rem] md:text-[400px] text-[350px]  " />
+          <Ball className="lg:text-[400px] 3xl:text-[42rem] md:text-[400px] text-[200px]  " />
         </div>
       </div>
     </section>

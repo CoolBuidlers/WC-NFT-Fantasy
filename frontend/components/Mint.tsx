@@ -11,37 +11,133 @@ const Mint = () => {
         <p className="text-3xl">Unit Price : 0.050 </p>
       </div>
 
-      <div className="">
-        <div className="max-w-sm relative mx-auto">
-          <Image src={CardBg} layout="responsive" alt="CardImage"/>
+      <div className="flex items-center flex-wrap justify-center px-2">
+        <div className="w-[349px] relative ">
+          <Image src={CardBg} layout="responsive" alt="CardImage" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <Neymar className="text-[26rem]" />
           </div>
         </div>
-      </div>
 
-      <div className="px-10">
-        <Carousel cols={4} rows={1} gap={10} loop>
+        <Neymar className="text-[26rem]" />
+        <Neymar className="text-[26rem]" />
+        <Neymar className="text-[26rem]" />
+        <Neymar className="text-[26rem]" />
+      </div>
+      <div className="lg:px-10 px-6 mb-20">
+        <Carousel cols={4} rows={2} gap={10} loop={true} scrollSnap>
           <Carousel.Item>
-            <Neymar className="text-[26rem]" />
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
           </Carousel.Item>
           <Carousel.Item>
-            <Neymar className="text-[26rem]" />
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
           </Carousel.Item>
           <Carousel.Item>
-            <Neymar className="text-[26rem]" />
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
           </Carousel.Item>
           <Carousel.Item>
-            <Neymar className="text-[26rem]" />
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
           </Carousel.Item>
         </Carousel>
       </div>
 
-      <div className="text-white text-4xl sm:flex justify-center items-center px-6 pt-20">
+      <div className="lg:px-10 px-2">
+        <Carousel cols={4} rows={2} gap={10} loop={true} scrollSnap>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+          <Carousel.Item>
+            <div className="max-w-[200px]">
+              <Neymar className="text-[25rem]" />
+            </div>
+          </Carousel.Item>
+        </Carousel>
+      </div>
+      <div className="text-white text-4xl sm:flex justify-center sm:justify-around items-center px-6 pt-20 ">
         <Link href="/">
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[15%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mr-32">
+          <a className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mb-12">
             Mint
-          </span>
+          </a>
         </Link>
         <div className="relative group w-fit text-center">
           <div
