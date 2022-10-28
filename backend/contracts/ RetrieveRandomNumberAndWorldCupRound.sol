@@ -26,9 +26,7 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     }
     address predictionAddress;
     address randomNumberAndRoundAddress;
-    address worldCupData16Address;
-    address worldCupData8Address;
-    address worldCupData4Address;
+    address worldCupDataAddress;
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
@@ -46,12 +44,10 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
     uint32 numWords = 3;
 
-    constructor(uint64 subscriptionId, address _predictionAddress, address _randomNumberAndRoundAddress, address _worldCupData16Address, address _worldCupData8Address, address _worldCupData4Address) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
+    constructor(uint64 subscriptionId, address _predictionAddress, address _randomNumberAndRoundAddress, address _worldCupDataAddress) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
         predictionAddress = _predictionAddress;
         randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
-        worldCupData16Address = _worldCupData16Address;
-        worldCupData8Address = _worldCupData8Address;
-        worldCupData4Address = _worldCupData4Address;
+        worldCupDataAddress = _worldCupDataAddress;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
@@ -103,17 +99,17 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
      function fulfillRound(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
        if(_volume == 1 && arrayNumber == 5) {
         IPrediction(predictionAddress).changeThePhase();
-        IWorldCupData(worldCupData16Address).fetchTop16Teams();
+        IWorldCupData(worldCupDataAddress).fetchTop16Teams();
          emit RoundChanged(_requestId, block.timestamp, 16);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 6) {
         IPrediction(predictionAddress).changeThePhase();
-        IWorldCupData(worldCupData8Address).fetchTop8Teams();
+        IWorldCupData(worldCupDataAddress).fetchTop16Teams();
          emit RoundChanged(_requestId, block.timestamp, 8);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 7) {
           IPrediction(predictionAddress).changeThePhase();
-          IWorldCupData(worldCupData4Address).fetchTop4Teams();
+         IWorldCupData(worldCupDataAddress).fetchTop16Teams();
           emit RoundChanged(_requestId, block.timestamp, 4);
           arrayNumber++;
        }

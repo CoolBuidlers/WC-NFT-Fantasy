@@ -3,8 +3,9 @@ import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
-import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
+import "../interfaces/IFetchTeams.sol";
+import "../interfaces/IWorldCupData.sol";
 
  interface KeeperCompatibleInterface {
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
@@ -15,28 +16,23 @@ import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 pragma solidity ^0.8.17;
 
 contract WCNFTFantasy is Ownable {
-  
+
 event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
-event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint round);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
-address randomAndRoundAddress;
-address worldCupData4Address;
+
+address public randomAndRoundAddress;
+address public worldCupDataAddress;
+address public changeOrderAddress;
+address public fetchTeamAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
-address public constant linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
-bytes firstPlaceTeam;
-bytes secondPlaceTeam;
-bytes thirdPlaceTeam;
-bytes fourthPlaceTeam;
 uint highestAmountOfPoints;
 uint secondHighestAmountOfPoints;
 uint thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
-uint constant INITIAL_MINTING_PHASE_DEADLINE = 1669010400; //Date that World Cup Starts
-uint constant WORLD_CUP_ENDS = 1669096800;
 uint public oneDay;
 bool paused;
 bool canReceiveRefund;
@@ -79,6 +75,7 @@ struct TopPredictions {
     CHOOSE_WINNERS,
     WORLD_CUP_FINISHED
 }
+
    GamePhases public currentPhase;
 
 //Makes sure you can only interact with function after the world cup finishes
@@ -207,7 +204,6 @@ struct TopPredictions {
          teamFiveConfirmed == true;
          predictors[msg.sender].teamFive = abi.encode(_teamFive);
        } 
-
        if(teamSixConfirmed == false && keccak256(abi.encode(_teamSix)) == keccak256(worldCupTeams[i])) {
          teamSixConfirmed == true;
          predictors[msg.sender].teamSix = abi.encode(_teamSix);
@@ -222,301 +218,10 @@ struct TopPredictions {
      }
    }
 
-    function changeOrderForTop32(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
-    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
-    require(changedOrderForTop32[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
-    //Conditional statements specify each swapping possibility in swapping different teams for top 32
-     if(_scenario == 1) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       predictors[msg.sender].teamOne = teamTwo;
-       predictors[msg.sender].teamTwo = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamTwo, 32);
-     } else if(_scenario == 2) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamOne = teamThree;
-       predictors[msg.sender].teamThree = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamThree, 32);
-     } else if(_scenario == 3) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamOne = teamFour;
-       predictors[msg.sender].teamFour = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFour, 32);
-     } else if(_scenario == 4) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamOne = teamFive;
-       predictors[msg.sender].teamFive = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFive, 32);
-     } else if(_scenario == 5) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamOne = teamSix;
-       predictors[msg.sender].teamSix = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamSix, 32);
-     } else if(_scenario == 6) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamTwo = teamThree;
-       predictors[msg.sender].teamThree = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamThree, 32);
-     } else if(_scenario == 7) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamTwo = teamFour;
-       predictors[msg.sender].teamFour = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFour, 32);
-     } else if(_scenario == 8) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamTwo = teamFive;
-       predictors[msg.sender].teamFive = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFive, 32);
-     } else if(_scenario == 9) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamTwo = teamSix;
-       predictors[msg.sender].teamSix = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamSix, 32);
-     } else if(_scenario == 10) {
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamThree = teamFour;
-       predictors[msg.sender].teamFour = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFour, 32);
-     } else if(_scenario == 11) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamThree = teamFive;
-       predictors[msg.sender].teamFive = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFive, 32);
-     } else if(_scenario == 12) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamThree = teamSix;
-       predictors[msg.sender].teamSix = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamSix, 32);
-     } else if(_scenario == 13) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamFour = teamFive;
-       predictors[msg.sender].teamFive = teamFour;
-       emit TeamsSwapped(msg.sender, teamFour, teamFive, 32);
-     } else if(_scenario == 14) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamFour = teamSix;
-       predictors[msg.sender].teamSix = teamFour;
-       emit TeamsSwapped(msg.sender, teamFour, teamSix, 32);
-     }
-     changedOrderForTop32[msg.sender] = true;
-    } 
-
-    function changeOrderForTop16(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP16, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
-    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
-    require(changedOrderForTop16[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
-     if(_scenario == 1) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       predictors[msg.sender].teamOne = teamTwo;
-       predictors[msg.sender].teamTwo = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamTwo, 16);
-     } else if(_scenario == 2) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamOne = teamThree;
-       predictors[msg.sender].teamThree = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamThree, 16);
-     } else if(_scenario == 3) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamOne = teamFour;
-       predictors[msg.sender].teamFour = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFour, 16);
-     } else if(_scenario == 4) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamOne = teamFive;
-       predictors[msg.sender].teamFive = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFive, 16);
-     } else if(_scenario == 5) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamOne = teamSix;
-       predictors[msg.sender].teamSix = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamSix, 16);
-     } else if(_scenario == 6) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamTwo = teamThree;
-       predictors[msg.sender].teamThree = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamThree, 16);
-     } else if(_scenario == 7) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamTwo = teamFour;
-       predictors[msg.sender].teamFour = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFour, 16);
-     } else if(_scenario == 8) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamTwo = teamFive;
-       predictors[msg.sender].teamFive = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFive, 16);
-     } else if(_scenario == 9) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamTwo = teamSix;
-       predictors[msg.sender].teamSix = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamSix, 16);
-     } else if(_scenario == 10) {
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamThree = teamFour;
-       predictors[msg.sender].teamFour = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFour, 16);
-     } else if(_scenario == 11) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamThree = teamFive;
-       predictors[msg.sender].teamFive = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFive, 16);
-     } else if(_scenario == 12) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamThree = teamSix;
-       predictors[msg.sender].teamSix = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamSix, 16);
-     } else if(_scenario == 13) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       bytes memory teamFive = predictors[msg.sender].teamFive;
-       predictors[msg.sender].teamFour = teamFive;
-       predictors[msg.sender].teamFive = teamFour;
-       emit TeamsSwapped(msg.sender, teamFour, teamFive, 16);
-     } else if(_scenario == 14) {
-       require(extraTwoTeamsMinted[msg.sender] == true, "DIDNT_MINT_PASS_FOUR_TEAMS");
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       bytes memory teamSix = predictors[msg.sender].teamSix;
-       predictors[msg.sender].teamFour = teamSix;
-       predictors[msg.sender].teamSix = teamFour;
-       emit TeamsSwapped(msg.sender, teamFour, teamSix, 16);
-     }
-     changedOrderForTop16[msg.sender] = true;
-    } 
-    
-     function changeOrderForTop8(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP8, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
-    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
-    require(changedOrderForTop8[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
-    //Conditional statements specify each swapping possibility in swapping different teams for top 32
-     if(_scenario == 1) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       predictors[msg.sender].teamOne = teamTwo;
-       predictors[msg.sender].teamTwo = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamTwo, 8);
-     } else if(_scenario == 2) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamOne = teamThree;
-       predictors[msg.sender].teamThree = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamThree, 8);
-     } else if(_scenario == 3) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamOne = teamFour;
-       predictors[msg.sender].teamFour = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFour, 8);
-     } else if(_scenario == 4) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamTwo = teamThree;
-       predictors[msg.sender].teamThree = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamThree, 8);
-     } else if(_scenario == 5) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamTwo = teamFour;
-       predictors[msg.sender].teamFour = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFour, 8);
-     } else if(_scenario == 6) {
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamThree = teamFour;
-       predictors[msg.sender].teamFour = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFour, 8);
-     }
-     changedOrderForTop8[msg.sender] = true;
-    } 
-    
-    function changeOrderForTop4(uint _scenario) external {
-    require(currentPhase == GamePhases.TOP4, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
-    require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
-    require(changedOrderForTop4[msg.sender] == false, "CANT_CHANGE_TEAMS_TWICE");
-    //Conditional statements specify each swapping possibility in swapping different teams for top 32
-     if(_scenario == 1) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       predictors[msg.sender].teamOne = teamTwo;
-       predictors[msg.sender].teamTwo = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamTwo, 4);
-     } else if(_scenario == 2) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamOne = teamThree;
-       predictors[msg.sender].teamThree = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamThree, 4);
-     } else if(_scenario == 3) {
-       bytes memory teamOne = predictors[msg.sender].teamOne;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamOne = teamFour;
-       predictors[msg.sender].teamFour = teamOne;
-       emit TeamsSwapped(msg.sender, teamOne, teamFour, 4);
-     } else if(_scenario == 4) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       predictors[msg.sender].teamTwo = teamThree;
-       predictors[msg.sender].teamThree = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamThree, 4);
-     } else if(_scenario == 5) {
-       bytes memory teamTwo = predictors[msg.sender].teamTwo;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamTwo = teamFour;
-       predictors[msg.sender].teamFour = teamTwo;
-       emit TeamsSwapped(msg.sender, teamTwo, teamFour, 4);
-     } else if(_scenario == 6) {
-       bytes memory teamThree = predictors[msg.sender].teamThree;
-       bytes memory teamFour = predictors[msg.sender].teamFour;
-       predictors[msg.sender].teamThree = teamFour;
-       predictors[msg.sender].teamFour = teamThree;
-       emit TeamsSwapped(msg.sender, teamThree, teamFour, 4);
-     }
-     changedOrderForTop4[msg.sender] = true;
-    } 
-
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
-        bool hasLink = LinkTokenInterface(linkAddress).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
-        bool eventHasStarted = block.timestamp > INITIAL_MINTING_PHASE_DEADLINE;
+        bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
+        bool eventHasStarted = block.timestamp > 1669010400;
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
         upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
@@ -530,7 +235,8 @@ struct TopPredictions {
          oneDay = block.timestamp + 24 hours;
          IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
       } else if(currentPhase == GamePhases.TOP4) {
-         if(block.timestamp > WORLD_CUP_ENDS) {
+         if(block.timestamp > 1669096800) {
+          IWorldCupData(worldCupDataAddress).fetchTop16Teams();
           IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).requestRandomWords();
           currentPhase = GamePhases.CHOOSE_WINNERS;
          }
@@ -545,8 +251,16 @@ struct TopPredictions {
      randomAndRoundAddress = _randomAndRoundAddress;
   }
 
-  function setWorldCupDataAddress(address _worldCupData4Address) external onlyOwner {
-    worldCupData4Address = _worldCupData4Address;
+  function setWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
+    worldCupDataAddress = _worldCupDataAddress;
+  }
+
+  function setChangeOrderAddress(address _changeOrderAddress) external onlyOwner{
+    changeOrderAddress = _changeOrderAddress;
+  }  
+
+  function setFetchTeamAddress(address _fetchTeamAddress) external onlyOwner {
+    fetchTeamAddress = _fetchTeamAddress;
   }
 
   function changeThePhase() public {
@@ -560,300 +274,16 @@ struct TopPredictions {
      }
   }
 
-  function setFirstPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
-      /*
-    14219 - IC Play-Off 1
-    14220 - IC Play-Off 2
-
-    Costa Rica
-    Australia
-    */
-   if(_teamId == 12550) {
-    firstPlaceTeam =  worldCupTeams[1];
-   } else if(_teamId == 3080) {
-     firstPlaceTeam =  worldCupTeams[3];
-   } else if(_teamId == 12279) {
-     firstPlaceTeam = worldCupTeams[0];
-   } else if(_teamId == 56) {
-     firstPlaceTeam = worldCupTeams[2];
-   } else if(_teamId == 12302) {
-     firstPlaceTeam = worldCupTeams[4];
-   } else if(_teamId == 12396) {
-     firstPlaceTeam = worldCupTeams[5];
-   } else if(_teamId == 7850) {
-     firstPlaceTeam = worldCupTeams[6];
-   } else if(_teamId == 14218) {
-     firstPlaceTeam = worldCupTeams[7];
-   } else if(_teamId == 12502) {
-     firstPlaceTeam = worldCupTeams[8];
-   } else if(_teamId == 12473) {
-      firstPlaceTeam = worldCupTeams[10];
-   } else if(_teamId == 3011) {
-     firstPlaceTeam = worldCupTeams[11];
-   } else if(_teamId == 767) {
-     firstPlaceTeam = worldCupTeams[9];
-   } else if(_teamId == 3008) {
-     firstPlaceTeam = worldCupTeams[14];
-   } else if(_teamId == 12300) {
-     firstPlaceTeam = worldCupTeams[12];
-   } else if(_teamId == 73) {
-     firstPlaceTeam = worldCupTeams[15];
-   } else if(_teamId == 3017) {
-     firstPlaceTeam = worldCupTeams[18];
-   } else if(_teamId == 12397) {
-     firstPlaceTeam = worldCupTeams[19];
-   } else if(_teamId == 3024) {
-     firstPlaceTeam = worldCupTeams[16];
-   } else if(_teamId == 3054) {
-     firstPlaceTeam = worldCupTeams[20];
-   } else if(_teamId == 7835) {
-     firstPlaceTeam = worldCupTeams[21];
-   } else if(_teamId == 3026) {
-     firstPlaceTeam = worldCupTeams[23];
-   } else if(_teamId == 52) {
-     firstPlaceTeam = worldCupTeams[22];
-   } else if(_teamId == 12504) {
-     firstPlaceTeam = worldCupTeams[24];
-   } else if(_teamId == 85) {
-     firstPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3036) {
-     firstPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3064) {
-     firstPlaceTeam = worldCupTeams[26];
-  } else if(_teamId == 95) {
-     firstPlaceTeam = worldCupTeams[29];
-  } else if(_teamId == 755) {
-    firstPlaceTeam = worldCupTeams[31];
-  } else if(_teamId == 12299) {
-    firstPlaceTeam = worldCupTeams[28];
-  } else if(_teamId == 12501) {
-    firstPlaceTeam = worldCupTeams[30];
-  }
-}
-
- function setSecondPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
-      /*
-    14219 - IC Play-Off 1
-    14220 - IC Play-Off 2
-
-    Costa Rica
-    Australia
-    */
-   if(_teamId == 12550) {
-    secondPlaceTeam =  worldCupTeams[1];
-   } else if(_teamId == 3080) {
-     secondPlaceTeam=  worldCupTeams[3];
-   } else if(_teamId == 12279) {
-     secondPlaceTeam = worldCupTeams[0];
-   } else if(_teamId == 56) {
-     secondPlaceTeam = worldCupTeams[2];
-   } else if(_teamId == 12302) {
-     secondPlaceTeam = worldCupTeams[4];
-   } else if(_teamId == 12396) {
-     secondPlaceTeam = worldCupTeams[5];
-   } else if(_teamId == 7850) {
-     secondPlaceTeam = worldCupTeams[6];
-   } else if(_teamId == 14218) {
-     secondPlaceTeam = worldCupTeams[7];
-   } else if(_teamId == 12502) {
-     secondPlaceTeam = worldCupTeams[8];
-   } else if(_teamId == 12473) {
-      secondPlaceTeam = worldCupTeams[10];
-   } else if(_teamId == 3011) {
-     secondPlaceTeam = worldCupTeams[11];
-   } else if(_teamId == 767) {
-     secondPlaceTeam = worldCupTeams[9];
-   } else if(_teamId == 3008) {
-     secondPlaceTeam = worldCupTeams[14];
-   } else if(_teamId == 12300) {
-     secondPlaceTeam = worldCupTeams[12];
-   } else if(_teamId == 73) {
-     secondPlaceTeam = worldCupTeams[15];
-   } else if(_teamId == 3017) {
-     secondPlaceTeam = worldCupTeams[18];
-   } else if(_teamId == 12397) {
-     secondPlaceTeam = worldCupTeams[19];
-   } else if(_teamId == 3024) {
-     secondPlaceTeam = worldCupTeams[16];
-   } else if(_teamId == 3054) {
-     secondPlaceTeam = worldCupTeams[20];
-   } else if(_teamId == 7835) {
-     secondPlaceTeam = worldCupTeams[21];
-   } else if(_teamId == 3026) {
-     secondPlaceTeam = worldCupTeams[23];
-   } else if(_teamId == 52) {
-     secondPlaceTeam = worldCupTeams[22];
-   } else if(_teamId == 12504) {
-     secondPlaceTeam = worldCupTeams[24];
-   } else if(_teamId == 85) {
-     secondPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3036) {
-     secondPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3064) {
-     secondPlaceTeam = worldCupTeams[26];
-  } else if(_teamId == 95) {
-     secondPlaceTeam = worldCupTeams[29];
-  } else if(_teamId == 755) {
-    secondPlaceTeam = worldCupTeams[31];
-  } else if(_teamId == 12299) {
-    secondPlaceTeam = worldCupTeams[28];
-  } else if(_teamId == 12501) {
-    secondPlaceTeam = worldCupTeams[30];
-  }
-}
-
- function setThirdPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
-      /*
-    14219 - IC Play-Off 1
-    14220 - IC Play-Off 2
-
-    Costa Rica
-    Australia
-    */
-   if(_teamId == 12550) {
-    thirdPlaceTeam  =  worldCupTeams[1];
-   } else if(_teamId == 3080) {
-     thirdPlaceTeam  =  worldCupTeams[3];
-   } else if(_teamId == 12279) {
-     thirdPlaceTeam  = worldCupTeams[0];
-   } else if(_teamId == 56) {
-     thirdPlaceTeam  = worldCupTeams[2];
-   } else if(_teamId == 12302) {
-     thirdPlaceTeam  = worldCupTeams[4];
-   } else if(_teamId == 12396) {
-     thirdPlaceTeam  = worldCupTeams[5];
-   } else if(_teamId == 7850) {
-     thirdPlaceTeam  = worldCupTeams[6];
-   } else if(_teamId == 14218) {
-     thirdPlaceTeam  = worldCupTeams[7];
-   } else if(_teamId == 12502) {
-     thirdPlaceTeam  = worldCupTeams[8];
-   } else if(_teamId == 12473) {
-      thirdPlaceTeam  = worldCupTeams[10];
-   } else if(_teamId == 3011) {
-     thirdPlaceTeam  = worldCupTeams[11];
-   } else if(_teamId == 767) {
-     thirdPlaceTeam  = worldCupTeams[9];
-   } else if(_teamId == 3008) {
-     thirdPlaceTeam  = worldCupTeams[14];
-   } else if(_teamId == 12300) {
-     thirdPlaceTeam  = worldCupTeams[12];
-   } else if(_teamId == 73) {
-     thirdPlaceTeam  = worldCupTeams[15];
-   } else if(_teamId == 3017) {
-     thirdPlaceTeam  = worldCupTeams[18];
-   } else if(_teamId == 12397) {
-     thirdPlaceTeam  = worldCupTeams[19];
-   } else if(_teamId == 3024) {
-     thirdPlaceTeam  = worldCupTeams[16];
-   } else if(_teamId == 3054) {
-     thirdPlaceTeam  = worldCupTeams[20];
-   } else if(_teamId == 7835) {
-     thirdPlaceTeam  = worldCupTeams[21];
-   } else if(_teamId == 3026) {
-     thirdPlaceTeam  = worldCupTeams[23];
-   } else if(_teamId == 52) {
-     thirdPlaceTeam  = worldCupTeams[22];
-   } else if(_teamId == 12504) {
-     thirdPlaceTeam  = worldCupTeams[24];
-   } else if(_teamId == 85) {
-     thirdPlaceTeam  = worldCupTeams[27];
-  } else if(_teamId == 3036) {
-     thirdPlaceTeam  = worldCupTeams[27];
-  } else if(_teamId == 3064) {
-     thirdPlaceTeam  = worldCupTeams[26];
-  } else if(_teamId == 95) {
-     thirdPlaceTeam  = worldCupTeams[29];
-  } else if(_teamId == 755) {
-    thirdPlaceTeam  = worldCupTeams[31];
-  } else if(_teamId == 12299) {
-    thirdPlaceTeam  = worldCupTeams[28];
-  } else if(_teamId == 12501) {
-    thirdPlaceTeam  = worldCupTeams[30];
-  }
-}
-
- function setFourthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
-      /*
-    14219 - IC Play-Off 1
-    14220 - IC Play-Off 2
-
-    Costa Rica
-    Australia
-    */
-   if(_teamId == 12550) {
-    fourthPlaceTeam =  worldCupTeams[1];
-   } else if(_teamId == 3080) {
-     fourthPlaceTeam =  worldCupTeams[3];
-   } else if(_teamId == 12279) {
-     fourthPlaceTeam = worldCupTeams[0];
-   } else if(_teamId == 56) {
-     fourthPlaceTeam = worldCupTeams[2];
-   } else if(_teamId == 12302) {
-     fourthPlaceTeam = worldCupTeams[4];
-   } else if(_teamId == 12396) {
-     fourthPlaceTeam = worldCupTeams[5];
-   } else if(_teamId == 7850) {
-     fourthPlaceTeam = worldCupTeams[6];
-   } else if(_teamId == 14218) {
-     fourthPlaceTeam = worldCupTeams[7];
-   } else if(_teamId == 12502) {
-     fourthPlaceTeam = worldCupTeams[8];
-   } else if(_teamId == 12473) {
-      fourthPlaceTeam = worldCupTeams[10];
-   } else if(_teamId == 3011) {
-     fourthPlaceTeam = worldCupTeams[11];
-   } else if(_teamId == 767) {
-     fourthPlaceTeam = worldCupTeams[9];
-   } else if(_teamId == 3008) {
-     fourthPlaceTeam = worldCupTeams[14];
-   } else if(_teamId == 12300) {
-     fourthPlaceTeam = worldCupTeams[12];
-   } else if(_teamId == 73) {
-     fourthPlaceTeam = worldCupTeams[15];
-   } else if(_teamId == 3017) {
-     fourthPlaceTeam = worldCupTeams[18];
-   } else if(_teamId == 12397) {
-     fourthPlaceTeam = worldCupTeams[19];
-   } else if(_teamId == 3024) {
-     fourthPlaceTeam = worldCupTeams[16];
-   } else if(_teamId == 3054) {
-     fourthPlaceTeam = worldCupTeams[20];
-   } else if(_teamId == 7835) {
-     fourthPlaceTeam = worldCupTeams[21];
-   } else if(_teamId == 3026) {
-     fourthPlaceTeam = worldCupTeams[23];
-   } else if(_teamId == 52) {
-     fourthPlaceTeam = worldCupTeams[22];
-   } else if(_teamId == 12504) {
-     fourthPlaceTeam = worldCupTeams[24];
-   } else if(_teamId == 85) {
-     fourthPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3036) {
-     fourthPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3064) {
-     fourthPlaceTeam = worldCupTeams[26];
-  } else if(_teamId == 95) {
-     fourthPlaceTeam = worldCupTeams[29];
-  } else if(_teamId == 755) {
-    fourthPlaceTeam = worldCupTeams[31];
-  } else if(_teamId == 12299) {
-    fourthPlaceTeam = worldCupTeams[28];
-  } else if(_teamId == 12501) {
-    fourthPlaceTeam = worldCupTeams[30];
-  }
-}
-
 function depositPoints() external {
-  require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS_ANYMORE");
+  require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS");
   require(depositedPoints[msg.sender] == false, "CANT_DEPOSIT_POINTS_TWICE");
   require(alreadyMinted[msg.sender] == true, "NEVER_MINTED");
   uint index = predictors[msg.sender].predictorIndex;
   Points storage predictor = predictorPoints[index];
+  bytes memory firstPlaceTeam = IFetchTeams(fetchTeamAddress).getFirstPlaceTeam();
+  bytes memory secondPlaceTeam = IFetchTeams(fetchTeamAddress).getSecondPlaceTeam();
+  bytes memory thirdPlaceTeam = IFetchTeams(fetchTeamAddress).getThirdPlaceTeam();
+  bytes memory fourthPlaceTeam = IFetchTeams(fetchTeamAddress).getFourthPlaceTeam();
   if(keccak256(predictors[msg.sender].teamOne) == keccak256(firstPlaceTeam)) {
      predictor.points += 1000;
   }
@@ -942,6 +372,101 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
         uint256 amount = address(this).balance;
         (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
         require(sent, "Failed to send Funds");
+  }
+
+    function getPrediction(address _predictor, uint _num) public view returns(bytes memory team) {
+      if(_num == 1) {
+        return predictors[_predictor].teamOne;
+      } else if(_num == 2) {
+         return predictors[_predictor].teamTwo;
+      }  else if(_num == 3) {
+         return predictors[_predictor].teamThree;
+      }  else if(_num == 4) {
+         return predictors[_predictor].teamFour;
+      }  else if(_num == 5) {
+         return predictors[_predictor].teamFive;
+      }  else if(_num == 6) {
+         return predictors[_predictor].teamSix;
+      }
+    }
+
+    function setFirstPrediction(address _predictor, bytes memory _team) public {
+      require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamOne = _team;
+    }
+
+    function setSecondPrediction(address _predictor, bytes memory _team) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamTwo = _team;
+    }
+
+    function setThirdPrediction(address _predictor, bytes memory _team) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamThree = _team;
+    }
+
+    function setFourthPrediction(address _predictor, bytes memory _team) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamFour = _team;
+    }
+
+    function setFifthPrediction(address _predictor, bytes memory _team) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamFive = _team;
+    }
+
+    function setSixthPrediction(address _predictor, bytes memory _team) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+      predictors[_predictor].teamSix = _team;
+    }
+
+    function isPhase32() public view returns(bool) {
+      return currentPhase == GamePhases.TOP32;
+    }
+
+    function isPhase16() public view returns(bool) {
+      return currentPhase == GamePhases.TOP16;
+    }
+
+    function isPhase8() public view returns(bool) {
+      return currentPhase == GamePhases.TOP8;
+    }
+    
+    function isPhase4() public view returns(bool) {
+      return currentPhase == GamePhases.TOP4;
+    }
+
+    function haveYouMinted(address _predictor) public view returns(bool) {
+      return alreadyMinted[_predictor];
+    }
+    
+    function mintedExtraTwo(address _predictor) public view returns(bool) {
+      return extraTwoTeamsMinted[_predictor];
+    }
+
+    function setOrder(address _predictor, uint _num) public {
+       require(msg.sender == changeOrderAddress, "USER_CANT_USE_FUNCTION");
+        if(_num == 32) {
+        changedOrderForTop32[_predictor] = true;
+      } else if(_num == 16) {
+        changedOrderForTop16[_predictor] = true;
+      } else if(_num == 8) {
+         changedOrderForTop8[_predictor] = true;
+      } else if(_num == 4) {
+       changedOrderForTop4[_predictor] = true;
+      }
+    } 
+
+    function changedOrder(address _predictor, uint _num) public view returns(bool orderChanged) {
+      if(_num == 32) {
+        return changedOrderForTop32[_predictor];
+      } else if(_num == 16) {
+        return changedOrderForTop16[_predictor];
+      } else if(_num == 8) {
+        return changedOrderForTop8[_predictor];
+      } else if(_num == 4) {
+        return changedOrderForTop4[_predictor];
+      }
     }
     
     receive() external payable{}
