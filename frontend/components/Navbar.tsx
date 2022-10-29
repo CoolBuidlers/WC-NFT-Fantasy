@@ -27,7 +27,7 @@ const Navbar = () => {
       setExpand(!expand);
     },
     roadmap: (): void => {
-      scroll.scrollTo(3050);
+      scroll.scrollTo(3500);
       setExpand(!expand);
     },
     roadmapM: (): void => {
