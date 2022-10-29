@@ -350,6 +350,23 @@ function setNinthPlaceTeam(uint _teamId) public {
   }
 }
 
+function setNinthPlaceTeam() public view returns(bytes memory team) {
+  return ninthPlaceTeam;
+}
+
+function setTenthPlaceTeam() public view returns(bytes memory team) {
+  return tenthPlaceTeam;
+}
+
+function setEleventhPlaceTeam() public view returns(bytes memory team) {
+  return eleventhPlaceTeam;
+}
+
+function setTwelfthPlaceTeam() public view returns(bytes memory team) {
+  return twelfthPlaceTeam;
+}
+
+
   function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
     worldCupDataAddress = _worldCupDataAddress;
   }

@@ -2,6 +2,7 @@ import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../interfaces/IFetchTeams.sol";
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -17,7 +18,6 @@ contract WorldCupData is ChainlinkClient, Ownable {
    event ReceiveTeamTop16(bytes32 indexed requestId, uint256 teamId);
    event ReceiveTeamTop8(bytes32 indexed requestId, uint256 teamId);
    event ReceiveTeamTop4(bytes32 indexed requestId, uint256 teamId);
-
 
 
    constructor(address _randomNumberAndRoundAddress) {

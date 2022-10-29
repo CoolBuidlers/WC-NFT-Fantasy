@@ -7,7 +7,7 @@ contract FetchTeamsTwo is Ownable {
     bytes fifthPlaceTeam;
     bytes sixthPlaceTeam;
     bytes seventhPlaceTeam;
-    bytes eigthPlaceTeam;
+    bytes eighthPlaceTeam;
     address worldCupDataAddress;
     bytes[32] worldCupTeams;
 
@@ -288,66 +288,82 @@ function setFifthPlaceTeam(uint _teamId) public {
     Australia
     */
    if(_teamId == 12550) {
-    eigthPlaceTeam =  worldCupTeams[1];
+   eighthPlaceTeam =  worldCupTeams[1];
    } else if(_teamId == 3080) {
-     eigthPlaceTeam =  worldCupTeams[3];
+    eighthPlaceTeam =  worldCupTeams[3];
    } else if(_teamId == 12279) {
-     eigthPlaceTeam = worldCupTeams[0];
+    eighthPlaceTeam = worldCupTeams[0];
    } else if(_teamId == 56) {
-     eigthPlaceTeam = worldCupTeams[2];
+    eighthPlaceTeam = worldCupTeams[2];
    } else if(_teamId == 12302) {
-     eigthPlaceTeam = worldCupTeams[4];
+    eighthPlaceTeam = worldCupTeams[4];
    } else if(_teamId == 12396) {
-     eigthPlaceTeam = worldCupTeams[5];
+    eighthPlaceTeam = worldCupTeams[5];
    } else if(_teamId == 7850) {
-     eigthPlaceTeam = worldCupTeams[6];
+    eighthPlaceTeam = worldCupTeams[6];
    } else if(_teamId == 14218) {
-     eigthPlaceTeam = worldCupTeams[7];
+    eighthPlaceTeam = worldCupTeams[7];
    } else if(_teamId == 12502) {
-     eigthPlaceTeam = worldCupTeams[8];
+    eighthPlaceTeam = worldCupTeams[8];
    } else if(_teamId == 12473) {
-      eigthPlaceTeam = worldCupTeams[10];
+     eighthPlaceTeam = worldCupTeams[10];
    } else if(_teamId == 3011) {
-     eigthPlaceTeam = worldCupTeams[11];
+    eighthPlaceTeam = worldCupTeams[11];
    } else if(_teamId == 767) {
-     eigthPlaceTeam = worldCupTeams[9];
+    eighthPlaceTeam = worldCupTeams[9];
    } else if(_teamId == 3008) {
-     eigthPlaceTeam = worldCupTeams[14];
+    eighthPlaceTeam = worldCupTeams[14];
    } else if(_teamId == 12300) {
-     eigthPlaceTeam = worldCupTeams[12];
+    eighthPlaceTeam = worldCupTeams[12];
    } else if(_teamId == 73) {
-     eigthPlaceTeam = worldCupTeams[15];
+    eighthPlaceTeam = worldCupTeams[15];
    } else if(_teamId == 3017) {
-     eigthPlaceTeam = worldCupTeams[18];
+    eighthPlaceTeam = worldCupTeams[18];
    } else if(_teamId == 12397) {
-     eigthPlaceTeam = worldCupTeams[19];
+    eighthPlaceTeam = worldCupTeams[19];
    } else if(_teamId == 3024) {
-     eigthPlaceTeam = worldCupTeams[16];
+    eighthPlaceTeam = worldCupTeams[16];
    } else if(_teamId == 3054) {
-     eigthPlaceTeam = worldCupTeams[20];
+    eighthPlaceTeam = worldCupTeams[20];
    } else if(_teamId == 7835) {
-     eigthPlaceTeam = worldCupTeams[21];
+    eighthPlaceTeam = worldCupTeams[21];
    } else if(_teamId == 3026) {
-     eigthPlaceTeam = worldCupTeams[23];
+    eighthPlaceTeam = worldCupTeams[23];
    } else if(_teamId == 52) {
-     eigthPlaceTeam = worldCupTeams[22];
+    eighthPlaceTeam = worldCupTeams[22];
    } else if(_teamId == 12504) {
-     eigthPlaceTeam = worldCupTeams[24];
+    eighthPlaceTeam = worldCupTeams[24];
    } else if(_teamId == 85) {
-     eigthPlaceTeam = worldCupTeams[27];
+    eighthPlaceTeam = worldCupTeams[27];
   } else if(_teamId == 3036) {
-     eigthPlaceTeam = worldCupTeams[27];
+    eighthPlaceTeam = worldCupTeams[27];
   } else if(_teamId == 3064) {
-     eigthPlaceTeam = worldCupTeams[26];
+    eighthPlaceTeam = worldCupTeams[26];
   } else if(_teamId == 95) {
-     eigthPlaceTeam = worldCupTeams[29];
+    eighthPlaceTeam = worldCupTeams[29];
   } else if(_teamId == 755) {
-    eigthPlaceTeam = worldCupTeams[31];
+   eighthPlaceTeam = worldCupTeams[31];
   } else if(_teamId == 12299) {
-    eigthPlaceTeam = worldCupTeams[28];
+   eighthPlaceTeam = worldCupTeams[28];
   } else if(_teamId == 12501) {
-    eigthPlaceTeam = worldCupTeams[30];
+   eighthPlaceTeam = worldCupTeams[30];
   }
+}
+
+function getFifthPlaceTeam() public view returns(bytes memory team) {
+  return fifthPlaceTeam;
+}
+
+function getSixthPlaceTeam() public view returns(bytes memory team) {
+  return sixthPlaceTeam;
+}
+
+function getSeventhPlaceTeam() public view returns(bytes memory team) {
+  return seventhPlaceTeam;
+}
+
+function getEighthPlaceTeam() public view returns(bytes memory team) {
+  return eighthPlaceTeam;
 }
 
   function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {

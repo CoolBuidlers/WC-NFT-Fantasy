@@ -121,7 +121,7 @@ function changeOrderForTop32(uint _scenario) external {
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool mintedExtraTwo = IPrediction(predictionAddress).mintedExtraTwo(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 16);
-    require(isTop16, "TOP_16_HASNT_FINISHED");
+    require(isTop16 == true, "TOP_16_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
       if(_scenario == 1) {   
@@ -227,7 +227,7 @@ function changeOrderForTop32(uint _scenario) external {
     require(isTop8 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
-    //Conditional statements specify each swapping possibility in swapping different teams for top 32
+    //Conditional statements specify each swapping possibility in swapping different teams for top 8
      if(_scenario == 1) {
        bytes memory teamOne = IPrediction(predictionAddress).getPrediction(msg.sender, 1);
        bytes memory teamTwo = IPrediction(predictionAddress).getPrediction(msg.sender, 2);
@@ -275,7 +275,7 @@ function changeOrderForTop32(uint _scenario) external {
     require(isTop4 == true, "TOP_4_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
-    //Conditional statements specify each swapping possibility in swapping different teams for top 32
+    //Conditional statements specify each swapping possibility in swapping different teams for top 4
      if(_scenario == 1) {
        bytes memory teamOne = IPrediction(predictionAddress).getPrediction(msg.sender, 1);
        bytes memory teamTwo = IPrediction(predictionAddress).getPrediction(msg.sender, 2);
@@ -283,7 +283,7 @@ function changeOrderForTop32(uint _scenario) external {
        IPrediction(predictionAddress).setSecondPrediction(msg.sender, teamOne);
        emit TeamsSwapped(msg.sender, teamOne, teamTwo, 8);
      } else if(_scenario == 2) {
-      bytes memory teamOne = IPrediction(predictionAddress).getPrediction(msg.sender, 1);
+       bytes memory teamOne = IPrediction(predictionAddress).getPrediction(msg.sender, 1);
        bytes memory teamThree = IPrediction(predictionAddress).getPrediction(msg.sender, 3);
        IPrediction(predictionAddress).setFirstPrediction(msg.sender, teamThree);
       IPrediction(predictionAddress).setThirdPrediction(msg.sender, teamOne);

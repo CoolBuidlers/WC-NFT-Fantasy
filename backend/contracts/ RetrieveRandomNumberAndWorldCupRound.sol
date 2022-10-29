@@ -98,18 +98,18 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
 
      function fulfillRound(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
        if(_volume == 1 && arrayNumber == 5) {
-        IPrediction(predictionAddress).changeThePhase();
         IWorldCupData(worldCupDataAddress).fetchTop16Teams();
+        IPrediction(predictionAddress).changeThePhase();
          emit RoundChanged(_requestId, block.timestamp, 16);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 6) {
+         IWorldCupData(worldCupDataAddress).fetchTop16Teams();
         IPrediction(predictionAddress).changeThePhase();
-        IWorldCupData(worldCupDataAddress).fetchTop16Teams();
          emit RoundChanged(_requestId, block.timestamp, 8);
          arrayNumber++;
        } else if(_volume == 1 && arrayNumber == 7) {
+          IWorldCupData(worldCupDataAddress).fetchTop16Teams();
           IPrediction(predictionAddress).changeThePhase();
-         IWorldCupData(worldCupDataAddress).fetchTop16Teams();
           emit RoundChanged(_requestId, block.timestamp, 4);
           arrayNumber++;
        }

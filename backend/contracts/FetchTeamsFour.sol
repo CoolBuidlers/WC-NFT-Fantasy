@@ -350,6 +350,22 @@ function setThirteenthPlaceTeam(uint _teamId) public {
   }
 }
 
+function getThirteenthPlaceTeam() public view returns(bytes memory team) {
+  return thirteenthPlaceTeam;
+}
+
+function getFourteenthPlaceTeam() public view returns(bytes memory team) {
+  return fourteenthPlaceTeam;
+}
+
+function getFifteenthPlaceTeam() public view returns(bytes memory team) {
+  return fifteenthPlaceTeam;
+}
+
+function getSixteenthPlaceTeam() public view returns(bytes memory team) {
+  return sixteenthPlaceTeam;
+}
+
   function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
     worldCupDataAddress = _worldCupDataAddress;
   }

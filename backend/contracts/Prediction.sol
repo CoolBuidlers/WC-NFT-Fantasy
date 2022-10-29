@@ -6,6 +6,7 @@ import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IWorldCupData.sol";
+import "../interfaces/IMintTeams.sol";
 
  interface KeeperCompatibleInterface {
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
@@ -16,22 +17,22 @@ import "../interfaces/IWorldCupData.sol";
 pragma solidity ^0.8.17;
 
 contract WCNFTFantasy is Ownable {
-
 event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
 
 address public randomAndRoundAddress;
+address public mintTeamAddress;
 address public worldCupDataAddress;
 address public changeOrderAddress;
 address public fetchTeamAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
-uint highestAmountOfPoints;
-uint secondHighestAmountOfPoints;
-uint thirdHighestAmountOfPoints;
+uint public highestAmountOfPoints;
+uint public secondHighestAmountOfPoints;
+uint public thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
 uint public oneDay;
 bool paused;
@@ -186,6 +187,10 @@ struct TopPredictions {
       predictors[msg.sender].predictorIndex = predictorPointIndex;
       alreadyMinted[msg.sender] = true;
       predictorPointIndex++;
+      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamOne);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamTwo);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamThree);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFour);
       emit FirstFourTeamsMinted(msg.sender, abi.encode(_teamOne), abi.encode(_teamTwo), abi.encode(_teamThree), abi.encode(_teamFour));
       emit AllPredictors(address(this), msg.sender);
      }
@@ -214,6 +219,8 @@ struct TopPredictions {
       revert("TEAMS_MUST_BE_VALID");
      } else {
        extraTwoTeamsMinted[msg.sender] = true;
+       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive);
+        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
        emit TwoExtraTeamsMinted(msg.sender, abi.encode(_teamFive), abi.encode(_teamSix));
      }
    }
@@ -261,6 +268,10 @@ struct TopPredictions {
 
   function setFetchTeamAddress(address _fetchTeamAddress) external onlyOwner {
     fetchTeamAddress = _fetchTeamAddress;
+  }
+
+  function setMintTeamAddress(address _mintTeamAddress) external onlyOwner {
+     mintTeamAddress = _mintTeamAddress;
   }
 
   function changeThePhase() public {
@@ -318,7 +329,7 @@ function getWinnerCandidates() private {
   Points memory pointer = predictorPoints[i];
     if(pointer.points == highestAmountOfPoints) {
        predictorsWithBiggestPoints.push(pointer.predictor);
-    } else if(pointer.points == highestAmountOfPoints) {
+    } else if(pointer.points == secondHighestAmountOfPoints) {
        predictorsWithSecondBiggestPoints.push(pointer.predictor);
     } else if(pointer.points == thirdHighestAmountOfPoints) {
       predictorsWithThirdBiggestPoints.push(pointer.predictor);
