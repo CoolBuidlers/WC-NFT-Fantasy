@@ -29,9 +29,10 @@ const Countdown = ({}: Props) => {
     const el = footballRef.current;
     gsap.fromTo(
       el,
-      { x: "-100vw" },
+      { x: "-100vw", rotate: 0 },
       {
         x: 0,
+        rotate: 360,
         duration: 2,
         ease: "bounce.out",
         scrollTrigger: {
@@ -93,29 +94,29 @@ const Countdown = ({}: Props) => {
   return (
     <section className="relative ">
       <div
-        className="text-white 
+        className="text-white
       w-full -z-10 "
       >
-        <div className="w-full ">
-          <Image src={bg} layout="responsive" alt="background" />
+        <div className="w-[100vw] h-[30vh] sm:h-[60vh]">
+          <Image src={bg} layout="fill" alt="background" objectFit="cover" />
         </div>
         <div
-          className="absolute bottom-[23%] left-[25%] sm:left-[10%]"
+          className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"
           ref={textRef}
         >
-          <p className="md:text-3xl mb:mb-6 text-lg sm:text-xl">
+          <p className="md:text-3xl  text-xl sm:text-xl">
             Tournament starts in
           </p>
-          <p className="md:text-6xl text-xl sm:text-2xl">
+          <p className="md:text-6xl text-2xl sm:text-2xl">
             {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
             {timeLeft.seconds}
           </p>
         </div>
         <div
-          className="absolute xl:top-[0%] xl:left-[70%] z-4 "
+          className="absolute xl:-top-[4%] 3xl:top-[20%] xl:left-[65%] 3xl:left-[80%] z-4 "
           ref={footballRef}
         >
-          <Ball className="lg:text-[400px] 3xl:text-[42rem] md:text-[400px] text-[200px]  " />
+          <Ball className="lg:text-[500px] hidden xl:block animate-spin" />
         </div>
       </div>
     </section>

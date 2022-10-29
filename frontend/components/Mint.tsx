@@ -3,19 +3,37 @@ import CardBg from "../public/img/CardBg.png";
 import Neymar from "../public/img/card.svg";
 import Image from "next/image";
 import Carousel from "better-react-carousel";
+import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 const Mint = () => {
+  const leftArrow = () => (
+    <span className="w-10 h-10 bg-skin-base flex  absolute rounded-full top-[calc(100%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-md shadow-sky-500 cursor-pointer bg-sky-500">
+      <AiOutlineArrowLeft className="text-lg text-white" />
+    </span>
+  );
+  const rightArrow = () => (
+    <span className="w-10 h-10 bg-skin-base absolute rounded-full top-[calc(100%+4rem)] right-[calc(50%-80px)] flex justify-center items-center shadow-sky-500 cursor-pointer bg-sky-500">
+      <AiOutlineArrowRight className="text-lg text-white" />
+    </span>
+  );
   return (
     <section className="">
-      <div className="text-white sm:flex justify-between px-6 mt-[400px]">
+      <div className="text-white sm:flex justify-between px-6 mt-28 mb-10">
         <h2 className="text-5xl mb-20">MINT your nfts</h2>
         <p className="text-3xl">Unit Price : 0.050 </p>
       </div>
 
       <div className="flex items-center flex-wrap justify-center px-2">
-        <div className="w-[349px] relative ">
-          <Image src={CardBg} layout="responsive" alt="CardImage" />
+        <div className="sm:w-[349px] w-[300px] relative ">
+          <div>
+            <Image
+              src={CardBg}
+              layout="responsive"
+              alt="CardImage"
+              objectFit="cover"
+            />
+          </div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Neymar className="text-[26rem]" />
+            <Neymar className="text-[22rem]" />
           </div>
         </div>
 
@@ -25,7 +43,15 @@ const Mint = () => {
         <Neymar className="text-[26rem]" />
       </div>
       <div className="lg:px-10 px-6 mb-20">
-        <Carousel cols={4} rows={2} gap={10} loop={true} scrollSnap>
+        <Carousel
+          cols={4}
+          rows={2}
+          gap={1}
+          loop={true}
+          scrollSnap
+          arrowLeft={leftArrow}
+          arrowRight={rightArrow}
+        >
           <Carousel.Item>
             <div className="max-w-[200px]">
               <Neymar className="text-[25rem]" />
@@ -76,11 +102,6 @@ const Mint = () => {
               <Neymar className="text-[25rem]" />
             </div>
           </Carousel.Item>
-        </Carousel>
-      </div>
-
-      <div className="lg:px-10 px-2">
-        <Carousel cols={4} rows={2} gap={10} loop={true} scrollSnap>
           <Carousel.Item>
             <div className="max-w-[200px]">
               <Neymar className="text-[25rem]" />
