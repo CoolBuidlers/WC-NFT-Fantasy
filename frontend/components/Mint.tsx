@@ -6,14 +6,17 @@ import Carousel from "better-react-carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 const Mint = () => {
   const leftArrow = () => (
-    <span className="w-10 h-10 bg-skin-base flex absolute rounded-full top-[calc(100%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-sky-500 cursor-pointer bg-sky-500">
-      <AiOutlineArrowLeft className="text-lg text-white" />
-    </span>
+    <button
+      className="w-14 h-14 bg-skin-base flex absolute rounded-full top-[calc(90%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-sm shadow-purple-200 cursor-pointer bg-purple-900 "
+      onClick={() => {}}
+    >
+      <AiOutlineArrowLeft className="text-2xl text-white" />
+    </button>
   );
   const rightArrow = () => (
-    <span className="w-10 h-10 bg-skin-base absolute rounded-full top-[calc(100%+4rem)] right-[calc(50%-80px)] flex justify-center items-center shadow-sky-500 cursor-pointer bg-sky-500">
-      <AiOutlineArrowRight className="text-lg text-white" />
-    </span>
+    <button className="w-14 h-14 bg-skin-base absolute rounded-full top-[calc(90%+4rem)] right-[calc(50%-80px)] flex justify-center items-center shadow-sm shadow-purple-200 cursor-pointer bg-purple-900 ">
+      <AiOutlineArrowRight className="text-2xl text-white" />
+    </button>
   );
   return (
     <section className="">
@@ -42,7 +45,7 @@ const Mint = () => {
         <Neymar className="text-[26rem]" />
         <Neymar className="text-[26rem]" />
       </div>
-      <div className="lg:px-10 px-6 mb-20">
+      <div className=" mb-20 3xl:px-40 ">
         <Carousel
           cols={4}
           rows={2}

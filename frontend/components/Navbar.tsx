@@ -7,6 +7,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import logo from "../public/img/logo.png";
 import * as Scroll from "react-scroll";
+import CustomButton from "./CustomButton";
 
 const Navbar = () => {
   // --------- States here -------------
@@ -35,7 +36,7 @@ const Navbar = () => {
       setExpand(!expand);
     },
     Team: (): void => {
-      scroll.scrollTo(4500);
+      scroll.scrollTo(5200);
       setExpand(!expand);
     },
     TeamM: (): void => {
@@ -149,7 +150,7 @@ const Navbar = () => {
         </Link>
       </ul>
       <div className="hidden lg:flex items-center">
-        <ConnectButton />
+        <CustomButton />
       </div>
       {/* --------------- Mobile and Tablets --------------- */}
       {/* ------------- Transition for Mobile Menu -------------- */}
@@ -221,8 +222,8 @@ const Navbar = () => {
               </button>
             </Link>
           </ul>
-          <div className="flex items-center ">
-            <ConnectButton />
+          <div className="flex items-center mt-10">
+            <CustomButton />
           </div>
         </div>
       </Transition>

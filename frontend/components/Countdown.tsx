@@ -93,12 +93,12 @@ const Countdown = ({}: Props) => {
   });
 
   return (
-    <section className="relative ">
+    <section className="relative overflow-hidden">
       <div
         className="text-white
       w-full -z-10 "
       >
-        <div className="w-[100vw] h-[30vh] sm:h-[70vh]">
+        <div className="w-[100vw] h-[30vh] sm:h-[70vh] overflow-hidden">
           <Image
             src={bg}
             layout="fill"
@@ -111,19 +111,19 @@ const Countdown = ({}: Props) => {
           className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"
           ref={textRef}
         >
-          <p className="md:text-3xl  text-xl sm:text-xl">
+          <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
             Tournament starts in
           </p>
-          <p className="md:text-6xl text-2xl sm:text-2xl">
+          <p className="md:text-6xl 3xl:text-8xl text-2xl ">
             {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
             {timeLeft.seconds}
           </p>
         </div>
         <div
-          className="absolute xl:-top-[4%] 3xl:top-[20%] xl:left-[65%] 3xl:left-[70%] z-4 "
+          className="absolute xl:-top-[10%] 3xl:-top-[0%] xl:left-[70%] 3xl:left-[70%] z-4 "
           ref={footballRef}
         >
-          <Ball className="lg:text-[500px] hidden xl:block animate-spin" />
+          <Ball className="lg:text-[600px] 3xl:text-[1000px] hidden xl:block animate-spin" />
         </div>
       </div>
     </section>
