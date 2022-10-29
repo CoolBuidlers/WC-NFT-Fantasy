@@ -1,17 +1,27 @@
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../interfaces/IPrediction.sol";
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract ChangeOrders is Ownable {
+contract ChangeOrders is Ownable, ReentrancyGuard {
 event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint round);
 address public predictionAddress;
+bool paused;
+modifier onlyWhenNotPaused {
+     require(paused == false, "CONTRACT_IS_PAUSED");
+     _;
+   }
 
 function setPredictionAddress(address _predictionAddress) external onlyOwner {
   predictionAddress = _predictionAddress;
 }
 
-function changeOrderForTop32(uint _scenario) external {
+function setPause(bool _paused) external onlyOwner {
+     paused = _paused;
+   }
+
+function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPaused {
     bool isTop32 = IPrediction(predictionAddress).isPhase32();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool mintedExtraTwo = IPrediction(predictionAddress).mintedExtraTwo(msg.sender);
@@ -116,7 +126,7 @@ function changeOrderForTop32(uint _scenario) external {
      IPrediction(predictionAddress).setOrder(msg.sender, 32);
     } 
 
-    function changeOrderForTop16(uint _scenario) external {
+    function changeOrderForTop16(uint _scenario) external nonReentrant onlyWhenNotPaused {
     bool isTop16 = IPrediction(predictionAddress).isPhase16();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool mintedExtraTwo = IPrediction(predictionAddress).mintedExtraTwo(msg.sender);
@@ -220,7 +230,7 @@ function changeOrderForTop32(uint _scenario) external {
      IPrediction(predictionAddress).setOrder(msg.sender, 16);
     } 
     
-     function changeOrderForTop8(uint _scenario) external {
+     function changeOrderForTop8(uint _scenario) external nonReentrant onlyWhenNotPaused {
     bool isTop8 = IPrediction(predictionAddress).isPhase8();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 8);
@@ -268,7 +278,7 @@ function changeOrderForTop32(uint _scenario) external {
      IPrediction(predictionAddress).setOrder(msg.sender, 8);
     } 
     
-    function changeOrderForTop4(uint _scenario) external {
+    function changeOrderForTop4(uint _scenario) external nonReentrant onlyWhenNotPaused {
     bool isTop4 = IPrediction(predictionAddress).isPhase4();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 4);

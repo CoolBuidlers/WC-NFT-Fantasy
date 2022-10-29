@@ -1,12 +1,13 @@
 import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IMintTeams.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract Evolve is Ownable {
+contract Evolve is Ownable, ReentrancyGuard {
 address public fetchTeamOneAddress;
 address public fetchTeamTwoAddress;
 address public fetchTeamThreeAddress;
@@ -14,6 +15,15 @@ address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
 
+bool paused;
+modifier onlyWhenNotPaused {
+     require(paused == false, "CONTRACT_IS_PAUSED");
+     _;
+   }
+
+function setPause(bool _paused) external onlyOwner {
+     paused = _paused;
+   }
 
     function getFetchTeamOne(address _fetchTeamOneAddress) external onlyOwner {
        fetchTeamOneAddress = _fetchTeamOneAddress;
@@ -39,7 +49,7 @@ address public mintTeamTwoAddress;
       mintTeamTwoAddress = _mintTeamTwoAddress;
     }
   
-  function evolveToLevel2(string calldata _teamName) external {
+  function evolveToLevel2(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bytes[] memory teams = new bytes[](16);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -72,7 +82,7 @@ address public mintTeamTwoAddress;
     }
   }
 
-  function evolveToLevel3(string calldata _teamName) external {
+  function evolveToLevel3(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bytes[] memory teams = new bytes[](8);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -97,7 +107,7 @@ address public mintTeamTwoAddress;
     }
   }
 
-  function evolveToLevel4(string calldata _teamName) external {
+  function evolveToLevel4(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bytes[] memory teams = new bytes[](4);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();

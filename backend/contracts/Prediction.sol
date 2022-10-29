@@ -1,8 +1,7 @@
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
-import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
-import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
 import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IWorldCupData.sol";
@@ -16,7 +15,7 @@ import "../interfaces/IMintTeams.sol";
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract WCNFTFantasy is Ownable {
+contract WCNFTFantasy is Ownable, ReentrancyGuard {
 event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
@@ -142,8 +141,8 @@ struct TopPredictions {
     }
 
   //mint first 4 teams before the worldcup starts
-   function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable {
-    //ADD_MINTING_FUNCTIONALITY
+   function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable nonReentrant onlyWhenNotPaused {
+     require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
      require(predictorPoints.length != 100, "CANT_ENTER_ANYMORE");
@@ -197,7 +196,8 @@ struct TopPredictions {
    }
   
   //Same concept as the function above 
-   function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable {
+   function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable nonReentrant onlyWhenNotPaused {
+     require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
@@ -224,7 +224,6 @@ struct TopPredictions {
        emit TwoExtraTeamsMinted(msg.sender, abi.encode(_teamFive), abi.encode(_teamSix));
      }
    }
-
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
@@ -285,7 +284,7 @@ struct TopPredictions {
      }
   }
 
-function depositPoints() external {
+function depositPoints() external onlyWhenNotPaused nonReentrant {
   require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS");
   require(depositedPoints[msg.sender] == false, "CANT_DEPOSIT_POINTS_TWICE");
   require(alreadyMinted[msg.sender] == true, "NEVER_MINTED");
@@ -342,22 +341,51 @@ function chooseWinners() private {
   address payable winnerOne;
   address payable winnerTwo;
   address payable winnerThree;
-  if(predictorsWithBiggestPoints.length == 0 && predictorsWithSecondBiggestPoints.length == 0 && predictorsWithThirdBiggestPoints.length == 0) {
+   
+  if(predictorsWithBiggestPoints.length == 0) {
     canReceiveRefund = true;
-  } else {
+  } else if(predictorsWithSecondBiggestPoints.length == 0) {
     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
-  if(fulfilled == true) {
-    winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
-    winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
-    winnerThree = predictorsWithThirdBiggestPoints[randomWords[2] % predictorsWithThirdBiggestPoints.length];
-  }
-  (bool sent, ) = winnerOne.call{value: ((address(this).balance * 40)/100)}("");
-  require(sent, "Failed to send Funds");
-  (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 30)/100)}("");
-  require(sentTwo, "Failed to send Funds");
-  (bool sentThree, ) = winnerThree.call{value: ((address(this).balance * 20)/100)}("");
-  require(sentThree, "Failed to send Funds");
-  emit Winners(winnerOne, winnerTwo, winnerThree);
+    if(fulfilled == true) {
+       winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
+       winnerTwo = predictorsWithBiggestPoints[randomWords[1] % predictorsWithBiggestPoints.length];
+       winnerThree = predictorsWithBiggestPoints[randomWords[2] % predictorsWithBiggestPoints.length];
+      (bool sent, ) = winnerOne.call{value: ((address(this).balance * 30)/100)}("");
+      require(sent, "Failed to send Funds");
+      (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 30)/100)}("");
+      require(sentTwo, "Failed to send Funds"); 
+      (bool sentThree, ) = winnerThree.call{value: ((address(this).balance * 30)/100)}("");
+      require(sentThree, "Failed to send Funds");
+      emit Winners(winnerOne, winnerTwo, winnerThree);
+    }
+  } else if(predictorsWithThirdBiggestPoints.length == 0) {
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+    if(fulfilled == true) {
+       winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
+       winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
+       winnerThree = predictorsWithSecondBiggestPoints[randomWords[2] % predictorsWithSecondBiggestPoints.length];
+      (bool sent, ) = winnerOne.call{value: ((address(this).balance * 40)/100)}("");
+      require(sent, "Failed to send Funds");
+      (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 25)/100)}("");
+      require(sentTwo, "Failed to send Funds"); 
+      (bool sentThree, ) = winnerThree.call{value: ((address(this).balance * 25)/100)}("");
+      require(sentThree, "Failed to send Funds");
+      emit Winners(winnerOne, winnerTwo, winnerThree);
+    }
+  } else {
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+     if(fulfilled == true) {
+       winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
+       winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
+       winnerThree = predictorsWithThirdBiggestPoints[randomWords[2] % predictorsWithThirdBiggestPoints.length];
+      (bool sent, ) = winnerOne.call{value: ((address(this).balance * 40)/100)}("");
+      require(sent, "Failed to send Funds");
+      (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 30)/100)}("");
+      require(sentTwo, "Failed to send Funds"); 
+      (bool sentThree, ) = winnerThree.call{value: ((address(this).balance * 20)/100)}("");
+      require(sentThree, "Failed to send Funds");
+      emit Winners(winnerOne, winnerTwo, winnerThree);
+    }
   }
 }
 
@@ -374,6 +402,7 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
      require(balances[msg.sender] != 0, "YOU_HAVE_NO_BALANCE");
      require(canReceiveRefund == true, "NO_REFUNDS_AT_THIS_TIME");
      uint amount = balances[msg.sender];
+     balances[msg.sender] = 0;
      (bool sent, ) = payable(msg.sender).call{value:amount}("");
      require(sent, "FAILED_TO_SEND_FUNDS");
    }
@@ -453,6 +482,10 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
     
     function mintedExtraTwo(address _predictor) public view returns(bool) {
       return extraTwoTeamsMinted[_predictor];
+    }
+
+    function getBalance() public view returns(uint) {
+      return balances[msg.sender];
     }
 
     function setOrder(address _predictor, uint _num) public {
