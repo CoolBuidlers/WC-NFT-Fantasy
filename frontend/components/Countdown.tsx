@@ -98,7 +98,7 @@ const Countdown = ({}: Props) => {
         className="text-white
       w-full -z-10 "
       >
-        <div className="w-[100vw] h-[30vh] sm:h-[60vh]">
+        <div className="w-[100vw] h-[30vh] sm:h-[70vh]">
           <Image
             src={bg}
             layout="fill"
