@@ -113,7 +113,7 @@ const Countdown = ({}: Props) => {
           </p>
         </div>
         <div
-          className="absolute xl:-top-[4%] 3xl:top-[20%] xl:left-[65%] 3xl:left-[80%] z-4 "
+          className="absolute xl:-top-[4%] 3xl:top-[20%] xl:left-[65%] 3xl:left-[70%] z-4 "
           ref={footballRef}
         >
           <Ball className="lg:text-[500px] hidden xl:block animate-spin" />
