@@ -13,7 +13,7 @@ const Footer = () => {
         <Image src={footerImg} layout="fill" alt="footer" objectFit="cover" />
       </div>
       <div className="absolute top-[80%] sm:top-3/4 lg:top-4/4 left-2/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 w-full sm:flex justify-between items-center px-10">
-        <h2 className="text-lg">
+        <h2 className="text-lg mb-4">
           Created by CoolBuilders| All rights reserved
         </h2>
         <div className="flex justify-between items-center">

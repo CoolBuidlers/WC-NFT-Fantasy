@@ -33,7 +33,8 @@ const Countdown = ({}: Props) => {
       {
         x: 0,
         rotate: 360,
-        duration: 2,
+        duration: 3,
+        delay: 2,
         ease: "bounce.out",
         scrollTrigger: {
           trigger: el,
@@ -98,7 +99,13 @@ const Countdown = ({}: Props) => {
       w-full -z-10 "
       >
         <div className="w-[100vw] h-[30vh] sm:h-[60vh]">
-          <Image src={bg} layout="fill" alt="background" objectFit="cover" />
+          <Image
+            src={bg}
+            layout="fill"
+            alt="background"
+            objectFit="cover"
+            priority
+          />
         </div>
         <div
           className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"

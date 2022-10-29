@@ -16,15 +16,31 @@ const Navbar = () => {
   const allScrolls = {
     home: (): void => {
       scroll.scrollTo(0);
+      setExpand(!expand);
     },
     mint: (): void => {
       scroll.scrollTo(1600);
+      setExpand(!expand);
+    },
+    mintM: (): void => {
+      scroll.scrollTo(800);
+      setExpand(!expand);
     },
     roadmap: (): void => {
       scroll.scrollTo(3050);
+      setExpand(!expand);
+    },
+    roadmapM: (): void => {
+      scroll.scrollTo(4300);
+      setExpand(!expand);
     },
     Team: (): void => {
       scroll.scrollTo(4500);
+      setExpand(!expand);
+    },
+    TeamM: (): void => {
+      scroll.scrollTo(6300);
+      setExpand(!expand);
     },
   };
 
@@ -38,22 +54,29 @@ const Navbar = () => {
             setExpand(!expand);
           }}
         >
-          <BiMenu className="text-3xl" />
+          <BiMenu className="text-5xl" />
         </a>
       ) : (
         <a
           href="#"
-          className="self-center text-center lg:hidden fixed top-10 left-2/4 z-50 rounded-full ml-3 bg-transparent px-2 py-2"
+          className="self-center text-center lg:hidden fixed left-[80%] z-50 rounded-full ml-3 bg-purple-900 px-2 py-2"
           onClick={() => {
             setExpand(!expand);
           }}
         >
-          <MdClose className="text-2xl text-white" />
+          <MdClose className="text-4xl text-white" />
         </a>
       )}
       <div className="flex justify-between w-[200px] -order-1 lg:w-72">
-        <div className="flex items-start justify-start space-x-2 w-auto">
-          <Image src={logo} alt="logo" />
+        <div className="flex items-start justify-start space-x-2 w-auto cursor-pointer">
+          <Link
+            href="/"
+            onClick={() => {
+              setExpand(!expand);
+            }}
+          >
+            <Image src={logo} alt="logo" />
+          </Link>
         </div>
       </div>
       <ul className="hidden lg:flex justify-around items-center basis-2/5 text-lg">
@@ -79,7 +102,7 @@ const Navbar = () => {
             ></div>
             <button
               className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
-              onClick={allScrolls.mint}
+              onClick={allScrolls.mintM}
             >
               MINT
             </button>
@@ -145,36 +168,60 @@ const Navbar = () => {
           id="mobile-menu"
         >
           <div className="flex justify-center space-x-2 items-center w-auto mb-24">
-            <Image src={logo} width={259} height={180} alt="logo" />
+            <Link
+              href="/"
+              onClick={() => {
+                setExpand(!expand);
+              }}
+            >
+              <Image src={logo} width={259} height={180} alt="logo" />
+            </Link>
           </div>
-          <ul className=" flex flex-col justify-between basis-2/6 items-start mb-20">
+          <ul className=" flex flex-col justify-between basis-2/6 items-start mb-10">
             <Link href="/">
-              <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+              <button
+                className="cursor-pointer  transition-all text-3xl mb-4"
+                onClick={allScrolls.home}
+              >
                 HOME
               </button>
             </Link>
             <Link href="/">
-              <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+              <button
+                className="cursor-pointer  transition-all text-3xl mb-4"
+                onClick={allScrolls.mintM}
+              >
                 MINT
               </button>
             </Link>
             <Link href="/">
-              <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+              <button
+                className="cursor-pointer  transition-all text-3xl mb-4"
+                onClick={allScrolls.roadmapM}
+              >
                 ROADMAP
               </button>
             </Link>
             <Link href="/">
-              <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+              <button
+                className="cursor-pointer  transition-all text-3xl mb-4"
+                onClick={allScrolls.TeamM}
+              >
                 TEAM
               </button>
             </Link>
             <Link href="/Activity">
-              <button className="cursor-pointer hover:border-b-2 hover:border-black transition-all text-skin-muted">
+              <button
+                className="cursor-pointer  transition-all text-3xl mb-4"
+                onClick={() => {
+                  setExpand(!expand);
+                }}
+              >
                 ACTIVITY
               </button>
             </Link>
           </ul>
-          <div className="flex items-center">
+          <div className="flex items-center ">
             <ConnectButton />
           </div>
         </div>

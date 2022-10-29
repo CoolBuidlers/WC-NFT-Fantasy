@@ -48,6 +48,7 @@ const Mint = () => {
           rows={2}
           gap={1}
           loop={true}
+          autoPlay={true}
           scrollSnap
           arrowLeft={leftArrow}
           arrowRight={rightArrow}
@@ -160,7 +161,7 @@ const Mint = () => {
             Mint
           </a>
         </Link>
-        <div className="relative group w-fit text-center">
+        <div className="relative group w-fit mx-auto sm:mx-0">
           <div
             className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
