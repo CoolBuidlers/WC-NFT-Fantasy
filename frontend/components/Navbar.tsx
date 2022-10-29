@@ -19,7 +19,7 @@ const Navbar = () => {
       setExpand(!expand);
     },
     mint: (): void => {
-      scroll.scrollTo(1600);
+      scroll.scrollTo(1300);
       setExpand(!expand);
     },
     mintM: (): void => {
@@ -102,7 +102,7 @@ const Navbar = () => {
             ></div>
             <button
               className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
-              onClick={allScrolls.mintM}
+              onClick={allScrolls.mint}
             >
               MINT
             </button>
