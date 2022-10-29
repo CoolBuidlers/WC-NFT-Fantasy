@@ -6,12 +6,12 @@ import Carousel from "better-react-carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 const Mint = () => {
   const leftArrow = () => (
-    <button className="w-14 h-14 bg-skin-base flex absolute rounded-full top-[calc(90%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-sm shadow-purple-200 cursor-pointer bg-purple-900 hover:opacity-80 transition-all ">
+    <button className="w-14 h-14 bg-skin-base flex absolute rounded-full top-[calc(90%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-md shadow-purple-200 cursor-pointer bg-purple-900 hover:opacity-80 hover:shadow-none transition-all ">
       <AiOutlineArrowLeft className="text-2xl text-white" />
     </button>
   );
   const rightArrow = () => (
-    <button className="w-14 h-14 bg-skin-base absolute rounded-full top-[calc(90%+4rem)] right-[calc(50%-80px)] flex justify-center items-center shadow-sm shadow-purple-200 cursor-pointer bg-purple-900 hover:opacity-80 transition-all">
+    <button className="w-14 h-14 bg-skin-base absolute rounded-full top-[calc(90%+4rem)] right-[calc(50%-80px)] flex justify-center items-center shadow-md shadow-purple-200 cursor-pointer bg-purple-900 hover:opacity-80 transition-all hover:shadow-none">
       <AiOutlineArrowRight className="text-2xl text-white" />
     </button>
   );
