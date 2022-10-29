@@ -6,7 +6,7 @@ import Carousel from "better-react-carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 const Mint = () => {
   const leftArrow = () => (
-    <span className="w-10 h-10 bg-skin-base flex  absolute rounded-full top-[calc(100%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-md shadow-sky-500 cursor-pointer bg-sky-500">
+    <span className="w-10 h-10 bg-skin-base flex absolute rounded-full top-[calc(100%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-sky-500 cursor-pointer bg-sky-500">
       <AiOutlineArrowLeft className="text-lg text-white" />
     </span>
   );
