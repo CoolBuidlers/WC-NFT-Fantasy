@@ -9,10 +9,10 @@ const NumberGame = (props: Props) => {
     <section className="relative ">
       <div className=" overflow-hidden">
         <div className="absolute top-40 overflow-hidden right-[1030px]">
-          <Image src={Music} />
+          <Image src={Music} alt="MusicImg"/>
         </div>
         <div className="absolute top-20 left-[730px]">
-          <Image src={Controller} />
+          <Image src={Controller} alt="controllerImg"/>
         </div>
       </div>
     </section>
