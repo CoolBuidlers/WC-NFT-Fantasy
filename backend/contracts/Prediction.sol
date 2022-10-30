@@ -33,7 +33,8 @@ uint public highestAmountOfPoints;
 uint public secondHighestAmountOfPoints;
 uint public thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
-uint public oneDay;
+uint oneDay;
+uint fewMinutes;
 bool paused;
 bool canReceiveRefund;
 //An object that defined the prediction of the top teams
@@ -220,7 +221,7 @@ struct TopPredictions {
      } else {
        extraTwoTeamsMinted[msg.sender] = true;
        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive);
-        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
+       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
        emit TwoExtraTeamsMinted(msg.sender, abi.encode(_teamFive), abi.encode(_teamSix));
      }
    }
@@ -240,10 +241,12 @@ struct TopPredictions {
       } else if(currentPhase != GamePhases.TOP4) {
          oneDay = block.timestamp + 24 hours;
          IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
+         fewMinutes = block.timestamp + 3 minutes;
       } else if(currentPhase == GamePhases.TOP4) {
          if(block.timestamp > 1669096800) {
           IWorldCupData(worldCupDataAddress).fetchTop16Teams();
           IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).requestRandomWords();
+          fewMinutes = block.timestamp + 3 minutes;
           currentPhase = GamePhases.CHOOSE_WINNERS;
          }
          oneDay = block.timestamp + 24 hours;
@@ -285,6 +288,7 @@ struct TopPredictions {
   }
 
 function depositPoints() external onlyWhenNotPaused nonReentrant {
+  require(block.timestamp > fewMinutes, "WAIT_FOR_CONFIRMATION");
   require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS");
   require(depositedPoints[msg.sender] == false, "CANT_DEPOSIT_POINTS_TWICE");
   require(alreadyMinted[msg.sender] == true, "NEVER_MINTED");
@@ -310,7 +314,7 @@ function depositPoints() external onlyWhenNotPaused nonReentrant {
 }
 
 function retrievePredictorPoints() private {
- for(uint i = 0; i<=predictorPointIndex; i++) {
+ for(uint i = 0; i <= predictorPointIndex; i++) {
   Points memory pointer = predictorPoints[i];
    if(pointer.points > highestAmountOfPoints) {
      highestAmountOfPoints = pointer.points;
@@ -324,7 +328,7 @@ function retrievePredictorPoints() private {
 }
 
 function getWinnerCandidates() private {
- for(uint i = 0; i<=predictorPointIndex; i++) {
+ for(uint i = 0; i <= predictorPointIndex; i++) {
   Points memory pointer = predictorPoints[i];
     if(pointer.points == highestAmountOfPoints) {
        predictorsWithBiggestPoints.push(pointer.predictor);
@@ -486,6 +490,10 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
 
     function getBalance() public view returns(uint) {
       return balances[msg.sender];
+    }
+
+    function hasItBeenThreeMinutes() public view returns(bool) {
+      return block.timestamp > fewMinutes;
     }
 
     function setOrder(address _predictor, uint _num) public {

@@ -19,4 +19,5 @@ interface IPrediction {
    function mintedExtraTwo(address _predictor) external view returns(bool);
    function changedOrder(address _predictor, uint _num) external view returns(bool);
    function setOrder(address _predictor, uint _num) external;
+   function hasItBeenThreeMinutes() external view returns(bool);
 }

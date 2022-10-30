@@ -26,6 +26,8 @@ function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPa
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool mintedExtraTwo = IPrediction(predictionAddress).mintedExtraTwo(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 32);
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     require(isTop32 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
@@ -131,6 +133,8 @@ function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPa
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool mintedExtraTwo = IPrediction(predictionAddress).mintedExtraTwo(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 16);
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     require(isTop16 == true, "TOP_16_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
@@ -230,10 +234,12 @@ function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPa
      IPrediction(predictionAddress).setOrder(msg.sender, 16);
     } 
     
-     function changeOrderForTop8(uint _scenario) external nonReentrant onlyWhenNotPaused {
+  function changeOrderForTop8(uint _scenario) external nonReentrant onlyWhenNotPaused {
     bool isTop8 = IPrediction(predictionAddress).isPhase8();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 8);
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     require(isTop8 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
@@ -282,6 +288,8 @@ function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPa
     bool isTop4 = IPrediction(predictionAddress).isPhase4();
     bool alreadyMinted = IPrediction(predictionAddress).haveYouMinted(msg.sender);
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 4);
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     require(isTop4 == true, "TOP_4_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");

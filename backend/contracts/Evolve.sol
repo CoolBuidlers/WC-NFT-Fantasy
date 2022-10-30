@@ -2,6 +2,7 @@ import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IMintTeams.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "../interfaces/IPrediction.sol";
 
 
 //SPDX-License-Identifier: MIT
@@ -14,6 +15,7 @@ address public fetchTeamThreeAddress;
 address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
+address public predictionAddress;
 
 bool paused;
 modifier onlyWhenNotPaused {
@@ -24,6 +26,11 @@ modifier onlyWhenNotPaused {
 function setPause(bool _paused) external onlyOwner {
      paused = _paused;
    }
+
+    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+    predictionAddress = _predictionAddress;
+ }
+
 
     function getFetchTeamOne(address _fetchTeamOneAddress) external onlyOwner {
        fetchTeamOneAddress = _fetchTeamOneAddress;
@@ -50,6 +57,8 @@ function setPause(bool _paused) external onlyOwner {
     }
   
   function evolveToLevel2(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](16);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -83,6 +92,8 @@ function setPause(bool _paused) external onlyOwner {
   }
 
   function evolveToLevel3(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](8);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -108,6 +119,8 @@ function setPause(bool _paused) external onlyOwner {
   }
 
   function evolveToLevel4(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](4);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
