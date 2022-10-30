@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Transition } from "@headlessui/react";
 import { BiMenu } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import logo from "../public/img/logo.png";
 import * as Scroll from "react-scroll";
@@ -28,7 +27,7 @@ const Navbar = () => {
       setExpand(!expand);
     },
     roadmap: (): void => {
-      scroll.scrollTo(3500);
+      scroll.scrollTo(3850);
       setExpand(!expand);
     },
     roadmapM: (): void => {
