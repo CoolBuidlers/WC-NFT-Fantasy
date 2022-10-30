@@ -177,7 +177,7 @@ const Navbar = () => {
               <Image src={logo} width={259} height={180} alt="logo" />
             </Link>
           </div>
-          <ul className=" flex flex-col justify-between basis-2/6 items-start mb-10">
+          <ul className=" flex flex-col justify-between basis-2/6 items-start mb-6">
             <Link href="/">
               <button
                 className="cursor-pointer  transition-all text-3xl mb-4"
@@ -221,7 +221,7 @@ const Navbar = () => {
               </button>
             </Link>
           </ul>
-          <div className="flex items-center mt-10">
+          <div className="flex items-center ">
             <CustomButton />
           </div>
         </div>
