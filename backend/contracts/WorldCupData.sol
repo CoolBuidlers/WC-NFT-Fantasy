@@ -17,9 +17,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
   address public predictionAddress;
   bytes32 private jobId;
   uint256 private fee;
-  event ReceiveTeamTop16(bytes32 indexed requestId, uint256 teamId, uint256 round);
-  event ReceiveTeamTop8(bytes32 indexed requestId, uint256 teamId, uint256 round);
-  event ReceiveTeamTop4(bytes32 indexed requestId, uint256 teamId, uint256 round);
+  event ReceiveTeamTop16(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+  event ReceiveTeamTop8(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+  event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
 
 
    constructor() {

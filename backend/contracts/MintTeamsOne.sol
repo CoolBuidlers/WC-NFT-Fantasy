@@ -7,13 +7,67 @@ import "../interfaces/IPrediction.sol";
 pragma solidity ^0.8.17;
 
 contract MintTeamsOne is ERC1155, Ownable {
-    event Mint(address indexed account, uint tokenId, uint256 level);
-    event LevelUp(address indexed account, uint tokenId, uint256 level);
+   event Mint(address account, uint indexed tokenId, uint256 indexed level);
+   event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
    address public predictionAddress;
    address public evolveAddress;
    address public mintTeamsTwoAddress;
+   uint constant WORLD_CUP_ENDS = 1671429600;
    bytes[32] worldCupTeams;
+
+   modifier afterEvent {
+     require(block.timestamp > WORLD_CUP_ENDS, "CANT_TRANSFER_YET");
+      _;
+   }
+
     constructor()  ERC1155("") {
+        //Group A
+         worldCupTeams[0] = abi.encode("Qatar");
+         worldCupTeams[1] = abi.encode("Ecuador");
+         worldCupTeams[2] = abi.encode("Senegal");
+         worldCupTeams[3] = abi.encode("Netherlands");
+
+        //Group B
+         worldCupTeams[4] = abi.encode("England");
+         worldCupTeams[5] = abi.encode("IR Iran");
+         worldCupTeams[6] = abi.encode("USA");
+         worldCupTeams[7] = abi.encode("Wales");
+
+         //Group C
+         worldCupTeams[8] = abi.encode("Argentina");
+         worldCupTeams[9] = abi.encode("Saudi Arabia");
+         worldCupTeams[10] = abi.encode("Mexico");
+         worldCupTeams[11] = abi.encode("Poland");
+
+         //Group D
+         worldCupTeams[12] = abi.encode("France");
+         worldCupTeams[13] = abi.encode("Australia");
+         worldCupTeams[14] = abi.encode("Denmark");
+         worldCupTeams[15] = abi.encode("Tunisia");
+
+         //Group E
+         worldCupTeams[16] = abi.encode("Spain");
+         worldCupTeams[17] = abi.encode("Costa Rica");
+         worldCupTeams[18] = abi.encode("Germany");
+         worldCupTeams[19] = abi.encode("Japan");
+
+         //Group F
+         worldCupTeams[20] = abi.encode("Belgium");
+         worldCupTeams[21] = abi.encode("Canada");
+         worldCupTeams[22] = abi.encode("Morocco");
+         worldCupTeams[23] = abi.encode("Croatia");
+
+         //Group G
+         worldCupTeams[24] = abi.encode("Brazil");
+         worldCupTeams[25] = abi.encode("Serbia");
+         worldCupTeams[26] = abi.encode("Switzerland");
+         worldCupTeams[27] = abi.encode("Cameroon");
+
+         //Group H
+         worldCupTeams[28] = abi.encode("Portugal");
+         worldCupTeams[29] = abi.encode("Ghana");
+         worldCupTeams[30] = abi.encode("Uruguay");
+         worldCupTeams[31] = abi.encode("Korea Republic");
     }
 
     function setPredictionAddress(address _predictionAddress) external onlyOwner {
@@ -26,6 +80,34 @@ contract MintTeamsOne is ERC1155, Ownable {
 
     function setMintTeamsTwoAddress(address _mintTeamsTwoAddress) external onlyOwner {
       mintTeamsTwoAddress = _mintTeamsTwoAddress;
+    }
+
+     function safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) public virtual override afterEvent {
+        require(
+            from == _msgSender() || isApprovedForAll(from, _msgSender()),
+            "ERC1155: caller is not token owner or approved"
+        );
+        _safeTransferFrom(from, to, id, amount, data);
+    }
+
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) public virtual override afterEvent {
+        require(
+            from == _msgSender() || isApprovedForAll(from, _msgSender()),
+            "ERC1155: caller is not token owner or approved"
+        );
+        _safeBatchTransferFrom(from, to, ids, amounts, data);
     }
 
     function claimLevel1Nft(address _predictor, string calldata _teamName) public {
@@ -170,7 +252,7 @@ contract MintTeamsOne is ERC1155, Ownable {
          _mint(_predictor, 33, 1, "");
          emit LevelUp(_predictor, 33, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[9])) {
-          _burn(_predictor, 36, 1);
+         _burn(_predictor, 36, 1);
          _mint(_predictor, 37, 1, "");
          emit LevelUp(_predictor, 37, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[10])) {
@@ -182,7 +264,7 @@ contract MintTeamsOne is ERC1155, Ownable {
          _mint(_predictor, 45, 1, "");
          emit LevelUp(_predictor, 45, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[12])) {
-          _burn(_predictor, 48, 1);
+         _burn(_predictor, 48, 1);
          _mint(_predictor, 49, 1, "");
          emit LevelUp(_predictor, 49, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[13])) {
@@ -206,7 +288,7 @@ contract MintTeamsOne is ERC1155, Ownable {
          _mint(_predictor, 69, 1, "");
          emit LevelUp(_predictor, 69, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[18])) {
-          _burn(_predictor, 72, 1);
+         _burn(_predictor, 72, 1);
          _mint(_predictor, 73, 1, "");
          emit LevelUp(_predictor, 73, 2);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[19])) {

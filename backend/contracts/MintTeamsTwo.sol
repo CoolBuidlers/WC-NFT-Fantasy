@@ -7,7 +7,7 @@ import "../interfaces/IMintTeams.sol";
 pragma solidity ^0.8.17;
 
 contract MintTeamsTwo is Ownable {
-    event LevelUp(address indexed account, uint tokenId, uint256 level);
+    event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
     address public evolveAddress;
     address public predictionAddress;
     address public  mintTeamsOneAddress;
@@ -86,7 +86,7 @@ contract MintTeamsTwo is Ownable {
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 6, 1, "");
          emit LevelUp(_predictor, 6, 3);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[2])) {
-         IMintTeams(mintTeamsOneAddress).burn(_predictor, 9, 1);
+          IMintTeams(mintTeamsOneAddress).burn(_predictor, 9, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 10, 1, "");
          emit LevelUp(_predictor, 10, 3);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[3])) {
@@ -172,7 +172,7 @@ contract MintTeamsTwo is Ownable {
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[23])) {
           IMintTeams(mintTeamsOneAddress).burn(_predictor, 93, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 94, 1, "");
-         emit LevelUp(_predictor, 93, 3);
+         emit LevelUp(_predictor, 94, 3);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[24])) {
           IMintTeams(mintTeamsOneAddress).burn(_predictor, 97, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 98, 1, "");
@@ -217,7 +217,7 @@ contract MintTeamsTwo is Ownable {
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 3, 1, "");
         emit LevelUp(_predictor, 3, 4);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[1])) {
-         IMintTeams(mintTeamsOneAddress).burn(_predictor, 6, 1);
+          IMintTeams(mintTeamsOneAddress).burn(_predictor, 6, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 7, 1, "");
          emit LevelUp(_predictor, 7, 4);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[2])) {
@@ -243,7 +243,7 @@ contract MintTeamsTwo is Ownable {
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[7])) {
           IMintTeams(mintTeamsOneAddress).burn(_predictor, 30, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 31, 1, "");
-         emit LevelUp(_predictor, 30, 4);
+         emit LevelUp(_predictor, 31, 4);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[8])) {
          IMintTeams(mintTeamsOneAddress).burn(_predictor, 34, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 35, 1, "");

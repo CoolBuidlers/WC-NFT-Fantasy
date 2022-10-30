@@ -156,7 +156,7 @@ struct TopPredictions {
      bool teamTwoConfirmed;
      bool teamThreeConfirmed;
      bool teamFourConfirmed;
-     for(uint i = 0; i <= 31; i++) {
+     for(uint i = 0; i < 32; i++) {
        if(teamOneConfirmed == false && keccak256(abi.encode(_teamOne)) == keccak256(worldCupTeams[i])) {
          teamOneConfirmed == true;
          predictors[msg.sender].teamOne = abi.encode(_teamOne);
@@ -186,7 +186,9 @@ struct TopPredictions {
       playerPoints.predictor = payable(msg.sender);
       predictors[msg.sender].predictorIndex = predictorPointIndex;
       alreadyMinted[msg.sender] = true;
-      predictorPointIndex++;
+      unchecked {
+         predictorPointIndex++;
+      }
       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamOne);
       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamTwo);
       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamThree);
@@ -205,7 +207,7 @@ struct TopPredictions {
      require(keccak256(abi.encode(_teamFive)) != keccak256(abi.encode(_teamSix)), "CANT_HAVE_DUPLICATE_TEAMS");
      bool teamFiveConfirmed;
      bool teamSixConfirmed;
-     for(uint i = 0; i <= 31; i++) {
+     for(uint i = 0; i < 32; i++) {
        if(teamFiveConfirmed == false && keccak256(abi.encode(_teamFive)) == keccak256(worldCupTeams[i])) {
          teamFiveConfirmed == true;
          predictors[msg.sender].teamFive = abi.encode(_teamFive);
@@ -227,7 +229,7 @@ struct TopPredictions {
    }
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
-        bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) >= 0.0001 * 10 ** 18;
+        bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) > 0.0001 * 10 ** 18;
         bool eventHasStarted = block.timestamp > 1669010400;
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
@@ -314,7 +316,7 @@ function depositPoints() external onlyWhenNotPaused nonReentrant {
 }
 
 function retrievePredictorPoints() private {
- for(uint i = 0; i <= predictorPointIndex; i++) {
+ for(uint i = 0; i < predictorPointIndex+1; i++) {
   Points memory pointer = predictorPoints[i];
    if(pointer.points > highestAmountOfPoints) {
      highestAmountOfPoints = pointer.points;
@@ -328,7 +330,7 @@ function retrievePredictorPoints() private {
 }
 
 function getWinnerCandidates() private {
- for(uint i = 0; i <= predictorPointIndex; i++) {
+ for(uint i = 0; i < predictorPointIndex+1; i++) {
   Points memory pointer = predictorPoints[i];
     if(pointer.points == highestAmountOfPoints) {
        predictorsWithBiggestPoints.push(pointer.predictor);

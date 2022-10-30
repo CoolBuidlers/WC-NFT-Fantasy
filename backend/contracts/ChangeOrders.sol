@@ -5,7 +5,7 @@ import "../interfaces/IPrediction.sol";
 pragma solidity ^0.8.17;
 
 contract ChangeOrders is Ownable, ReentrancyGuard {
-event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint round);
+event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 address public predictionAddress;
 bool paused;
 modifier onlyWhenNotPaused {

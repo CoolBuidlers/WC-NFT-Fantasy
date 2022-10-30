@@ -13,9 +13,9 @@ import "../interfaces/IWorldCupData.sol";
 contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOwner {
     using Strings for uint256;
     using Chainlink for Chainlink.Request;
-    event RequestSent(uint256 requestId, uint32 numWords);
-    event RequestFulfilled(uint256 requestId, uint256[] randomWords);
-    event RoundChanged(bytes32 requestId, uint time, uint round);
+    event RequestSent(uint256 indexed requestId, uint32 indexed numWords);
+    event RequestFulfilled(uint256 indexed requestId, uint256[] indexed randomWords);
+    event RoundChanged(bytes32 requestId, uint indexed time, uint indexed round);
     bytes32 private jobId;
     bytes32 keyHash = 0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f;
     uint256 private fee;
