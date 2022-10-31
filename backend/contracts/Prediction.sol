@@ -216,13 +216,17 @@ struct TopPredictions {
       unchecked {
          predictorPointIndex++;
       }
-      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamOne);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamTwo);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamThree);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFour);
+      mintNFTs(msg.sender, _teamOne, _teamTwo, _teamThree, _teamFour);
       emit FirstFourTeamsMinted(msg.sender, abi.encode(_teamOne), abi.encode(_teamTwo), abi.encode(_teamThree), abi.encode(_teamFour));
       emit AllPredictors(address(this), msg.sender);
      }
+   }
+
+   function mintNFTs(address _predictor, string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) internal {
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamOne);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamTwo);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamThree);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamFour);
    }
   
   //Same concept as the function above 
