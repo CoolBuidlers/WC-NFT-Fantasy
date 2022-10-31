@@ -11,6 +11,8 @@ import "../interfaces/IMintTeams.sol";
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
     function performUpkeep(bytes calldata performData) external;
 }
+//User pays 25 matic if price is above 40 cents
+//If Matic is below 40 cents, the user will pay 50 matic
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -20,7 +22,7 @@ event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, byte
 event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
-
+AggregatorV3Interface internal priceFeed;
 address public randomAndRoundAddress;
 address public mintTeamAddress;
 address public worldCupDataAddress;
@@ -52,7 +54,7 @@ struct TopPredictions {
      address payable predictor;
   }
     uint predictorPointIndex;
-    Points[100] predictorPoints;
+    Points[] predictorPoints;
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
@@ -90,7 +92,8 @@ struct TopPredictions {
      _;
    }
 
-     constructor() {
+     constructor() {  
+        priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -140,13 +143,36 @@ struct TopPredictions {
          worldCupTeams[30] = abi.encode("Uruguay");
          worldCupTeams[31] = abi.encode("Korea Republic");
     }
+     modifier payEnoughForFirstFour {
+      (uint maticPrice) = getLatestPrice();
+     if(maticPrice >= 40000000) {
+       require(msg.value > 25 ether, "PAY_MORE_TO_MINT");
+     } else {
+      require(msg.value > 50 ether, "PAY_MORE_TO_MINT");
+     }
+     _;
+   }
+
+    modifier payEnoughForExtraTwo {
+      (uint maticPrice) = getLatestPrice();
+     if(maticPrice >= 40000000) {
+       require(msg.value > 12.5 ether, "PAY_MORE_TO_MINT");
+     } else {
+      require(msg.value > 25 ether, "PAY_MORE_TO_MINT");
+     }
+     _;
+   }
+
+  function getLatestPrice() public view returns (uint256) {
+        (,int price,,,) = priceFeed.latestRoundData();
+        return uint256(price);
+    }
 
   //mint first 4 teams before the worldcup starts
-   function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable nonReentrant onlyWhenNotPaused {
+   function mintTopFourTeams(string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) external payable payEnoughForFirstFour nonReentrant onlyWhenNotPaused {
      require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
-     require(predictorPoints.length != 100, "CANT_ENTER_ANYMORE");
     //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
@@ -185,6 +211,7 @@ struct TopPredictions {
       Points storage playerPoints = predictorPoints[predictorPointIndex];
       playerPoints.predictor = payable(msg.sender);
       predictors[msg.sender].predictorIndex = predictorPointIndex;
+      balances[msg.sender] += msg.value;
       alreadyMinted[msg.sender] = true;
       unchecked {
          predictorPointIndex++;
@@ -199,7 +226,7 @@ struct TopPredictions {
    }
   
   //Same concept as the function above 
-   function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable nonReentrant onlyWhenNotPaused {
+   function mintOtherTwoTeams(string calldata _teamFive, string calldata _teamSix) external payable payEnoughForExtraTwo nonReentrant onlyWhenNotPaused {
      require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
@@ -221,6 +248,7 @@ struct TopPredictions {
      if(teamFiveConfirmed != true || teamSixConfirmed != true) {
       revert("TEAMS_MUST_BE_VALID");
      } else {
+       balances[msg.sender] += msg.value;
        extraTwoTeamsMinted[msg.sender] = true;
        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive);
        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
@@ -349,7 +377,19 @@ function chooseWinners() private {
   address payable winnerThree;
    
   if(predictorsWithBiggestPoints.length == 0) {
-    canReceiveRefund = true;
+      (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+      if(fulfilled == true) {
+        winnerOne = predictorPoints[randomWords[0] % predictorPointIndex].predictor;
+        winnerTwo = predictorPoints[randomWords[1] % predictorPointIndex].predictor;
+        winnerThree = predictorPoints[randomWords[2] % predictorPointIndex].predictor;
+        (bool sent, ) = winnerOne.call{value: ((address(this).balance * 30)/100)}("");
+        require(sent, "Failed to send Funds");
+        (bool sentTwo, ) = winnerTwo.call{value: ((address(this).balance * 30)/100)}("");
+        require(sentTwo, "Failed to send Funds"); 
+        (bool sentThree, ) = winnerThree.call{value: ((address(this).balance * 30)/100)}("");
+        require(sentThree, "Failed to send Funds");
+        emit Winners(winnerOne, winnerTwo, winnerThree);
+      }
   } else if(predictorsWithSecondBiggestPoints.length == 0) {
     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
     if(fulfilled == true) {
@@ -414,6 +454,7 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
    }
 
    function withdraw() external onlyOwner afterEvent {
+        require(canReceiveRefund == false, "NO_BALANCE_TO_RECEIVE");
         address _owner = owner();
         uint256 amount = address(this).balance;
         (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
