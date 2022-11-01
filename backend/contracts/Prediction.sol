@@ -54,7 +54,7 @@ struct TopPredictions {
      address payable predictor;
   }
     uint predictorPointIndex;
-    Points[] predictorPoints;
+    Points[1000] predictorPoints;
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
@@ -146,9 +146,9 @@ struct TopPredictions {
      modifier payEnoughForFirstFour {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value > 25 ether, "PAY_MORE_TO_MINT");
+       require(msg.value >= 25 ether, "PAY_MORE_TO_MINT");
      } else {
-      require(msg.value > 50 ether, "PAY_MORE_TO_MINT");
+      require(msg.value >= 50 ether, "PAY_MORE_TO_MINT");
      }
      _;
    }
@@ -184,22 +184,22 @@ struct TopPredictions {
      bool teamFourConfirmed;
      for(uint i = 0; i < 32; i++) {
        if(teamOneConfirmed == false && keccak256(abi.encode(_teamOne)) == keccak256(worldCupTeams[i])) {
-         teamOneConfirmed == true;
+         teamOneConfirmed = true;
          predictors[msg.sender].teamOne = abi.encode(_teamOne);
        } 
 
        if(teamTwoConfirmed == false && keccak256(abi.encode(_teamTwo)) == keccak256(worldCupTeams[i])) {
-         teamTwoConfirmed == true;
+         teamTwoConfirmed = true;
          predictors[msg.sender].teamTwo = abi.encode(_teamTwo);
        }
 
         if(teamThreeConfirmed == false && keccak256(abi.encode(_teamThree)) == keccak256(worldCupTeams[i])) {
-         teamThreeConfirmed == true;
+         teamThreeConfirmed = true;
          predictors[msg.sender].teamThree = abi.encode(_teamThree);
        }
 
         if(teamFourConfirmed == false && keccak256(abi.encode(_teamFour)) == keccak256(worldCupTeams[i])) {
-         teamFourConfirmed == true;
+         teamFourConfirmed = true;
          predictors[msg.sender].teamFour = abi.encode(_teamFour);
        }
 
