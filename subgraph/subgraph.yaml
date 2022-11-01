@@ -1,0 +1,35 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: WCNFTFantasy
+    network: goerli
+    source:
+      address: "0xe65C90A046d1bf398b41933973df9BaA8F8C8299"
+      abi: WCNFTFantasy
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - AllPredictors
+        - FirstFourTeamsMinted
+        - OwnershipTransferred
+        - TwoExtraTeamsMinted
+        - Winners
+      abis:
+        - name: WCNFTFantasy
+          file: ./abis/WCNFTFantasy.json
+      eventHandlers:
+        - event: AllPredictors(address,address)
+          handler: handleAllPredictors
+        - event: FirstFourTeamsMinted(address,bytes,bytes,bytes,bytes)
+          handler: handleFirstFourTeamsMinted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TwoExtraTeamsMinted(address,bytes,bytes)
+          handler: handleTwoExtraTeamsMinted
+        - event: Winners(address,address,address)
+          handler: handleWinners
+      file: ./src/wcnft-fantasy.ts

@@ -1,13 +1,10 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomiclabs/hardhat-etherscan";
-require("dotenv").config({ path: ".env" });
-
-const QUICKNODE_API_KEY_URL = process.env.QUICKNODE_API_KEY_URL;
-
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+require("dotenv").config();
 
 const config: HardhatUserConfig = {
+  defaultNetwork: "goerli",
   solidity: {
     version: "0.8.17",
     settings: {
@@ -18,18 +15,15 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
-    // mumbai: {
-    //   url: QUICKNODE_API_KEY_URL,
-    //   accounts: [PRIVATE_KEY !== undefined ? PRIVATE_KEY : ""],
-    // },
+    goerli: {
+      url: process.env.RPC_ENDPOINT as string,
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
   },
 
-  // etherscan: {
-  //   apiKey:
-  //     process.env.ETHERSCAN_API_KEY !== undefined
-  //       ? process.env.ETHERSCAN_API_KEY
-  //       : "",
-  // },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_KEY as string,
+  },
 };
 
 export default config;
