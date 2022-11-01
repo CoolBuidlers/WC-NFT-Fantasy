@@ -240,11 +240,11 @@ struct TopPredictions {
      bool teamSixConfirmed;
      for(uint i = 0; i < 32; i++) {
        if(teamFiveConfirmed == false && keccak256(abi.encode(_teamFive)) == keccak256(worldCupTeams[i])) {
-         teamFiveConfirmed == true;
+         teamFiveConfirmed = true;
          predictors[msg.sender].teamFive = abi.encode(_teamFive);
        } 
        if(teamSixConfirmed == false && keccak256(abi.encode(_teamSix)) == keccak256(worldCupTeams[i])) {
-         teamSixConfirmed == true;
+         teamSixConfirmed = true;
          predictors[msg.sender].teamSix = abi.encode(_teamSix);
        } 
        if(teamFiveConfirmed == true && teamSixConfirmed == true) break;

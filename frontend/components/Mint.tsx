@@ -221,7 +221,7 @@ const Mint = () => {
         <a
           className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mb-12"
           onClick={() =>
-            buyFirstFourTeams("Qatar", "Ecuador", "Senegal", "Netherlands", signer)
+            buyFirstFourTeams(firstTeam, secondTeam, thirdTeam, fourthTeam, signer)
           }
         >
           Mint
