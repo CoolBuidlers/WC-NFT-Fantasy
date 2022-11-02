@@ -24,12 +24,12 @@ const config: HardhatUserConfig = {
     },
   },
 
-  etherscan: {
-    apiKey:
-      process.env.ETHERSCAN_API_KEY !== undefined
-        ? process.env.ETHERSCAN_API_KEY
-        : "",
-  },
+  // etherscan: {
+  //   apiKey:
+  //     process.env.ETHERSCAN_API_KEY !== undefined
+  //       ? process.env.ETHERSCAN_API_KEY
+  //       : "",
+  // },
 };
 
 export default config;
