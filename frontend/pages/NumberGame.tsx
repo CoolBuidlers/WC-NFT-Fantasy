@@ -3,7 +3,7 @@ import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
-import incorrectGuessImg from "../public/img/incorrectGuess.png"
+
 type Props = {};
 
 const NumberGame = (props: Props): JSX.Element => {
@@ -90,15 +90,8 @@ const NumberGame = (props: Props): JSX.Element => {
           <Image src={Controller} width={600} height={600} alt="controllerImg"/>
         </div>
       </div>
-      {/* <div className="flex items-center justify-center"> */}
       {renderButton()}
-      {/* </div> */}
     </section>
   );
 };
 export default NumberGame;
-
-{/* <div className="absolute hidden sm:flex justify-between">
-  <Image src={Music} width={800} height={800} alt="MusicImg"/>
-  <Image src={Controller} width={800} height={800} alt="Controller"/>
-</div> */}
