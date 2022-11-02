@@ -4,9 +4,7 @@ import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 
-type Props = {};
-
-const NumberGame = (): JSX.Element => {
+const QuizGame = () => {
 
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
@@ -34,11 +32,18 @@ const NumberGame = (): JSX.Element => {
     }
     else if (isStarted && joined && !hasGuessed) {
       return (
-        <div className="flex flex-col items-center justify-center cursor-pointer">
-              <input 
-              className="bg-transparent border-b-4 border-[#DB00B6] mb-10 text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
-              type="number"
-              />
+        <div className="flex flex-col items-center justify-center">
+              <div className="bg-gradient-to-r from-[#E500A4] to-[#8900F2] mb-5 rounded">
+                <h1 className="text-center text-white text-2xl py-8 px-20">Who is the greatest player of all time</h1>
+                <div className="flex items-center justify-around text-white text-xl py-5">
+                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
+                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Messi</p>
+                </div>
+                <div className="flex items-center justify-around text-white text-xl py-5">
+                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
+                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
+                </div>
+              </div>
               <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
                 Sumbit
               </span>
@@ -78,7 +83,7 @@ const NumberGame = (): JSX.Element => {
               to-[#F20089] blur-xl"
           ></div>
           <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
-            Guessing Game
+            Quiz Game
           </h1>
         </div>
       </div>
@@ -92,6 +97,7 @@ const NumberGame = (): JSX.Element => {
       </div>
       {renderButton()}
     </section>
-  );
-};
-export default NumberGame;
+  )
+}
+
+export default QuizGame
