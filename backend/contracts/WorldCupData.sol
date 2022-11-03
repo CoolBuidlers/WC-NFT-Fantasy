@@ -42,7 +42,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
     }
 
     function setFetchTeamsThreeAddress(address _fetchTeamsThreeAddress) external onlyOwner {
-      fetchTeamsTwoAddress = _fetchTeamsThreeAddress;
+      fetchTeamsThreeAddress = _fetchTeamsThreeAddress;
     }
 
     function setFetchTeamsFourAddress(address _fetchTeamsFourAddress) external onlyOwner {

@@ -69,7 +69,7 @@ contract MintTeamsTwo is Ownable {
        evolveAddress = _evolveAddress;
     }
 
-     function setMintTeamsTwoAddress(address _mintTeamsOneAddress) external onlyOwner {
+     function setMintTeamsOneAddress(address _mintTeamsOneAddress) external onlyOwner {
       mintTeamsOneAddress = _mintTeamsOneAddress;
     }
 
