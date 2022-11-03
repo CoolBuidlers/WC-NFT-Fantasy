@@ -16,48 +16,61 @@ address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
 address public predictionAddress;
-
+address public setAddress;
 bool paused;
 modifier onlyWhenNotPaused {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
 
+   constructor(address _setAddress) {
+      setAddress = _setAddress;
+   }
+
 function setPause(bool _paused) external onlyOwner {
      paused = _paused;
    }
 
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
-    predictionAddress = _predictionAddress;
+    function setPredictionAddress(address _predictionAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+      predictionAddress = _predictionAddress;
  }
 
 
-    function getFetchTeamOne(address _fetchTeamOneAddress) external onlyOwner {
+    function setFetchTeamOne(address _fetchTeamOneAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamOneAddress = _fetchTeamOneAddress;
     }
 
-     function getFetchTeamTwo(address _fetchTeamTwoAddress) external onlyOwner {
+     function setFetchTeamTwo(address _fetchTeamTwoAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamTwoAddress = _fetchTeamTwoAddress;
     }
 
-     function getFetchTeamThree(address _fetchTeamThreeAddress) external onlyOwner {
+     function setFetchTeamThree(address _fetchTeamThreeAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamThreeAddress = _fetchTeamThreeAddress;
     }
 
-      function getFetchTeamFour(address _fetchTeamFourAddress) external onlyOwner {
+      function setFetchTeamFour(address _fetchTeamFourAddress) public {
+         require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamFourAddress = _fetchTeamFourAddress;
     }
 
-    function getMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
+    function setMintTeamOneAddress(address _mintTeamOneAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamOneAddress = _mintTeamOneAddress;
     }
 
-     function getMintTeamTwoAddress(address _mintTeamTwoAddress) external onlyOwner {
+     function setMintTeamTwoAddress(address _mintTeamTwoAddress) public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamTwoAddress = _mintTeamTwoAddress;
     }
   
   function evolveToLevel2(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool isTop16 = IPrediction(predictionAddress).isPhase16();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(isTop16 == true, "TOP_16_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](16);
     bool teamsMatch;
@@ -92,7 +105,9 @@ function setPause(bool _paused) external onlyOwner {
   }
 
   function evolveToLevel3(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool isTop8 = IPrediction(predictionAddress).isPhase8();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(isTop8 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](8);
     bool teamsMatch;
@@ -119,7 +134,9 @@ function setPause(bool _paused) external onlyOwner {
   }
 
   function evolveToLevel4(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
+    bool isTop4 = IPrediction(predictionAddress).isPhase4();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
+    require(isTop4 == true, "TOP_4_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
     bytes[] memory teams = new bytes[](4);
     bool teamsMatch;

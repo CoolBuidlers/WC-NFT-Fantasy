@@ -12,6 +12,7 @@ contract MintTeamsOne is ERC1155, Ownable {
    address public predictionAddress;
    address public evolveAddress;
    address public mintTeamsTwoAddress;
+   address public setAddress;
    uint constant WORLD_CUP_ENDS = 1671429600;
    bytes[32] worldCupTeams;
 
@@ -20,7 +21,8 @@ contract MintTeamsOne is ERC1155, Ownable {
       _;
    }
 
-    constructor()  ERC1155("") {
+    constructor(address _setAddress)  ERC1155("") {
+        setAddress = _setAddress;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -70,15 +72,18 @@ contract MintTeamsOne is ERC1155, Ownable {
          worldCupTeams[31] = abi.encode("Korea Republic");
     }
 
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+    function setPredictionAddress(address _predictionAddress)  public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        predictionAddress = _predictionAddress;
     }
 
-    function setEvolveAddress(address _evolveAddress) external onlyOwner {
+    function setEvolveAddress(address _evolveAddress)  public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        evolveAddress = _evolveAddress;
     }
 
-    function setMintTeamsTwoAddress(address _mintTeamsTwoAddress) external onlyOwner {
+    function setMintTeamTwoAddress(address _mintTeamsTwoAddress)  public {
+       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamsTwoAddress = _mintTeamsTwoAddress;
     }
 

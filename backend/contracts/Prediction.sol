@@ -28,6 +28,7 @@ address public mintTeamAddress;
 address public worldCupDataAddress;
 address public changeOrderAddress;
 address public fetchTeamAddress;
+address public setAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
@@ -92,7 +93,8 @@ struct TopPredictions {
      _;
    }
 
-     constructor() {  
+     constructor(address _setAddress) {  
+        setAddress = _setAddress;
         priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         currentPhase = GamePhases.MINT;
         //Group A
@@ -173,6 +175,7 @@ struct TopPredictions {
      require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
+     require(predictorPoints.length != 1000, "CAPACITY_LIMIT_REACHED");
     //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
@@ -290,28 +293,33 @@ struct TopPredictions {
       }
     }
 
-  function setRandomAndRoundAddress(address _randomAndRoundAddress) external onlyOwner {
+  function setRandomAndRoundAddress(address _randomAndRoundAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
      randomAndRoundAddress = _randomAndRoundAddress;
   }
 
-  function setWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
+  function setWorldCupDataAddress(address _worldCupDataAddress)  public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     worldCupDataAddress = _worldCupDataAddress;
   }
 
-  function setChangeOrderAddress(address _changeOrderAddress) external onlyOwner{
+  function setChangeOrderAddress(address _changeOrderAddress)  public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     changeOrderAddress = _changeOrderAddress;
   }  
 
-  function setFetchTeamAddress(address _fetchTeamAddress) external onlyOwner {
+  function setFetchTeamOne(address _fetchTeamAddress)  public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     fetchTeamAddress = _fetchTeamAddress;
   }
 
-  function setMintTeamAddress(address _mintTeamAddress) external onlyOwner {
+  function setMintTeamOneAddress(address _mintTeamAddress)  public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
      mintTeamAddress = _mintTeamAddress;
   }
 
   function changeThePhase() public {
-     require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
+     //require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
      if(currentPhase == GamePhases.TOP32) {
        currentPhase = GamePhases.TOP16;
      } else if(currentPhase == GamePhases.TOP16) {
@@ -347,7 +355,7 @@ function depositPoints() external onlyWhenNotPaused nonReentrant {
   depositedPoints[msg.sender] = true;
 }
 
-function retrievePredictorPoints() private {
+function retrievePredictorPoints() public {
  for(uint i = 0; i < predictorPointIndex+1; i++) {
   Points memory pointer = predictorPoints[i];
    if(pointer.points > highestAmountOfPoints) {
@@ -535,8 +543,14 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
       return extraTwoTeamsMinted[_predictor];
     }
 
-    function getBalance() public view returns(uint) {
+    function getBalance() external view returns(uint) {
       return balances[msg.sender];
+    }
+      
+    function getPoints(address _predictor) external view returns(uint) {
+       uint index = predictors[_predictor].predictorIndex;
+       Points memory playerPoints = predictorPoints[index];
+       return playerPoints.points;
     }
 
     function hasItBeenThreeMinutes() public view returns(bool) {

@@ -7,13 +7,18 @@ pragma solidity ^0.8.17;
 contract ChangeOrders is Ownable, ReentrancyGuard {
 event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 address public predictionAddress;
+address public setAddress;
 bool paused;
 modifier onlyWhenNotPaused {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
+constructor(address _setAddress) {
+   setAddress = _setAddress;
+}
 
-function setPredictionAddress(address _predictionAddress) external onlyOwner {
+function setPredictionAddress(address _predictionAddress) public {
+  require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
   predictionAddress = _predictionAddress;
 }
 

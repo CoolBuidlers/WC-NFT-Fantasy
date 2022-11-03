@@ -10,8 +10,9 @@ contract FetchTeamsFour is Ownable {
     bytes sixteenthPlaceTeam;
     address worldCupDataAddress;
     bytes[32] worldCupTeams;
-
-    constructor() {
+    address public setAddress;
+    constructor(address _setAddress) {
+        setAddress = _setAddress;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -63,7 +64,7 @@ contract FetchTeamsFour is Ownable {
 
 
 function setThirteenthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -135,7 +136,7 @@ function setThirteenthPlaceTeam(uint _teamId) public {
 }
 
  function setFourteenthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -207,7 +208,7 @@ function setThirteenthPlaceTeam(uint _teamId) public {
 }
 
  function setFifteenthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -279,7 +280,7 @@ function setThirteenthPlaceTeam(uint _teamId) public {
 }
 
  function setSixteenthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -366,7 +367,8 @@ function getSixteenthPlaceTeam() public view returns(bytes memory team) {
   return sixteenthPlaceTeam;
 }
 
-  function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
-    worldCupDataAddress = _worldCupDataAddress;
+  function setWorldCupDataAddress(address _worldCupDataAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+      worldCupDataAddress = _worldCupDataAddress;
   }
 }

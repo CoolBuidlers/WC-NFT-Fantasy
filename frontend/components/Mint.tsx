@@ -16,7 +16,7 @@ import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 //Make a button that resets the user choices
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 const Mint = () => {
-    const { data: signer } = useSigner();
+  const { data: signer } = useSigner();
   const [firstTeam, setFirstTeam] = useState<string>("")
   const [secondTeam, setSecondTeam] = useState<string>("");
   const [thirdTeam, setThirdTeam] = useState<string>("");
@@ -116,7 +116,12 @@ const Mint = () => {
         {currentPhase === 1 && (
           <h2 className="text-5xl mb-20">MINT your 2 extra teams</h2>
         )}
-        <p className="text-3xl">Unit Price : 0.050 </p>
+        {currentPhase === 0 && (
+          <p className="text-3xl">Unit Price : 25 Matic </p>
+        )}
+        {currentPhase === 1 && (
+          <p className="text-3xl">Unit Price : 12.5 Matic </p>
+        )}
       </div>
       {/* This is if the user has minted the first 4 teams and phase32 hasn't started yet */}
       {hasUserMinted && currentPhase === 0 && (
@@ -142,9 +147,11 @@ const Mint = () => {
         </div>
       )}
 
-      {hasUserMintedExtraTwo && <div>
-        <div>Thank you for minting!</div>
-        </div>}
+      {hasUserMintedExtraTwo && (
+        <div>
+          <div>Thank you for minting!</div>
+        </div>
+      )}
 
       {/* <div className="flex items-center flex-wrap justify-center px-2">
         <div className="sm:w-[349px] w-[300px] relative cursor-pointer">
@@ -326,9 +333,16 @@ const Mint = () => {
             className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
           ></div>
-          <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-            0.050 | 0.04 $
-          </span>
+          {currentPhase === 0 && (
+            <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+              25 Matic | 100 $
+            </span>
+          )}
+          {currentPhase === 1 && (
+            <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+              12.5 Matic | 50 $
+            </span>
+          )}
         </div>
       </div>
       <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">

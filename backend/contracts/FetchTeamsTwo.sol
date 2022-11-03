@@ -9,9 +9,11 @@ contract FetchTeamsTwo is Ownable {
     bytes seventhPlaceTeam;
     bytes eighthPlaceTeam;
     address worldCupDataAddress;
+    address public setAddress;
     bytes[32] worldCupTeams;
 
-    constructor() {
+    constructor(address _setAddress) {
+       setAddress = _setAddress;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -63,7 +65,7 @@ contract FetchTeamsTwo is Ownable {
 
 
 function setFifthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -135,7 +137,7 @@ function setFifthPlaceTeam(uint _teamId) public {
 }
 
  function setSixthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -207,7 +209,7 @@ function setFifthPlaceTeam(uint _teamId) public {
 }
 
  function setSeventhPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -279,7 +281,7 @@ function setFifthPlaceTeam(uint _teamId) public {
 }
 
  function setEigthPlaceTeam(uint _teamId) public {
-  require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
+  //require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
       /*
     14219 - IC Play-Off 1
     14220 - IC Play-Off 2
@@ -366,7 +368,8 @@ function getEighthPlaceTeam() public view returns(bytes memory team) {
   return eighthPlaceTeam;
 }
 
-  function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
+  function setWorldCupDataAddress(address _worldCupDataAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     worldCupDataAddress = _worldCupDataAddress;
   }
 }
