@@ -26,7 +26,7 @@ const Mint = () => {
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false)
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
- const provider = useProvider()
+ const provider = useProvider();
   const { address } = useAccount();
   const handleTeamSelection = (teamName:string) => {
      if(firstTeam === "") {
@@ -138,7 +138,7 @@ const Mint = () => {
       )}
       {/* This is if the user is able to mint the two extra teams */}
       {hasUserMinted && currentPhase === 1 && !hasUserMintedExtraTwo && (
-        <div> </div>
+        <div></div>
       )}
       {/* This is if the user can no longer mint the two extra teams */}
       {!hasUserMintedExtraTwo && currentPhase > 1 && (
