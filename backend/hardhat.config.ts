@@ -20,7 +20,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url: "https://cold-thrumming-card.matic-testnet.discover.quiknode.pro/7e16a39a608d405b5a7751989f0acbc8ec2bca10",
+        url: "",
         enabled: true
       },
     },

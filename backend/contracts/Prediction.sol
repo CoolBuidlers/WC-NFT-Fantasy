@@ -18,10 +18,9 @@ import "../interfaces/IMintTeams.sol";
 pragma solidity ^0.8.17;
 
 contract WCNFTFantasy is Ownable, ReentrancyGuard {
-event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
-event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
+event TopPoints(uint indexed firstHighestPoints, uint indexed secondHighestPoints, uint indexed thirdHighestPoints);
 AggregatorV3Interface internal priceFeed;
 address public randomAndRoundAddress;
 address public mintTeamAddress;
@@ -31,12 +30,12 @@ address public fetchTeamAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
-uint public highestAmountOfPoints;
-uint public secondHighestAmountOfPoints;
-uint public thirdHighestAmountOfPoints;
+uint highestAmountOfPoints;
+uint secondHighestAmountOfPoints;
+uint thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
-uint oneDay;
-uint fewMinutes;
+uint public oneDay;
+uint public fewMinutes;
 bool paused;
 bool canReceiveRefund;
 //An object that defined the prediction of the top teams
@@ -217,7 +216,6 @@ struct TopPredictions {
          predictorPointIndex++;
       }
       mintNFTs(msg.sender, _teamOne, _teamTwo, _teamThree, _teamFour);
-      emit FirstFourTeamsMinted(msg.sender, abi.encode(_teamOne), abi.encode(_teamTwo), abi.encode(_teamThree), abi.encode(_teamFour));
       emit AllPredictors(address(this), msg.sender);
      }
    }
@@ -256,7 +254,6 @@ struct TopPredictions {
        extraTwoTeamsMinted[msg.sender] = true;
        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive);
        IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
-       emit TwoExtraTeamsMinted(msg.sender, abi.encode(_teamFive), abi.encode(_teamSix));
      }
    }
 
@@ -358,6 +355,7 @@ function retrievePredictorPoints() private {
      thirdHighestAmountOfPoints = pointer.points;
    }
  }
+ emit TopPoints(highestAmountOfPoints, secondHighestAmountOfPoints, thirdHighestAmountOfPoints);
  getWinnerCandidates();
 }
 
@@ -535,7 +533,7 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
       return extraTwoTeamsMinted[_predictor];
     }
 
-    function getBalance() public view returns(uint) {
+    function getBalance() external view returns(uint) {
       return balances[msg.sender];
     }
 

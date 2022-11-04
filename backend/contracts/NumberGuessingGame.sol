@@ -1,7 +1,7 @@
 import "../interfaces/IMintTeams.sol";
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.17;
 
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
@@ -31,6 +31,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     uint256 public lastRequestId;
     uint256 public maxPlayers = 2;
     uint public nextRound;
+    bool pause;
     // address override owner;
     address payable[] public players;
     address public mintAddress;
@@ -65,7 +66,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     function startGame() external onlyOwner {
         require(block.timestamp > nextRound, "Next round hasn't started yet");
         started = true;
-        timeLimit = 10 minutes;
+        timeLimit = 15 minutes;
         nextRound = block.timestamp + 5 days;
     }
 
@@ -74,6 +75,11 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         "You have already Entered the game!");
         _;
     }
+
+     modifier onlyWhenNotPaused {
+     require(pause == false, "CONTRACT_IS_PAUSED");
+     _;
+   }
 
     modifier gameRunning() {
         require(
@@ -88,8 +94,8 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     }
 
 
-    function joinGame() public AlreadyEntered gameRunning {
-        require(block.timestamp > nextRound, "Next round hasn't started yet");
+    function joinGame() public AlreadyEntered gameRunning onlyWhenNotPaused {
+        require(block.timestamp < timeLimit, "TIMES UP");
         require(players.length < maxPlayers, "Game is Full");
         alreadyEntered[msg.sender] = true;
         players.push(payable(msg.sender));
@@ -128,7 +134,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         return (request.fulfilled, request.randomWords);
     }
 
-    function guessTheNumberValue(uint256 _guess) external {
+    function guessTheNumberValue(uint256 _guess) external onlyWhenNotPaused {
         require(block.timestamp < timeLimit, "TIMES UP");
         require(
             msg.sender == players[0] || msg.sender == players[1],
@@ -165,7 +171,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         }
     }
 
-    function RestartGame() external onlyOwner{
+    function RestartGame() external onlyOwner {
          (, uint[] memory randomWords) = getRequestStatus(lastRequestId);
         require(
             block.timestamp > timeLimit && randomWords[0] > 0,
@@ -173,6 +179,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         );
         for (uint256 i = 0; i < players.length; i++) {
             alreadyEntered[players[i]] = false;
+            alreadyGuessed[players[i]] = false;
             emit Ended(players[i], currentGameId);
         }
         delete players;

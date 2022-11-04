@@ -366,7 +366,7 @@ function getEighthPlaceTeam() public view returns(bytes memory team) {
   return eighthPlaceTeam;
 }
 
-  function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
+  function setWorldCupAddress(address _worldCupDataAddress) external onlyOwner {
     worldCupDataAddress = _worldCupDataAddress;
   }
 }
