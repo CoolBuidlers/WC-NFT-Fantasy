@@ -2,6 +2,18 @@
   "goerli": {
     "WCNFTFantasy": {
       "address": "0xe65C90A046d1bf398b41933973df9BaA8F8C8299"
+    },
+    "Evolve": {
+      "address": "0x13A79E4e3970f323D448E5cf9ce6a2Fa4387c370"
+    },
+    "ChangeOrders": {
+      "address": "0xD0F3b690d308d6Ac07954d8c5E43993ad8292d04"
+    },
+    "QuizGame": {
+      "address": "0xC8D54bB4E3095f81Ea440DE53De2F85DdB8bc7a7"
+    },
+    "NumberGuessingGame": {
+      "address": "0xcace4cEFcE69c37c6389FEd8B19d177bB601E047"
     }
   }
 }

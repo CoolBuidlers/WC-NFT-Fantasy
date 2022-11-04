@@ -34,3 +34,103 @@ dataSources:
         - event: Winners(address,address,address)
           handler: handleWinners
       file: ./src/wcnft-fantasy.ts
+  - kind: ethereum
+    name: Evolve
+    network: goerli
+    source:
+      address: "0x13A79E4e3970f323D448E5cf9ce6a2Fa4387c370"
+      abi: Evolve
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - EvolveOwnershipTransferred
+      abis:
+        - name: Evolve
+          file: ./abis/Evolve.json
+      eventHandlers:
+        - event: EvolveOwnershipTransferred(indexed address,indexed address)
+          handler: handleEvolveOwnershipTransferred
+      file: ./src/evolve.ts
+  - kind: ethereum
+    name: ChangeOrders
+    network: goerli
+    source:
+      address: "0xD0F3b690d308d6Ac07954d8c5E43993ad8292d04"
+      abi: ChangeOrders
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - ChangeOrdersOwnershipTransferred
+        - TeamsSwapped
+      abis:
+        - name: ChangeOrders
+          file: ./abis/ChangeOrders.json
+      eventHandlers:
+        - event: ChangeOrdersOwnershipTransferred(indexed address,indexed address)
+          handler: handleChangeOrdersOwnershipTransferred
+        - event: TeamsSwapped(address,bytes,bytes,indexed uint256)
+          handler: handleTeamsSwapped
+      file: ./src/change-orders.ts
+  - kind: ethereum
+    name: QuizGame
+    network: goerli
+    source:
+      address: "0xC8D54bB4E3095f81Ea440DE53De2F85DdB8bc7a7"
+      abi: QuizGame
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - currentGame
+        - winner
+      abis:
+        - name: QuizGame
+          file: ./abis/QuizGame.json
+      eventHandlers:
+        - event: currentGame(address,uint256)
+          handler: handlecurrentGame
+        - event: winner(address,uint256)
+          handler: handlewinner
+      file: ./src/quiz-game.ts
+  - kind: ethereum
+    name: NumberGuessingGame
+    network: goerli
+    source:
+      address: "0xcace4cEFcE69c37c6389FEd8B19d177bB601E047"
+      abi: NumberGuessingGame
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Ended
+        - OwnershipTransferRequested
+        - NumberGuessingGameOwnershipTransferred
+        - RequestFulfilled
+        - RequestSent
+        - NumberGuessingGameWinners
+        - NumberGuessingGamecurrentGame
+      abis:
+        - name: NumberGuessingGame
+          file: ./abis/NumberGuessingGame.json
+      eventHandlers:
+        - event: Ended(address,uint256)
+          handler: handleEnded
+        - event: OwnershipTransferRequested(indexed address,indexed address)
+          handler: handleOwnershipTransferRequested
+        - event: NumberGuessingGameOwnershipTransferred(indexed address,indexed address)
+          handler: handleNumberGuessingGameOwnershipTransferred
+        - event: RequestFulfilled(uint256,uint256[])
+          handler: handleRequestFulfilled
+        - event: RequestSent(uint256,uint32)
+          handler: handleRequestSent
+        - event: NumberGuessingGameWinners(address,bytes32,uint256)
+          handler: handleNumberGuessingGameWinners
+        - event: NumberGuessingGamecurrentGame(address,uint256)
+          handler: handleNumberGuessingGamecurrentGame
+      file: ./src/number-guessing-game.ts

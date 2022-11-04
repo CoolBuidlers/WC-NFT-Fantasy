@@ -75,10 +75,22 @@ type Tokens @entity {
   predictors: Predictors!
 }
 
-#All Predictors
+# All Predictors
 type Predictors @entity {
   "user address"
   id: Bytes!
   "all the minted NFTs"
   mints: [Tokens!]! @derivedfrom(field: "predictors")
+}
+
+# Top Points
+type TopPoints @entity(immutable: true) {
+  "random ID"
+  id: Bytes!
+  "top points"
+  top: BigInt!
+  "second place points"
+  second: BigInt!
+  "third place points"
+  third: BigInt!
 }
