@@ -65,6 +65,7 @@ contract QuizGame {
             _optionFour,
             answer
         );
+        quizIdOne++;
     }
 
     function AddQuizTwo(
@@ -86,6 +87,7 @@ contract QuizGame {
             _optionFour,
             answer
         );
+        quizIdTwo++;
     }
 
     function setMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
