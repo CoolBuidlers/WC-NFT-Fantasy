@@ -3,13 +3,15 @@ import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
-import { useSigner, useProvider, useContract } from "wagmi";
+import { useSigner, useProvider, useContract, useAccount } from "wagmi";
 import { NUMBER_GUESSING_GAME_ABI, NUMBER_GUESSING_GAME_CONTRACT_ADDRESS } from "./Constants/Index";
+import { ethers } from "ethers";
 
 type Props = {};
 
 const NumberGame = (): JSX.Element => {
 
+  const connectedWallet = useAccount();
   const provider = useProvider();
   const {data: signer} = useSigner();
   const contract = useContract({
@@ -21,21 +23,119 @@ const NumberGame = (): JSX.Element => {
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
   const [hasGuessed, setHasGuesses] = useState<boolean>(true);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
+  const [playerGuess, setPlayerGuess] = useState<number>(0);
+
+  // StartGame function here
+  const startGame = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.startGame();
+      await txn.wait();
+      setIsStarted(true);
+    } 
+    catch (err: any) {
+      console.log(err)
+      // use the hot toast to display the reason
+    }
+  }
+
+  const joinGame = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.joinGame({
+        value: ethers.utils.formatEther("0.1")
+      });
+      await txn.wait();
+      requestRandomWords();
+      setJoined(true);
+    } 
+    catch (err: any) {
+      console.error(err);
+      
+    }
+  }
+
+  const requestRandomWords = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.requestRandomWords();
+      await txn.wait();
+    } 
+    catch (err :any) {
+      console.error(err)
+    }
+  }
+
+  const guessTheNumber = async (val: number): Promise<void> => {
+    try {
+      const txn: any = await contract.guessTheNumberValue(val);
+      await txn.wait();
+      setHasGuesses(true);
+    } 
+    catch (err: any) {
+      console.error(err);
+    }
+  }
+
+  const checkIfGuessIsCorrect = async (): Promise<void> => {
+    try{
+      const checkGuess: boolean = await contract.winnerMap(connectedWallet.address);
+      setGuessedCorrectly(checkGuess);
+      if(guessedCorrectly) {
+        setGuessedCorrectly(true);
+        rewardWinner(connectedWallet.address);
+      }
+      else {
+
+        // message with hot toast
+      }
+    }
+    catch(err: any) 
+    {
+      console.error(err)
+    }
+  }
+
+  const rewardWinner = async (val: any) => {
+    try {
+      const txn: any = await contract.rewardWinner(val);
+      await txn.wait();
+    } 
+    catch (err: any) {
+      console.error(err);
+    }
+  }
+
+  const restartGame = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.restartGame();
+      await txn.wait();
+    } 
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  function handleChange(event: any): void {
+      setPlayerGuess(parseInt(event.target.value));
+      console.log(playerGuess)
+  }
 
   const renderButton = (): JSX.Element | undefined => {
     if(!isStarted) {
       return (
-        <div className="flex justify-center cursor-pointer">
+        <div className="flex justify-center cursor-pointer"
+        onClick={startGame}
+        >
               <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
-                PlayGame
+                Start Game
               </span>
           </div>
       )
     }
     else if (isStarted && !joined) {
       return (
-        <div className="flex justify-center cursor-pointer">
+        <div className="flex justify-center cursor-pointer"
+        onClick={joinGame}
+        >
               <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
                 JoinGame
               </span>
@@ -48,8 +148,11 @@ const NumberGame = (): JSX.Element => {
               <input 
               className="bg-transparent border-b-4 border-[#DB00B6] mb-10 text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
               type="number"
+              onChange={handleChange}
               />
-              <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
+              <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
+              onClick={() => guessTheNumber(playerGuess)}
+              >
                 Sumbit
               </span>
           </div>
@@ -58,10 +161,10 @@ const NumberGame = (): JSX.Element => {
     else if(isStarted && joined && hasGuessed && !guessedCorrectly) {
       return(
         <div className="flex flex-col justify-center items-center">
-          <h3 className="text-white sm:text-xl md:text-2xl py-10">Woops your guess is incorrect Try again Later!</h3>
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
+          <h3 className="text-white sm:text-xl md:text-2xl">Woops your guess is incorrect Try again in the next round</h3>
+          {/* <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
                 Restart
-          </span>
+          </span> */}
         </div>
       )
     }
