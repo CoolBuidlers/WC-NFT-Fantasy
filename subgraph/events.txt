@@ -1,0 +1,37 @@
+Prediction
+event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
+event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
+event Winners(address winnerOne, address winnerTwo, address winnerThree);
+event AllPredictors(address smartContract, address predictor);
+
+Retreive Random Number
+event RoundChanged(bytes32 requestId, uint indexed time, uint indexed round);
+
+Change Orders
+event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
+
+Mint Teams One 
+event Mint(address account, uint indexed tokenId, uint256 indexed level);
+event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
+
+Mint Teams Two 
+event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
+
+World Cup Data
+event ReceiveTeamTop16(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+event ReceiveTeamTop8(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+
+Number Guessing Game
+// event to keep track of the players for the currentGame ID
+event currentGame(address player, uint256 gameId);
+// event to keep track of winners for that gameId alongside the requestId for the VRF
+event Winners(address winner, bytes32 requestId, uint256 gameId);
+// event to keep track of the deleted players after certain conditions are not met
+event Ended(address player, uint256 gameId);
+event RequestSent(uint256 requestId, uint32 numWords);
+event RequestFulfilled(uint256 requestId, uint256[] randomWords);
+
+Quiz Game
+event currentGame(address caller, uint256 currentGameId);
+event winner(address winner, uint256 gameId);

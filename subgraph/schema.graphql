@@ -1,6 +1,84 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  smartContract: Bytes! # address
-  predictor: Bytes! # address
+# ---- ENUMS ----
+
+# Game Type
+enum GameType {
+  Prediction
+  Quiz
+  NumberGuess
+}
+
+# Position of the NFT
+enum Position {
+  position1
+  position2
+  position3
+  position4
+  position5
+  position6
+}
+
+# Level of the NFT
+enum Level {
+  level1
+  level2
+  level3
+  level4
+}
+
+# ---- OBJECTS ----
+
+# Winners of the games
+type Winners @entity(immutable: true) {
+  "composed of unique data"
+  id: String!
+  "addresses of the winners in order (0 position is the 1st place)"
+  predictor: [Predictors!]!
+  "applicable in Quiz Type and Number Guessing game"
+  gameId: BigInt
+  "game enum which has three types"
+  game: Game!
+}
+
+# Game Info
+type Game @entity {
+  "gameID of the game"
+  id: String!
+  "addresses of the people participating"
+  people: [Bytes!]
+  "gameId is applicable in Quiz Type and Number Guessing game"
+  gameId: BigInt
+  "enum which has three types"
+  gameType: GameType!
+  "True if the game is finished, false otherwise"
+  status: Boolean!
+}
+
+# Round Info
+type Round @entity(immutable: true) {
+  "the name of the Round"
+  id: String!
+  "ref to the countries"
+  countryIds: [BigInt!]!
+}
+
+# Minted Tokens
+type Tokens @entity {
+  "token ID minted"
+  id: String!
+  "address of the minter"
+  user: Bytes!
+  "position of the NFT"
+  position: Position!
+  "level of the NFT"
+  level: Level!
+  "ref to the Predictors Object"
+  predictors: Predictors!
+}
+
+#All Predictors
+type Predictors @entity {
+  "user address"
+  id: Bytes!
+  "all the minted NFTs"
+  mints: [Tokens!]! @derivedfrom(field: "predictors")
 }

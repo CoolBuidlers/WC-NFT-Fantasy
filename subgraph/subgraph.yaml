@@ -8,6 +8,7 @@ dataSources:
     source:
       address: "0xe65C90A046d1bf398b41933973df9BaA8F8C8299"
       abi: WCNFTFantasy
+      startBlock: 7872662
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
