@@ -1,3 +1,4 @@
+import "../interfaces/IMintTeams.sol";
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.7;
@@ -29,8 +30,10 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     uint256[] public requestIds;
     uint256 public lastRequestId;
     uint256 public maxPlayers = 2;
+    uint public nextRound;
     // address override owner;
     address payable[] public players;
+    address public mintAddress;
     bool public started;
     uint32 callbackGasLimit = 100000;
     // The default is 3, but you can set this higher.
@@ -41,11 +44,9 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     mapping (uint256 => RequestStatus) public s_requests; /* requestId --> requestStatus */
     mapping (address => bool) alreadyGuessed;
     mapping (address => bool) alreadyEntered;
-    mapping (address => bool) winnerMap;
     address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
     bytes32 public keyHash;
-    uint256 public fee = 0.1 * 10**18; // 0.1 link;
-    uint256 randomResult;
+    uint256 public fee = 0.1 * 10**18;
     bytes32 public currentRequestId;
 
     uint256 currentGameId = 1;
@@ -61,9 +62,11 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         s_subscriptionId = subscriptionId;
     }
 
-    function startGame() public {
+    function startGame() external onlyOwner {
+        require(block.timestamp > nextRound, "Next round hasn't started yet");
         started = true;
         timeLimit = 10 minutes;
+        nextRound = block.timestamp + 5 days;
     }
 
     modifier AlreadyEntered () {
@@ -80,7 +83,13 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         _;
     }
 
+    function setMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
+        mintAddress = _mintTeamOneAddress;
+    }
+
+
     function joinGame() public AlreadyEntered gameRunning {
+        require(block.timestamp > nextRound, "Next round hasn't started yet");
         require(players.length < maxPlayers, "Game is Full");
         alreadyEntered[msg.sender] = true;
         players.push(payable(msg.sender));
@@ -110,7 +119,6 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         require(s_requests[_requestId].exists, 'request not found');
         s_requests[_requestId].fulfilled = true;
         s_requests[_requestId].randomWords = _randomWords;
-        randomResult = _randomWords[0] % 6; // 
         emit RequestFulfilled(_requestId, _randomWords);
     }
 
@@ -120,23 +128,24 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         return (request.fulfilled, request.randomWords);
     }
 
-    function guessTheNumberValue(uint256 _guess) public {
+    function guessTheNumberValue(uint256 _guess) external {
+        require(block.timestamp < timeLimit, "TIMES UP");
         require(
             msg.sender == players[0] || msg.sender == players[1],
             "Not a Player!!!"
         );
+         (, uint[] memory randomWords) = getRequestStatus(lastRequestId);
         require(!alreadyGuessed[msg.sender], "You have already made a guess");
-        require(randomResult > 0, "Random Num not generated YET!");
-        if (randomResult == _guess) {
+        require(randomWords[0] > 0, "Random Num not generated YET!");
+        if (randomWords[0] % 6 == _guess) {
             alreadyEntered[players[0]] = false;
             alreadyEntered[players[1]] = false;
             delete players;
-            alreadyGuessed[msg.sender] = true;
+            alreadyGuessed[msg.sender] = false;
+            IMintTeams(mintAddress).mint(msg.sender, 47, 1, "");
             emit Winners(msg.sender, currentRequestId, currentGameId);
             currentGameId++;
             nonce = 0;
-            randomResult = 0;
-            winnerMap[msg.sender] = true;
         }
         else {
             nonce++;
@@ -150,21 +159,16 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
             alreadyGuessed[players[1]] = false;
             delete players;
             currentGameId++;
-            randomResult = 0;
             emit Ended(players[0], currentGameId);
             emit Ended(players[1], currentGameId);
             nonce = 0;
-            // withdraw();
         }
     }
 
-    function rewardWinner(address payable _winner) public {
-        
-    }
-
-    function RestartGame() public {
+    function RestartGame() external onlyOwner{
+         (, uint[] memory randomWords) = getRequestStatus(lastRequestId);
         require(
-            block.timestamp > timeLimit && randomResult > 0,
+            block.timestamp > timeLimit && randomWords[0] > 0,
             "Game not Ended yet!"
         );
         for (uint256 i = 0; i < players.length; i++) {
@@ -173,7 +177,6 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         }
         delete players;
         nonce = 0;
-        randomResult = 0;
         currentGameId++;
     }
 }
