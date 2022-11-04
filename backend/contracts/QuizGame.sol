@@ -187,4 +187,16 @@ contract QuizGame {
        pause = _setPause;
      }
 
+     function joinedGame(uint quizId) external view returns(bool) {
+        return alreadyJoinedGame[quizId][msg.sender];
+     }
+
+      function haveYouClaimedPrize(uint quizId) external view returns(bool) {
+        return claimedPrize[quizId][msg.sender];
+     }
+
+     function haveYouGuessed(uint quizId) external view returns(bool) {
+        return guessed[quizId][msg.sender];
+     }
+
     }
