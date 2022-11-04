@@ -18,18 +18,24 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    hardhat: {
+      forking: {
+        url: "https://cold-thrumming-card.matic-testnet.discover.quiknode.pro/7e16a39a608d405b5a7751989f0acbc8ec2bca10",
+        enabled: true
+      },
+    },
     mumbai: {
       url: QUICKNODE_API_KEY_URL,
       accounts: [PRIVATE_KEY !== undefined ? PRIVATE_KEY : ""],
     },
   },
 
-  // etherscan: {
-  //   apiKey:
-  //     process.env.ETHERSCAN_API_KEY !== undefined
-  //       ? process.env.ETHERSCAN_API_KEY
-  //       : "",
-  // },
+  etherscan: {
+    apiKey:
+      process.env.ETHERSCAN_API_KEY !== undefined
+        ? process.env.ETHERSCAN_API_KEY
+        : "",
+  },
 };
 
 export default config;

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.6",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@openzeppelin/contracts": "^4.7.3",
     "dotenv": "^16.0.3"
