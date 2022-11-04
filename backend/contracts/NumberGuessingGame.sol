@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.7;
 
-import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
@@ -29,7 +28,6 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     // past requests Id.
     uint256[] public requestIds;
     uint256 public lastRequestId;
-    AggregatorV3Interface internal priceFeed;
     uint256 public maxPlayers = 2;
     // address override owner;
     address payable[] public players;
@@ -40,21 +38,19 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     // For this example, retrieve 2 random values in one request.
     // Cannot exceed VRFCoordinatorV2.MAX_NUM_WORDS.
     uint32 numWords = 1;
-    mapping (address => uint256) public addressToAmountSent;
     mapping (uint256 => RequestStatus) public s_requests; /* requestId --> requestStatus */
-    mapping (address => bool) public alreadyGuessed;
-    mapping (address => bool) public alreadyEntered;
-    mapping (address => bool) public winnerMap;
+    mapping (address => bool) alreadyGuessed;
+    mapping (address => bool) alreadyEntered;
+    mapping (address => bool) winnerMap;
     address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
     bytes32 public keyHash;
     uint256 public fee = 0.1 * 10**18; // 0.1 link;
-    uint256 public randomResult;
+    uint256 randomResult;
     bytes32 public currentRequestId;
 
     uint256 currentGameId = 1;
     uint128 public nonce;
     uint256 timeLimit;
-    uint256 guess;
 
     constructor (uint64 subscriptionId, address _vrfCoordinator, bytes32 _keyHash) 
         VRFConsumerBaseV2(_vrfCoordinator)
@@ -63,24 +59,6 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);
         keyHash = _keyHash;
         s_subscriptionId = subscriptionId;
-        // Matic to USD
-        priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
-        // owner = msg.sender;
-    }
-
-    function getLatestPrice() public view returns (uint256) {
-        (,int price,,,) = priceFeed.latestRoundData();
-        return uint256(price / 1000000);
-    }
-
-    function getVersion() public view returns (uint256) {
-        return priceFeed.version();
-    }
-
-    function getConversionRate(uint256 maticAmount) public view returns (uint256) {
-        uint256 maticPrice = getLatestPrice();
-        uint256 maticAmountInUsd = (maticPrice * maticAmount) / 100;
-        return maticAmountInUsd;
     }
 
     function startGame() public {
@@ -102,21 +80,17 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         _;
     }
 
-    function joinGame() public payable AlreadyEntered gameRunning {
-        // uint256 minimumUSDAmount = 10 * 10**18;
-        // uint256 minimumUSDAmount = 100000000 gwei; // 0.1 Matic => 0.08 usd
-        uint256 amountToJoinGame = 0.1 ether;
-        require(players.length < maxPlayers, 
-            "Game is Full"
-        );
+    function joinGame() public AlreadyEntered gameRunning {
+        require(players.length < maxPlayers, "Game is Full");
         alreadyEntered[msg.sender] = true;
-        require(msg.value >= amountToJoinGame, "NOT ENOUGH MATIC!");
-        addressToAmountSent[msg.sender] += msg.value;
         players.push(payable(msg.sender));
         emit currentGame(msg.sender, currentGameId);
+        if(players.length == maxPlayers) {
+         requestRandomWords();
+        }
     }
 
-    function requestRandomWords() public returns (uint256 requestId) {
+    function requestRandomWords() internal returns (uint256 requestId) {
         // Will revert if subscription is not set and funded.
         requestId = COORDINATOR.requestRandomWords(
             keyHash,
@@ -140,7 +114,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         emit RequestFulfilled(_requestId, _randomWords);
     }
 
-    function getRequestStatus(uint256 _requestId) external view returns (bool fulfilled, uint256[] memory randomWords) {
+    function getRequestStatus(uint256 _requestId) internal view returns (bool fulfilled, uint256[] memory randomWords) {
         require(s_requests[_requestId].exists, 'request not found');
         RequestStatus memory request = s_requests[_requestId];
         return (request.fulfilled, request.randomWords);
@@ -153,8 +127,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         );
         require(!alreadyGuessed[msg.sender], "You have already made a guess");
         require(randomResult > 0, "Random Num not generated YET!");
-        guess = _guess;
-        if (randomResult == guess) {
+        if (randomResult == _guess) {
             alreadyEntered[players[0]] = false;
             alreadyEntered[players[1]] = false;
             delete players;
@@ -186,9 +159,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     }
 
     function rewardWinner(address payable _winner) public {
-        require(winnerMap[_winner] == true, "You are not the winner");
-        (bool sent, ) = _winner.call{value: 0.2 ether}("");
-        require(sent, "Failed to reward Winner!");
+        
     }
 
     function RestartGame() public {
@@ -205,22 +176,4 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         randomResult = 0;
         currentGameId++;
     }
-
-    function getContractBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
-
-    function withdraw() public payable onlyOwner {
-        require(address(this).balance > 0,
-         "There is no Money in the contract"
-        );
-        uint256 balance = address(this).balance;
-        (bool sent, ) = owner().call{ value: balance }("");
-        require(sent, "Failed to withdraw!");
-    }
-
-    receive() external payable {}
-
-    fallback() external payable {}
-
 }

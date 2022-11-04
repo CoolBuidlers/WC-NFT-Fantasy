@@ -17,9 +17,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
   address public predictionAddress;
   bytes32 private jobId;
   uint256 private fee;
-  event ReceiveTeamTop16(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
-  event ReceiveTeamTop8(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
-  event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
+  event ReceiveTeamTop16(bytes32 requestId, uint256 indexed teamId, uint256 indexed round, uint rank);
+  event ReceiveTeamTop8(bytes32 requestId, uint256 indexed teamId, uint256 indexed round, uint rank);
+  event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round, uint rank);
 
 
    constructor() {
@@ -66,11 +66,11 @@ contract WorldCupData is ChainlinkClient, Ownable {
     function receiveTeamOne(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setFirstPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 1);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 1);
         }  else if(IPrediction(predictionAddress).isPhase4() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 4);
+           emit ReceiveTeamTop8(_requestId, _teamId, 4, 1);
         }
     }
 
@@ -87,11 +87,11 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamTwo(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setSecondPlaceTeam(_teamId);
          if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 2);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 2);
         }  else if(IPrediction(predictionAddress).isPhase4() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 4);
+           emit ReceiveTeamTop8(_requestId, _teamId, 4, 2);
         }
     }
 
@@ -108,11 +108,11 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamThree(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setThirdPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 3);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 3);
         }  else if(IPrediction(predictionAddress).isPhase4() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 4);
+           emit ReceiveTeamTop8(_requestId, _teamId, 4, 3);
         }
     }
 
@@ -129,11 +129,11 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamFour(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setFourthPlaceTeam(_teamId);
          if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 4);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 4);
         }  else if(IPrediction(predictionAddress).isPhase4() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 4);
+           emit ReceiveTeamTop8(_requestId, _teamId, 4, 4);
         }
     }
 
@@ -150,9 +150,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamFive(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
          IFetchTeams(fetchTeamsTwoAddress).setFifthPlaceTeam(_teamId);
          if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 5);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 5);
         }
     }
 
@@ -169,9 +169,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamSix(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
          IFetchTeams(fetchTeamsTwoAddress).setSixthPlaceTeam(_teamId);
           if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 6);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 6);
         }
     }
 
@@ -188,9 +188,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamSeven(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsTwoAddress).setSeventhPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 7);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 7);
         }
     }
 
@@ -207,9 +207,9 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamEight(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsTwoAddress).setEighthPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 8);
         } else if(IPrediction(predictionAddress).isPhase8() == true) {
-           emit ReceiveTeamTop8(_requestId, _teamId, 8);
+           emit ReceiveTeamTop8(_requestId, _teamId, 8, 8);
         }
     }
 
@@ -226,7 +226,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamNine(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsThreeAddress).setNinthPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 9);
         }
     }
 
@@ -243,7 +243,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamTen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsThreeAddress).setTenthPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 10);
         }
     }
 
@@ -260,7 +260,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamEleven(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsThreeAddress).setEleventhPlaceTeam(_teamId);
        if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 11);
         }
     }
 
@@ -277,7 +277,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamTwelve(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsThreeAddress).setTwelfthPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 12);
         }
     }
 
@@ -294,7 +294,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamThirteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
          IFetchTeams(fetchTeamsFourAddress).setThirteenthPlaceTeam(_teamId);
          if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 13);
         }
     }
 
@@ -311,7 +311,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamFourteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsFourAddress).setFourteenthPlaceTeam(_teamId);
        if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 14);
         }
     }
 
@@ -328,7 +328,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamFifteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsFourAddress).setFifteenthPlaceTeam(_teamId);
         if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 15);
         }
     }
 
@@ -345,7 +345,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
      function receiveTeamSixteen(bytes32 _requestId, uint256 _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsFourAddress).setSixteenthPlaceTeam(_teamId);
        if(IPrediction(predictionAddress).isPhase16() == true) {
-            emit ReceiveTeamTop16(_requestId, _teamId, 16);
+            emit ReceiveTeamTop16(_requestId, _teamId, 16, 16);
         }
     }
 
