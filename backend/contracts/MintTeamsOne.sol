@@ -12,6 +12,7 @@ contract MintTeamsOne is ERC1155, Ownable {
    address public predictionAddress;
    address public evolveAddress;
    address public mintTeamsTwoAddress;
+    address public quizGameAddress;
    uint constant WORLD_CUP_ENDS = 1671429600;
    bytes[32] worldCupTeams;
 
@@ -80,6 +81,10 @@ contract MintTeamsOne is ERC1155, Ownable {
 
     function setMintTeamsTwoAddress(address _mintTeamsTwoAddress) external onlyOwner {
       mintTeamsTwoAddress = _mintTeamsTwoAddress;
+    }
+
+    function setQuizGameAddress(address _quizGameAddress) external onlyOwner {
+       quizGameAddress = _quizGameAddress;
     }
 
      function safeTransferFrom(
@@ -347,7 +352,7 @@ contract MintTeamsOne is ERC1155, Ownable {
     } 
 
     function mint(address to, uint256 id, uint256 amount, bytes memory data) public {
-      require(msg.sender == mintTeamsTwoAddress, "USER_CANT_CALL_FUNCTION");
+      require(msg.sender == mintTeamsTwoAddress || msg.sender == quizGameAddress, "USER_CANT_CALL_FUNCTION");
        _mint(to, id, amount, data);
     }
     
