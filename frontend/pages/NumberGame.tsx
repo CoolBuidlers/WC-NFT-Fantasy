@@ -22,7 +22,7 @@ const NumberGame = (): JSX.Element => {
 
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
-  const [hasGuessed, setHasGuesses] = useState<boolean>(true);
+  const [hasGuessed, setHasGuessed] = useState<boolean>(true);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
   const [playerGuess, setPlayerGuess] = useState<number>(0);
 
@@ -45,7 +45,7 @@ const NumberGame = (): JSX.Element => {
         value: ethers.utils.formatEther("0.1")
       });
       await txn.wait();
-      requestRandomWords();
+      await requestRandomWords();
       setJoined(true);
     } 
     catch (err: any) {
@@ -68,7 +68,8 @@ const NumberGame = (): JSX.Element => {
     try {
       const txn: any = await contract.guessTheNumberValue(val);
       await txn.wait();
-      setHasGuesses(true);
+      setHasGuessed(true);
+      await checkIfGuessIsCorrect();
     } 
     catch (err: any) {
       console.error(err);
@@ -81,10 +82,12 @@ const NumberGame = (): JSX.Element => {
       setGuessedCorrectly(checkGuess);
       if(guessedCorrectly) {
         setGuessedCorrectly(true);
+        setHasGuessed(true);
         rewardWinner(connectedWallet.address);
       }
       else {
-
+        setHasGuessed(true);
+        restartGame();
         // message with hot toast
       }
     }
@@ -108,6 +111,11 @@ const NumberGame = (): JSX.Element => {
     try {
       const txn: any = await contract.restartGame();
       await txn.wait();
+      setIsStarted(false);
+      setJoined(false);
+      setHasGuessed(false);
+      setGuessedCorrectly(false);
+      // call some function here to check the same user doesn't play more than once
     } 
     catch (err: any) {
       console.error(err)
