@@ -3,8 +3,18 @@ import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
+import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
+import { useContract, useProvider, useSigner } from "wagmi";
 
 const QuizGame = () => {
+
+  const provider = useProvider();
+  const {data: signer} = useSigner();
+  const contract = useContract({
+    addressOrName: QUIZ_GAME_CONTRACT_ADDRESS,
+    contractInterface: QUIZ_GAME_CONTRACT_ABI,
+    signerOrProvider: signer || provider
+  });
 
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);

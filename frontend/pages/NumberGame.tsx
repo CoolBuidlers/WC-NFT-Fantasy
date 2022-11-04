@@ -3,10 +3,20 @@ import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
+import { useSigner, useProvider, useContract } from "wagmi";
+import { NUMBER_GUESSING_GAME_ABI, NUMBER_GUESSING_GAME_CONTRACT_ADDRESS } from "./Constants/Index";
 
 type Props = {};
 
 const NumberGame = (): JSX.Element => {
+
+  const provider = useProvider();
+  const {data: signer} = useSigner();
+  const contract = useContract({
+    addressOrName: NUMBER_GUESSING_GAME_CONTRACT_ADDRESS,
+    contractInterface: NUMBER_GUESSING_GAME_ABI,
+    signerOrProvider: signer || provider
+  });
 
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
