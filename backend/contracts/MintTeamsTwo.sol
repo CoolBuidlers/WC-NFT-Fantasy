@@ -11,8 +11,10 @@ contract MintTeamsTwo is Ownable {
     address public evolveAddress;
     address public predictionAddress;
     address public  mintTeamsOneAddress;
+    address public setAddress;
    bytes[32] worldCupTeams;
-   constructor() {
+   constructor(address _setAddress) {
+      setAddress = _setAddress;
       //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -61,15 +63,18 @@ contract MintTeamsTwo is Ownable {
          worldCupTeams[30] = abi.encode("Uruguay");
          worldCupTeams[31] = abi.encode("Korea Republic");
    }
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+    function setPredictionAddress(address _predictionAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        predictionAddress = _predictionAddress;
     }
 
-    function setEvolveAddress(address _evolveAddress) external onlyOwner {
+    function setEvolveAddress(address _evolveAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        evolveAddress = _evolveAddress;
     }
 
-     function setMintTeamsOneAddress(address _mintTeamsOneAddress) external onlyOwner {
+     function setMintTeamOneAddress(address _mintTeamsOneAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamsOneAddress = _mintTeamsOneAddress;
     }
 

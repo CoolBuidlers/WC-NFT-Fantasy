@@ -16,43 +16,54 @@ address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
 address public predictionAddress;
+address public setAddress;
 
 bool paused;
 modifier onlyWhenNotPaused {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
+   constructor(address _setAddress) {
+     setAddress = _setAddress;
+   }
 
 function setPause(bool _paused) external onlyOwner {
      paused = _paused;
    }
 
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+    function setPredictionAddress(address _predictionAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     predictionAddress = _predictionAddress;
  }
 
 
-    function getFetchTeamOne(address _fetchTeamOneAddress) external onlyOwner {
+    function getFetchTeamOne(address _fetchTeamOneAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamOneAddress = _fetchTeamOneAddress;
     }
 
-     function getFetchTeamTwo(address _fetchTeamTwoAddress) external onlyOwner {
+     function getFetchTeamTwo(address _fetchTeamTwoAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamTwoAddress = _fetchTeamTwoAddress;
     }
 
-     function getFetchTeamThree(address _fetchTeamThreeAddress) external onlyOwner {
+     function getFetchTeamThree(address _fetchTeamThreeAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamThreeAddress = _fetchTeamThreeAddress;
     }
 
-      function getFetchTeamFour(address _fetchTeamFourAddress) external onlyOwner {
+      function getFetchTeamFour(address _fetchTeamFourAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
        fetchTeamFourAddress = _fetchTeamFourAddress;
     }
 
-    function getMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
+    function getMintTeamOneAddress(address _mintTeamOneAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamOneAddress = _mintTeamOneAddress;
     }
 
-     function getMintTeamTwoAddress(address _mintTeamTwoAddress) external onlyOwner {
+     function getMintTeamTwoAddress(address _mintTeamTwoAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       mintTeamTwoAddress = _mintTeamTwoAddress;
     }
   

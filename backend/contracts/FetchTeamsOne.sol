@@ -9,9 +9,11 @@ contract FetchTeamsOne is Ownable {
     bytes thirdPlaceTeam;
     bytes fourthPlaceTeam;
     address public worldCupDataAddress;
+     address public setAddress;
     bytes[32] worldCupTeams;
 
-    constructor() {
+    constructor(address _setAddress) {
+      setAddress = _setAddress;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -366,7 +368,8 @@ function getFourthPlaceTeam() public view returns(bytes memory team) {
   return fourthPlaceTeam;
 }
 
-  function setWorldCupAddress(address _worldCupDataAddress) external onlyOwner {
+  function setWorldCupDataAddress(address _worldCupDataAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     worldCupDataAddress = _worldCupDataAddress;
   }
 }

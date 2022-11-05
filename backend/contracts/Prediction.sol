@@ -27,6 +27,7 @@ address public mintTeamAddress;
 address public worldCupDataAddress;
 address public changeOrderAddress;
 address public fetchTeamAddress;
+address public setAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
@@ -91,7 +92,8 @@ struct TopPredictions {
      _;
    }
 
-     constructor() {  
+     constructor(address _setAddress) {  
+        setAddress = _setAddress;
         priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         currentPhase = GamePhases.MINT;
         //Group A
@@ -287,23 +289,28 @@ struct TopPredictions {
       }
     }
 
-  function setRandomAndRoundAddress(address _randomAndRoundAddress) external onlyOwner {
+  function setRandomAndRoundAddress(address _randomAndRoundAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
      randomAndRoundAddress = _randomAndRoundAddress;
   }
 
-  function setWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
+  function setWorldCupDataAddress(address _worldCupDataAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     worldCupDataAddress = _worldCupDataAddress;
   }
 
-  function setChangeOrderAddress(address _changeOrderAddress) external onlyOwner{
+  function setChangeOrderAddress(address _changeOrderAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     changeOrderAddress = _changeOrderAddress;
   }  
 
-  function setFetchTeamAddress(address _fetchTeamAddress) external onlyOwner {
+  function setFetchTeamOne(address _fetchTeamAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
     fetchTeamAddress = _fetchTeamAddress;
   }
 
-  function setMintTeamAddress(address _mintTeamAddress) external onlyOwner {
+  function setMintTeamOneAddress(address _mintTeamAddress) public {
+    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
      mintTeamAddress = _mintTeamAddress;
   }
 

@@ -29,6 +29,7 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     uint32 numWords = 3;
     address public predictionAddress;
     address public worldCupDataAddress;
+    address public setAddress;
     struct RequestStatus {
         bool fulfilled; 
         bool exists;
@@ -37,11 +38,13 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
-    function getPredictionAddress(address _predictionAddress) external onlyOwner {
+    function setPredictionAddress(address _predictionAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
         predictionAddress = _predictionAddress;
     }
 
-    function getWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
+    function setWorldCupDataAddress(address _worldCupDataAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
         worldCupDataAddress = _worldCupDataAddress;
     }
 
@@ -50,7 +53,7 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     }
 
 
-    constructor(uint64 subscriptionId) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
+    constructor(uint64 subscriptionId, address _setAddress) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);

@@ -15,6 +15,7 @@ contract WorldCupData is ChainlinkClient, Ownable {
   address public fetchTeamsThreeAddress;
   address public fetchTeamsFourAddress;
   address public predictionAddress;
+  address public setAddress;
   bytes32 private jobId;
   uint256 private fee;
   event ReceiveTeamTop16(bytes32 requestId, uint256 indexed teamId, uint256 indexed round, uint rank);
@@ -22,35 +23,42 @@ contract WorldCupData is ChainlinkClient, Ownable {
   event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round, uint rank);
 
 
-   constructor() {
+   constructor(address _setAddress) {
+        setAddress = _setAddress;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         jobId = 'ca98366cc7314957b8c012c72f05aeeb';
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
-    function setRandomNumberAndRoundAddress(address _randomNumberAndRoundAddress) external onlyOwner {
+    function setRandomAndRoundAddress(address _randomNumberAndRoundAddress) public {
+      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
     }
 
-    function setFetchTeamsOneAddress(address _fetchTeamsOneAddress) external onlyOwner {
-      fetchTeamsOneAddress = _fetchTeamsOneAddress;
+    function setFetchTeamOne(address _fetchTeamsOneAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+       fetchTeamsOneAddress = _fetchTeamsOneAddress;
     }
 
-    function setFetchTeamsTwoAddress(address _fetchTeamsTwoAddress) external onlyOwner {
-      fetchTeamsTwoAddress = _fetchTeamsTwoAddress;
+    function setFetchTeamTwo(address _fetchTeamsTwoAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+       fetchTeamsTwoAddress = _fetchTeamsTwoAddress;
     }
 
-    function setFetchTeamsThreeAddress(address _fetchTeamsThreeAddress) external onlyOwner {
-      fetchTeamsThreeAddress = _fetchTeamsThreeAddress;
+    function setFetchTeamThree(address _fetchTeamsThreeAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+       fetchTeamsThreeAddress = _fetchTeamsThreeAddress;
     }
 
-    function setFetchTeamsFourAddress(address _fetchTeamsFourAddress) external onlyOwner {
+    function setFetchTeamFour(address _fetchTeamsFourAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
       fetchTeamsFourAddress = _fetchTeamsFourAddress;
     }
 
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
-      predictionAddress = _predictionAddress;
+    function setPredictionAddress(address _predictionAddress) public {
+        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+       predictionAddress = _predictionAddress;
     }
 
     function receiveTeamOneStanding() private returns(bytes32 requestId) {

@@ -8,12 +8,18 @@ contract ChangeOrders is Ownable, ReentrancyGuard {
 event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 address public predictionAddress;
 bool paused;
+ address public setAddress;
 modifier onlyWhenNotPaused {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
 
-function setPredictionAddress(address _predictionAddress) external onlyOwner {
+   constructor(address _setAddress) {
+     setAddress = _setAddress;
+   }
+
+function setPredictionAddress(address _predictionAddress) public {
+  require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
   predictionAddress = _predictionAddress;
 }
 

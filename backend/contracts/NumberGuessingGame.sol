@@ -35,6 +35,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     // address override owner;
     address payable[] public players;
     address public mintAddress;
+    address public setAddress;
     bool public started;
     uint32 callbackGasLimit = 100000;
     // The default is 3, but you can set this higher.
