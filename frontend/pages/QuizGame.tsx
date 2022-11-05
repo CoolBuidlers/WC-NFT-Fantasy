@@ -16,10 +16,42 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
-  const [isStarted, setIsStarted] = useState<boolean>(true);
-  const [joined, setJoined] = useState<boolean>(true);
-  const [hasGuessed, setHasGuesses] = useState<boolean>(true);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [joined, setJoined] = useState<boolean>(false);
+  const [hasGuessed, setHasGuesses] = useState<boolean>(false);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
+
+  const startGame = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.startGameOne(); // this will be updated to startGameTwo when the next round starts
+      await txn.wait();
+      setIsStarted(true);
+    } 
+    catch (err: any) {
+      console.error(err);  
+    }
+  }
+
+  const joinGame = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.joinGameOne();
+      await txn.wait();
+      setJoined(true);
+    } 
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  const claimPrize = async (): Promise<void> => {
+    try {
+      const txn: any = await contract.claimPrizeOne();
+      await txn.wait();
+    } 
+    catch (err: any) {
+      console.error(err);
+    }
+  }
 
   const renderButton = (): JSX.Element | undefined => {
     if(!isStarted) {
