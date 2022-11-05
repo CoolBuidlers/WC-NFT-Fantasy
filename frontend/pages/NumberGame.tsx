@@ -5,7 +5,7 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import { useSigner, useProvider, useContract, useAccount } from "wagmi";
 import { NUMBER_GUESSING_GAME_ABI, NUMBER_GUESSING_GAME_CONTRACT_ADDRESS } from "./Constants/Index";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 type Props = {};
 
@@ -25,6 +25,7 @@ const NumberGame = (): JSX.Element => {
   const [hasGuessed, setHasGuessed] = useState<boolean>(true);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
   const [playerGuess, setPlayerGuess] = useState<number>(0);
+  const [randomNumber, setRandomNumber] = useState<number>(0);
 
   // StartGame function here
   const startGame = async (): Promise<void> => {
@@ -69,7 +70,6 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.guessTheNumberValue(val);
       await txn.wait();
       setHasGuessed(true);
-      await checkIfGuessIsCorrect();
     } 
     catch (err: any) {
       console.error(err);
@@ -78,12 +78,11 @@ const NumberGame = (): JSX.Element => {
 
   const checkIfGuessIsCorrect = async (): Promise<void> => {
     try{
-      const checkGuess: boolean = await contract.winnerMap(connectedWallet.address);
-      setGuessedCorrectly(checkGuess);
-      if(guessedCorrectly) {
+      const rand: BigNumber = await contract.randomResult(); // Need you to create a state and add randomResult to it
+      setRandomNumber(rand.toNumber());
+      if(randomNumber === playerGuess) {
         setGuessedCorrectly(true);
         setHasGuessed(true);
-        rewardWinner(connectedWallet.address);
       }
       else {
         setHasGuessed(true);
@@ -94,16 +93,6 @@ const NumberGame = (): JSX.Element => {
     catch(err: any) 
     {
       console.error(err)
-    }
-  }
-
-  const rewardWinner = async (val: any) => {
-    try {
-      const txn: any = await contract.rewardWinner(val);
-      await txn.wait();
-    } 
-    catch (err: any) {
-      console.error(err);
     }
   }
 
