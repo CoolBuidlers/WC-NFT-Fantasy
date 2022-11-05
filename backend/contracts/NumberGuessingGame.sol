@@ -28,7 +28,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     uint64 s_subscriptionId;
     // past requests Id.
     uint256[] public requestIds;
-    uint256 public lastRequestId;
+    uint256 internal lastRequestId;
     uint256 public maxPlayers = 2;
     uint public nextRound;
     bool pause;
@@ -95,7 +95,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     }
 
 
-    function joinGame() public AlreadyEntered gameRunning onlyWhenNotPaused {
+    function joinGame() external AlreadyEntered gameRunning onlyWhenNotPaused {
         require(block.timestamp < timeLimit, "TIMES UP");
         require(players.length < maxPlayers, "Game is Full");
         alreadyEntered[msg.sender] = true;
@@ -133,6 +133,11 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
         require(s_requests[_requestId].exists, 'request not found');
         RequestStatus memory request = s_requests[_requestId];
         return (request.fulfilled, request.randomWords);
+    }
+
+    function numberIsBiggerThanZero() external view returns(bool) {
+          (, uint[] memory randomWords) = getRequestStatus(lastRequestId);
+          return randomWords[0] > 0;
     }
 
     function guessTheNumberValue(uint256 _guess) external onlyWhenNotPaused {

@@ -23,6 +23,7 @@ const Mint = () => {
   const [fourthTeam, setFourthTeam] = useState<string>("");
   const [fifthTeam, setFifthTeam] = useState<string>("");
   const [sixthTeam, setSixthTeam] = useState<string>("");
+  const [nftLevel, setNftLevel] = useState<number>(0);
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false)
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
@@ -142,9 +143,11 @@ const Mint = () => {
         </div>
       )}
 
-      {hasUserMintedExtraTwo && <div>
-        <div>Thank you for minting!</div>
-        </div>}
+      {hasUserMintedExtraTwo && (
+        <div>
+          <div>Thank you for minting!</div>
+        </div>
+      )}
 
       {/* <div className="flex items-center flex-wrap justify-center px-2">
         <div className="sm:w-[349px] w-[300px] relative cursor-pointer">
@@ -206,12 +209,36 @@ const Mint = () => {
         >
           <Carousel.Item>
             <div className="max-w-[200px]">
-              <Neymar className="text-[25rem]" />
+              {nftLevel === 0 && (
+                <Neymar
+                  className="text-[25rem]"
+                  onClick={() => setNftLevel(1)}
+                />
+              )}
+              {nftLevel === 1 && (
+                <Image
+                  src={Sadio}
+                  className="text-[25rem]"
+                  onClick={() => setNftLevel(0)}
+                />
+              )}
             </div>
           </Carousel.Item>
           <Carousel.Item>
             <div className="max-w-[200px]">
-              <Neymar className="text-[25rem]" />
+              {nftLevel === 0 && (
+                <Neymar
+                  className="text-[25rem]"
+                  onClick={() => setNftLevel(1)}
+                />
+              )}
+              {nftLevel === 1 && (
+                <Image
+                  src={Sadio}
+                  className="text-[25rem]"
+                  onClick={() => setNftLevel(0)}
+                />
+              )}
             </div>
           </Carousel.Item>
           <Carousel.Item>

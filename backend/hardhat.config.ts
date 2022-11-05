@@ -21,7 +21,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         url: "",
-        enabled: true
+        enabled: true,
       },
     },
     mumbai: {

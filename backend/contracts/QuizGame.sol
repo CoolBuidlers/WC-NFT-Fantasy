@@ -19,6 +19,7 @@ contract QuizGame {
         string optionFour;
         string correctAnswer;
     }
+
     mapping(uint => mapping(address => bool)) alreadyJoinedGame;
     mapping(uint => mapping(address => bool)) claimedPrize;
     mapping(uint => mapping(address => uint)) score;
@@ -95,6 +96,7 @@ contract QuizGame {
     }
 
      function startGameOne() external onlyOwner {
+        require(quizIdOne == 3, "Make three questions first");
         require(startedQuizOne == false, "Game already started!");
         startedQuizOne = true;
         timeLimit = block.timestamp + 15 minutes;
@@ -102,6 +104,7 @@ contract QuizGame {
     }
 
     function startGameTwo() external onlyOwner {
+        require(quizIdTwo == 3, "Make three questions first");
         require(block.timestamp > nextRound, "CANT_START_GAME_YET");
         require(startedQuizTwo == false, "Game is already started!");
         startedQuizTwo = true;
@@ -159,21 +162,17 @@ contract QuizGame {
     }
 
     function claimPrizeOne() external onlyWhenNotPaused {
-       require(guessed[0][msg.sender] == true, "You never guessed");
-       require(claimedPrize[0][msg.sender] == false, "Can't attempt prize twice");
-       if(score[0][msg.sender] == 3) {
-         IMintTeams(mintAddress).mint(msg.sender, 2, 1, "");
-       }
+       require(claimedPrize[0][msg.sender] == false, "Already claimed prize");
+       require(score[0][msg.sender] == 3, "You didn't score high enough");
+       IMintTeams(mintAddress).mint(msg.sender, 2, 1, "");
        claimedPrize[0][msg.sender] = true;
     }
 
      function claimPrizeTwo() external onlyWhenNotPaused {
-       require(guessed[1][msg.sender] == true, "You never guessed");
-       require(claimedPrize[1][msg.sender] == false, "Can't attempt prize twice");
-       if(score[1][msg.sender] == 3) {
-         IMintTeams(mintAddress).mint(msg.sender, 6, 1, "");
-       }
-        claimedPrize[1][msg.sender] = true;
+       require(claimedPrize[1][msg.sender] == false, "Alread claimed prize");
+       require(score[1][msg.sender] == 3, "You didn't score high enough");
+       IMintTeams(mintAddress).mint(msg.sender, 6, 1, "");
+       claimedPrize[1][msg.sender] = true;
     }
 
     function returnQuizOne(uint _quizId) external view returns(string memory question, string memory optionOne, string memory optionTwo, string memory optionThree, string memory optionFour) {
@@ -199,6 +198,10 @@ contract QuizGame {
 
      function haveYouGuessed(uint quizId) external view returns(bool) {
         return guessed[quizId][msg.sender];
+     }
+
+     function getScore(uint quizId) external view returns(uint) {
+        return score[quizId][msg.sender];
      }
 
     }
