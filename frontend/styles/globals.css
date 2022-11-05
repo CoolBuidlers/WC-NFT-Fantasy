@@ -12,8 +12,7 @@
         background: linear-gradient(260.38deg, #E500A4 16.46%, #8900F2 68.36%);
     }
 
-
-
-
-
+    .level-container {
+        display: none;
+    }
 }
