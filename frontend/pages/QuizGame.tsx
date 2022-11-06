@@ -16,10 +16,24 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
-  const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [joined, setJoined] = useState<boolean>(false);
-  const [hasGuessed, setHasGuesses] = useState<boolean>(false);
+  const [isStarted, setIsStarted] = useState<boolean>(true);
+  const [joined, setJoined] = useState<boolean>(true);
+  const [hasGuessed, setHasGuessed] = useState<boolean>(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
+  const [firstAnswer, setFirstAnswer] = useState<string | undefined>('');
+  const [secondAnswer, setSecondAnswer] = useState<string | undefined>('');
+  const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
+  const [questionsData, setQuestionsData] = useState<object []>([])
+
+
+  function getValue(e: any): void {
+    setFirstAnswer(e.target.value);
+    setSecondAnswer(e.target.value);
+    setThirdAnswer(e.target.value);
+  }
+  console.log(firstAnswer)
+  console.log(secondAnswer)
+  console.log(thirdAnswer)
 
   const startGame = async (): Promise<void> => {
     try {
@@ -37,11 +51,36 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
+      getQuestions(0)
     } 
     catch (err: any) {
       console.error(err)
     }
   }
+
+  const guessQuestionsOne = async (val: string, val2: string, val3: string): Promise<void> => {
+    try {
+      const txn: any = await contract.guessQuestionsOne(val, val2, val3);
+      await txn.wait();
+      setHasGuessed(true);
+
+    } 
+    catch (err: any) {
+      
+    }
+  }
+
+  const getQuestions = async (val: number): Promise<void> => {
+    try {
+      const data = await contract.returnQuestionsOne(val);
+      setQuestionsData(data);
+    } 
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  console.log(questionsData)
 
   const claimPrize = async (): Promise<void> => {
     try {
@@ -56,7 +95,9 @@ const QuizGame = () => {
   const renderButton = (): JSX.Element | undefined => {
     if(!isStarted) {
       return (
-        <div className="flex justify-center cursor-pointer">
+        <div className="flex justify-center cursor-pointer"
+        onClick={startGame}
+        >
               <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
                 PlayGame
               </span>
@@ -65,7 +106,9 @@ const QuizGame = () => {
     }
     else if (isStarted && !joined) {
       return (
-        <div className="flex justify-center cursor-pointer">
+        <div className="flex justify-center cursor-pointer"
+        onClick={joinGame}
+        >
               <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
                 JoinGame
               </span>
@@ -78,7 +121,9 @@ const QuizGame = () => {
               <div className="bg-gradient-to-r from-[#E500A4] to-[#8900F2] mb-5 rounded">
                 <h1 className="text-center text-white text-2xl py-8 px-20">Who is the greatest player of all time</h1>
                 <div className="flex items-center justify-around text-white text-xl py-5">
-                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
+                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]"
+                    onClick={getValue}
+                    >Ronaldo</p>
                     <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Messi</p>
                 </div>
                 <div className="flex items-center justify-around text-white text-xl py-5">
@@ -86,7 +131,9 @@ const QuizGame = () => {
                     <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
                 </div>
               </div>
-              <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
+              <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
+              // onClick={() => guessQuestionsOne(firstGuessQuestions)}
+              >
                 Sumbit
               </span>
           </div>
