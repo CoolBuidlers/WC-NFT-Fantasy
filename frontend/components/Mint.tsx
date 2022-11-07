@@ -7,17 +7,14 @@ import { MdClose } from "react-icons/md";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
+import { isHexString } from "ethers/lib/utils";
 const Mint = () => {
-  const [isHovering, setIsHovering] = useState(false);
+  const [isShowing, setIsShowing] = useState(false);
+  const [isShowing2, setIsShowing2] = useState(false);
+  const [isShowing3, setIsShowing3] = useState(false);
+  const [isShowing4, setIsShowing4] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleMouseOver = () => {
-    setIsHovering(true);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
   const leftArrow = () => (
     <button className="w-14 h-14 bg-skin-base flex absolute rounded-full top-[calc(90%+4rem)] left-[calc(50%-80px)] justify-center items-center shadow-md shadow-purple-200 cursor-pointer bg-purple-900 hover:opacity-80 hover:shadow-none transition-all ">
       <AiOutlineArrowLeft className="text-2xl text-white" />
@@ -35,119 +32,6 @@ const Mint = () => {
         <p className="text-3xl">Unit Price : 0.050 </p>
       </div>
 
-      <div className="flex items-center flex-wrap justify-center px-2">
-        <div className="sm:w-[369px] w-[300px] relative ">
-          <div>
-            <Image
-              src={CardBg}
-              layout="responsive"
-              alt="CardImage"
-              objectFit="cover"
-            />
-          </div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div
-              className="max-w-[350px] relative flex justify-center my-4 "
-              onMouseOver={handleMouseOver}
-              onMouseOut={handleMouseOut}
-            >
-              <Transition
-                show={isHovering}
-                enter="transform transition duration-[500ms] ease-in"
-                enterFrom="opacity-0 rotate-[180deg] scale-0"
-                enterTo="opacity-100 rotate-0 scale-100"
-                leave="transform duration-200 transition ease-in-out"
-                leaveFrom="opacity-100 rotate-0 scale-100 "
-                leaveTo="opacity-0 scale-95 "
-                className="flex justify-between max-w-[200px] absolute mx-auto -top-5 "
-              >
-                <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-                  1
-                </span>
-                <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
-                  2
-                </span>
-                <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
-                  3
-                </span>
-                <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-                  4
-                </span>
-              </Transition>
-
-              <Neymar className="text-[26rem]" />
-            </div>
-          </div>
-        </div>
-        <div className="max-w-[350px] relative flex justify-center my-4">
-          <div className="flex justify-between max-w-[200px] absolute mx-auto -top-5 ">
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-              1
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
-              2
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
-              3
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-              4
-            </span>
-          </div>
-          <Neymar className="text-[26rem]" />
-        </div>
-        <div className="max-w-[350px] relative flex justify-center my-4">
-          <div className="flex justify-between max-w-[200px] absolute mx-auto -top-5 ">
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-              1
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
-              2
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
-              3
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-              4
-            </span>
-          </div>
-          <Neymar className="text-[26rem]" />
-        </div>
-        <div className="max-w-[350px] relative flex justify-center my-4">
-          <div className="flex justify-between max-w-[200px] absolute mx-auto -top-5 ">
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-              1
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
-              2
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
-              3
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-              4
-            </span>
-          </div>
-          <Neymar className="text-[26rem]" />
-        </div>
-        <div className="max-w-[350px] relative flex justify-center my-4">
-          <div className="flex justify-between max-w-[200px] absolute mx-auto -top-5 ">
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-              1
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
-              2
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
-              3
-            </span>
-            <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-              4
-            </span>
-          </div>
-          <Neymar className="text-[26rem]" />
-        </div>
-      </div>
       <div className=" mb-20 3xl:px-40 w-full">
         <Carousel
           cols={4}
@@ -180,109 +64,139 @@ const Mint = () => {
         >
           <Carousel.Item>
             <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
+              <div className=" relative flex justify-center my-4 ">
+                <Transition
+                  show={isShowing}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                >
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
+                    1
+                  </span>
+                </Transition>
+              </div>
+              <Neymar
+                className="text-[25rem]"
+                onClick={() => {
+                  setIsShowing(!isShowing);
+                }}
+              />
             </div>
           </Carousel.Item>
           <Carousel.Item>
             <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
+              <div className=" relative flex justify-center my-4 ">
+                <Transition
+                  show={isShowing2}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                >
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#CF128F] text-white rounded-full">
+                    2
+                  </span>
+                </Transition>
+              </div>
+              <Neymar
+                className="text-[25rem]"
+                onClick={() => {
+                  setIsShowing2(!isShowing2);
+                }}
+              />
             </div>
           </Carousel.Item>
           <Carousel.Item>
             <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
+              <div className=" relative flex justify-center my-4 ">
+                <Transition
+                  show={isShowing3}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                >
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-red-500 text-white rounded-full">
+                    3
+                  </span>
+                </Transition>
+              </div>
+              <Neymar
+                className="text-[25rem]"
+                onClick={() => {
+                  setIsShowing3(!isShowing3);
+                }}
+              />
             </div>
           </Carousel.Item>
           <Carousel.Item>
             <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
+              <div className=" relative flex justify-center my-4 ">
+                <Transition
+                  show={isShowing4}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                >
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
+                    4
+                  </span>
+                </Transition>
+              </div>
+              <Neymar
+                className="text-[25rem]"
+                onClick={() => {
+                  setIsShowing4(!isShowing4);
+                }}
+              />
             </div>
           </Carousel.Item>
           <Carousel.Item>
             <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
-            </div>
-          </Carousel.Item>
-          <Carousel.Item>
-            <div className="max-w-[350px]">
-              <Neymar className="text-[25rem]" />
+              <div className=" relative flex justify-center my-4 ">
+                <Transition
+                  show={isShowing}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                >
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
+                    1
+                  </span>
+                </Transition>
+              </div>
+              <Neymar
+                className="text-[25rem]"
+                onClick={() => {
+                  setIsShowing(!isShowing);
+                }}
+              />
             </div>
           </Carousel.Item>
         </Carousel>
       </div>
       <div className="text-white text-4xl sm:flex justify-center sm:justify-around items-center px-6 pt-20 ">
         <a
-          className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mb-12"
+          className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mb-12 md:mb-0"
           onClick={() => {
             setShowModal(!showModal);
           }}
@@ -348,3 +262,8 @@ const Mint = () => {
 };
 
 export default Mint;
+{
+  /* 
+                
+                 */
+}

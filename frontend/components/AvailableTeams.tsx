@@ -21,10 +21,6 @@ const AvailableTeams = () => {
       <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 pt-4">
         <Player className="text-[26rem]" />
         <Player className="text-[26rem]" />
-        <Player className="text-[26rem]" />
-        <Player className="text-[26rem]" />
-        <Player className="text-[26rem]" />
-        <Player className="text-[26rem]" />
       </div>
     </div>
   );

@@ -1,18 +1,22 @@
-import React from 'react'
-import AvailableTeams from '../components/AvailableTeams'
-import ChosenTeams from '../components/ChosenTeams'
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
+import React from "react";
+import AvailableTeams from "../components/AvailableTeams";
+import ChosenTeams from "../components/ChosenTeams";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const MainGame = () => {
   return (
     <div>
-        <Navbar />
+      <Navbar />
+      <div className="md:px-10 px-2">
         <ChosenTeams />
+      </div>
+      <div className="md:px-10 px-2">
         <AvailableTeams />
-        <Footer />
+      </div>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default MainGame
+export default MainGame;
