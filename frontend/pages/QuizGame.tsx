@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
+import { BigNumber } from "ethers";
 
 const QuizGame = () => {
 
@@ -16,6 +17,8 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
+  const value: BigNumber = BigNumber.from(0);
+  console.log("value", value.toNumber())
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
   const [hasGuessed, setHasGuessed] = useState<boolean>(false);
@@ -51,7 +54,7 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
-      getQuestions(0)
+      // getQuestions(0)
     } 
     catch (err: any) {
       console.error(err)
@@ -70,9 +73,10 @@ const QuizGame = () => {
     }
   }
 
-  const getQuestions = async (val: number): Promise<void> => {
+  const getQuestions = async (val: any): Promise<void> => {
     try {
-      const data = await contract.returnQuestionsOne(val);
+      const data = await contract.returnQuizOne(val);
+      console.log("data", data)
       setQuestionsData(data);
     } 
     catch (err: any) {
@@ -80,7 +84,7 @@ const QuizGame = () => {
     }
   }
 
-  console.log(questionsData)
+  console.log("questionsData", questionsData)
 
   const claimPrize = async (): Promise<void> => {
     try {
@@ -89,6 +93,22 @@ const QuizGame = () => {
     } 
     catch (err: any) {
       console.error(err);
+      console.log(err.reason)
+    }
+  }
+
+  useEffect(() => {
+    getQuestions(0);
+    fetchQuizId();
+  })
+
+  const fetchQuizId = async (): Promise<void> => {
+    try {
+      const _quizId = await contract.quizIdOne();
+      console.log("QUIZ ID here: ", _quizId);
+    } 
+    catch (err: any) {
+      console.error(err)
     }
   }
 
