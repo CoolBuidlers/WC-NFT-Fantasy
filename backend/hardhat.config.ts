@@ -20,7 +20,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url: "",
+        url: "https://polygon-mainnet.g.alchemy.com/v2/a5sTbtLzl1n7ScKLksuDRKYWBbFi9di5",
         enabled: true,
       },
     },

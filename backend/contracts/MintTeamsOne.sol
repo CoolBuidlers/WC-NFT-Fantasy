@@ -7,7 +7,7 @@ import "../interfaces/IPrediction.sol";
 pragma solidity ^0.8.17;
 
 contract MintTeamsOne is ERC1155, Ownable {
-   event Mint(address account, uint indexed tokenId, uint256 indexed level, bytes teamName);
+   event Mint(address account, uint indexed tokenId, uint256 indexed level, bytes teamName, bool firstFourMinted);
    event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
    address public predictionAddress;
    address public evolveAddress;
@@ -125,104 +125,104 @@ contract MintTeamsOne is ERC1155, Ownable {
         _safeBatchTransferFrom(from, to, ids, amounts, data);
     }
 
-    function claimLevel1Nft(address _predictor, string calldata _teamName) public {
+    function claimLevel1Nft(address _predictor, string calldata _teamName, bool firstFourMinted) public {
      require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
          _mint(_predictor, 0, 1, "");
-        emit Mint(_predictor, 0, 1, abi.encode(_teamName));
+        emit Mint(_predictor, 0, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[1])) {
          _mint(_predictor, 4 , 1, "");
-         emit Mint(_predictor, 4, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 4, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[2])) {
          _mint(_predictor, 8 , 1, "");
-         emit Mint(_predictor, 8, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 8, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[3])) {
          _mint(_predictor, 12 , 1, "");
-          emit Mint(_predictor, 12, 1, abi.encode(_teamName));
+          emit Mint(_predictor, 12, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[4])) {
          _mint(_predictor, 16 , 1, "");
-         emit Mint(_predictor, 16, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 16, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[5])) {
          _mint(_predictor, 20 , 1, "");
-         emit Mint(_predictor, 20, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 20, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[6])) {
          _mint(_predictor, 24, 1, "");
-         emit Mint(_predictor, 24, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 24, 1, abi.encode(_teamName),firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[7])) {
          _mint(_predictor, 28 , 1, "");
-         emit Mint(_predictor, 28, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 28, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[8])) {
          _mint(_predictor, 32, 1, "");
-         emit Mint(_predictor, 32, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 32, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[9])) {
          _mint(_predictor, 36, 1, "");
-         emit Mint(_predictor, 36, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 36, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[10])) {
          _mint(_predictor, 40, 1, "");
-         emit Mint(_predictor, 40, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 40, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[11])) {
          _mint(_predictor, 44, 1, "");
-         emit Mint(_predictor, 44, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 44, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[12])) {
          _mint(_predictor, 48, 1, "");
-         emit Mint(_predictor, 48, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 48, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[13])) {
          _mint(_predictor, 52, 1, "");
-         emit Mint(_predictor, 52, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 52, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[14])) {
          _mint(_predictor, 56, 1, "");
-         emit Mint(_predictor, 56, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 56, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[15])) {
          _mint(_predictor, 60, 1, "");
-         emit Mint(_predictor, 60, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 60, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[16])) {
          _mint(_predictor, 64, 1, "");
-         emit Mint(_predictor, 64, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 64, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[17])) {
          _mint(_predictor, 68, 1, "");
-         emit Mint(_predictor, 68, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 68, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[18])) {
          _mint(_predictor, 72, 1, "");
-         emit Mint(_predictor, 72, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 72, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[19])) {
          _mint(_predictor, 76, 1, "");
-         emit Mint(_predictor, 76, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 76, 1, abi.encode(_teamName), firstFourMinted);
       }  else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[20])) {
          _mint(_predictor, 80, 1, "");
-         emit Mint(_predictor, 80, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 80, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[21])) {
          _mint(_predictor, 84, 1, "");
-         emit Mint(_predictor, 84, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 84, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[22])) {
          _mint(_predictor, 88, 1, "");
-         emit Mint(_predictor, 88, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 88, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[23])) {
          _mint(_predictor, 92, 1, "");
-         emit Mint(_predictor, 92, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 92, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[24])) {
          _mint(_predictor, 96, 1, "");
-         emit Mint(_predictor, 96, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 96, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[25])) {
          _mint(_predictor, 100, 1, "");
-         emit Mint(_predictor, 100, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 100, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[26])) {
          _mint(_predictor, 104, 1, "");
-         emit Mint(_predictor, 104, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 104, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[27])) {
          _mint(_predictor, 108, 1, "");
-         emit Mint(_predictor, 108, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 108, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[28])) {
          _mint(_predictor, 112, 1, "");
-         emit Mint(_predictor, 112, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 112, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[29])) {
          _mint(_predictor, 116, 1, "");
-         emit Mint(_predictor, 116, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 116, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[30])) {
          _mint(_predictor, 120, 1, "");
-         emit Mint(_predictor, 120, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 120, 1, abi.encode(_teamName), firstFourMinted);
       } else if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[31])) {
          _mint(_predictor, 124, 1, "");
-         emit Mint(_predictor, 124, 1, abi.encode(_teamName));
+         emit Mint(_predictor, 124, 1, abi.encode(_teamName), firstFourMinted);
       }
     } 
 

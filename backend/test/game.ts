@@ -3,121 +3,122 @@ const { ethers, deployments, network } = require("hardhat")
 const { developmentChains, networkConfig } = require("../helper.hardhat.config")
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
-// !developmentChains.includes(network.name)
-//   ? describe.skip
-//   :  describe("GuessingGame", async function () {
-//           async function deployRandomNumberConsumerFixture() {
-//             const [deployer] = await ethers.getSigners();
+!developmentChains.includes(network.name)
+  ? describe.skip
+  :  describe("GuessingGame", async function () {
+          async function deployRandomNumberConsumerFixture() {
+        const [deployer] = await ethers.getSigners();
 
-//             /**
-//              * @dev Read more at https://docs.chain.link/docs/chainlink-vrf/
-//              */
-//             const BASE_FEE = "100000000000000000";
-//             const GAS_PRICE_LINK = "1000000000"; // 0.000000001 LINK per gas
+        /**
+         * @dev Read more at https://docs.chain.link/docs/chainlink-vrf/
+         */
+        const BASE_FEE = "100000000000000000";
+        const GAS_PRICE_LINK = "1000000000"; // 0.000000001 LINK per gas
 
-//             const chainId = network.config.chainId;
+        const chainId = network.config.chainId;
 
-//             const VRFCoordinatorV2MockFactory = await ethers.getContractFactory(
-//               "VRFCoordinatorV2Mock"
-//             );
-//             const VRFCoordinatorV2Mock =
-//               await VRFCoordinatorV2MockFactory.deploy(
-//                 BASE_FEE,
-//                 GAS_PRICE_LINK
-//               );
+        const VRFCoordinatorV2MockFactory = await ethers.getContractFactory(
+          "VRFCoordinatorV2Mock"
+        );
+        const VRFCoordinatorV2Mock = await VRFCoordinatorV2MockFactory.deploy(
+          BASE_FEE,
+          GAS_PRICE_LINK
+        );
 
-//             const fundAmount = "10000000000000000000";
-//             const transaction = await VRFCoordinatorV2Mock.createSubscription();
-//             const transactionReceipt = await transaction.wait(1);
-//             const subscriptionId = ethers.BigNumber.from(
-//               transactionReceipt.events[0].topics[1]
-//             );
-//             await VRFCoordinatorV2Mock.fundSubscription(
-//               subscriptionId,
-//               fundAmount
-//             );
+        const fundAmount =
+          networkConfig[chainId]["fundAmount"] || "1000000000000000000";
+        const transaction = await VRFCoordinatorV2Mock.createSubscription();
+        const transactionReceipt = await transaction.wait(1);
+        const subscriptionId = ethers.BigNumber.from(
+          transactionReceipt.events[0].topics[1]
+        );
+        await VRFCoordinatorV2Mock.fundSubscription(subscriptionId, fundAmount);
 
-//             const vrfCoordinatorAddress = VRFCoordinatorV2Mock.address;
-//             const keyHash = 
-//               "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f";
+        const vrfCoordinatorAddress = VRFCoordinatorV2Mock.address;
+        const keyHash =
+          networkConfig[chainId]["keyHash"] ||
+          "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc";
 
-//             const NumberGuessingGame = await ethers.getContractFactory(
-//               "NumberGuessingGame"
-//             );
-//             const numberguessinggame = await NumberGuessingGame.connect(
-//               deployer
-//             ).deploy(subscriptionId, vrfCoordinatorAddress, keyHash);
+       const NumberGuessingGame = await ethers.getContractFactory(
+              "NumberGuessingGame"
+             );
+        const numberguessinggame = await NumberGuessingGame.connect(
+              deployer
+            ).deploy(subscriptionId, vrfCoordinatorAddress, keyHash);
+        await VRFCoordinatorV2Mock.addConsumer(
+          subscriptionId,
+          numberguessinggame.address
+        );
 
-//             await VRFCoordinatorV2Mock.addConsumer(
-//               subscriptionId,
-//               numberguessinggame.address
-//             );
+        return { numberguessinggame, VRFCoordinatorV2Mock };
 
-//             return { numberguessinggame, VRFCoordinatorV2Mock };
-//           }
+      xit("Should be able to start game", async function () {
+          const { numberguessinggame, VRFCoordinatorV2Mock } =
+            await loadFixture(deployRandomNumberConsumerFixture);
 
-//       xit("Should be able to start game", async function () {
-//         const [owner, addr1, addr2] = await ethers.getSigners();
-//         const GuessingGame = await ethers.getContractFactory(
-//           "GuessingGameMock"
-//         );
-//         const guessinggame = await GuessingGame.deploy(2278);
-//         await guessinggame.deployed();
+        await numberguessinggame.startGame();
+      });
 
-//         await guessinggame.startGame();
-//       });
+      xit("Should be able to join game", async function () {
+        const [owner, addr1, addr2] = await ethers.getSigners();
+          const { numberguessinggame, VRFCoordinatorV2Mock } =
+            await loadFixture(deployRandomNumberConsumerFixture);
+        await numberguessinggame.startGame();
+        await numberguessinggame
+          .connect(addr1)
+          .joinGame();
+        expect(await numberguessinggame.players(0));
+  
+      });
 
-//       xit("Should be able to join game", async function () {
-//         const [owner, addr1, addr2] = await ethers.getSigners();
-//         const GuessingGame = await ethers.getContractFactory(
-//           "GuessingGameMock"
-//         );
-//         const guessinggame = await GuessingGame.deploy(2278);
-//         await guessinggame.deployed();
-//         await guessinggame.startGame();
-//         await guessinggame
-//           .connect(addr1)
-//           .joinGame({ value: ethers.utils.parseEther("0.1") });
-//         //   expect(
-//         //     await guessinggame
-//         //       .connect(addr1)
-//         //       .joinGame({ value: ethers.utils.parseEther("0.1") })
-//         //   ).to.be.revertedWith("You have already Entered the game!");
-//         expect(await guessinggame.players(0));
-//         expect(
-//           await guessinggame.addressToAmountSent(addr1.address)
-//         ).to.be.equal(ethers.utils.parseEther("0.1"));
-//       });
+    //   it("Should successfully request a random number", async function () {
+    //                   const { numberguessinggame, VRFCoordinatorV2Mock } = await loadFixture(
+    //                       deployRandomNumberConsumerFixture
+    //                   )
+    //                   await expect(numberguessinggame.requestRandomWords()).to.emit(
+    //                       VRFCoordinatorV2Mock,
+    //                       "RandomWordsRequested"
+    //                   )
+    // });
+     xit("Should be able to request RandomNumber", async function () {
+       const { numberguessinggame, VRFCoordinatorV2Mock } = await loadFixture(
+         deployRandomNumberConsumerFixture
+       );
+       await numberguessinggame.requestRandomWords();
+          await network.provider.send("evm_increaseTime", [
+            1000000000000000,
+          ]);
+          await network.provider.request({ method: "evm_mine", params: [] });
+       const requestId = await numberguessinggame.lastRequestId();
+    //    await expect(
+    //      VRFCoordinatorV2Mock.fulfillRandomWords(
+    //        requestId,
+    //        numberguessinggame.address
+    //      )
+    //    ).to.emit(requestId, "ReturnedRandomness");
+       const result = await numberguessinggame.getRequestStatus(requestId)
+       console.log(result[1]);
+     });
 
-//       it("Should successfully request a random number", async function () {
-//                       const { numberguessinggame, VRFCoordinatorV2Mock } = await loadFixture(
-//                           deployRandomNumberConsumerFixture
-//                       )
-//                       await expect(numberguessinggame.requestRandomWords()).to.emit(
-//                           VRFCoordinatorV2Mock,
-//                           "RandomWordsRequested"
-//                       )
-//     });
-//      it("Should be able to request RandomNumber", async function () {
-//        const { numberguessinggame, VRFCoordinatorV2Mock } = await loadFixture(
-//          deployRandomNumberConsumerFixture
-//        );
-//        await numberguessinggame.requestRandomWords();
-//           await network.provider.send("evm_increaseTime", [
-//             1000000000000000,
-//           ]);
-//           await network.provider.request({ method: "evm_mine", params: [] });
-//        const requestId = await numberguessinggame.lastRequestId();
-//     //    await expect(
-//     //      VRFCoordinatorV2Mock.fulfillRandomWords(
-//     //        requestId,
-//     //        numberguessinggame.address
-//     //      )
-//     //    ).to.emit(requestId, "ReturnedRandomness");
-//        const result = await numberguessinggame.getRequestStatus(requestId)
-//        console.log(result[1]);
-//      });
-// })
+    it("Should be able to guess number", async function() {
+           const [owner, addr1, addr2] = await ethers.getSigners();
+           const { numberguessinggame, VRFCoordinatorV2Mock } =
+           await loadFixture(deployRandomNumberConsumerFixture);
+           numberguessinggame.connect(owner).startGame()
+           numberguessinggame.connect(addr1).joinGame();
+           numberguessinggame.connect(addr2).joinGame();
+          await network.provider.send("evm_increaseTime", [
+               1000000000000000,
+             ]);
+             await network.provider.request({ method: "evm_mine", params: [] });
+             const requestId = await numberguessinggame.lastRequestId();
+            assert(
+              requestId.gt(ethers.constants.Zero),
+              "First random number is greather than zero"
+            );
+
+    })
+})
 
 
 describe("QuizGame", async function() {

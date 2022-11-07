@@ -27,7 +27,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     // Your subscription ID.
     uint64 s_subscriptionId;
     // past requests Id.
-    uint256[] public requestIds;
+    uint256[] requestIds;
     uint256 internal lastRequestId;
     uint256 public maxPlayers = 2;
     uint public nextRound;
@@ -43,7 +43,7 @@ contract NumberGuessingGame is VRFConsumerBaseV2, ConfirmedOwner {
     // For this example, retrieve 2 random values in one request.
     // Cannot exceed VRFCoordinatorV2.MAX_NUM_WORDS.
     uint32 numWords = 1;
-    mapping (uint256 => RequestStatus) public s_requests; /* requestId --> requestStatus */
+    mapping (uint256 => RequestStatus) s_requests; /* requestId --> requestStatus */
     mapping (address => bool) alreadyGuessed;
     mapping (address => bool) alreadyEntered;
     address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
