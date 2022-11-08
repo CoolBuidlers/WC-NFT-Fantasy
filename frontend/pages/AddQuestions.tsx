@@ -54,7 +54,7 @@ const AddQuestions = () => {
         try{
             const _owner = await contract.owner();
             // console.log("OWNER",_owner.toLowerCase());
-            if(_owner.toLowerCase() === connectedAddress.address){
+            if(_owner.toLowerCase() === connectedAddress.address?.toLowerCase()){
                 setIsOwner(true)
             }
         }
