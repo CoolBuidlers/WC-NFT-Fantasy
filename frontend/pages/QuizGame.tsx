@@ -5,7 +5,7 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
-import { BigNumber } from "ethers";
+import Question from "../components/Question";
 
 const QuizGame = () => {
 
@@ -17,8 +17,6 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
-  const value: BigNumber = BigNumber.from(0);
-  console.log("value", value.toNumber())
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
   const [hasGuessed, setHasGuessed] = useState<boolean>(false);
@@ -26,8 +24,7 @@ const QuizGame = () => {
   const [firstAnswer, setFirstAnswer] = useState<string | undefined>('');
   const [secondAnswer, setSecondAnswer] = useState<string | undefined>('');
   const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
-  const [questionsData, setQuestionsData] = useState<object []>([])
-
+  const [questionsData, setQuestionsData] = useState<Object []>([]);
 
   function getValue(e: any): void {
     setFirstAnswer(e.target.value);
@@ -55,36 +52,11 @@ const QuizGame = () => {
       await txn.wait();
       setJoined(true);
       // getQuestions(0)
-    } 
+    }
     catch (err: any) {
       console.error(err)
     }
   }
-
-  const guessQuestionsOne = async (val: string, val2: string, val3: string): Promise<void> => {
-    try {
-      const txn: any = await contract.guessQuestionsOne(val, val2, val3);
-      await txn.wait();
-      setHasGuessed(true);
-
-    } 
-    catch (err: any) {
-      
-    }
-  }
-
-  const getQuestions = async (val: any): Promise<void> => {
-    try {
-      const data = await contract.returnQuizOne(val);
-      console.log("data", data)
-      setQuestionsData(data);
-    } 
-    catch (err: any) {
-      console.error(err)
-    }
-  }
-
-  console.log("questionsData", questionsData)
 
   const claimPrize = async (): Promise<void> => {
     try {
@@ -97,10 +69,16 @@ const QuizGame = () => {
     }
   }
 
-  useEffect(() => {
-    getQuestions(0);
-    fetchQuizId();
-  })
+  const getQuestions = async (val: any): Promise<void> => {
+    try {
+      const data = await contract.returnQuizOne(val);
+      console.log("data", data)
+      setQuestionsData(data);
+    }
+    catch (err: any) {
+      console.error("ERR IN FETCHING questions",err)
+    }
+  }
 
   const fetchQuizId = async (): Promise<void> => {
     try {
@@ -111,6 +89,17 @@ const QuizGame = () => {
       console.error(err)
     }
   }
+
+  console.log("questionsData", questionsData);
+
+    useEffect(() => {
+    getQuestions(0);
+    fetchQuizId();
+    }, [])
+
+  const returnQuestionsData = questionsData.map((question, idx) => {
+      return <Question key={idx} />
+  })
 
   const renderButton = (): JSX.Element | undefined => {
     if(!isStarted) {
