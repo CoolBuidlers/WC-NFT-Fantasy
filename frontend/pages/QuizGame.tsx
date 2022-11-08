@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
+import { BigNumber } from "ethers";
 
 const QuizGame = () => {
 
@@ -24,7 +25,7 @@ const QuizGame = () => {
   const [firstAnswer, setFirstAnswer] = useState<string | undefined>('');
   const [secondAnswer, setSecondAnswer] = useState<string | undefined>('');
   const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
-  const [questionsData, setQuestionsData] = useState<Object []>([]);
+  const [questionsData, setQuestionsData] = useState<any[]>([]);
 
   function getValue(e: any): void {
     setFirstAnswer(e.target.value);
@@ -72,33 +73,43 @@ const QuizGame = () => {
   const getQuestions = async (val: any): Promise<void> => {
     try {
       const data = await contract.returnQuizOne(val);
-      console.log("data", data)
-      setQuestionsData(data);
+      await data;
+      return data;
+      // console.log("data", data)
     }
     catch (err: any) {
       console.error("ERR IN FETCHING questions",err)
     }
   }
 
-  const fetchQuizId = async (): Promise<void> => {
+  const fetchAllQuestions = async (): Promise<void> => {
     try {
-      const _quizId = await contract.quizIdOne();
-      console.log("QUIZ ID here: ", _quizId);
+      const promises: any[] = [];
+      const _currentGameId: BigNumber = await contract.currentGameId();
+      // console.log(_currentGameId.toNumber() + 1,"CURRGID")
+      for(let i: number = 0; i < 3; i++) {
+        const promise = await getQuestions(i);
+        console.log("Promise inside loop", promise);
+        promises.push(promise);
+      }
+      const questions = await Promise.all(promises);
+      console.log("QUESTIONS INSIDE FUNC", questions)
+      setQuestionsData(questions);
     } 
     catch (err: any) {
-      console.error(err)
+      console.error("Failed to fetch questions",err);  
     }
   }
 
   console.log("questionsData", questionsData);
 
     useEffect(() => {
-    getQuestions(0);
-    fetchQuizId();
+    // getQuestions(0);
+    fetchAllQuestions();
     }, [])
 
-  const returnQuestionsData = questionsData.map((question, idx) => {
-      return <Question key={idx} />
+  const returnQuestionsData: JSX.Element[] = questionsData.map((question, idx) => {
+      return <Question key={idx} question={question} idx={idx} />
   })
 
   const renderButton = (): JSX.Element | undefined => {
@@ -127,19 +138,7 @@ const QuizGame = () => {
     else if (isStarted && joined && !hasGuessed) {
       return (
         <div className="flex flex-col items-center justify-center">
-              <div className="bg-gradient-to-r from-[#E500A4] to-[#8900F2] mb-5 rounded">
-                <h1 className="text-center text-white text-2xl py-8 px-20">Who is the greatest player of all time</h1>
-                <div className="flex items-center justify-around text-white text-xl py-5">
-                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]"
-                    onClick={getValue}
-                    >Ronaldo</p>
-                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Messi</p>
-                </div>
-                <div className="flex items-center justify-around text-white text-xl py-5">
-                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
-                    <p className="cursor-pointer hover:bg-gradient-to-l from-[#E500A4] to-[#8900F2]">Ronaldo</p>
-                </div>
-              </div>
+              {returnQuestionsData}
               <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
               // onClick={() => guessQuestionsOne(firstGuessQuestions)}
               >
