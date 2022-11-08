@@ -53,7 +53,7 @@ const AddQuestions = () => {
     const checkIfOwner = async (): Promise<void> => {
         try{
             const _owner = await contract.owner();
-            console.log("OWNER",_owner);
+            // console.log("OWNER",_owner.toLowerCase());
             if(_owner.toLowerCase() === connectedAddress.address){
                 setIsOwner(true)
             }
@@ -65,7 +65,7 @@ const AddQuestions = () => {
 
     useEffect(() => {
         checkIfOwner();
-    }, [])
+    }, [isOwner])
 
     const renderQuestionInput = (): JSX.Element => {
         if(isOwner) {
