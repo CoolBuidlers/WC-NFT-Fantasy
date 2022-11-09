@@ -17,10 +17,10 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
-  const [isStarted, setIsStarted] = useState<boolean>(true);
-  const [joined, setJoined] = useState<boolean>(true);
-  const [hasGuessed, setHasGuessed] = useState<boolean>(true);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [joined, setJoined] = useState<boolean>(false);
+  const [hasGuessed, setHasGuessed] = useState<boolean>(false);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
   const [firstAnswer, setFirstAnswer] = useState<string>('');
   const [secondAnswer, setSecondAnswer] = useState<string>('');
   const [thirdAnswer, setThirdAnswer] = useState<string>('');
@@ -127,7 +127,7 @@ const QuizGame = () => {
     useEffect(() => {
     fetchAllQuestions();
     returnScore();
-    }, [])
+    }, [isStarted, joined, hasGuessed])
 
   const returnQuestionsData: JSX.Element[] = questionsData.map((question, idx) => {
       return <Question key={idx} question={question} idx={idx} getValue={getValue}/>
