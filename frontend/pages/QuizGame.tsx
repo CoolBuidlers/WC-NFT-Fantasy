@@ -6,7 +6,6 @@ import Navbar from "../components/Navbar";
 import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
-import { BigNumber } from "ethers";
 
 const QuizGame = () => {
 
@@ -18,23 +17,20 @@ const QuizGame = () => {
     signerOrProvider: signer || provider
   });
 
-  const [isStarted, setIsStarted] = useState<boolean>(true);
-  const [joined, setJoined] = useState<boolean>(true);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [joined, setJoined] = useState<boolean>(false);
   const [hasGuessed, setHasGuessed] = useState<boolean>(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
-  const [firstAnswer, setFirstAnswer] = useState<string | undefined>('');
-  const [secondAnswer, setSecondAnswer] = useState<string | undefined>('');
-  const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
+  const [firstAnswer, setFirstAnswer] = useState<string>('');
+  const [secondAnswer, setSecondAnswer] = useState<string>('');
+  const [thirdAnswer, setThirdAnswer] = useState<string>('');
   const [questionsData, setQuestionsData] = useState<any[]>([]);
 
-  function getValue(e: any): void {
+  function getValue(e :any): void {
     setFirstAnswer(e.target.value);
     setSecondAnswer(e.target.value);
-    setThirdAnswer(e.target.value);
+    setThirdAnswer(e.target.value)
   }
-  console.log(firstAnswer)
-  console.log(secondAnswer)
-  console.log(thirdAnswer)
 
   const startGame = async (): Promise<void> => {
     try {
@@ -52,7 +48,6 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
-      // getQuestions(0)
     }
     catch (err: any) {
       console.error(err)
@@ -75,7 +70,6 @@ const QuizGame = () => {
       const data = await contract.returnQuizOne(val);
       await data;
       return data;
-      // console.log("data", data)
     }
     catch (err: any) {
       console.error("ERR IN FETCHING questions",err)
@@ -85,8 +79,6 @@ const QuizGame = () => {
   const fetchAllQuestions = async (): Promise<void> => {
     try {
       const promises: any[] = [];
-      const _currentGameId: BigNumber = await contract.currentGameId();
-      // console.log(_currentGameId.toNumber() + 1,"CURRGID")
       for(let i: number = 0; i < 3; i++) {
         const promise = await getQuestions(i);
         console.log("Promise inside loop", promise);
@@ -101,15 +93,44 @@ const QuizGame = () => {
     }
   }
 
+  const answerQuestions = async (val1: string, val2: string, val3: string) => {
+    try {
+      if(firstAnswer && secondAnswer && thirdAnswer) {
+        const txn: any = await contract.guessQuestionsOne(val1, val2, val3);
+        await txn.wait();
+        setHasGuessed(true);
+      }
+      else {
+        alert("Answer all the questions");
+      }
+    } 
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  const returnScore = async (): Promise<void> => {
+    try {
+      const _score: any = await contract.getScore(0);
+      await _score;
+      if(parseInt(_score) === 3) {
+        setGuessedCorrectly(true);
+      }
+    }
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
   console.log("questionsData", questionsData);
 
     useEffect(() => {
-    // getQuestions(0);
     fetchAllQuestions();
-    }, [])
+    returnScore();
+    }, [isStarted, joined, hasGuessed])
 
   const returnQuestionsData: JSX.Element[] = questionsData.map((question, idx) => {
-      return <Question key={idx} question={question} idx={idx} />
+      return <Question key={idx} question={question} idx={idx} getValue={getValue}/>
   })
 
   const renderButton = (): JSX.Element | undefined => {
@@ -140,7 +161,7 @@ const QuizGame = () => {
         <div className="flex flex-col items-center justify-center">
               {returnQuestionsData}
               <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
-              // onClick={() => guessQuestionsOne(firstGuessQuestions)}
+              onClick={() => answerQuestions(firstAnswer, secondAnswer, thirdAnswer)}
               >
                 Sumbit
               </span>
@@ -162,7 +183,9 @@ const QuizGame = () => {
         <div className="flex flex-col justify-center items-center">
           <h3 className="text-white sm:text-xl md:text-2xl py-10">Your guess was correct! You have won a Legendary NFT</h3>
           <h3 className="text-white sm:text-xl md:text-2xl pb-8">Click here to claim your NFT</h3>
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
+          <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
+          onClick={claimPrize}
+          >
                 Claim
           </span>
         </div>
