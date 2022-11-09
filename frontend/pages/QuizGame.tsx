@@ -21,9 +21,9 @@ const QuizGame = () => {
   const [joined, setJoined] = useState<boolean>(true);
   const [hasGuessed, setHasGuessed] = useState<boolean>(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
-  const [firstAnswer, setFirstAnswer] = useState<string | undefined>('');
-  const [secondAnswer, setSecondAnswer] = useState<string | undefined>('');
-  const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
+  const [firstAnswer, setFirstAnswer] = useState<string>('');
+  const [secondAnswer, setSecondAnswer] = useState<string>('');
+  const [thirdAnswer, setThirdAnswer] = useState<string>('');
   const [questionsData, setQuestionsData] = useState<any[]>([]);
 
   function getValue(e :any): void {
@@ -93,6 +93,21 @@ const QuizGame = () => {
     }
   }
 
+  const answerQuestions = async (val1: string, val2: string, val3: string) => {
+    try {
+      if(firstAnswer && secondAnswer && thirdAnswer) {
+        const txn: any = await contract.guessQuestionsOne(val1, val2, val3);
+        await txn.wait();
+      }
+      else {
+        alert("Answer all the questions");
+      }
+    } 
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
   console.log("questionsData", questionsData);
 
     useEffect(() => {
@@ -131,7 +146,7 @@ const QuizGame = () => {
         <div className="flex flex-col items-center justify-center">
               {returnQuestionsData}
               <span className="play-btn text-center py-4 w-[90%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[10%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
-              // onClick={() => guessQuestionsOne(firstGuessQuestions)}
+              onClick={() => answerQuestions(firstAnswer, secondAnswer, thirdAnswer)}
               >
                 Sumbit
               </span>
