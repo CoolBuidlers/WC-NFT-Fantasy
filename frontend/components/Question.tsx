@@ -20,7 +20,7 @@ const Question = (props: any) => {
                 </div>
                 <div className='flex justify-center'>
                 <input 
-                className='p-2 rounded-sm'
+                className='py-2 rounded-sm text-center'
                 placeholder='Input Answer'
                 onChange={getValue}
                 />
