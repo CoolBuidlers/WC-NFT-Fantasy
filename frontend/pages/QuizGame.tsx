@@ -19,8 +19,8 @@ const QuizGame = () => {
 
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
-  const [hasGuessed, setHasGuessed] = useState<boolean>(false);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
+  const [hasGuessed, setHasGuessed] = useState<boolean>(true);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
   const [firstAnswer, setFirstAnswer] = useState<string>('');
   const [secondAnswer, setSecondAnswer] = useState<string>('');
   const [thirdAnswer, setThirdAnswer] = useState<string>('');
@@ -98,6 +98,7 @@ const QuizGame = () => {
       if(firstAnswer && secondAnswer && thirdAnswer) {
         const txn: any = await contract.guessQuestionsOne(val1, val2, val3);
         await txn.wait();
+        setHasGuessed(true);
       }
       else {
         alert("Answer all the questions");
@@ -108,10 +109,26 @@ const QuizGame = () => {
     }
   }
 
+  const returnScore = async (): Promise<void> => {
+    try {
+      const _score: any = await contract.getScore(0);
+      await _score;
+      // setScore(parseInt(_score));
+      if(parseInt(_score) === 3) {
+        setGuessedCorrectly(true);
+      }
+    }
+    catch (err: any) {
+      console.error(err)
+    }
+  }
+
+  // console.log("SCORE", score)
   console.log("questionsData", questionsData);
 
     useEffect(() => {
     fetchAllQuestions();
+    returnScore();
     }, [])
 
   const returnQuestionsData: JSX.Element[] = questionsData.map((question, idx) => {
