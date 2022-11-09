@@ -85,8 +85,6 @@ const QuizGame = () => {
   const fetchAllQuestions = async (): Promise<void> => {
     try {
       const promises: any[] = [];
-      const _currentGameId: BigNumber = await contract.currentGameId();
-      // console.log(_currentGameId.toNumber() + 1,"CURRGID")
       for(let i: number = 0; i < 3; i++) {
         const promise = await getQuestions(i);
         console.log("Promise inside loop", promise);
