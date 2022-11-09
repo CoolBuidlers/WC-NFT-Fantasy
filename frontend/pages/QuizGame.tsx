@@ -113,7 +113,6 @@ const QuizGame = () => {
     try {
       const _score: any = await contract.getScore(0);
       await _score;
-      // setScore(parseInt(_score));
       if(parseInt(_score) === 3) {
         setGuessedCorrectly(true);
       }
@@ -123,7 +122,6 @@ const QuizGame = () => {
     }
   }
 
-  // console.log("SCORE", score)
   console.log("questionsData", questionsData);
 
     useEffect(() => {
@@ -185,7 +183,9 @@ const QuizGame = () => {
         <div className="flex flex-col justify-center items-center">
           <h3 className="text-white sm:text-xl md:text-2xl py-10">Your guess was correct! You have won a Legendary NFT</h3>
           <h3 className="text-white sm:text-xl md:text-2xl pb-8">Click here to claim your NFT</h3>
-          <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white">
+          <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[20%] block animate-text cursor-pointer hover:animate-text-hover text-2xl text-white"
+          onClick={claimPrize}
+          >
                 Claim
           </span>
         </div>
