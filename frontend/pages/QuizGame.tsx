@@ -6,7 +6,6 @@ import Navbar from "../components/Navbar";
 import { QUIZ_GAME_CONTRACT_ADDRESS, QUIZ_GAME_CONTRACT_ABI } from "./Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
-import { BigNumber } from "ethers";
 
 const QuizGame = () => {
 
@@ -27,14 +26,11 @@ const QuizGame = () => {
   const [thirdAnswer, setThirdAnswer] = useState<string | undefined>('');
   const [questionsData, setQuestionsData] = useState<any[]>([]);
 
-  function getValue(e: any): void {
+  function getValue(e :any): void {
     setFirstAnswer(e.target.value);
     setSecondAnswer(e.target.value);
-    setThirdAnswer(e.target.value);
+    setThirdAnswer(e.target.value)
   }
-  console.log(firstAnswer)
-  console.log(secondAnswer)
-  console.log(thirdAnswer)
 
   const startGame = async (): Promise<void> => {
     try {
@@ -52,7 +48,6 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
-      // getQuestions(0)
     }
     catch (err: any) {
       console.error(err)
@@ -75,7 +70,6 @@ const QuizGame = () => {
       const data = await contract.returnQuizOne(val);
       await data;
       return data;
-      // console.log("data", data)
     }
     catch (err: any) {
       console.error("ERR IN FETCHING questions",err)
@@ -102,12 +96,11 @@ const QuizGame = () => {
   console.log("questionsData", questionsData);
 
     useEffect(() => {
-    // getQuestions(0);
     fetchAllQuestions();
     }, [])
 
   const returnQuestionsData: JSX.Element[] = questionsData.map((question, idx) => {
-      return <Question key={idx} question={question} idx={idx} />
+      return <Question key={idx} question={question} idx={idx} getValue={getValue}/>
   })
 
   const renderButton = (): JSX.Element | undefined => {
