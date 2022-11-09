@@ -1,12 +1,11 @@
 import { newMockEvent } from "matchstick-as"
-import { ethereum, Address, Bytes } from "@graphprotocol/graph-ts"
+import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   AllPredictors,
-  FirstFourTeamsMinted,
   OwnershipTransferred,
-  TwoExtraTeamsMinted,
+  TopPoints,
   Winners
-} from "../generated/WCNFTFantasy/WCNFTFantasy"
+} from "../generated/Prediction/Prediction"
 
 export function createAllPredictorsEvent(
   smartContract: Address,
@@ -27,38 +26,6 @@ export function createAllPredictorsEvent(
   )
 
   return allPredictorsEvent
-}
-
-export function createFirstFourTeamsMintedEvent(
-  predictor: Address,
-  teamOne: Bytes,
-  teamTwo: Bytes,
-  teamThree: Bytes,
-  teamFour: Bytes
-): FirstFourTeamsMinted {
-  let firstFourTeamsMintedEvent = changetype<FirstFourTeamsMinted>(
-    newMockEvent()
-  )
-
-  firstFourTeamsMintedEvent.parameters = new Array()
-
-  firstFourTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("predictor", ethereum.Value.fromAddress(predictor))
-  )
-  firstFourTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamOne", ethereum.Value.fromBytes(teamOne))
-  )
-  firstFourTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamTwo", ethereum.Value.fromBytes(teamTwo))
-  )
-  firstFourTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamThree", ethereum.Value.fromBytes(teamThree))
-  )
-  firstFourTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamFour", ethereum.Value.fromBytes(teamFour))
-  )
-
-  return firstFourTeamsMintedEvent
 }
 
 export function createOwnershipTransferredEvent(
@@ -84,26 +51,35 @@ export function createOwnershipTransferredEvent(
   return ownershipTransferredEvent
 }
 
-export function createTwoExtraTeamsMintedEvent(
-  predictor: Address,
-  teamFive: Bytes,
-  teamSix: Bytes
-): TwoExtraTeamsMinted {
-  let twoExtraTeamsMintedEvent = changetype<TwoExtraTeamsMinted>(newMockEvent())
+export function createTopPointsEvent(
+  firstHighestPoints: BigInt,
+  secondHighestPoints: BigInt,
+  thirdHighestPoints: BigInt
+): TopPoints {
+  let topPointsEvent = changetype<TopPoints>(newMockEvent())
 
-  twoExtraTeamsMintedEvent.parameters = new Array()
+  topPointsEvent.parameters = new Array()
 
-  twoExtraTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("predictor", ethereum.Value.fromAddress(predictor))
+  topPointsEvent.parameters.push(
+    new ethereum.EventParam(
+      "firstHighestPoints",
+      ethereum.Value.fromUnsignedBigInt(firstHighestPoints)
+    )
   )
-  twoExtraTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamFive", ethereum.Value.fromBytes(teamFive))
+  topPointsEvent.parameters.push(
+    new ethereum.EventParam(
+      "secondHighestPoints",
+      ethereum.Value.fromUnsignedBigInt(secondHighestPoints)
+    )
   )
-  twoExtraTeamsMintedEvent.parameters.push(
-    new ethereum.EventParam("teamSix", ethereum.Value.fromBytes(teamSix))
+  topPointsEvent.parameters.push(
+    new ethereum.EventParam(
+      "thirdHighestPoints",
+      ethereum.Value.fromUnsignedBigInt(thirdHighestPoints)
+    )
   )
 
-  return twoExtraTeamsMintedEvent
+  return topPointsEvent
 }
 
 export function createWinnersEvent(

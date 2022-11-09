@@ -1,90 +1,97 @@
 import {
   Ended as EndedEvent,
-  OwnershipTransferRequested as OwnershipTransferRequestedEvent,
+  NumberGuessingGameOwnershipTransferRequested as NumberGuessingGameOwnershipTransferRequestedEvent,
   NumberGuessingGameOwnershipTransferred as NumberGuessingGameOwnershipTransferredEvent,
-  RequestFulfilled as RequestFulfilledEvent,
-  RequestSent as RequestSentEvent,
+  NumberGuessingGameRequestFulfilled as NumberGuessingGameRequestFulfilledEvent,
+  NumberGuessingGameRequestSent as NumberGuessingGameRequestSentEvent,
   NumberGuessingGameWinners as NumberGuessingGameWinnersEvent,
-  NumberGuessingGamecurrentGame as NumberGuessingGamecurrentGameEvent
-} from "../generated/NumberGuessingGame/NumberGuessingGame"
-import {
-  Ended,
-  OwnershipTransferRequested,
-  NumberGuessingGameOwnershipTransferred,
-  RequestFulfilled,
-  RequestSent,
-  NumberGuessingGameWinners,
-  NumberGuessingGamecurrentGame
-} from "../generated/schema"
+  NumberGuessingGamecurrentGame as NumberGuessingGamecurrentGameEvent,
+} from "../generated/NumberGuessingGame/NumberGuessingGame";
+import { Game, Winner } from "../generated/schema";
+
+/*
+    // event to keep track of the players for the currentGame ID
+    event currentGame(address player, uint256 gameId);
+    // event to keep track of winners for that gameId alongside the requestId for the VRF
+    event Winners(address winner, bytes32 requestId, uint256 gameId);
+    // event to keep track of the deleted players after certain conditions are not met
+    event Ended(address player, uint256 gameId);
+    event RequestSent(uint256 requestId, uint32 numWords);
+    event RequestFulfilled(uint256 requestId, uint256[] randomWords);
+*/
 
 export function handleEnded(event: EndedEvent): void {
-  let entity = new Ended(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.player = event.params.player
-  entity.gameId = event.params.gameId
-  entity.save()
+  // Get the Game Object from the game ID
+  let game = Game.load(event.params.gameId.toString() + "N");
+
+  // Remove the person
+  game?.people?.filter((x) => x != event.params.player);
+
+  // Save
+  game?.save();
 }
 
-export function handleOwnershipTransferRequested(
-  event: OwnershipTransferRequestedEvent
-): void {
-  let entity = new OwnershipTransferRequested(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.save()
-}
+export function handleNumberGuessingGameOwnershipTransferRequested(
+  event: NumberGuessingGameOwnershipTransferRequestedEvent
+): void {}
 
 export function handleNumberGuessingGameOwnershipTransferred(
   event: NumberGuessingGameOwnershipTransferredEvent
-): void {
-  let entity = new NumberGuessingGameOwnershipTransferred(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.save()
-}
+): void {}
 
-export function handleRequestFulfilled(event: RequestFulfilledEvent): void {
-  let entity = new RequestFulfilled(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.requestId = event.params.requestId
-  entity.randomWords = event.params.randomWords
-  entity.save()
-}
+export function handleNumberGuessingGameRequestFulfilled(
+  event: NumberGuessingGameRequestFulfilledEvent
+): void {}
 
-export function handleRequestSent(event: RequestSentEvent): void {
-  let entity = new RequestSent(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.requestId = event.params.requestId
-  entity.numWords = event.params.numWords
-  entity.save()
-}
+export function handleNumberGuessingGameRequestSent(
+  event: NumberGuessingGameRequestSentEvent
+): void {}
 
 export function handleNumberGuessingGameWinners(
   event: NumberGuessingGameWinnersEvent
 ): void {
-  let entity = new NumberGuessingGameWinners(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.winner = event.params.winner
-  entity.requestId = event.params.requestId
-  entity.gameId = event.params.gameId
-  entity.save()
+  // Create Winners Unique ID
+  const id = event.params.gameId.toString() + "N" + "W";
+  let winner = new Winner(id);
+
+  // Pass in the Addresses
+  winner.players.push(event.params.winner);
+
+  // Pass in the gameId and game
+  winner.gameId = event.params.gameId;
+  winner.game = "NumberGuess";
+
+  // Save
+  winner.save();
+
+  // Get the Game Object and make sure it's set to end
+  let game = Game.load(event.params.gameId.toString() + "N");
+  game!.status = false;
+
+  // Save
+  game!.save();
 }
 
 export function handleNumberGuessingGamecurrentGame(
   event: NumberGuessingGamecurrentGameEvent
 ): void {
-  let entity = new NumberGuessingGamecurrentGame(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.player = event.params.player
-  entity.gameId = event.params.gameId
-  entity.save()
+  // Check if the game exists and create if not based on the game ID
+  const id = event.params.gameId.toString() + "N";
+  let game = Game.load(id);
+  if (!game) game = new Game(id);
+
+  // Add the participating player in
+  game.people!.push(event.params.player);
+
+  // Add Game ID again
+  game.gameId = event.params.gameId;
+
+  // Set Game Type
+  game.gameType = "NumberGuess";
+
+  // Status false
+  game.status = false;
+
+  // Save
+  game.save();
 }

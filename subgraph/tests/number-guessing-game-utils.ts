@@ -2,10 +2,10 @@ import { newMockEvent } from "matchstick-as"
 import { ethereum, Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
 import {
   Ended,
-  OwnershipTransferRequested,
+  NumberGuessingGameOwnershipTransferRequested,
   NumberGuessingGameOwnershipTransferred,
-  RequestFulfilled,
-  RequestSent,
+  NumberGuessingGameRequestFulfilled,
+  NumberGuessingGameRequestSent,
   NumberGuessingGameWinners,
   NumberGuessingGamecurrentGame
 } from "../generated/NumberGuessingGame/NumberGuessingGame"
@@ -25,24 +25,24 @@ export function createEndedEvent(player: Address, gameId: BigInt): Ended {
   return endedEvent
 }
 
-export function createOwnershipTransferRequestedEvent(
+export function createNumberGuessingGameOwnershipTransferRequestedEvent(
   from: Address,
   to: Address
-): OwnershipTransferRequested {
-  let ownershipTransferRequestedEvent = changetype<OwnershipTransferRequested>(
-    newMockEvent()
-  )
+): NumberGuessingGameOwnershipTransferRequested {
+  let numberGuessingGameOwnershipTransferRequestedEvent = changetype<
+    NumberGuessingGameOwnershipTransferRequested
+  >(newMockEvent())
 
-  ownershipTransferRequestedEvent.parameters = new Array()
+  numberGuessingGameOwnershipTransferRequestedEvent.parameters = new Array()
 
-  ownershipTransferRequestedEvent.parameters.push(
+  numberGuessingGameOwnershipTransferRequestedEvent.parameters.push(
     new ethereum.EventParam("from", ethereum.Value.fromAddress(from))
   )
-  ownershipTransferRequestedEvent.parameters.push(
+  numberGuessingGameOwnershipTransferRequestedEvent.parameters.push(
     new ethereum.EventParam("to", ethereum.Value.fromAddress(to))
   )
 
-  return ownershipTransferRequestedEvent
+  return numberGuessingGameOwnershipTransferRequestedEvent
 }
 
 export function createNumberGuessingGameOwnershipTransferredEvent(
@@ -65,52 +65,56 @@ export function createNumberGuessingGameOwnershipTransferredEvent(
   return numberGuessingGameOwnershipTransferredEvent
 }
 
-export function createRequestFulfilledEvent(
+export function createNumberGuessingGameRequestFulfilledEvent(
   requestId: BigInt,
   randomWords: Array<BigInt>
-): RequestFulfilled {
-  let requestFulfilledEvent = changetype<RequestFulfilled>(newMockEvent())
+): NumberGuessingGameRequestFulfilled {
+  let numberGuessingGameRequestFulfilledEvent = changetype<
+    NumberGuessingGameRequestFulfilled
+  >(newMockEvent())
 
-  requestFulfilledEvent.parameters = new Array()
+  numberGuessingGameRequestFulfilledEvent.parameters = new Array()
 
-  requestFulfilledEvent.parameters.push(
+  numberGuessingGameRequestFulfilledEvent.parameters.push(
     new ethereum.EventParam(
       "requestId",
       ethereum.Value.fromUnsignedBigInt(requestId)
     )
   )
-  requestFulfilledEvent.parameters.push(
+  numberGuessingGameRequestFulfilledEvent.parameters.push(
     new ethereum.EventParam(
       "randomWords",
       ethereum.Value.fromUnsignedBigIntArray(randomWords)
     )
   )
 
-  return requestFulfilledEvent
+  return numberGuessingGameRequestFulfilledEvent
 }
 
-export function createRequestSentEvent(
+export function createNumberGuessingGameRequestSentEvent(
   requestId: BigInt,
   numWords: BigInt
-): RequestSent {
-  let requestSentEvent = changetype<RequestSent>(newMockEvent())
+): NumberGuessingGameRequestSent {
+  let numberGuessingGameRequestSentEvent = changetype<
+    NumberGuessingGameRequestSent
+  >(newMockEvent())
 
-  requestSentEvent.parameters = new Array()
+  numberGuessingGameRequestSentEvent.parameters = new Array()
 
-  requestSentEvent.parameters.push(
+  numberGuessingGameRequestSentEvent.parameters.push(
     new ethereum.EventParam(
       "requestId",
       ethereum.Value.fromUnsignedBigInt(requestId)
     )
   )
-  requestSentEvent.parameters.push(
+  numberGuessingGameRequestSentEvent.parameters.push(
     new ethereum.EventParam(
       "numWords",
       ethereum.Value.fromUnsignedBigInt(numWords)
     )
   )
 
-  return requestSentEvent
+  return numberGuessingGameRequestSentEvent
 }
 
 export function createNumberGuessingGameWinnersEvent(

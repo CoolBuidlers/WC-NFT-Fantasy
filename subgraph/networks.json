@@ -1,19 +1,43 @@
 {
-  "goerli": {
-    "WCNFTFantasy": {
-      "address": "0xe65C90A046d1bf398b41933973df9BaA8F8C8299"
+  "mumbai": {
+    "Prediction": {
+      "address": "0x005c5f78760917054a530e543526eaAAB174187C"
     },
-    "Evolve": {
-      "address": "0x13A79E4e3970f323D448E5cf9ce6a2Fa4387c370"
+    "RandomNumberAndRound": {
+      "address": "0xC1e2222A4471D86E534359E993A1AC5faF316dE0"
     },
     "ChangeOrders": {
-      "address": "0xD0F3b690d308d6Ac07954d8c5E43993ad8292d04"
+      "address": "0x04935e58Db68ede7F053a922CEc44D22AFACEa6D"
+    },
+    "Evolve": {
+      "address": "0x82f4BfA6ec9b57e6bb7470d0c5c46cDB36e46Af7"
+    },
+    "FetchTeamsOne": {
+      "address": "0x0879F285D6444443b8C9A92FAb288Ba9583CDE6a"
+    },
+    "FetchTeamsTwo": {
+      "address": "0x1a05fF2946f50cA274130a50EaCA990127c244DF"
+    },
+    "FetchTeamsThree": {
+      "address": "0x45faF922F5A9eDe2C1E84D880064Ed1516FCE486"
+    },
+    "FetchTeamsFour": {
+      "address": "0x4Bc6Acc04Ca748cDc822c902342f741f3AB15376"
+    },
+    "MintTeamsTwo": {
+      "address": "0xf60f113495e04b253C879bcc835e63efb7db0f21"
+    },
+    "WorldCupData": {
+      "address": "0x492c59B84DB1fA23a6bA59C9eac19D1Cc7B15d76"
+    },
+    "MintTeamsOne": {
+      "address": "0x311cEcaDf95a4EFE92D45E205955297C1054D394"
     },
     "QuizGame": {
-      "address": "0xC8D54bB4E3095f81Ea440DE53De2F85DdB8bc7a7"
+      "address": "0x5B319fDd5382D54EF8704B7b6D5C1DB013e08B0c"
     },
     "NumberGuessingGame": {
-      "address": "0xcace4cEFcE69c37c6389FEd8B19d177bB601E047"
+      "address": "0x43E6D5f4f4De2c87f5F385D8B15486c6164bE3Cf"
     }
   }
 }

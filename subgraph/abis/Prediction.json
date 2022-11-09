@@ -1,5 +1,11 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_setAddress", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -17,43 +23,6 @@
       }
     ],
     "name": "AllPredictors",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "predictor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamOne",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamTwo",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamThree",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamFour",
-        "type": "bytes"
-      }
-    ],
-    "name": "FirstFourTeamsMinted",
     "type": "event"
   },
   {
@@ -79,25 +48,25 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "predictor",
-        "type": "address"
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "firstHighestPoints",
+        "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamFive",
-        "type": "bytes"
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "secondHighestPoints",
+        "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "teamSix",
-        "type": "bytes"
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "thirdHighestPoints",
+        "type": "uint256"
       }
     ],
-    "name": "TwoExtraTeamsMinted",
+    "name": "TopPoints",
     "type": "event"
   },
   {
@@ -191,6 +160,13 @@
   },
   {
     "inputs": [],
+    "name": "fewMinutes",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getBalance",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -226,13 +202,6 @@
     ],
     "name": "haveYouMinted",
     "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "highestAmountOfPoints",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -304,6 +273,13 @@
   },
   {
     "inputs": [],
+    "name": "oneDay",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -339,8 +315,8 @@
   },
   {
     "inputs": [],
-    "name": "secondHighestAmountOfPoints",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "setAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -365,7 +341,7 @@
         "type": "address"
       }
     ],
-    "name": "setFetchTeamAddress",
+    "name": "setFetchTeamOne",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -408,7 +384,7 @@
         "type": "address"
       }
     ],
-    "name": "setMintTeamAddress",
+    "name": "setMintTeamOneAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -493,13 +469,6 @@
     "name": "setWorldCupDataAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "thirdHighestAmountOfPoints",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {

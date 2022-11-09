@@ -7,32 +7,14 @@ enum GameType {
   NumberGuess
 }
 
-# Position of the NFT
-enum Position {
-  position1
-  position2
-  position3
-  position4
-  position5
-  position6
-}
-
-# Level of the NFT
-enum Level {
-  level1
-  level2
-  level3
-  level4
-}
-
 # ---- OBJECTS ----
 
 # Winners of the games
-type Winners @entity(immutable: true) {
+type Winner @entity(immutable: true) {
   "composed of unique data"
   id: String!
   "addresses of the winners in order (0 position is the 1st place)"
-  predictor: [Predictors!]!
+  players: [Bytes!]!
   "applicable in Quiz Type and Number Guessing game"
   gameId: BigInt
   "game enum which has three types"
@@ -68,9 +50,11 @@ type Tokens @entity {
   "address of the minter"
   user: Bytes!
   "position of the NFT"
-  position: Position!
+  position: Int!
+  "team id of the token"
+  teamId: Bytes!
   "level of the NFT"
-  level: Level!
+  level: Int!
   "ref to the Predictors Object"
   predictors: Predictors!
 }
@@ -84,9 +68,9 @@ type Predictors @entity {
 }
 
 # Top Points
-type TopPoints @entity(immutable: true) {
+type TopPoint @entity(immutable: true) {
   "random ID"
-  id: Bytes!
+  id: String!
   "top points"
   top: BigInt!
   "second place points"

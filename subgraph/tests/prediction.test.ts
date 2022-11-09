@@ -6,11 +6,11 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Address, Bytes } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { ExampleEntity } from "../generated/schema"
-import { AllPredictors } from "../generated/WCNFTFantasy/WCNFTFantasy"
-import { handleAllPredictors } from "../src/wcnft-fantasy"
-import { createAllPredictorsEvent } from "./wcnft-fantasy-utils"
+import { AllPredictors } from "../generated/Prediction/Prediction"
+import { handleAllPredictors } from "../src/prediction"
+import { createAllPredictorsEvent } from "./prediction-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0

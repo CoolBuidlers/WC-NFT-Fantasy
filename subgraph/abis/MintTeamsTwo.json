@@ -10,6 +10,31 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "level",
+        "type": "uint256"
+      }
+    ],
+    "name": "MintTeamsTwoLevelUp",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -22,74 +47,41 @@
         "type": "address"
       }
     ],
-    "name": "ChangeOrdersOwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "predictor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "firstTeam",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "secondTeam",
-        "type": "bytes"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "round",
-        "type": "uint256"
-      }
-    ],
-    "name": "TeamsSwapped",
+    "name": "MintTeamsTwoOwnershipTransferred",
     "type": "event"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
+      { "internalType": "address", "name": "_predictor", "type": "address" },
+      { "internalType": "string", "name": "_teamName", "type": "string" }
     ],
-    "name": "changeOrderForTop16",
+    "name": "claimLevel3Nft",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
+      { "internalType": "address", "name": "_predictor", "type": "address" },
+      { "internalType": "string", "name": "_teamName", "type": "string" }
     ],
-    "name": "changeOrderForTop32",
+    "name": "claimLevel4Nft",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
-    ],
-    "name": "changeOrderForTop4",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [],
+    "name": "evolveAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
-    ],
-    "name": "changeOrderForTop8",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [],
+    "name": "mintTeamsOneAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -121,8 +113,23 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "_paused", "type": "bool" }],
-    "name": "setPause",
+    "inputs": [
+      { "internalType": "address", "name": "_evolveAddress", "type": "address" }
+    ],
+    "name": "setEvolveAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_mintTeamsOneAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setMintTeamOneAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

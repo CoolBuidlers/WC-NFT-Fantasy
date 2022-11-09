@@ -2,12 +2,7 @@
   {
     "inputs": [
       { "internalType": "uint64", "name": "subscriptionId", "type": "uint64" },
-      {
-        "internalType": "address",
-        "name": "_vrfCoordinator",
-        "type": "address"
-      },
-      { "internalType": "bytes32", "name": "_keyHash", "type": "bytes32" }
+      { "internalType": "address", "name": "_setAddress", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -24,19 +19,39 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "player",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "gameId",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
       }
     ],
-    "name": "Ended",
+    "name": "ChainlinkCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ChainlinkFulfilled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ChainlinkRequested",
     "type": "event"
   },
   {
@@ -55,7 +70,7 @@
         "type": "address"
       }
     ],
-    "name": "NumberGuessingGameOwnershipTransferRequested",
+    "name": "OwnershipTransferRequested",
     "type": "event"
   },
   {
@@ -74,56 +89,50 @@
         "type": "address"
       }
     ],
-    "name": "NumberGuessingGameOwnershipTransferred",
+    "name": "RandomNumberAndRoundOwnershipTransferred",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "requestId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256[]",
         "name": "randomWords",
         "type": "uint256[]"
       }
     ],
-    "name": "NumberGuessingGameRequestFulfilled",
+    "name": "RequestFulfilled",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "requestId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint32",
         "name": "numWords",
         "type": "uint32"
       }
     ],
-    "name": "NumberGuessingGameRequestSent",
+    "name": "RequestSent",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "winner",
-        "type": "address"
-      },
       {
         "indexed": false,
         "internalType": "bytes32",
@@ -131,40 +140,20 @@
         "type": "bytes32"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "gameId",
+        "name": "time",
         "type": "uint256"
-      }
-    ],
-    "name": "NumberGuessingGameWinners",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "player",
-        "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "gameId",
+        "name": "round",
         "type": "uint256"
       }
     ],
-    "name": "NumberGuessingGamecurrentGame",
+    "name": "RoundChanged",
     "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "RestartGame",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "inputs": [],
@@ -175,80 +164,41 @@
   },
   {
     "inputs": [],
-    "name": "currentRequestId",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "fee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
+    "name": "fetchCurrentRound",
+    "outputs": [
+      { "internalType": "bytes32", "name": "requestId", "type": "bytes32" }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_guess", "type": "uint256" }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "uint256", "name": "_volume", "type": "uint256" }
     ],
-    "name": "guessTheNumberValue",
+    "name": "fulfillRound",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "joinGame",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "keyHash",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "getRequestStatus",
+    "outputs": [
+      { "internalType": "bool", "name": "fulfilled", "type": "bool" },
+      {
+        "internalType": "uint256[]",
+        "name": "randomWords",
+        "type": "uint256[]"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "linkAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxPlayers",
+    "name": "lastRequestId",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mintAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nextRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nonce",
-    "outputs": [{ "internalType": "uint128", "name": "", "type": "uint128" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "numberIsBiggerThanZero",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -260,11 +210,9 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "players",
-    "outputs": [
-      { "internalType": "address payable", "name": "", "type": "address" }
-    ],
+    "inputs": [],
+    "name": "predictionAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -283,6 +231,32 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "requestIds",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "requestRandomWords",
+    "outputs": [
+      { "internalType": "uint256", "name": "requestId", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "s_requests",
+    "outputs": [
+      { "internalType": "bool", "name": "fulfilled", "type": "bool" },
+      { "internalType": "bool", "name": "exists", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "setAddress",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -293,27 +267,35 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_mintTeamOneAddress",
+        "name": "_predictionAddress",
         "type": "address"
       }
     ],
-    "name": "setMintTeamOneAddress",
+    "name": "setPredictionAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "startGame",
+    "inputs": [
+      { "internalType": "uint64", "name": "subscriptionId", "type": "uint64" }
+    ],
+    "name": "setSubscriptionId",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "started",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_worldCupDataAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setWorldCupDataAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -321,6 +303,20 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawLink",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "worldCupDataAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

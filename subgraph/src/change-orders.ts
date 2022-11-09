@@ -1,30 +1,34 @@
 import {
   ChangeOrdersOwnershipTransferred as ChangeOrdersOwnershipTransferredEvent,
-  TeamsSwapped as TeamsSwappedEvent
-} from "../generated/ChangeOrders/ChangeOrders"
-import {
-  ChangeOrdersOwnershipTransferred,
-  TeamsSwapped
-} from "../generated/schema"
+  TeamsSwapped as TeamsSwappedEvent,
+} from "../generated/ChangeOrders/ChangeOrders";
+import { Predictors, Tokens } from "../generated/schema";
+
+// event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 
 export function handleChangeOrdersOwnershipTransferred(
   event: ChangeOrdersOwnershipTransferredEvent
-): void {
-  let entity = new ChangeOrdersOwnershipTransferred(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-  entity.save()
-}
+): void {}
 
 export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
-  let entity = new TeamsSwapped(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.predictor = event.params.predictor
-  entity.firstTeam = event.params.firstTeam
-  entity.secondTeam = event.params.secondTeam
-  entity.round = event.params.round
-  entity.save()
+  // Get Predictors Object based on the predictor address
+  let predictor = Predictors.load(event.params.predictor);
+
+  // Loop over every array until you find two with the firstTeam, and secondTeam Token Objects
+  let t1: Tokens;
+  let t2: Tokens;
+  predictor!.mints.forEach((curr, index) => {
+    let _token = Tokens.load(curr);
+    if (_token!.teamId == event.params.firstTeam) t1 = _token!;
+    if (_token!.teamId == event.params.secondTeam) t2 = _token!;
+  });
+
+  // Change the positions individually
+  let pos1 = t1!.position;
+  t1!.position = t2!.position;
+  t2!.position = pos1;
+
+  // Save the Token Objects
+  t1!.save();
+  t2!.save();
 }
