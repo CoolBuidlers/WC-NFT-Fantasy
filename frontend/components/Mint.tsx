@@ -120,6 +120,7 @@ const Mint = () => {
   const [teamSelection, setTeamSelection] = useState<StaticImageData[]>([]);
   const [inputSelection, setInputSelection] = useState<string[]>([]);
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
+  const [maticPrice, setMaticPrice] = useState<any>("0");
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
@@ -169,10 +170,22 @@ const Mint = () => {
     }
   };
 
+  const getMaticPrice = async () => {
+    const PredictionContract = new Contract(
+      PREDICTION_ADDRESS,
+      PREDICTION_ABI,
+      provider
+    );
+    const re = new RegExp("^-?\\d+(?:.\\d{0," + (2 || -1) + "})?");
+    const price = (await PredictionContract.getLatestPrice()) / 100000000;
+    setMaticPrice(price.toString().match(re)?.[0]);
+  };
+
   useEffect(() => {
     haveYouMinted();
     getCurrentPhase();
     haveYouMintedExtraTwo();
+    getMaticPrice();
   }, [address]);
 
   const renderMintComponent = () => {
@@ -204,7 +217,12 @@ const Mint = () => {
             {currentPhase === 1 && (
               <h2 className="text-5xl mb-20">MINT your 2 extra teams</h2>
             )}
-            <p className="text-3xl">Unit Price : 12.5 Matic </p>
+            {parseInt(maticPrice) >= 40000000 && (
+              <p className="text-3xl">Unit Price : 12.5 Matic </p>
+            )}
+            {parseInt(maticPrice) < 40000000 && (
+              <p className="text-3xl">Unit Price : 25 Matic </p>
+            )}
           </div>
 
           <div className="flex items-center flex-wrap justify-center">
@@ -311,13 +329,26 @@ const Mint = () => {
                     <Neymar
                       className="text-[25rem] cursor-pointer"
                       onClick={() => {
-                        !teamSelection.includes(England) &&
-                          setTeamSelection([...teamSelection, England]),
-                          !inputSelection.includes("Qatar") &&
-                            setInputSelection([...inputSelection, "England"]);
+                        !teamSelection.includes(Ecuador) &&
+                          setTeamSelection([...teamSelection, Ecuador]),
+                          !inputSelection.includes("Ecuador") &&
+                            setInputSelection([...inputSelection, "Ecuador"]);
                       }}
                     />
                   </div>
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Senegal) &&
+                        setTeamSelection([...teamSelection, Senegal]),
+                        !inputSelection.includes("Senegal") &&
+                          setInputSelection([...inputSelection, "Senegal"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
@@ -337,91 +368,370 @@ const Mint = () => {
                 <div className="max-w-[200px]">
                   <Neymar
                     className="text-[25rem] cursor-pointer"
-                    onClick={() =>
-                      setTeamSelection([...teamSelection, Senegal])
-                    }
+                    onClick={() => {
+                      !teamSelection.includes(England) &&
+                        setTeamSelection([...teamSelection, England]),
+                        !inputSelection.includes("England") &&
+                          setInputSelection([...inputSelection, "England"]);
+                    }}
                   />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Image src={Qatar}></Image>
-                  {/* <Neymar className="text-[25rem]" /> */}
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Iran) &&
+                        setTeamSelection([...teamSelection, Iran]),
+                        !inputSelection.includes("IR Iran") &&
+                          setInputSelection([...inputSelection, "IR Iran"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(USA) &&
+                        setTeamSelection([...teamSelection, USA]),
+                        !inputSelection.includes("USA") &&
+                          setInputSelection([...inputSelection, "USA"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Wales) &&
+                        setTeamSelection([...teamSelection, Wales]),
+                        !inputSelection.includes("Wales") &&
+                          setInputSelection([...inputSelection, "Wales"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Argentina) &&
+                        setTeamSelection([...teamSelection, Argentina]),
+                        !inputSelection.includes("Argentina") &&
+                          setInputSelection([...inputSelection, "Argentina"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(SaudiArabia) &&
+                        setTeamSelection([...teamSelection, SaudiArabia]),
+                        !inputSelection.includes("Saudi Arabia") &&
+                          setInputSelection([
+                            ...inputSelection,
+                            "Saudi Arabia",
+                          ]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Mexico) &&
+                        setTeamSelection([...teamSelection, Mexico]),
+                        !inputSelection.includes("Mexico") &&
+                          setInputSelection([...inputSelection, "Mexico"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Poland) &&
+                        setTeamSelection([...teamSelection, Poland]),
+                        !inputSelection.includes("Poland") &&
+                          setInputSelection([...inputSelection, "Poland"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(France) &&
+                        setTeamSelection([...teamSelection, France]),
+                        !inputSelection.includes("France") &&
+                          setInputSelection([...inputSelection, "France"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Australia) &&
+                        setTeamSelection([...teamSelection, Australia]),
+                        !inputSelection.includes("Australia") &&
+                          setInputSelection([...inputSelection, "Australia"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Denmark) &&
+                        setTeamSelection([...teamSelection, Denmark]),
+                        !inputSelection.includes("Denmark") &&
+                          setInputSelection([...inputSelection, "Denmark"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Tunisia) &&
+                        setTeamSelection([...teamSelection, Tunisia]),
+                        !inputSelection.includes("Tunisia") &&
+                          setInputSelection([...inputSelection, "Tunisia"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Spain) &&
+                        setTeamSelection([...teamSelection, Spain]),
+                        !inputSelection.includes("Spain") &&
+                          setInputSelection([...inputSelection, "Spain"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(CostaRica) &&
+                        setTeamSelection([...teamSelection, CostaRica]),
+                        !inputSelection.includes("Costa Rica") &&
+                          setInputSelection([...inputSelection, "Costa Rica"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Germany) &&
+                        setTeamSelection([...teamSelection, Germany]),
+                        !inputSelection.includes("Germany") &&
+                          setInputSelection([...inputSelection, "Germany"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Japan) &&
+                        setTeamSelection([...teamSelection, Japan]),
+                        !inputSelection.includes("Japan") &&
+                          setInputSelection([...inputSelection, "Japan"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Belgium) &&
+                        setTeamSelection([...teamSelection, Belgium]),
+                        !inputSelection.includes("Belgium") &&
+                          setInputSelection([...inputSelection, "Belgium"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Canada) &&
+                        setTeamSelection([...teamSelection, Canada]),
+                        !inputSelection.includes("Canada") &&
+                          setInputSelection([...inputSelection, "Canada"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Morocco) &&
+                        setTeamSelection([...teamSelection, Morocco]),
+                        !inputSelection.includes("Morocco") &&
+                          setInputSelection([...inputSelection, "Morocco"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Croatia) &&
+                        setTeamSelection([...teamSelection, Croatia]),
+                        !inputSelection.includes("Croatia") &&
+                          setInputSelection([...inputSelection, "Croatia"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Brazil) &&
+                        setTeamSelection([...teamSelection, Brazil]),
+                        !inputSelection.includes("Brazil") &&
+                          setInputSelection([...inputSelection, "Brazil"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Serbia) &&
+                        setTeamSelection([...teamSelection, Serbia]),
+                        !inputSelection.includes("Serbia") &&
+                          setInputSelection([...inputSelection, "Serbia"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Switzerland) &&
+                        setTeamSelection([...teamSelection, Switzerland]),
+                        !inputSelection.includes("Switzerland") &&
+                          setInputSelection([...inputSelection, "Switzerland"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Cameroon) &&
+                        setTeamSelection([...teamSelection, Cameroon]),
+                        !inputSelection.includes("Cameroon") &&
+                          setInputSelection([...inputSelection, "Cameroon"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Portugal) &&
+                        setTeamSelection([...teamSelection, Portugal]),
+                        !inputSelection.includes("Portugal") &&
+                          setInputSelection([...inputSelection, "Portugal"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Ghana) &&
+                        setTeamSelection([...teamSelection, Ghana]),
+                        !inputSelection.includes("Ghana") &&
+                          setInputSelection([...inputSelection, "Ghana"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Uruguay) &&
+                        setTeamSelection([...teamSelection, Uruguay]),
+                        !inputSelection.includes("Uruguay") &&
+                          setInputSelection([...inputSelection, "Uruguay"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Korea) &&
+                        setTeamSelection([...teamSelection, Korea]),
+                        !inputSelection.includes("Korea Republic") &&
+                          setInputSelection([
+                            ...inputSelection,
+                            "Korea Republic",
+                          ]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
             </Carousel>
@@ -487,9 +797,16 @@ const Mint = () => {
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
               ></div>
-              <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                12.5 Matic | 50 $
-              </span>
+              {parseInt(maticPrice) * 100000000 >= 40000000 && (
+                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                  12.5 Matic | {maticPrice} $
+                </span>
+              )}
+              {parseInt(maticPrice) * 100000000 >= 40000000 && (
+                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                  25 Matic | {maticPrice} $
+                </span>
+              )}
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
@@ -508,7 +825,12 @@ const Mint = () => {
             {currentPhase === 0 && (
               <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
             )}
-            <p className="text-3xl">Unit Price : 25 Matic </p>
+            {parseInt(maticPrice) * 100000000 >= 40000000 && (
+              <p className="text-3xl">Unit Price : 12.5 Matic </p>
+            )}
+            {parseInt(maticPrice) * 100000000 < 40000000 && (
+              <p className="text-3xl">Unit Price : 25 Matic </p>
+            )}
           </div>
 
           <div className="flex items-center flex-wrap justify-center px-2">
@@ -665,8 +987,10 @@ const Mint = () => {
                     <Neymar
                       className="text-[25rem] cursor-pointer"
                       onClick={() => {
-                        setTeamSelection([...teamSelection, England]),
-                          setInputSelection([...inputSelection, "England"]);
+                        !teamSelection.includes(Ecuador) &&
+                          setTeamSelection([...teamSelection, Ecuador]),
+                          !inputSelection.includes("Ecuador") &&
+                            setInputSelection([...inputSelection, "Ecuador"]);
                       }}
                     />
                   </div>
@@ -677,8 +1001,10 @@ const Mint = () => {
                   <Neymar
                     className="text-[25rem] cursor-pointer"
                     onClick={() => {
-                      setTeamSelection([...teamSelection, Netherlands]),
-                        setInputSelection([...inputSelection, "Netherlands"]);
+                      !teamSelection.includes(Senegal) &&
+                        setTeamSelection([...teamSelection, Senegal]),
+                        !inputSelection.includes("Senegal") &&
+                          setInputSelection([...inputSelection, "Senegal"]);
                     }}
                   />
                 </div>
@@ -688,90 +1014,382 @@ const Mint = () => {
                   <Neymar
                     className="text-[25rem] cursor-pointer"
                     onClick={() => {
-                      setTeamSelection([...teamSelection, Senegal]),
-                        setInputSelection([...inputSelection, "Senegal"]);
+                      !teamSelection.includes(Netherlands) &&
+                        setTeamSelection([...teamSelection, Netherlands]),
+                        !inputSelection.includes("Netherlands") &&
+                          setInputSelection([...inputSelection, "Netherlands"]);
                     }}
                   />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(England) &&
+                        setTeamSelection([...teamSelection, England]),
+                        !inputSelection.includes("England") &&
+                          setInputSelection([...inputSelection, "England"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Iran) &&
+                        setTeamSelection([...teamSelection, Iran]),
+                        !inputSelection.includes("IR Iran") &&
+                          setInputSelection([...inputSelection, "IR Iran"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(USA) &&
+                        setTeamSelection([...teamSelection, USA]),
+                        !inputSelection.includes("USA") &&
+                          setInputSelection([...inputSelection, "USA"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Wales) &&
+                        setTeamSelection([...teamSelection, Wales]),
+                        !inputSelection.includes("Wales") &&
+                          setInputSelection([...inputSelection, "Wales"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Argentina) &&
+                        setTeamSelection([...teamSelection, Argentina]),
+                        !inputSelection.includes("Argentina") &&
+                          setInputSelection([...inputSelection, "Argentina"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(SaudiArabia) &&
+                        setTeamSelection([...teamSelection, SaudiArabia]),
+                        !inputSelection.includes("Saudi Arabia") &&
+                          setInputSelection([
+                            ...inputSelection,
+                            "Saudi Arabia",
+                          ]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Mexico) &&
+                        setTeamSelection([...teamSelection, Mexico]),
+                        !inputSelection.includes("Mexico") &&
+                          setInputSelection([...inputSelection, "Mexico"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Poland) &&
+                        setTeamSelection([...teamSelection, Poland]),
+                        !inputSelection.includes("Poland") &&
+                          setInputSelection([...inputSelection, "Poland"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(France) &&
+                        setTeamSelection([...teamSelection, France]),
+                        !inputSelection.includes("France") &&
+                          setInputSelection([...inputSelection, "France"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Australia) &&
+                        setTeamSelection([...teamSelection, Australia]),
+                        !inputSelection.includes("Australia") &&
+                          setInputSelection([...inputSelection, "Australia"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Denmark) &&
+                        setTeamSelection([...teamSelection, Denmark]),
+                        !inputSelection.includes("Denmark") &&
+                          setInputSelection([...inputSelection, "Denmark"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Tunisia) &&
+                        setTeamSelection([...teamSelection, Tunisia]),
+                        !inputSelection.includes("Tunisia") &&
+                          setInputSelection([...inputSelection, "Tunisia"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Spain) &&
+                        setTeamSelection([...teamSelection, Spain]),
+                        !inputSelection.includes("Spain") &&
+                          setInputSelection([...inputSelection, "Spain"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(CostaRica) &&
+                        setTeamSelection([...teamSelection, CostaRica]),
+                        !inputSelection.includes("Costa Rica") &&
+                          setInputSelection([...inputSelection, "Costa Rica"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Germany) &&
+                        setTeamSelection([...teamSelection, Germany]),
+                        !inputSelection.includes("Germany") &&
+                          setInputSelection([...inputSelection, "Germany"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
                 <div className="max-w-[200px]">
-                  <Neymar className="text-[25rem]" />
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Japan) &&
+                        setTeamSelection([...teamSelection, Japan]),
+                        !inputSelection.includes("Japan") &&
+                          setInputSelection([...inputSelection, "Japan"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Belgium) &&
+                        setTeamSelection([...teamSelection, Belgium]),
+                        !inputSelection.includes("Belgium") &&
+                          setInputSelection([...inputSelection, "Belgium"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Canada) &&
+                        setTeamSelection([...teamSelection, Canada]),
+                        !inputSelection.includes("Canada") &&
+                          setInputSelection([...inputSelection, "Canada"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Morocco) &&
+                        setTeamSelection([...teamSelection, Morocco]),
+                        !inputSelection.includes("Morocco") &&
+                          setInputSelection([...inputSelection, "Morocco"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Croatia) &&
+                        setTeamSelection([...teamSelection, Croatia]),
+                        !inputSelection.includes("Croatia") &&
+                          setInputSelection([...inputSelection, "Croatia"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Brazil) &&
+                        setTeamSelection([...teamSelection, Brazil]),
+                        !inputSelection.includes("Brazil") &&
+                          setInputSelection([...inputSelection, "Brazil"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Serbia) &&
+                        setTeamSelection([...teamSelection, Serbia]),
+                        !inputSelection.includes("Serbia") &&
+                          setInputSelection([...inputSelection, "Serbia"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Switzerland) &&
+                        setTeamSelection([...teamSelection, Switzerland]),
+                        !inputSelection.includes("Switzerland") &&
+                          setInputSelection([...inputSelection, "Switzerland"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Cameroon) &&
+                        setTeamSelection([...teamSelection, Cameroon]),
+                        !inputSelection.includes("Cameroon") &&
+                          setInputSelection([...inputSelection, "Cameroon"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Portugal) &&
+                        setTeamSelection([...teamSelection, Portugal]),
+                        !inputSelection.includes("Portugal") &&
+                          setInputSelection([...inputSelection, "Portugal"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Ghana) &&
+                        setTeamSelection([...teamSelection, Ghana]),
+                        !inputSelection.includes("Ghana") &&
+                          setInputSelection([...inputSelection, "Ghana"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Uruguay) &&
+                        setTeamSelection([...teamSelection, Uruguay]),
+                        !inputSelection.includes("Uruguay") &&
+                          setInputSelection([...inputSelection, "Uruguay"]);
+                    }}
+                  />
+                </div>
+              </Carousel.Item>
+              <Carousel.Item>
+                <div className="max-w-[200px]">
+                  <Neymar
+                    className="text-[25rem] cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Korea) &&
+                        setTeamSelection([...teamSelection, Korea]),
+                        !inputSelection.includes("Korea Republic") &&
+                          setInputSelection([
+                            ...inputSelection,
+                            "Korea Republic",
+                          ]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
             </Carousel>
@@ -839,9 +1457,16 @@ const Mint = () => {
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
               ></div>
-              <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                25 Matic | 100 $
-              </span>
+              {parseInt(maticPrice) * 100000000 >= 40000000 && (
+                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                  25 Matic | {maticPrice} $
+                </span>
+              )}
+              {parseInt(maticPrice) * 100000000 < 40000000 && (
+                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                  50 Matic | {maticPrice} $
+                </span>
+              )}
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
