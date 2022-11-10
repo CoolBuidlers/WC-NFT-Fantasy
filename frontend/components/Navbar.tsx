@@ -19,27 +19,27 @@ const Navbar = () => {
       setExpand(!expand);
     },
     mint: (): void => {
-      scroll.scrollTo(1300);
+      scroll.scrollTo(1400);
       setExpand(!expand);
     },
     mintM: (): void => {
-      scroll.scrollTo(800);
+      scroll.scrollTo(1200);
       setExpand(!expand);
     },
     roadmap: (): void => {
-      scroll.scrollTo(3850);
+      scroll.scrollTo(2950);
       setExpand(!expand);
     },
     roadmapM: (): void => {
-      scroll.scrollTo(4300);
+      scroll.scrollTo(2400);
       setExpand(!expand);
     },
     Team: (): void => {
-      scroll.scrollTo(5200);
+      scroll.scrollTo(4300);
       setExpand(!expand);
     },
     TeamM: (): void => {
-      scroll.scrollTo(6300);
+      scroll.scrollTo(3900);
       setExpand(!expand);
     },
   };
