@@ -33,7 +33,7 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.startGame();
       await txn.wait();
       setIsStarted(true);
-    } 
+    }
     catch (err: any) {
       console.log(err)
       // use the hot toast to display the reason
@@ -42,9 +42,7 @@ const NumberGame = (): JSX.Element => {
 
   const joinGame = async (): Promise<void> => {
     try {
-      const txn: any = await contract.joinGame({
-        value: ethers.utils.formatEther("0.1")
-      });
+      const txn: any = await contract.joinGame();
       await txn.wait();
       await requestRandomWords();
       setJoined(true);
@@ -92,7 +90,7 @@ const NumberGame = (): JSX.Element => {
     }
     catch(err: any) 
     {
-      console.error(err)
+      console.error(err);
     }
   }
 
@@ -105,7 +103,7 @@ const NumberGame = (): JSX.Element => {
       setHasGuessed(false);
       setGuessedCorrectly(false);
       // call some function here to check the same user doesn't play more than once
-    } 
+    }
     catch (err: any) {
       console.error(err)
     }
