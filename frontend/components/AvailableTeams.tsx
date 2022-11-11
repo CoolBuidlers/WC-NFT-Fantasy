@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Player from "../public/img/card.svg";
 import { Transition } from "@headlessui/react";
 import { MdClose } from "react-icons/md";
-import { BsArrowLeftRight } from "react-icons/Bs";
+import { BsArrowLeftRight } from "react-icons/bs";
 
 const AvailableTeams = () => {
   const [showModal, setShowModal] = useState(false);
