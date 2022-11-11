@@ -1469,7 +1469,7 @@ const Mint = () => {
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
             <p className="text-white text-2xl ">
-            Mint your NFTs here when the World Cup starts, You can only own upto 6 NFTs and select 4 of them to be your top 4 teams for the World Cup.Mint your NFTs here when the World Cup starts, You can only own upto 6 NFTs and select 4 of them to be your top 4 teams for the World Cup.
+            Mint your NFTs here when the World Cup starts, You can only own upto 6 NFTs and select 4 of them to be your top 4 teams for the World Cup.
             </p>
           </div>
         </section>
