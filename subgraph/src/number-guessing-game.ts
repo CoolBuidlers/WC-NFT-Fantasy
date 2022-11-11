@@ -1,3 +1,4 @@
+import { Bytes } from "@graphprotocol/graph-ts";
 import {
   Ended as EndedEvent,
   NumberGuessingGameOwnershipTransferRequested as NumberGuessingGameOwnershipTransferRequestedEvent,
@@ -24,11 +25,21 @@ export function handleEnded(event: EndedEvent): void {
   // Get the Game Object from the game ID
   let game = Game.load(event.params.gameId.toString() + "N");
 
-  // Remove the person
-  game?.people?.filter((x) => x != event.params.player);
+  if (game) {
+    // Remove the person
+    let _filtered = game.people as Bytes[] | null;
+    if (_filtered) {
+      for (let i = 0; i < game!.people!.length; i++) {
+        if (game!.people![i] == event.params.player) {
+          _filtered.splice(i, 1);
+        }
+      }
+    }
+    game.people = _filtered;
 
-  // Save
-  game?.save();
+    // Save
+    game.save();
+  }
 }
 
 export function handleNumberGuessingGameOwnershipTransferRequested(
@@ -81,7 +92,13 @@ export function handleNumberGuessingGamecurrentGame(
   if (!game) game = new Game(id);
 
   // Add the participating player in
-  game.people!.push(event.params.player);
+  let _people = game.people as Bytes[] | null;
+  if (!_people) {
+    _people = [event.params.player] as Bytes[];
+  } else {
+    _people.push(event.params.player);
+  }
+  game.people = _people;
 
   // Add Game ID again
   game.gameId = event.params.gameId;

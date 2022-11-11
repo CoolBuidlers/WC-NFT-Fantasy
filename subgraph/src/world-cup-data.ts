@@ -41,7 +41,7 @@ export function handleReceiveTeamTop16(event: ReceiveTeamTop16Event): void {
   if (!round) round = new Round(id);
 
   // Getting Team ID From Event
-  const teamID = event.params.teamId;
+  let teamID = event.params.teamId;
 
   // If Team ID exists, then push it into the array
   if (teamID) round.countryIds.push(teamID);
@@ -61,7 +61,7 @@ export function handleReceiveTeamTop4(event: ReceiveTeamTop4Event): void {
   if (!round) round = new Round(id);
 
   // Getting Team ID From Event
-  const teamID = event.params.teamId;
+  let teamID = event.params.teamId;
 
   // If Team ID exists, then push it into the array
   if (teamID) round.countryIds.push(teamID);
@@ -81,7 +81,7 @@ export function handleReceiveTeamTop8(event: ReceiveTeamTop8Event): void {
   if (!round) round = new Round(id);
 
   // Getting Team ID From Event
-  const teamID = event.params.teamId;
+  let teamID = event.params.teamId;
 
   // If Team ID exists, then push it into the array
   if (teamID) round.countryIds.push(teamID);
