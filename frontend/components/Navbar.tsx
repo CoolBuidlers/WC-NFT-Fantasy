@@ -35,7 +35,7 @@ const Navbar = () => {
       setExpand(!expand);
     },
     Team: (): void => {
-      scroll.scrollTo(4300);
+      scroll.scrollTo(4500);
       setExpand(!expand);
     },
     TeamM: (): void => {

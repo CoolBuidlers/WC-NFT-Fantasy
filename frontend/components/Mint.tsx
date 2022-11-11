@@ -254,7 +254,7 @@ const Mint = () => {
                     </span>
                   </Transition>
                 </div>
-                <Image src={teamSelection[0]} width={500} height={500}></Image>
+                <Image src={teamSelection[0]} width={500} height={500} alt="Img"/>
               </div>
             )}
             {teamSelection[1] !== undefined && (
@@ -275,7 +275,7 @@ const Mint = () => {
                     </span>
                   </Transition>
                 </div>
-                <Image src={teamSelection[1]} width={500} height={500}></Image>
+                <Image src={teamSelection[1]} width={500} height={500} alt="Img"/>
               </div>
             )}
           </div>
