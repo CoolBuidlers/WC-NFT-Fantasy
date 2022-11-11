@@ -35,27 +35,16 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.startGame();
       await txn.wait();
       setIsStarted(true);
-<<<<<<< HEAD
     }
     catch (err: any) {
       console.log(err)
-=======
-    } catch (err: any) {
-      console.log(err);
->>>>>>> eb2389810376487fd6f7e043926534c77d0e90c6
       // use the hot toast to display the reason
     }
   };
 
   const joinGame = async (): Promise<void> => {
     try {
-<<<<<<< HEAD
       const txn: any = await contract.joinGame();
-=======
-      const txn: any = await contract.joinGame({
-        value: ethers.utils.formatEther("0.1"),
-      });
->>>>>>> eb2389810376487fd6f7e043926534c77d0e90c6
       await txn.wait();
       await requestRandomWords();
       setJoined(true);
@@ -98,15 +87,7 @@ const NumberGame = (): JSX.Element => {
     } catch (err: any) {
       console.error(err);
     }
-<<<<<<< HEAD
-    catch(err: any) 
-    {
-      console.error(err);
-    }
   }
-=======
-  };
->>>>>>> eb2389810376487fd6f7e043926534c77d0e90c6
 
   const restartGame = async (): Promise<void> => {
     try {
@@ -117,14 +98,8 @@ const NumberGame = (): JSX.Element => {
       setHasGuessed(false);
       setGuessedCorrectly(false);
       // call some function here to check the same user doesn't play more than once
-<<<<<<< HEAD
-    }
-    catch (err: any) {
-      console.error(err)
-=======
     } catch (err: any) {
       console.error(err);
->>>>>>> eb2389810376487fd6f7e043926534c77d0e90c6
     }
   };
 
