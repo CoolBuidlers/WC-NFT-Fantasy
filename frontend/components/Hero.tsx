@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <section className="px-2 py-20 text-white">
       <div className="flex justify-start">
-        <div className="md:w-3/5 md:px-12 px-4 ">
+        <div className="md:w-3/5 md:px-12 px-4">
           <h2 className="text-4xl text-skin-base my-4 leading-tight lg:text-7xl tracking-tighter mb-6">
             World Cup{" "}
             <span
