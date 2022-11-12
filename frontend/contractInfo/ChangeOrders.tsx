@@ -175,4 +175,4 @@ export const CHANGE_ORDERS_ABI = [
   },
 ];
 
-export const CHANGE_ORDERS_ADDRESS = ""
+export const CHANGE_ORDERS_ADDRESS = "0x470a6e947ee23F0e79A0D6443eA9F3F29A4bca2a";
