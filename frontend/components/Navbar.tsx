@@ -88,20 +88,6 @@ const Navbar = () => {
             ></div>
             <button
               className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
-              onClick={allScrolls.home}
-            >
-              HOME
-            </button>
-          </div>
-        </Link>
-        <Link href="/">
-          <div className="cursor-pointer relative group py-0.5 px-0.5 ">
-            <div
-              className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
-             to-[#F20089] blur-lg transition-all"
-            ></div>
-            <button
-              className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
               onClick={allScrolls.mint}
             >
               MINT
@@ -147,6 +133,17 @@ const Navbar = () => {
             </button>
           </div>
         </Link>
+        <Link href="/QuizGame">
+          <div className="cursor-pointer relative group py-0.5 px-0.5 ">
+            <div
+              className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
+             to-[#F20089] blur-lg transition-all"
+            ></div>
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+              QUIZGAME
+            </button>
+          </div>
+        </Link>
       </ul>
       <div className="hidden lg:flex items-center">
         <CustomButton />
@@ -178,14 +175,6 @@ const Navbar = () => {
             </Link>
           </div>
           <ul className=" flex flex-col justify-between basis-2/6 items-start mb-6">
-            <Link href="/">
-              <button
-                className="cursor-pointer  transition-all text-3xl mb-4"
-                onClick={allScrolls.home}
-              >
-                HOME
-              </button>
-            </Link>
             <Link href="/">
               <button
                 className="cursor-pointer  transition-all text-3xl mb-4"
