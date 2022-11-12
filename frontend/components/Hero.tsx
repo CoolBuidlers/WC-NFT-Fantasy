@@ -17,14 +17,17 @@ const Hero = () => {
             </span>
             <br /> NFT Fantasy
           </h2>
-          <p className="text-base text-skin-muted dark:text-skin-darkMuted lg:text-2xl sm:mb-14 mb-10">
+          <p className="text-base text-skin-muted dark:text-skin-darkMuted lg:text-2xl sm:mb-4 mb-10">
             Purchase Team cards as NFTs and use them for prediction and play
             other games to gain extra points and earn your chance to win a grand
             prize!
           </p>
+          <a className="bg-gradient-to-r bg-clip-text text-transparent 
+            from-pink-400 via-purple-500 to-green-400
+            animate-text text-xl cursor-pointer">Click here to learn how to play like an expert!</a>
           <div>
             <Link href="/MainGame">
-              <span className="play-btn text-center py-4 w-[90%] sm:w-[60%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
+              <span className="play-btn text-center py-4 mt-4 w-[90%] sm:w-[60%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
                 PlayGame
               </span>
             </Link>
