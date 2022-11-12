@@ -45,75 +45,6 @@ import { useSigner, useProvider, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 const Mint = () => {
-  const teamArray = [
-    Qatar,
-    Ecuador,
-    Senegal,
-    Netherlands,
-    England,
-    Iran,
-    USA,
-    Wales,
-    Argentina,
-    SaudiArabia,
-    Mexico,
-    Poland,
-    France,
-    Australia,
-    Denmark,
-    Tunisia,
-    Spain,
-    CostaRica,
-    Germany,
-    Japan,
-    Belgium,
-    Canada,
-    Morocco,
-    Croatia,
-    Brazil,
-    Serbia,
-    Switzerland,
-    Cameroon,
-    Portugal,
-    Ghana,
-    Uruguay,
-    Korea,
-  ];
-
-  const teamInput = [
-    "Qatar",
-    "Ecuador",
-    "Senegal",
-    "Netherlands",
-    "England",
-    "IR Iran",
-    "USA",
-    "Wales",
-    "Argentina",
-    "Saudi Arabia",
-    "Mexico",
-    "Poland",
-    "France",
-    "Australia",
-    "Denmark",
-    "Tunisia",
-    "Spain",
-    "Costa Rica",
-    "Germany",
-    "Japan",
-    "Belgium",
-    "Canada",
-    "Morocco",
-    "Croatia",
-    "Brazil",
-    "Serbia",
-    "Switzerland",
-    "Cameroon",
-    "Portugal",
-    "Ghana",
-    "Uruguay",
-    "Korea Republic",
-  ];
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const [showModal, setShowModal] = useState(false);
@@ -799,12 +730,12 @@ const Mint = () => {
               ></div>
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  12.5 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  25 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
             </div>
@@ -824,10 +755,10 @@ const Mint = () => {
               <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
             )}
             {parseInt(maticPrice) * 100000000 >= 40000000 && (
-              <p className="text-3xl">Unit Price : 12.5 Matic </p>
+              <p className="text-3xl">Unit Price : 25 Matic </p>
             )}
             {parseInt(maticPrice) * 100000000 < 40000000 && (
-              <p className="text-3xl">Unit Price : 25 Matic </p>
+              <p className="text-3xl">Unit Price : 50 Matic </p>
             )}
           </div>
 
@@ -1457,12 +1388,12 @@ const Mint = () => {
               ></div>
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  25 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
               {parseInt(maticPrice) * 100000000 < 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  50 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
             </div>
