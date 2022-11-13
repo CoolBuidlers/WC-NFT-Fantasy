@@ -1,4 +1,3 @@
-import Neymar from "../public/img/card.svg";
 import Qatar from "../public/NFTs/0.png";
 import Ecuador from "../public/NFTs/4.png";
 import Senegal from "../public/NFTs/8.png";
@@ -247,7 +246,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
                       1
@@ -268,7 +267,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-purple-900 text-white rounded-full">
                       2
@@ -311,9 +310,10 @@ const Mint = () => {
               ]}
             >
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Qatar}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Qatar) &&
                         setTeamSelection([...teamSelection, Qatar]),
@@ -324,24 +324,24 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <div className="max-w-[200px]">
-                    <Neymar
-                      className="text-[25rem] cursor-pointer"
-                      onClick={() => {
-                        !teamSelection.includes(Ecuador) &&
-                          setTeamSelection([...teamSelection, Ecuador]),
-                          !inputSelection.includes("Ecuador") &&
-                            setInputSelection([...inputSelection, "Ecuador"]);
-                      }}
-                    />
-                  </div>
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Ecuador}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Ecuador) &&
+                        setTeamSelection([...teamSelection, Ecuador]),
+                        !inputSelection.includes("Ecuador") &&
+                          setInputSelection([...inputSelection, "Ecuador"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Senegal}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Senegal) &&
                         setTeamSelection([...teamSelection, Senegal]),
@@ -352,9 +352,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Netherlands}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Netherlands) &&
                         setTeamSelection([...teamSelection, Netherlands]),
@@ -365,9 +366,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={England}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(England) &&
                         setTeamSelection([...teamSelection, England]),
@@ -378,9 +380,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Iran}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Iran) &&
                         setTeamSelection([...teamSelection, Iran]),
@@ -391,9 +394,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={USA}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(USA) &&
                         setTeamSelection([...teamSelection, USA]),
@@ -404,9 +408,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Wales}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Wales) &&
                         setTeamSelection([...teamSelection, Wales]),
@@ -417,9 +422,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Argentina}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Argentina) &&
                         setTeamSelection([...teamSelection, Argentina]),
@@ -430,9 +436,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={SaudiArabia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(SaudiArabia) &&
                         setTeamSelection([...teamSelection, SaudiArabia]),
@@ -446,9 +453,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Mexico}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Mexico) &&
                         setTeamSelection([...teamSelection, Mexico]),
@@ -459,9 +467,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Poland}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Poland) &&
                         setTeamSelection([...teamSelection, Poland]),
@@ -472,9 +481,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={France}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(France) &&
                         setTeamSelection([...teamSelection, France]),
@@ -485,9 +495,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Australia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Australia) &&
                         setTeamSelection([...teamSelection, Australia]),
@@ -498,9 +509,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Denmark}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Denmark) &&
                         setTeamSelection([...teamSelection, Denmark]),
@@ -511,9 +523,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Tunisia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Tunisia) &&
                         setTeamSelection([...teamSelection, Tunisia]),
@@ -524,9 +537,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Spain}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Spain) &&
                         setTeamSelection([...teamSelection, Spain]),
@@ -537,9 +551,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={CostaRica}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(CostaRica) &&
                         setTeamSelection([...teamSelection, CostaRica]),
@@ -550,9 +565,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Germany}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Germany) &&
                         setTeamSelection([...teamSelection, Germany]),
@@ -563,9 +579,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Japan}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Japan) &&
                         setTeamSelection([...teamSelection, Japan]),
@@ -576,9 +593,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Belgium}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Belgium) &&
                         setTeamSelection([...teamSelection, Belgium]),
@@ -589,9 +607,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Canada}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Canada) &&
                         setTeamSelection([...teamSelection, Canada]),
@@ -602,9 +621,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Morocco}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Morocco) &&
                         setTeamSelection([...teamSelection, Morocco]),
@@ -615,9 +635,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Croatia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Croatia) &&
                         setTeamSelection([...teamSelection, Croatia]),
@@ -628,9 +649,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Brazil}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Brazil) &&
                         setTeamSelection([...teamSelection, Brazil]),
@@ -641,9 +663,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Serbia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Serbia) &&
                         setTeamSelection([...teamSelection, Serbia]),
@@ -654,9 +677,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Switzerland}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Switzerland) &&
                         setTeamSelection([...teamSelection, Switzerland]),
@@ -667,9 +691,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Cameroon}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Cameroon) &&
                         setTeamSelection([...teamSelection, Cameroon]),
@@ -680,9 +705,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Portugal}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Portugal) &&
                         setTeamSelection([...teamSelection, Portugal]),
@@ -693,9 +719,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Ghana}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Ghana) &&
                         setTeamSelection([...teamSelection, Ghana]),
@@ -706,9 +733,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Uruguay}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Uruguay) &&
                         setTeamSelection([...teamSelection, Uruguay]),
@@ -719,9 +747,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Korea}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Korea) &&
                         setTeamSelection([...teamSelection, Korea]),
@@ -855,7 +884,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2  "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
                       1
@@ -878,7 +907,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2  "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-purple-900 text-white rounded-full">
                       2
@@ -901,7 +930,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2  "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-red-500 text-white rounded-full">
                       3
@@ -924,7 +953,7 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2  "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
                       4
@@ -969,9 +998,10 @@ const Mint = () => {
               ]}
             >
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Qatar}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Qatar) &&
                         setTeamSelection([...teamSelection, Qatar]),
@@ -982,24 +1012,24 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <div className="max-w-[200px]">
-                    <Neymar
-                      className="text-[25rem] cursor-pointer"
-                      onClick={() => {
-                        !teamSelection.includes(Ecuador) &&
-                          setTeamSelection([...teamSelection, Ecuador]),
-                          !inputSelection.includes("Ecuador") &&
-                            setInputSelection([...inputSelection, "Ecuador"]);
-                      }}
-                    />
-                  </div>
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Ecuador}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      !teamSelection.includes(Ecuador) &&
+                        setTeamSelection([...teamSelection, Ecuador]),
+                        !inputSelection.includes("Ecuador") &&
+                          setInputSelection([...inputSelection, "Ecuador"]);
+                    }}
+                  />
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Senegal}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Senegal) &&
                         setTeamSelection([...teamSelection, Senegal]),
@@ -1010,9 +1040,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Netherlands}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Netherlands) &&
                         setTeamSelection([...teamSelection, Netherlands]),
@@ -1023,9 +1054,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto ">
+                  <Image
+                    src={England}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(England) &&
                         setTeamSelection([...teamSelection, England]),
@@ -1036,9 +1068,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Iran}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Iran) &&
                         setTeamSelection([...teamSelection, Iran]),
@@ -1049,9 +1082,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={USA}
+                    className=" cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(USA) &&
                         setTeamSelection([...teamSelection, USA]),
@@ -1062,9 +1096,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Wales}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Wales) &&
                         setTeamSelection([...teamSelection, Wales]),
@@ -1075,9 +1110,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Argentina}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Argentina) &&
                         setTeamSelection([...teamSelection, Argentina]),
@@ -1088,9 +1124,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={SaudiArabia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(SaudiArabia) &&
                         setTeamSelection([...teamSelection, SaudiArabia]),
@@ -1104,9 +1141,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Mexico}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Mexico) &&
                         setTeamSelection([...teamSelection, Mexico]),
@@ -1117,9 +1155,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Poland}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Poland) &&
                         setTeamSelection([...teamSelection, Poland]),
@@ -1130,9 +1169,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={France}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(France) &&
                         setTeamSelection([...teamSelection, France]),
@@ -1143,9 +1183,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Australia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Australia) &&
                         setTeamSelection([...teamSelection, Australia]),
@@ -1156,9 +1197,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Denmark}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Denmark) &&
                         setTeamSelection([...teamSelection, Denmark]),
@@ -1169,9 +1211,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Tunisia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Tunisia) &&
                         setTeamSelection([...teamSelection, Tunisia]),
@@ -1182,9 +1225,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Spain}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Spain) &&
                         setTeamSelection([...teamSelection, Spain]),
@@ -1195,9 +1239,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={CostaRica}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(CostaRica) &&
                         setTeamSelection([...teamSelection, CostaRica]),
@@ -1208,9 +1253,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Germany}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Germany) &&
                         setTeamSelection([...teamSelection, Germany]),
@@ -1221,9 +1267,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Japan}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Japan) &&
                         setTeamSelection([...teamSelection, Japan]),
@@ -1234,9 +1281,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Belgium}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Belgium) &&
                         setTeamSelection([...teamSelection, Belgium]),
@@ -1247,9 +1295,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Canada}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Canada) &&
                         setTeamSelection([...teamSelection, Canada]),
@@ -1260,9 +1309,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Morocco}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Morocco) &&
                         setTeamSelection([...teamSelection, Morocco]),
@@ -1273,9 +1323,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Croatia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Croatia) &&
                         setTeamSelection([...teamSelection, Croatia]),
@@ -1286,9 +1337,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Brazil}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Brazil) &&
                         setTeamSelection([...teamSelection, Brazil]),
@@ -1299,9 +1351,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Serbia}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Serbia) &&
                         setTeamSelection([...teamSelection, Serbia]),
@@ -1312,9 +1365,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Switzerland}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Switzerland) &&
                         setTeamSelection([...teamSelection, Switzerland]),
@@ -1325,9 +1379,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Cameroon}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Cameroon) &&
                         setTeamSelection([...teamSelection, Cameroon]),
@@ -1338,9 +1393,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Portugal}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Portugal) &&
                         setTeamSelection([...teamSelection, Portugal]),
@@ -1351,9 +1407,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Ghana}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Ghana) &&
                         setTeamSelection([...teamSelection, Ghana]),
@@ -1364,9 +1421,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Uruguay}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Uruguay) &&
                         setTeamSelection([...teamSelection, Uruguay]),
@@ -1377,9 +1435,10 @@ const Mint = () => {
                 </div>
               </Carousel.Item>
               <Carousel.Item>
-                <div className="max-w-[200px]">
-                  <Neymar
-                    className="text-[25rem] cursor-pointer"
+                <div className="max-w-[250px] mx-auto">
+                  <Image
+                    src={Korea}
+                    className="cursor-pointer"
                     onClick={() => {
                       !teamSelection.includes(Korea) &&
                         setTeamSelection([...teamSelection, Korea]),
