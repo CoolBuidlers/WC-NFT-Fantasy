@@ -36,7 +36,7 @@ type Game @entity {
 }
 
 # Round Info
-type Round @entity(immutable: true) {
+type Round @entity {
   "the name of the Round"
   id: String!
   "ref to the countries"

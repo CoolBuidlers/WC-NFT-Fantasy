@@ -1,7 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import teamCard from "../public/img/CardBg.png";
-import khan from "../public/img/teamMember.png";
+import Yanuka from "../public/img/teamMember.png";
+import Larry from "../public/img/Larry.png";
+import Khan from "../public/img/Abbas.png";
+import Haroon from "../public/img/Haroon.png";
 import { AiOutlineTwitter } from "react-icons/ai";
 import { AiFillGithub } from "react-icons/ai";
 import { AiFillLinkedin } from "react-icons/ai";
@@ -26,7 +29,7 @@ const Team = () => {
         <div className="max-w-xs relative mx-auto w-full text-white">
           <Image src={teamCard} layout="responsive" alt="teamCard" />
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Image src={khan} alt="Abbas" />
+            <Image src={Khan} alt="Abbas" />
           </div>
 
           <div className="absolute top-2/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -59,7 +62,7 @@ const Team = () => {
         <div className="max-w-xs relative mx-auto w-full text-white">
           <Image src={teamCard} layout="responsive" alt="teamCard" />
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Image src={khan} alt="Abbas" />
+            <Image src={Larry} alt="Larry" />
           </div>
 
           <div className="absolute top-2/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -90,7 +93,7 @@ const Team = () => {
         <div className="max-w-xs relative mx-auto w-full text-white">
           <Image src={teamCard} layout="responsive" alt="teamCard" />
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Image src={khan} alt="Abbas" />
+            <Image src={Yanuka} alt="Yanuka" />
           </div>
 
           <div className="absolute top-2/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -121,7 +124,7 @@ const Team = () => {
         <div className="max-w-xs relative mx-auto w-full text-white">
           <Image src={teamCard} layout="responsive" alt="teamCard" />
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Image src={khan} alt="Abbas" />
+            <Image src={Haroon} alt="Haroon" />
           </div>
 
           <div className="absolute top-2/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

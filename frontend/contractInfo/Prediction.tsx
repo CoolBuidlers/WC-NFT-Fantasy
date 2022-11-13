@@ -793,4 +793,4 @@ export const PREDICTION_ABI = [
     type: "receive",
   },
 ];
-export const PREDICTION_ADDRESS = "0x9E6a4003fc5699DBb3A36cf08Cf9Cb597e762c16";
+export const PREDICTION_ADDRESS = "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8";

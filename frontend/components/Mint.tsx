@@ -44,75 +44,6 @@ import { useSigner, useProvider, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 const Mint = () => {
-  const teamArray = [
-    Qatar,
-    Ecuador,
-    Senegal,
-    Netherlands,
-    England,
-    Iran,
-    USA,
-    Wales,
-    Argentina,
-    SaudiArabia,
-    Mexico,
-    Poland,
-    France,
-    Australia,
-    Denmark,
-    Tunisia,
-    Spain,
-    CostaRica,
-    Germany,
-    Japan,
-    Belgium,
-    Canada,
-    Morocco,
-    Croatia,
-    Brazil,
-    Serbia,
-    Switzerland,
-    Cameroon,
-    Portugal,
-    Ghana,
-    Uruguay,
-    Korea,
-  ];
-
-  const teamInput = [
-    "Qatar",
-    "Ecuador",
-    "Senegal",
-    "Netherlands",
-    "England",
-    "IR Iran",
-    "USA",
-    "Wales",
-    "Argentina",
-    "Saudi Arabia",
-    "Mexico",
-    "Poland",
-    "France",
-    "Australia",
-    "Denmark",
-    "Tunisia",
-    "Spain",
-    "Costa Rica",
-    "Germany",
-    "Japan",
-    "Belgium",
-    "Canada",
-    "Morocco",
-    "Croatia",
-    "Brazil",
-    "Serbia",
-    "Switzerland",
-    "Cameroon",
-    "Portugal",
-    "Ghana",
-    "Uruguay",
-    "Korea Republic",
-  ];
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const [showModal, setShowModal] = useState(false);
@@ -253,7 +184,7 @@ const Mint = () => {
                     </span>
                   </Transition>
                 </div>
-                <Image src={teamSelection[0]} width={500} height={500}></Image>
+                <Image src={teamSelection[0]} width={500} height={500} alt="Img"/>
               </div>
             )}
             {teamSelection[1] !== undefined && (
@@ -274,7 +205,7 @@ const Mint = () => {
                     </span>
                   </Transition>
                 </div>
-                <Image src={teamSelection[1]} width={500} height={500}></Image>
+                <Image src={teamSelection[1]} width={500} height={500} alt="Img"/>
               </div>
             )}
           </div>
@@ -828,21 +759,19 @@ const Mint = () => {
               ></div>
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  12.5 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  25 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
             <p className="text-white text-2xl ">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus
-              in at faucibus blandit egestas congue. Felis, feugia t viverra
-              quis felis.
+              Mint your NFTs here when the World Cup starts, You can only own upto 6 NFTs and select 4 of them to be your top 4 teams for the World Cup.
             </p>
           </div>
         </section>
@@ -855,10 +784,10 @@ const Mint = () => {
               <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
             )}
             {parseInt(maticPrice) * 100000000 >= 40000000 && (
-              <p className="text-3xl">Unit Price : 12.5 Matic </p>
+              <p className="text-3xl">Unit Price : 25 Matic </p>
             )}
             {parseInt(maticPrice) * 100000000 < 40000000 && (
-              <p className="text-3xl">Unit Price : 25 Matic </p>
+              <p className="text-3xl">Unit Price : 50 Matic </p>
             )}
           </div>
 
@@ -1473,13 +1402,13 @@ const Mint = () => {
               leaveTo="opacity-0 scale-0 "
               className="w-[100vw] h-[100vh] bg-[#4d4c4cd9] fixed z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
             >
-              <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-1/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
+              <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-2/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
                 <p className="sm:mb-14 mb-6 text-lg">Please Select Amount</p>
 
                 <div className="px-2  flex  flex-col sm:flex-row justify-center items-center">
                   <input
                     type="text"
-                    className="text-white bg-shade-9 w-[300px] sm:max-w-sm text-2xl sm:text-2xl outline-none py-4 px-1 mb-6 sm:mb-0 sm:mr-24"
+                    className="text-white bg-shade-9 w-[300px] sm:max-w-sm text-2xl sm:text-2xl outline-none py-4 px-1 mb-6 sm:mb-0 sm:mr-24 md:w-3/6"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setAmount(e.target.value)
                     }
@@ -1518,21 +1447,19 @@ const Mint = () => {
               ></div>
               {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  25 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
               {parseInt(maticPrice) * 100000000 < 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  50 Matic | {maticPrice} $
+                  1 Matic | {maticPrice} $
                 </span>
               )}
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
             <p className="text-white text-2xl ">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus
-              in at faucibus blandit egestas congue. Felis, feugia t viverra
-              quis felis.
+            Mint your NFTs here when the World Cup starts, You can only own upto 6 NFTs and select 4 of them to be your top 4 teams for the World Cup.
             </p>
           </div>
         </section>

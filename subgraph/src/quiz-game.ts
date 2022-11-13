@@ -17,7 +17,7 @@ export function handlecurrentGame(event: currentGameEvent): void {
   if (!game) game = new Game(id);
 
   // Fill in the Info and pass the caller address
-  game.people?.push(event.params.caller);
+  game.people!.push(event.params.caller);
   game.gameId = event.params.currentGameId;
   game.gameType = "Quiz";
   game.status = false;

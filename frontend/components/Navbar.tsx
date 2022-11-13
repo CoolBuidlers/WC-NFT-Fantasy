@@ -19,27 +19,27 @@ const Navbar = () => {
       setExpand(!expand);
     },
     mint: (): void => {
-      scroll.scrollTo(1300);
+      scroll.scrollTo(1400);
       setExpand(!expand);
     },
     mintM: (): void => {
-      scroll.scrollTo(800);
+      scroll.scrollTo(1200);
       setExpand(!expand);
     },
     roadmap: (): void => {
-      scroll.scrollTo(3850);
+      scroll.scrollTo(2950);
       setExpand(!expand);
     },
     roadmapM: (): void => {
-      scroll.scrollTo(4300);
+      scroll.scrollTo(2400);
       setExpand(!expand);
     },
     Team: (): void => {
-      scroll.scrollTo(5200);
+      scroll.scrollTo(4500);
       setExpand(!expand);
     },
     TeamM: (): void => {
-      scroll.scrollTo(6300);
+      scroll.scrollTo(3900);
       setExpand(!expand);
     },
   };
@@ -80,20 +80,6 @@ const Navbar = () => {
         </div>
       </div>
       <ul className="hidden lg:flex justify-around items-center basis-2/5 text-lg">
-        <Link href="/">
-          <div className="cursor-pointer relative group py-0.5 px-0.5 ">
-            <div
-              className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
-             to-[#F20089] blur-lg transition-all"
-            ></div>
-            <button
-              className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all"
-              onClick={allScrolls.home}
-            >
-              HOME
-            </button>
-          </div>
-        </Link>
         <Link href="/">
           <div className="cursor-pointer relative group py-0.5 px-0.5 ">
             <div
@@ -147,6 +133,17 @@ const Navbar = () => {
             </button>
           </div>
         </Link>
+        <Link href="/QuizGame">
+          <div className="cursor-pointer relative group py-0.5 px-0.5 ">
+            <div
+              className="absolute -inset-1 group-hover:bg-gradient-to-r from-[#A100F2] via-[#D100D1]
+             to-[#F20089] blur-lg transition-all"
+            ></div>
+            <button className="relative group-hover:border-t-2 border-[#D100D1] py-1 transition-all">
+              QUIZGAME
+            </button>
+          </div>
+        </Link>
       </ul>
       <div className="hidden lg:flex items-center">
         <CustomButton />
@@ -178,14 +175,6 @@ const Navbar = () => {
             </Link>
           </div>
           <ul className=" flex flex-col justify-between basis-2/6 items-start mb-6">
-            <Link href="/">
-              <button
-                className="cursor-pointer  transition-all text-3xl mb-4"
-                onClick={allScrolls.home}
-              >
-                HOME
-              </button>
-            </Link>
             <Link href="/">
               <button
                 className="cursor-pointer  transition-all text-3xl mb-4"

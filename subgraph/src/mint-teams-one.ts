@@ -1,4 +1,3 @@
-import { BigInt } from "@graphprotocol/graph-ts";
 import {
   ApprovalForAll as ApprovalForAllEvent,
   LevelUp as LevelUpEvent,

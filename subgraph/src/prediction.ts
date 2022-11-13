@@ -72,7 +72,7 @@ export function handleWinners(event: Winners): void {
   winners.players.push(event.params.winnerThree);
 
   // Fill in other values
-  winners.gameId = new BigInt(parseInt(id));
+  winners.gameId = BigInt.fromString(id);
   winners.game = "Prediction";
 
   // -----
