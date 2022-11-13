@@ -1343,13 +1343,13 @@ const Mint = () => {
               leaveTo="opacity-0 scale-0 "
               className="w-[100vw] h-[100vh] bg-[#4d4c4cd9] fixed z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
             >
-              <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-1/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
+              <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-2/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
                 <p className="sm:mb-14 mb-6 text-lg">Please Select Amount</p>
 
                 <div className="px-2  flex  flex-col sm:flex-row justify-center items-center">
                   <input
                     type="text"
-                    className="text-white bg-shade-9 w-[300px] sm:max-w-sm text-2xl sm:text-2xl outline-none py-4 px-1 mb-6 sm:mb-0 sm:mr-24"
+                    className="text-white bg-shade-9 w-[300px] sm:max-w-sm text-2xl sm:text-2xl outline-none py-4 px-1 mb-6 sm:mb-0 sm:mr-24 md:w-3/6"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setAmount(e.target.value)
                     }
