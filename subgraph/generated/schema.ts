@@ -109,21 +109,13 @@ export class Game extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get people(): Array<Bytes> | null {
+  get people(): Array<Bytes> {
     let value = this.get("people");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
+    return value!.toBytesArray();
   }
 
-  set people(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("people");
-    } else {
-      this.set("people", Value.fromBytesArray(<Array<Bytes>>value));
-    }
+  set people(value: Array<Bytes>) {
+    this.set("people", Value.fromBytesArray(value));
   }
 
   get gameId(): BigInt | null {
@@ -203,7 +195,7 @@ export class Round extends Entity {
   }
 }
 
-export class Tokens extends Entity {
+export class Team extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -211,18 +203,18 @@ export class Tokens extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Tokens entity without an ID");
+    assert(id != null, "Cannot save Team entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Tokens must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Team must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Tokens", id.toString(), this);
+      store.set("Team", id.toString(), this);
     }
   }
 
-  static load(id: string): Tokens | null {
-    return changetype<Tokens | null>(store.get("Tokens", id));
+  static load(id: string): Team | null {
+    return changetype<Team | null>(store.get("Team", id));
   }
 
   get id(): string {
@@ -234,53 +226,26 @@ export class Tokens extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get user(): Bytes {
-    let value = this.get("user");
-    return value!.toBytes();
-  }
-
-  set user(value: Bytes) {
-    this.set("user", Value.fromBytes(value));
-  }
-
-  get position(): i32 {
-    let value = this.get("position");
-    return value!.toI32();
-  }
-
-  set position(value: i32) {
-    this.set("position", Value.fromI32(value));
-  }
-
-  get teamId(): Bytes {
-    let value = this.get("teamId");
-    return value!.toBytes();
-  }
-
-  set teamId(value: Bytes) {
-    this.set("teamId", Value.fromBytes(value));
-  }
-
-  get level(): i32 {
+  get level(): BigInt {
     let value = this.get("level");
-    return value!.toI32();
+    return value!.toBigInt();
   }
 
-  set level(value: i32) {
-    this.set("level", Value.fromI32(value));
+  set level(value: BigInt) {
+    this.set("level", Value.fromBigInt(value));
   }
 
-  get predictors(): Bytes {
-    let value = this.get("predictors");
+  get team(): Bytes {
+    let value = this.get("team");
     return value!.toBytes();
   }
 
-  set predictors(value: Bytes) {
-    this.set("predictors", Value.fromBytes(value));
+  set team(value: Bytes) {
+    this.set("team", Value.fromBytes(value));
   }
 }
 
-export class Predictors extends Entity {
+export class Predictor extends Entity {
   constructor(id: Bytes) {
     super();
     this.set("id", Value.fromBytes(id));
@@ -288,19 +253,19 @@ export class Predictors extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Predictors entity without an ID");
+    assert(id != null, "Cannot save Predictor entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type Predictors must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Predictor must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Predictors", id.toBytes().toHexString(), this);
+      store.set("Predictor", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: Bytes): Predictors | null {
-    return changetype<Predictors | null>(
-      store.get("Predictors", id.toHexString())
+  static load(id: Bytes): Predictor | null {
+    return changetype<Predictor | null>(
+      store.get("Predictor", id.toHexString())
     );
   }
 
@@ -313,13 +278,13 @@ export class Predictors extends Entity {
     this.set("id", Value.fromBytes(value));
   }
 
-  get mints(): Array<string> {
-    let value = this.get("mints");
+  get tokens(): Array<string> {
+    let value = this.get("tokens");
     return value!.toStringArray();
   }
 
-  set mints(value: Array<string>) {
-    this.set("mints", Value.fromStringArray(value));
+  set tokens(value: Array<string>) {
+    this.set("tokens", Value.fromStringArray(value));
   }
 }
 
@@ -379,5 +344,55 @@ export class TopPoint extends Entity {
 
   set third(value: BigInt) {
     this.set("third", Value.fromBigInt(value));
+  }
+}
+
+export class Swap extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Swap entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Swap must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Swap", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Swap | null {
+    return changetype<Swap | null>(store.get("Swap", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get first(): Bytes {
+    let value = this.get("first");
+    return value!.toBytes();
+  }
+
+  set first(value: Bytes) {
+    this.set("first", Value.fromBytes(value));
+  }
+
+  get second(): Bytes {
+    let value = this.get("second");
+    return value!.toBytes();
+  }
+
+  set second(value: Bytes) {
+    this.set("second", Value.fromBytes(value));
   }
 }

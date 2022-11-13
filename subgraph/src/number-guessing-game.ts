@@ -27,10 +27,10 @@ export function handleEnded(event: EndedEvent): void {
 
   if (game) {
     // Remove the person
-    let _filtered = game.people as Bytes[] | null;
+    let _filtered = game.people as Bytes[];
     if (_filtered) {
-      for (let i = 0; i < game!.people!.length; i++) {
-        if (game!.people![i] == event.params.player) {
+      for (let i = 0; i < game.people.length; i++) {
+        if (game.people[i] == event.params.player) {
           _filtered.splice(i, 1);
         }
       }
@@ -77,10 +77,12 @@ export function handleNumberGuessingGameWinners(
 
   // Get the Game Object and make sure it's set to end
   let game = Game.load(event.params.gameId.toString() + "N");
-  game!.status = false;
+  if (game) {
+    game.status = false;
 
-  // Save
-  game!.save();
+    // Save
+    game.save();
+  }
 }
 
 export function handleNumberGuessingGamecurrentGame(
@@ -89,25 +91,21 @@ export function handleNumberGuessingGamecurrentGame(
   // Check if the game exists and create if not based on the game ID
   const id = event.params.gameId.toString() + "N";
   let game = Game.load(id);
-  if (!game) game = new Game(id);
+  if (!game) {
+    game = new Game(id);
+
+    // Add Game ID
+    game.gameId = event.params.gameId;
+
+    // Set Game Type
+    game.gameType = "NumberGuess";
+
+    // Status false
+    game.status = false;
+  }
 
   // Add the participating player in
-  let _people = game.people as Bytes[] | null;
-  if (!_people) {
-    _people = [event.params.player] as Bytes[];
-  } else {
-    _people.push(event.params.player);
-  }
-  game.people = _people;
-
-  // Add Game ID again
-  game.gameId = event.params.gameId;
-
-  // Set Game Type
-  game.gameType = "NumberGuess";
-
-  // Status false
-  game.status = false;
+  game.people.push(event.params.player);
 
   // Save
   game.save();

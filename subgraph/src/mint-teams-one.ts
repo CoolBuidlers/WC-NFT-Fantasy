@@ -7,7 +7,7 @@ import {
   TransferSingle as TransferSingleEvent,
   URI as URIEvent,
 } from "../generated/MintTeamsOne/MintTeamsOne";
-import { Predictors, Tokens } from "../generated/schema";
+import { Predictor, Team } from "../generated/schema";
 
 /*
 event Mint(address account, uint indexed tokenId, uint256 indexed level, bytes teamName, bool firstFourMinted);
@@ -17,37 +17,39 @@ event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {}
 
 export function handleLevelUp(event: LevelUpEvent): void {
-  // Getting the token object from token ID
-  let token = Tokens.load(event.params.tokenId.toString());
+  // Getting the Token Object
+  let team = Team.load(event.params.tokenId.toString());
 
-  // Find Level
-  token!.level = event.params.level.toI32();
+  if (team) {
+    // Level Up the relevant token
+    team.level = event.params.level;
 
-  // Save
-  token!.save();
+    // Save
+    team.save();
+  }
 }
 
 export function handleMint(event: MintEvent): void {
-  // Create a token Object based on the token ID
-  let token = new Tokens(event.params.tokenId.toString());
+  // Get Predictor and If not, create one
+  let predictor = Predictor.load(event.params.account);
+  if (!predictor) new Predictor(event.params.account);
 
-  // Pass in the user address
-  token.user = event.params.account;
+  // Pass in the Token Information
+  if (predictor) {
+    // Create new Token Object
+    let pack = new Team(event.params.tokenId.toString());
+    if (pack) {
+      pack.team = event.params.teamName;
+      pack.level = event.params.level;
+    }
 
-  // Get Predictor Object and Position
-  let predictor = Predictors.load(event.params.account);
-  let count = predictor!.mints.length;
+    // Push the token into the Predictor
+    predictor.tokens.push(event.params.tokenId.toString());
 
-  // Set position, level and teamID(teamName)
-  token.position = count;
-  token.level = 0;
-  token.teamId = event.params.teamName;
-
-  // Set Predictor Token ID
-  token.predictors = predictor!.id;
-
-  // Save
-  token.save();
+    // Save
+    predictor.save();
+    pack.save();
+  }
 }
 
 export function handleMintTeamsOneOwnershipTransferred(

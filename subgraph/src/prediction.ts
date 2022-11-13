@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   Prediction,
   AllPredictors,
@@ -6,7 +6,7 @@ import {
   TopPoints,
   Winners,
 } from "../generated/Prediction/Prediction";
-import { Predictors, TopPoint, Winner, Game } from "../generated/schema";
+import { Predictor, TopPoint, Winner, Game } from "../generated/schema";
 
 /*
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
@@ -16,8 +16,8 @@ event TopPoints(uint indexed firstHighestPoints, uint indexed secondHighestPoint
 
 export function handleAllPredictors(event: AllPredictors): void {
   // Create Predictor if it doesn't exist
-  let predictor = Predictors.load(event.params.predictor);
-  if (!predictor) predictor = new Predictors(event.params.predictor);
+  let predictor = Predictor.load(event.params.predictor);
+  if (!predictor) predictor = new Predictor(event.params.predictor);
 
   // Save
   predictor.save();
@@ -32,7 +32,7 @@ export function handleAllPredictors(event: AllPredictors): void {
   }
 
   // Fill in the values
-  game.people!.push(event.params.predictor);
+  game.people.push(event.params.predictor);
 
   // Save
   game.save();
@@ -67,9 +67,9 @@ export function handleWinners(event: Winners): void {
   let winners = new Winner(id);
 
   // Push in the Winners
-  winners.players.push(event.params.winnerOne);
-  winners.players.push(event.params.winnerTwo);
-  winners.players.push(event.params.winnerThree);
+  winners.players[0] = event.params.winnerOne;
+  winners.players[1] = event.params.winnerTwo;
+  winners.players[2] = event.params.winnerThree;
 
   // Fill in other values
   winners.gameId = BigInt.fromString(id);
@@ -80,9 +80,11 @@ export function handleWinners(event: Winners): void {
   // Get Game Object
   let game = Game.load(id);
 
-  // Fill In Values
-  game!.status = true;
+  if (game) {
+    // Fill In Values
+    game.status = true;
 
-  // Save
-  game!.save();
+    // Save
+    game.save();
+  }
 }
