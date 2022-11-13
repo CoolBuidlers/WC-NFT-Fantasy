@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Qatar from "../public/NFTs/0.png";
 import Ecuador from "../public/NFTs/4.png";
 import Senegal from "../public/NFTs/8.png";
@@ -7,6 +7,11 @@ import Image from "next/image";
 import { Transition } from "@headlessui/react";
 
 const ChosenTeams = () => {
+  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked2, setIsClicked2] = useState(false);
+  const [isClicked3, setIsClicked3] = useState(false);
+  const [isClicked4, setIsClicked4] = useState(false);
+
   return (
     <div>
       <div>
@@ -41,10 +46,31 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px]">
-            <Image src={Qatar} className="text-[26rem]" />
+          <div
+            className="max-w-[250px] relative "
+            onClick={() => {
+              setIsClicked(!isClicked);
+            }}
+          >
+            <Transition
+              show={isClicked}
+              enter="transform transition duration-[1000ms] "
+              enterFrom="opacity-0  -rotate-[360deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-[1000ms] transition ease-in-out"
+              leaveFrom="opacity-100 scale-100 "
+              leaveTo="opacity-0 scale-0  rotate-[360deg]"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+            >
+              <a className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text">
+                Evolve
+              </a>
+            </Transition>
+
+            <Image src={Qatar} />
           </div>
         </div>
+
         <div className="max-w-[350px]">
           <div className=" relative flex justify-center my-4 ">
             <Transition
@@ -62,7 +88,26 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px]">
+          <div
+            className="max-w-[250px] cursor-pointer relative"
+            onClick={() => {
+              setIsClicked2(!isClicked2);
+            }}
+          >
+            <Transition
+              show={isClicked2}
+              enter="transform transition duration-[1000ms] "
+              enterFrom="opacity-0  -rotate-[360deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-[1000ms] transition ease-in-out"
+              leaveFrom="opacity-100 scale-100 "
+              leaveTo="opacity-0 scale-0  rotate-[360deg]"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+            >
+              <a className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text">
+                Evolve
+              </a>
+            </Transition>
             <Image src={Ecuador} className="text-[26rem]" />
           </div>
         </div>
@@ -83,11 +128,30 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px]">
+          <div
+            className="max-w-[250px] relative"
+            onClick={() => {
+              setIsClicked3(!isClicked3);
+            }}
+          >
+            <Transition
+              show={isClicked3}
+              enter="transform transition duration-[1000ms] "
+              enterFrom="opacity-0  -rotate-[360deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-[1000ms] transition ease-in-out"
+              leaveFrom="opacity-100 scale-100 "
+              leaveTo="opacity-0 scale-0  rotate-[360deg]"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+            >
+              <a className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text">
+                Evolve
+              </a>
+            </Transition>
             <Image src={Senegal} className="text-[26rem]" />
           </div>
         </div>
-        <div className="max-w-[350px]">
+        <div className="max-w-[350px] relative">
           <div className=" relative flex justify-center my-4 ">
             <Transition
               show={true}
@@ -104,7 +168,26 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px]">
+          <div
+            className="max-w-[250px] relative"
+            onClick={() => {
+              setIsClicked4(!isClicked4);
+            }}
+          >
+            <Transition
+              show={isClicked4}
+              enter="transform transition duration-[1000ms] "
+              enterFrom="opacity-0  -rotate-[360deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-[1000ms] transition ease-in-out"
+              leaveFrom="opacity-100 scale-100 "
+              leaveTo="opacity-0 scale-0  rotate-[360deg]"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+            >
+              <a className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text">
+                Evolve
+              </a>
+            </Transition>
             <Image src={Netherlands} className="text-[26rem]" />
           </div>
         </div>
