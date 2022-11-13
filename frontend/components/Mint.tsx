@@ -795,7 +795,7 @@ const Mint = () => {
             {currentPhase === 0 && (
               <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
             )}
-            {parseInt(maticPrice) * 100000000 >= 40000000 && (
+            {parseInt(maticPrice) * 100000000 > 40000000 && (
               <p className="text-3xl">Unit Price : 25 Matic </p>
             )}
             {parseInt(maticPrice) * 100000000 < 40000000 && (

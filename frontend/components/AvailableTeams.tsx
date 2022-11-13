@@ -64,10 +64,22 @@ const AvailableTeams = () => {
       console.log(error);
     }
   };
+  const fetchData = async() => {
+    // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/leagues/732?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
+    // console.log(response.json())
+    // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/rounds/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
+    // console.log(response.json())
+     const response = await fetch(
+      "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
+    );
+    console.log(response.json())
+  }
+
   useEffect(() => {
     isItTop16();
     isItTop8();
     isItTop32();
+    fetchData()
   }, [teamSwapOne, teamSwapTwo]);
   return (
     <div>

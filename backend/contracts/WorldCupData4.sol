@@ -7,9 +7,8 @@ import "../interfaces/IPrediction.sol";
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract WorldCupData16 is ChainlinkClient, Ownable {
+contract WorldCupData4 is ChainlinkClient, Ownable {
   using Chainlink for Chainlink.Request;
-  address public randomNumberAndRoundAddress;
   address public fetchTeamsOneAddress;
   address public fetchTeamsTwoAddress;
   address public fetchTeamsThreeAddress;
@@ -27,8 +26,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
-    function setAddresses(address _randomNumberAndRoundAddress, address _fetchTeamsOneAddress, address _fetchTeamsTwoAddress, address _fetchTeamsThreeAddress, address _fetchTeamsFourAddress,address _predictionAddress ) external onlyOwner {
-       setRandomAndRoundAddress(_randomNumberAndRoundAddress);
+    function setAddresses(address _fetchTeamsOneAddress, address _fetchTeamsTwoAddress, address _fetchTeamsThreeAddress, address _fetchTeamsFourAddress,address _predictionAddress ) external onlyOwner {
        setFetchTeamOne(_fetchTeamsOneAddress);
        setFetchTeamTwo(_fetchTeamsTwoAddress);
        setFetchTeamThree(_fetchTeamsThreeAddress);
@@ -36,9 +34,6 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
        setPredictionAddress(_predictionAddress);
     }
 
-    function setRandomAndRoundAddress(address _randomNumberAndRoundAddress) internal {
-      randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
-    }
 
     function setFetchTeamOne(address _fetchTeamsOneAddress) internal {
        fetchTeamsOneAddress = _fetchTeamsOneAddress;
@@ -63,7 +58,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
     function receiveTeamOneStanding() private returns(bytes32 requestId) {
        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamOne.selector);
       
-        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=API_KEY');
         req.add('path', 'data,60,short_code');
 
         req.addInt('times', 1);
@@ -78,7 +73,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
      function receiveTeamTwoStanding() private returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamTwo.selector);
       
-        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=API_KEY');
         req.add('path', 'data,61,short_code');
 
         req.addInt('times', 1);
@@ -93,7 +88,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
      function receiveTeamThreeStanding() private returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamThree.selector);
       
-        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=API_KEY');
         req.add('path', 'data,62,short_code');
 
         req.addInt('times', 1);
@@ -109,7 +104,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
      function receiveTeamFourStanding() private returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFour.selector);
       
-        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=API_KEY');
         req.add('path', 'data,63,short_code');
 
         req.addInt('times', 1);
@@ -122,7 +117,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
     }
 
       function fetchTop4Teams() public {
-        require(msg.sender == randomNumberAndRoundAddress, "USER_CANT_CALL_FUNCTION");
+        require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
         receiveTeamOneStanding();
         receiveTeamTwoStanding();
         receiveTeamThreeStanding();

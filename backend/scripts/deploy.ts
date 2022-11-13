@@ -25,15 +25,15 @@ async function main() {
 
   console.log(`Prediction deployed to ${prediction.address}`);
 
-  const randomNumberAndRound = await ethers.getContractFactory(
-    "RetrieveRandomNumberAndWorldCupRound"
+  const randomNumber = await ethers.getContractFactory(
+    "RetrieveRandomNumber"
   );
-  const randomnumberandround = await randomNumberAndRound.deploy(2278);
+  const randomnumber = await randomNumber.deploy(2278);
 
-  await randomnumberandround.deployed();
+  await randomnumber.deployed();
 
   console.log(
-    `RandomNumberAndRound deployed to ${randomnumberandround.address}`
+    `randomNumber deployed to ${randomnumber.address}`
   );
 
   const changeOrders = await ethers.getContractFactory("ChangeOrders");
@@ -99,7 +99,7 @@ async function main() {
 
   console.log(`WorldCupData deployed to ${worldcupdata.address}`);
 
-  await randomnumberandround.setAddresses(
+  await randomnumber.setAddresses(
     prediction.address,
     worldcupdata.address
   );

@@ -2,7 +2,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
-import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
+import '../interfaces/IRetrieveRandomNumber.sol';
 import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IWorldCupData.sol";
 import "../interfaces/IMintTeams.sol";
@@ -22,9 +22,11 @@ event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
 event TopPoints(uint indexed firstHighestPoints, uint indexed secondHighestPoints, uint indexed thirdHighestPoints);
 AggregatorV3Interface internal priceFeed;
-address public randomAndRoundAddress;
+address public randomAddress;
 address public mintTeamAddress;
-address public worldCupDataAddress;
+address public worldCupData16Address;
+address public worldCupData8Address;
+address public worldCupData4Address;
 address public changeOrderAddress;
 address public fetchTeamAddress;
 address payable[] predictorsWithBiggestPoints;
@@ -268,28 +270,6 @@ struct TopPredictions {
         upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
     }
 
-    //  function performUpkeep(bytes calldata /*performData*/) external {
-    //   if(currentPhase == GamePhases.MINT) {
-    //     currentPhase = GamePhases.TOP32;
-    //     oneDay = block.timestamp + 24 hours;
-    //   } else if(currentPhase != GamePhases.TOP4) {
-    //      oneDay = block.timestamp + 24 hours;
-    //      IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
-    //      fewMinutes = block.timestamp + 3 minutes;
-    //   } else if(currentPhase == GamePhases.TOP4) {
-    //      if(block.timestamp > 1669096800) {
-    //       IWorldCupData(worldCupDataAddress).fetchTop16Teams();
-    //       IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).requestRandomWords();
-    //       fewMinutes = block.timestamp + 3 minutes;
-    //       currentPhase = GamePhases.CHOOSE_WINNERS;
-    //      }
-    //      oneDay = block.timestamp + 24 hours;
-    //   } else if(currentPhase == GamePhases.CHOOSE_WINNERS) {
-    //       retrievePredictorPoints();
-    //       currentPhase = GamePhases.WORLD_CUP_FINISHED;
-    //   }
-    // }
-
      function performUpkeep(bytes calldata /*performData*/) external {
       if(currentPhase == GamePhases.MINT) {
         currentPhase = GamePhases.TOP32;
@@ -297,38 +277,54 @@ struct TopPredictions {
       } else if(currentPhase == GamePhases.TOP32) {
          oneDay = block.timestamp + 24 hours;
          if(block.timestamp > TOP_16_STARTS) {
-            IWorldCupData(worldCupDataAddress).fetchTop16Teams();
             changeThePhase();
+            IWorldCupData(worldCupData16Address).fetchTop16Teams();
+             fewMinutes = block.timestamp + 3 minutes;
          }
     } else if(currentPhase == GamePhases.TOP16) {
         oneDay = block.timestamp + 24 hours;
          if(block.timestamp > TOP_8_STARTS) {
-            IWorldCupData(worldCupDataAddress).fetchTop8Teams();
             changeThePhase();
+            IWorldCupData(worldCupData8Address).fetchTop8Teams();
+            fewMinutes = block.timestamp + 3 minutes;
          }
     } else if(currentPhase == GamePhases.TOP8) {
         oneDay = block.timestamp + 24 hours;
          if(block.timestamp > TOP_4_STARTS) {
-            IWorldCupData(worldCupDataAddress).fetchTop8Teams();
             changeThePhase();
+            IWorldCupData(worldCupData4Address).fetchTop4Teams();
+            fewMinutes = block.timestamp + 3 minutes;
+         }  
+    } else if(currentPhase == GamePhases.TOP4) {
+         if(block.timestamp > 1671516000) {
+          IWorldCupData(worldCupData4Address).fetchTop4Teams();
+          IRetrieveRandomNumber(randomAddress).requestRandomWords();
+          fewMinutes = block.timestamp + 3 minutes;
+          currentPhase = GamePhases.CHOOSE_WINNERS;
          }
-    }
+         oneDay = block.timestamp + 24 hours;
+      } else if(currentPhase == GamePhases.CHOOSE_WINNERS) {
+          retrievePredictorPoints();
+          currentPhase = GamePhases.WORLD_CUP_FINISHED;
+      }
   }
 
-    function setAddresses(address _randomAndRoundAddress, address _worldCupDataAddress, address _changeOrderAddress, address _fetchTeamAddress, address _mintTeamAddress) external onlyOwner {
-       setRandomAndRoundAddress(_randomAndRoundAddress);
-       setWorldCupDataAddress(_worldCupDataAddress);
+    function setAddresses(address _randomAddress, address _worldCupData16Address, address _changeOrderAddress, address _fetchTeamAddress, address _mintTeamAddress, address _worldCupData8Address, address _worldCupData4Address) external onlyOwner {
+       setRandomAddress(_randomAddress);
+       setWorldCupDataAddress(_worldCupData16Address, _worldCupData8Address, _worldCupData4Address);
        setChangeOrderAddress(_changeOrderAddress);
        setFetchTeamOne(_fetchTeamAddress);
        setMintTeamOneAddress(_mintTeamAddress);
     }
 
-  function setRandomAndRoundAddress(address _randomAndRoundAddress) internal {
-     randomAndRoundAddress = _randomAndRoundAddress;
+  function setRandomAddress(address _randomAddress) internal {
+     randomAddress = _randomAddress;
   }
 
-  function setWorldCupDataAddress(address _worldCupDataAddress) internal {
-    worldCupDataAddress = _worldCupDataAddress;
+  function setWorldCupDataAddress(address _worldCupData16Address, address _worldCupData8Address, address _worldCupData4Address) internal {
+    worldCupData16Address = _worldCupData16Address;
+    worldCupData8Address = _worldCupData8Address;
+    worldCupData4Address = _worldCupData4Address;
   }
 
   function setChangeOrderAddress(address _changeOrderAddress) internal {
@@ -343,8 +339,7 @@ struct TopPredictions {
      mintTeamAddress = _mintTeamAddress;
   }
 
-  function changeThePhase() public {
-     //require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
+  function changeThePhase() internal {
      if(currentPhase == GamePhases.TOP32) {
        currentPhase = GamePhases.TOP16;
      } else if(currentPhase == GamePhases.TOP16) {
@@ -415,7 +410,7 @@ function chooseWinners() private {
   address payable winnerThree;
    
   if(predictorsWithBiggestPoints.length == 0) {
-      (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+      (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
       if(fulfilled == true) {
         winnerOne = predictorPoints[randomWords[0] % predictorPointIndex].predictor;
         winnerTwo = predictorPoints[randomWords[1] % predictorPointIndex].predictor;
@@ -429,7 +424,7 @@ function chooseWinners() private {
         emit Winners(winnerOne, winnerTwo, winnerThree);
       }
   } else if(predictorsWithSecondBiggestPoints.length == 0) {
-    (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+    (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
     if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithBiggestPoints[randomWords[1] % predictorsWithBiggestPoints.length];
@@ -443,7 +438,7 @@ function chooseWinners() private {
       emit Winners(winnerOne, winnerTwo, winnerThree);
     }
   } else if(predictorsWithThirdBiggestPoints.length == 0) {
-     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
     if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
@@ -457,7 +452,7 @@ function chooseWinners() private {
       emit Winners(winnerOne, winnerTwo, winnerThree);
     }
   } else {
-     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
      if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
@@ -575,6 +570,12 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
 
     function hasItBeenThreeMinutes() public view returns(bool) {
       return block.timestamp > fewMinutes;
+    }
+
+    function viewPoints() external view returns(uint) {
+       uint index = predictors[msg.sender].predictorIndex;
+      Points storage predictor = predictorPoints[index];
+      return predictor.points;
     }
 
     function setOrder(address _predictor, uint _num) public {
