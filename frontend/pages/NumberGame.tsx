@@ -25,7 +25,7 @@ const NumberGame = (): JSX.Element => {
   const [isStarted, setIsStarted] = useState<boolean>(true);
   const [joined, setJoined] = useState<boolean>(true);
   const [hasGuessed, setHasGuessed] = useState<boolean>(true);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
   const [playerGuess, setPlayerGuess] = useState<number>(0);
   const [randomNumber, setRandomNumber] = useState<number>(0);
 
@@ -37,7 +37,7 @@ const NumberGame = (): JSX.Element => {
       setIsStarted(true);
     }
     catch (err: any) {
-      console.log(err)
+      console.error(err)
       // use the hot toast to display the reason
     }
   };
@@ -71,23 +71,23 @@ const NumberGame = (): JSX.Element => {
       console.error(err);
     }
   };
-
-  const checkIfGuessIsCorrect = async (): Promise<void> => {
-    try {
-      const rand: BigNumber = await contract.randomResult(); // Need you to create a state and add randomResult to it
-      setRandomNumber(rand.toNumber());
-      if (randomNumber === playerGuess) {
-        setGuessedCorrectly(true);
-        setHasGuessed(true);
-      } else {
-        setHasGuessed(true);
-        restartGame();
-        // message with hot toast
-      }
-    } catch (err: any) {
-      console.error(err);
-    }
-  }
+  // NEED TO ADD A FUNCTION HERE AND FETCH WINNER FROM SUBGRAPHS TO CHECK IF THE USER WON
+  // const checkIfGuessIsCorrect = async (): Promise<void> => {
+  //   try {
+  //     const rand: BigNumber = await contract.randomResult(); // Need you to create a state and add randomResult to it
+  //     setRandomNumber(rand.toNumber());
+  //     if (randomNumber === playerGuess) {
+  //       setGuessedCorrectly(true);
+  //       setHasGuessed(true);
+  //     } else {
+  //       setHasGuessed(true);
+  //       restartGame();
+  //       // message with hot toast
+  //     }
+  //   } catch (err: any) {
+  //     console.error(err);
+  //   }
+  // }
 
   const restartGame = async (): Promise<void> => {
     try {

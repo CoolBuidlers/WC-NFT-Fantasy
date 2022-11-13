@@ -10,7 +10,7 @@ import { useProvider, useAccount } from "wagmi";
 const MainGame = () => {
   const { address } = useAccount();
   const provider = useProvider();
-  const [userMinted, setHasUserMinted] = useState<boolean>(false);
+  const [userMinted, setHasUserMinted] = useState<boolean>(true);
   const haveYouMinted = async () => {
     try {
       const PredictionContract = new Contract(
