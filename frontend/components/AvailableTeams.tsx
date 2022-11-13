@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Player from "../public/img/card.svg";
+import Iran from "../public/NFTs/20.png";
+import USA from "../public/NFTs/24.png";
+import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { MdClose } from "react-icons/md";
 import { BsArrowLeftRight } from "react-icons/bs";
-import { changeOrderForTop32, changeOrderForTop8, changeOrderForTop16, changeOrderForTop4 } from "../contractInteractions/FunctionCalls";
+import {
+  changeOrderForTop32,
+  changeOrderForTop8,
+  changeOrderForTop16,
+  changeOrderForTop4,
+} from "../contractInteractions/FunctionCalls";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { ethers, Contract } from "ethers";
@@ -26,7 +33,7 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
-      console.log(isTop32)
+      console.log(isTop32);
     } catch (error: any) {
       console.log(error);
     }
@@ -89,8 +96,8 @@ const AvailableTeams = () => {
           leaveTo="opacity-0 scale-0 "
           className="w-[100vw] h-[100vh] bg-[#4d4c4cd9] fixed z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
         >
-          <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-1/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
-            <p className="sm:mb-14 mb-6 text-lg">
+          <div className=" bg-shade-bg w-[90%] sm:w-[50%] h-[80%] sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
+            <p className="sm:mb-14 mb-6 text-lg mt-10 px-6">
               Please Select Two Prediction Numbers To Switch
             </p>
 
@@ -105,7 +112,7 @@ const AvailableTeams = () => {
                 className="text-white bg-shade-9 w-[100px] sm:max-w-sm text-2xl sm:text-2xl outline-none py-4 px-4 mb-6 sm:mb-0 sm:mr-2 "
               />
 
-              <BsArrowLeftRight className=" text-3xl mr-2" />
+              <BsArrowLeftRight className=" text-3xl mr-2 mb-6 sm:mb-0" />
 
               <input
                 type="number"
@@ -123,7 +130,7 @@ const AvailableTeams = () => {
                   setShowModal(!showModal);
                 }}
               >
-                <MdClose className="text-4xl text-white" />
+                <MdClose className="text-4xl text-white cursor-pointer" />
               </a>
             </div>
             <a
@@ -140,7 +147,7 @@ const AvailableTeams = () => {
           </div>
         </Transition>
         <div className="max-w-[350px]">
-          <div className=" relative flex justify-center my-4 ">
+          <div className="relative flex justify-center my-4 ">
             <Transition
               show={true}
               enter="transform transition duration-[500ms] ease-in"
@@ -149,14 +156,16 @@ const AvailableTeams = () => {
               leave="transform duration-200 transition ease-in-out"
               leaveFrom="opacity-100 rotate-0 scale-100 "
               leaveTo="opacity-0 scale-95 "
-              className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
             >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
-                1
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-green-600 text-white rounded-full">
+                5
               </span>
             </Transition>
           </div>
-          <Player className="text-[26rem]" />
+          <div className="max-w-[250px]">
+            <Image src={Iran} />
+          </div>
         </div>
         <div className="max-w-[350px]">
           <div className=" relative flex justify-center my-4 ">
@@ -168,56 +177,20 @@ const AvailableTeams = () => {
               leave="transform duration-200 transition ease-in-out"
               leaveFrom="opacity-100 rotate-0 scale-100 "
               leaveTo="opacity-0 scale-95 "
-              className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
             >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-purple-900 text-white rounded-full">
-                2
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-cyan-800 text-white rounded-full">
+                6
               </span>
             </Transition>
           </div>
-          <Player className="text-[26rem]" />
-        </div>
-        <div className="max-w-[350px]">
-          <div className=" relative flex justify-center my-4 ">
-            <Transition
-              show={true}
-              enter="transform transition duration-[500ms] ease-in"
-              enterFrom="opacity-0 rotate-[180deg] scale-0"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-              className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
-            >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-red-500 text-white rounded-full">
-                3
-              </span>
-            </Transition>
+          <div className="max-w-[250px] mb-10">
+            <Image src={USA} />
           </div>
-          <Player className="text-[26rem]" />
-        </div>
-        <div className="max-w-[350px]">
-          <div className=" relative flex justify-center my-4 ">
-            <Transition
-              show={true}
-              enter="transform transition duration-[500ms] ease-in"
-              enterFrom="opacity-0 rotate-[180deg] scale-0"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-              className=" max-w-[200px] absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
-            >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
-                4
-              </span>
-            </Transition>
-          </div>
-          <Player className="text-[26rem]" />
         </div>
       </div>
       <a
-        className="mt-3  text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded"
+        className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
         onClick={() => setShowModal(!showModal)}
       >
         Swap Prediction Order

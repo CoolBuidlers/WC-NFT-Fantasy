@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import AvailableTeams from "../components/AvailableTeams";
 import ChosenTeams from "../components/ChosenTeams";
 import Footer from "../components/Footer";
@@ -25,11 +25,11 @@ const MainGame = () => {
     }
   };
   useEffect(() => {
-    haveYouMinted()
-  },[address])
+    haveYouMinted();
+  }, [address]);
   return (
     <div>
-      {userMinted ? (
+      {!userMinted ? (
         <>
           <Navbar />
           <div className="md:px-10 px-2">
@@ -42,7 +42,9 @@ const MainGame = () => {
         </>
       ) : (
         <>
-         <div className="text-white flex justify-center items-center">YOU NEVER MINTED ANY TEAMS BITCH</div>
+          <div className="text-white flex justify-center items-center">
+            YOU NEVER MINTED ANY TEAMS BITCH
+          </div>
         </>
       )}
     </div>
