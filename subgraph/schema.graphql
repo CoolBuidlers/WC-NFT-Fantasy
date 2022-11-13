@@ -26,7 +26,7 @@ type Game @entity {
   "gameID of the game"
   id: String!
   "addresses of the people participating"
-  people: [Bytes!]
+  people: [Bytes!]!
   "gameId is applicable in Quiz Type and Number Guessing game"
   gameId: BigInt
   "enum which has three types"
@@ -43,28 +43,19 @@ type Round @entity {
   countryIds: [BigInt!]!
 }
 
-# Minted Tokens
-type Tokens @entity {
-  "token ID minted"
+# Each NFT Tokens
+type Team @entity {
   id: String!
-  "address of the minter"
-  user: Bytes!
-  "position of the NFT"
-  position: Int!
-  "team id of the token"
-  teamId: Bytes!
-  "level of the NFT"
-  level: Int!
-  "ref to the Predictors Object"
-  predictors: Predictors!
+  level: BigInt!
+  team: Bytes!
 }
 
 # All Predictors
-type Predictors @entity {
+type Predictor @entity {
   "user address"
   id: Bytes!
-  "all the minted NFTs"
-  mints: [Tokens!]! @derivedfrom(field: "predictors")
+  "all tokens"
+  tokens: [Team!]!
 }
 
 # Top Points
@@ -77,4 +68,14 @@ type TopPoint @entity(immutable: true) {
   second: BigInt!
   "third place points"
   third: BigInt!
+}
+
+# Swapping NFT Positions
+type Swap @entity {
+  "address + Unique Hash"
+  id: String!
+  "first nft"
+  first: Bytes!
+  "second nft"
+  second: Bytes!
 }

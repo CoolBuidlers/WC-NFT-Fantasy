@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.7.4",
     "@rainbow-me/rainbowkit": "^0.7.4",
     "@svgr/webpack": "^6.5.1",
+    "axios": "^1.1.3",
     "better-react-carousel": "^1.1.1",
     "ethers": "^5.7.2",
     "gsap": "^3.11.3",

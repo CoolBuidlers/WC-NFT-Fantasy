@@ -1,8 +1,9 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   ChangeOrdersOwnershipTransferred as ChangeOrdersOwnershipTransferredEvent,
   TeamsSwapped as TeamsSwappedEvent,
 } from "../generated/ChangeOrders/ChangeOrders";
-import { Predictors, Tokens } from "../generated/schema";
+import { Predictor, Swap, Team } from "../generated/schema";
 
 // event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 
@@ -12,30 +13,40 @@ export function handleChangeOrdersOwnershipTransferred(
 
 export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
   // Get Predictors Object based on the predictor address
-  let predictor = Predictors.load(event.params.predictor);
+  let predictor = Predictor.load(event.params.predictor);
 
+  // Swap teams
   if (predictor) {
-    // Loop over every array until you find two with the firstTeam, and secondTeam Token Objects
-    let t1: Tokens;
-    let ft1 = event.params.firstTeam;
-    let t2: Tokens;
-    let ft2 = event.params.secondTeam;
+    let first: i32 = 0;
+    let second: i32 = 0;
 
-    for (let i = 0; i < predictor.mints.length; i++) {
-      let _token = Tokens.load(predictor.mints[i]);
-      if (_token) {
-        if (_token.teamId == ft1) t1 = _token;
-        if (_token.teamId == ft2) t2 = _token;
+    for (let i = 0; i < predictor.tokens.length; i++) {
+      let _token = Team.load(predictor.tokens[i]);
+      if (_token && _token.team == event.params.firstTeam) {
+        first = i;
+      } else if (_token && _token.team == event.params.secondTeam) {
+        second = i;
       }
     }
 
-    // Change the positions individually
-    let pos1 = t1!.position;
-    t1!.position = t2!.position;
-    t2!.position = pos1;
-
-    // Save the Token Objects
-    t1!.save();
-    t2!.save();
+    let _side = predictor.tokens[first];
+    predictor.tokens[first] = predictor.tokens[second];
+    predictor.tokens[second] = _side;
   }
+
+  // Create Unique Hash
+  let uid =
+    event.params.predictor.toHexString() +
+    event.params.firstTeam.toHexString() +
+    event.params.secondTeam.toHexString();
+
+  // Create Swap Object
+  let swap = new Swap(uid);
+
+  // Pass in Values
+  swap.first = event.params.firstTeam;
+  swap.second = event.params.secondTeam;
+
+  // Save
+  swap.save();
 }
