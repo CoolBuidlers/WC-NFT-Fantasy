@@ -9,7 +9,3 @@ typechain-types
 cache
 artifacts
 
-# Lock Files
-package-lock.json
-yarn.lock
-pnpm-lock.yaml

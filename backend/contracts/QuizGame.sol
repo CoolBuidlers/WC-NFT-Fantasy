@@ -1,12 +1,13 @@
+import "../interfaces/IMintTeams.sol";
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.17;
 
 contract QuizGame {
-
     address public owner;
-    bool public started;
-    // address payable player;
-    address[] public players;
+    address public mintAddress;
+    bool public startedQuizOne;
+    bool public startedQuizTwo;
+    bool pause;
     event currentGame(address caller, uint256 currentGameId);
     event winner(address winner, uint256 gameId);
 
@@ -16,20 +17,20 @@ contract QuizGame {
         string optionTwo;
         string optionThree;
         string optionFour;
-        uint256 correctAnswer;
+        string correctAnswer;
     }
-    mapping (address => bool) public alreadyJoined;
-    mapping (uint256 => Quiz) public quiz;
-    mapping (address => uint256) public addressToAmountSent;
-    uint256 public quizId;
+
+    mapping(uint => mapping(address => bool)) alreadyJoinedGame;
+    mapping(uint => mapping(address => bool)) claimedPrize;
+    mapping(uint => mapping(address => uint)) score;
+    mapping(uint => mapping(address => bool)) guessed;
+    mapping (uint256 => Quiz) quizOne;
+    mapping (uint256 => Quiz) quizTwo;
+    uint256 quizIdOne;
+    uint256 quizIdTwo;
     uint256 public currentGameId = 1;
-    uint256 public answerId;
-    uint256 public score;
-    bool public guess;
     uint256 public timeLimit;
-    uint256 public correctAnswer;
-    uint256 public quarterFinalsStartingTime = 1670570983000;
-    uint256 public quarterFinalsEndingTime = 1670916583000;
+    uint public nextRound;
 
 
     constructor() {
@@ -41,87 +42,166 @@ contract QuizGame {
         _;
     }
 
-    function AddQuiz(
+    modifier onlyWhenNotPaused {
+     require(pause == false, "CONTRACT_IS_PAUSED");
+     _;
+   }
+
+    function AddQuizOne(
         string memory _question,
         string memory _optionOne,
         string memory _optionTwo,
         string memory _optionThree,
         string memory _optionFour,
-        uint256 _correctAnswer
+        string memory answer
     ) 
-    public onlyOwner
+    external onlyOwner
     {
-        require(quizId < 3, "Can't add more than 3 questions");
-        quiz[quizId] = Quiz(
+        require(quizIdOne != 3, "Can't add more than 3 questions");
+        quizOne[quizIdOne] = Quiz(
             _question,
             _optionOne,
             _optionTwo,
             _optionThree,
             _optionFour,
-            _correctAnswer
+            answer
         );
-        quizId++;
+        quizIdOne++;
     }
 
-    function joinGame() public payable {
-        require(!alreadyJoined[msg.sender], "You have already joined the game!");
-        require(msg.value >= 0.01 ether, "Broke People not Allowed!!!");
-        addressToAmountSent[msg.sender] += msg.value;
-        alreadyJoined[msg.sender] = true;
-        players.push(msg.sender);
+    function AddQuizTwo(
+        string memory _question,
+        string memory _optionOne,
+        string memory _optionTwo,
+        string memory _optionThree,
+        string memory _optionFour,
+        string memory answer
+    ) 
+    external onlyOwner
+    {
+        require(quizIdTwo != 3, "Can't add more than 3 questions");
+        quizTwo[quizIdTwo] = Quiz(
+            _question,
+            _optionOne,
+            _optionTwo,
+            _optionThree,
+            _optionFour,
+            answer
+        );
+        quizIdTwo++;
+    }
+
+    function setMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
+        mintAddress = _mintTeamOneAddress;
+    }
+
+     function startGameOne() external onlyOwner {
+        require(quizIdOne == 3, "Make three questions first");
+        require(startedQuizOne == false, "Game already started!");
+        startedQuizOne = true;
+        timeLimit = block.timestamp + 15 minutes;
+        nextRound = block.timestamp + 5 days;
+    }
+
+    function startGameTwo() external onlyOwner {
+        require(quizIdTwo == 3, "Make three questions first");
+        require(block.timestamp > nextRound, "CANT_START_GAME_YET");
+        require(startedQuizTwo == false, "Game is already started!");
+        startedQuizTwo = true;
+        timeLimit = block.timestamp + 15 minutes;
+        currentGameId++;
+    }
+
+    function joinGameOne() external onlyWhenNotPaused {
+        require(block.timestamp < timeLimit, "TIMES_UP");
+        require(startedQuizOne == true, "CANT_JOIN_GAME_YET");
+        require(!alreadyJoinedGame[0][msg.sender], "You have already joined the game!");
+        alreadyJoinedGame[0][msg.sender] = true;
         emit currentGame(msg.sender, currentGameId);
     }
+    
+    function joinGameTwo() external onlyWhenNotPaused {
+        require(block.timestamp < timeLimit, "TIMES_UP");
+        require(startedQuizTwo == true, "CANT_JOIN_GAME_YET");
+        require(!alreadyJoinedGame[1][msg.sender], "You have already joined the game!");
+        alreadyJoinedGame[1][msg.sender] = true;
+        emit currentGame(msg.sender, currentGameId);
+    }
+  
 
-    function checkAnswer(uint256 _selectedIndex) public {
-        // require(block.timestamp < timeLimit,
-        // "Dumbass can't answer 3 questions in 10 minutes!!!"
-        // );
-        require(quizId > 0, "There are no quizzes to check!");
-        if (_selectedIndex == quiz[answerId].correctAnswer) {
-            guess = true;
-            score += 1;
-            answerId += 1;
+    function guessQuestionsOne(string memory guess, string memory guessTwo, string memory guessThree) external onlyWhenNotPaused {
+        require(startedQuizOne == true, "QUIZ_NEVER_STARTED");
+        require(guessed[0][msg.sender] == false,"CANT_GUESS_TWICE");
+        require(block.timestamp < timeLimit, "TIMES_UP");
+        if(keccak256(abi.encode(guess)) == keccak256(abi.encode(quizOne[0].correctAnswer))) {
+          score[0][msg.sender]++;
         }
-        else {
-            guess = false;
-            answerId += 1;
+         if(keccak256(abi.encode(guessTwo)) == keccak256(abi.encode(quizOne[1].correctAnswer))) {
+          score[0][msg.sender]++;
         }
-    }
-
-    function checkIfWinner() public {
-        if (score == 3) {
-            // players[currentGameId].transfer(address(this).balance); // normally we would transfer them an NFT for our game
-            guess = false;
-            score = 0;
-            currentGameId++;
-            started = false;
-            emit winner(players[currentGameId], currentGameId);
+         if(keccak256(abi.encode(guessThree)) == keccak256(abi.encode(quizOne[2].correctAnswer))) {
+          score[0][msg.sender]++;
         }
-        else {
-            score = 0;
-            guess = false;
-            currentGameId++;
-            started = false;
+        guessed[0][msg.sender] = true;
+    }
+
+     function guessQuestionsTwo(string memory guess, string memory guessTwo, string memory guessThree) external onlyWhenNotPaused {
+        require(startedQuizTwo == true, "QUIZ_NEVER_STARTED");
+        require(guessed[1][msg.sender] == false,"CANT_GUESS_TWICE");
+        require(block.timestamp < timeLimit, "TIMES_UP");
+        if(keccak256(abi.encode(guess)) == keccak256(abi.encode(quizTwo[0].correctAnswer))) {
+          score[1][msg.sender]++;
         }
+         if(keccak256(abi.encode(guessTwo)) == keccak256(abi.encode(quizTwo[1].correctAnswer))) {
+          score[1][msg.sender]++;
+        }
+         if(keccak256(abi.encode(guessThree)) == keccak256(abi.encode(quizTwo[2].correctAnswer))) {
+          score[1][msg.sender]++;
+        }
+        guessed[1][msg.sender] = true;
     }
 
-    function getContractBalance() public view returns (uint256) {
-        return address(this).balance;
+    function claimPrizeOne() external onlyWhenNotPaused {
+       require(claimedPrize[0][msg.sender] == false, "Already claimed prize");
+       require(score[0][msg.sender] == 3, "You didn't score high enough");
+       IMintTeams(mintAddress).mint(msg.sender, 2, 1, "");
+       claimedPrize[0][msg.sender] = true;
     }
 
-    function startGame() public {
-        // require(
-        // block.timestamp > quarterFinalsStartingTime, 
-        // "The game can only be played when the quarterfinals start"
-        // );
-        require(started == false, "Game is already started!");
-        started = true;
-        timeLimit = block.timestamp + 10 minutes;
+     function claimPrizeTwo() external onlyWhenNotPaused {
+       require(claimedPrize[1][msg.sender] == false, "Alread claimed prize");
+       require(score[1][msg.sender] == 3, "You didn't score high enough");
+       IMintTeams(mintAddress).mint(msg.sender, 6, 1, "");
+       claimedPrize[1][msg.sender] = true;
     }
 
-    function pauseGame() public {
-        require(started == true, "Game is already paused!");
-        started = false;
+    function returnQuizOne(uint _quizId) external view returns(string memory question, string memory optionOne, string memory optionTwo, string memory optionThree, string memory optionFour) {
+        return (quizOne[_quizId].question, quizOne[_quizId].optionOne, quizOne[_quizId].optionTwo, quizOne[_quizId].optionThree, quizOne[_quizId].optionFour);
     }
 
-}
+    function returnQuizTwo(uint _quizId) external view returns(string memory question, string memory optionOne, string memory optionTwo, string memory optionThree, string memory optionFour) {
+        require(msg.sender == owner, "You are not the owner");
+        return (quizTwo[_quizId].question, quizTwo[_quizId].optionOne, quizTwo[_quizId].optionTwo, quizTwo[_quizId].optionThree, quizTwo[_quizId].optionFour);
+    }
+
+    function setPause(bool _setPause) external onlyOwner {
+       pause = _setPause;
+     }
+
+     function joinedGame(uint quizId) external view returns(bool) {
+        return alreadyJoinedGame[quizId][msg.sender];
+     }
+
+      function haveYouClaimedPrize(uint quizId) external view returns(bool) {
+        return claimedPrize[quizId][msg.sender];
+     }
+
+     function haveYouGuessed(uint quizId) external view returns(bool) {
+        return guessed[quizId][msg.sender];
+     }
+
+     function getScore(uint quizId) external view returns(uint) {
+        return score[quizId][msg.sender];
+     }
+
+    }

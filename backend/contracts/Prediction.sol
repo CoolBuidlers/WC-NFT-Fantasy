@@ -36,7 +36,6 @@ uint thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
 uint public oneDay;
 uint public fewMinutes;
-//Fetch these in Countdown
 uint public TOP_16_STARTS = 1670090400;
 uint public TOP_8_STARTS = 1670608800;
 uint public TOP_4_STARTS = 1670954400;

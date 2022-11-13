@@ -61,22 +61,29 @@ contract MintTeamsTwo is Ownable {
          worldCupTeams[30] = abi.encode("Uruguay");
          worldCupTeams[31] = abi.encode("Korea Republic");
    }
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+
+   function setAddresses(address _predictionAddress, address _evolveAddress, address _mintTeamsOneAddress) external onlyOwner {
+       setPredictionAddress(_predictionAddress);
+       setEvolveAddress(_evolveAddress);
+       setMintTeamOneAddress(_mintTeamsOneAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
        predictionAddress = _predictionAddress;
     }
 
-    function setEvolveAddress(address _evolveAddress) external onlyOwner {
+    function setEvolveAddress(address _evolveAddress) internal {
        evolveAddress = _evolveAddress;
     }
 
-     function setMintTeamsTwoAddress(address _mintTeamsOneAddress) external onlyOwner {
+     function setMintTeamOneAddress(address _mintTeamsOneAddress) internal {
       mintTeamsOneAddress = _mintTeamsOneAddress;
     }
 
      function claimLevel3Nft(address _predictor, string calldata _teamName) public {
-      require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
+     // require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop8 = IPrediction(predictionAddress).isPhase8();
-      require(isTop8 == true, "TOP_8_HASNT_FINISHED");
+      //require(isTop8 == true, "TOP_8_HASNT_FINISHED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
          IMintTeams(mintTeamsOneAddress).burn(_predictor, 1, 1);
          IMintTeams(mintTeamsOneAddress).mint(_predictor, 2, 1, "");
@@ -211,7 +218,7 @@ contract MintTeamsTwo is Ownable {
      function claimLevel4Nft(address _predictor, string calldata _teamName) public {
       require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop4 = IPrediction(predictionAddress).isPhase4();
-      require(isTop4 == true, "TOP_4_HASNT_FINISHED");
+      //require(isTop4 == true, "TOP_4_HASNT_FINISHED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
           IMintTeams(mintTeamsOneAddress).burn(_predictor, 2, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 3, 1, "");

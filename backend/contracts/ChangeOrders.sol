@@ -13,6 +13,7 @@ modifier onlyWhenNotPaused {
      _;
    }
 
+
 function setPredictionAddress(address _predictionAddress) external onlyOwner {
   predictionAddress = _predictionAddress;
 }
@@ -28,7 +29,7 @@ function changeOrderForTop32(uint _scenario) external nonReentrant onlyWhenNotPa
     bool changed = IPrediction(predictionAddress).changedOrder(msg.sender, 32);
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
-    require(isTop32 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+    //require(isTop32 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(alreadyMinted == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
     require(changed == false, "CANT_CHANGE_TEAMS_TWICE");
     //Conditional statements specify each swapping possibility in swapping different teams for top 32
