@@ -39,6 +39,7 @@ _;
     uint randomNumber;
     uint public nextRound;
     bool pause;
+    bool playerGuess;
     // address override owner;
     address payable[] public players;
     address public mintAddress;
@@ -148,7 +149,7 @@ _;
           return randomWords[0] > 0;
     }
 
-    function guessTheNumberValue(uint256 _guess) external onlyWhenNotPaused onlyPlayer returns(bool) {
+    function guessTheNumberValue(uint256 _guess) external onlyWhenNotPaused onlyPlayer {
         require(block.timestamp < timeLimit, "TIMES UP");
          (, uint[] memory randomWords) = getRequestStatus(lastRequestId);
         require(!alreadyGuessed[msg.sender], "You have already made a guess");
@@ -158,11 +159,11 @@ _;
             alreadyEntered[players[1]] = false;
             delete players;
             alreadyGuessed[msg.sender] = false;
+            playerGuess = true;
             IMintTeams(mintAddress).mint(msg.sender, 47, 1, "");
             emit Winners(msg.sender, currentRequestId, currentGameId);
             currentGameId++;
             nonce = 0;
-            return true;
         }
         else {
             nonce++;
@@ -180,7 +181,6 @@ _;
             emit Ended(players[1], currentGameId);
             nonce = 0;
         }
-         return false;
     }
 
     function RestartGame() external onlyOwner {
@@ -197,5 +197,9 @@ _;
         delete players;
         nonce = 0;
         currentGameId++;
+    }
+
+    function returnGuess() public view onlyOwner returns (bool) {
+        return playerGuess;
     }
 }
