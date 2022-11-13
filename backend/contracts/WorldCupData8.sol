@@ -1,0 +1,202 @@
+import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
+import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "../interfaces/IFetchTeams.sol";
+import "../interfaces/IPrediction.sol";
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
+contract WorldCupData16 is ChainlinkClient, Ownable {
+  using Chainlink for Chainlink.Request;
+  address public randomNumberAndRoundAddress;
+  address public fetchTeamsOneAddress;
+  address public fetchTeamsTwoAddress;
+  address public fetchTeamsThreeAddress;
+  address public fetchTeamsFourAddress;
+  address public predictionAddress;
+  bytes32 private jobId;
+  uint256 private fee;
+  event ReceiveTeamTop8(bytes32 requestId, string indexed teamId);
+
+
+   constructor() {
+        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
+        setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
+        jobId = '7d80a6386ef543a3abb52817f6707e3b';
+        fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
+    }
+
+    function setAddresses(address _randomNumberAndRoundAddress, address _fetchTeamsOneAddress, address _fetchTeamsTwoAddress, address _fetchTeamsThreeAddress, address _fetchTeamsFourAddress,address _predictionAddress ) external onlyOwner {
+       setRandomAndRoundAddress(_randomNumberAndRoundAddress);
+       setFetchTeamOne(_fetchTeamsOneAddress);
+       setFetchTeamTwo(_fetchTeamsTwoAddress);
+       setFetchTeamThree(_fetchTeamsThreeAddress);
+       setFetchTeamFour(_fetchTeamsFourAddress);
+       setPredictionAddress(_predictionAddress);
+    }
+
+    function setRandomAndRoundAddress(address _randomNumberAndRoundAddress) internal {
+      randomNumberAndRoundAddress = _randomNumberAndRoundAddress;
+    }
+
+    function setFetchTeamOne(address _fetchTeamsOneAddress) internal {
+       fetchTeamsOneAddress = _fetchTeamsOneAddress;
+    }
+
+    function setFetchTeamTwo(address _fetchTeamsTwoAddress) internal {
+       fetchTeamsTwoAddress = _fetchTeamsTwoAddress;
+    }
+
+    function setFetchTeamThree(address _fetchTeamsThreeAddress) internal {
+       fetchTeamsThreeAddress = _fetchTeamsThreeAddress;
+    }
+
+    function setFetchTeamFour(address _fetchTeamsFourAddress) internal {
+      fetchTeamsFourAddress = _fetchTeamsFourAddress;
+    }
+
+    function setPredictionAddress(address _predictionAddress) internal {
+       predictionAddress = _predictionAddress;
+    }
+
+    function receiveTeamOneStanding() private returns(bytes32 requestId) {
+       Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamOne.selector);
+      
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('path', 'data,34,short_code');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+    
+    function receiveTeamOne(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsOneAddress).setFirstPlaceTeam(_teamId);
+        emit ReceiveTeamTop8(_requestId, _teamId);
+    }
+
+     function receiveTeamTwoStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamTwo.selector);
+      
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('path', 'data,35,short_code');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamTwo(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsOneAddress).setSecondPlaceTeam(_teamId); 
+        emit ReceiveTeamTop8(_requestId, _teamId);
+    }
+
+     function receiveTeamThreeStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamThree.selector);
+      
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('path', 'data,36,short_code');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamThree(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsOneAddress).setThirdPlaceTeam(_teamId);
+        emit ReceiveTeamTop8(_requestId, _teamId);
+        
+    }
+
+     function receiveTeamFourStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFour.selector);
+      
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+        req.add('path', 'data,37,short_code');
+
+        req.addInt('times', 1);
+        return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamFour(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsOneAddress).setFourthPlaceTeam(_teamId);
+        emit ReceiveTeamTop8(_requestId, _teamId);
+    }
+
+       function receiveTeamFiveStanding() private returns (bytes32 requestId) {
+          Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamFive.selector);
+      
+          req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+          req.add('path', 'data,38,short_code');
+
+          req.addInt('times', 1);
+          return sendChainlinkRequest(req, fee);
+    }  
+
+     function receiveTeamFive(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+         IFetchTeams(fetchTeamsTwoAddress).setFifthPlaceTeam(_teamId);
+         emit ReceiveTeamTop8(_requestId, _teamId);
+    }
+
+      function receiveTeamSixStanding() private returns (bytes32 requestId) {
+         Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamSix.selector);
+      
+          req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+          req.add('path', 'data,39,short_code');
+
+          req.addInt('times', 1);
+          return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamSix(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+         IFetchTeams(fetchTeamsTwoAddress).setSixthPlaceTeam(_teamId);
+         emit ReceiveTeamTop8(_requestId, _teamId);
+    }
+
+    function receiveTeamSevenStanding() private returns (bytes32 requestId) {
+          Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamSeven.selector);
+      
+          req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+          req.add('path', 'data,40,short_code');
+
+          req.addInt('times', 1);
+          return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamSeven(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsTwoAddress).setSeventhPlaceTeam(_teamId);
+        emit ReceiveTeamTop8(_requestId, _teamId);
+       
+    }
+
+      function receiveTeamEightStanding() private returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.receiveTeamEight.selector);
+      
+        req.add('get', 'https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0');
+          req.add('path', 'data,41,short_code');
+
+          req.addInt('times', 1);
+          return sendChainlinkRequest(req, fee);
+    }
+
+     function receiveTeamEight(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
+        IFetchTeams(fetchTeamsTwoAddress).setEighthPlaceTeam(_teamId);
+        emit ReceiveTeamTop8(_requestId, _teamId);
+       
+    }
+
+      function fetchTop8Teams() public {
+        require(msg.sender == randomNumberAndRoundAddress, "USER_CANT_CALL_FUNCTION");
+        receiveTeamOneStanding();
+        receiveTeamTwoStanding();
+        receiveTeamThreeStanding();
+        receiveTeamFourStanding();
+        receiveTeamFiveStanding();
+        receiveTeamSixStanding();
+        receiveTeamSevenStanding();
+        receiveTeamEightStanding();
+    }
+
+     function withdrawLink() external onlyOwner {
+        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
+    }
+}

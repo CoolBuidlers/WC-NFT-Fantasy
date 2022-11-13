@@ -37,13 +37,20 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
-    function getPredictionAddress(address _predictionAddress) external onlyOwner {
+   function setAddresses(address _predictionAddress, address _worldCupDataAddress) external onlyOwner {
+       setPredictionAddress(_predictionAddress);
+       setWorldCupDataAddress(_worldCupDataAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
         predictionAddress = _predictionAddress;
     }
 
-    function getWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
+    function setWorldCupDataAddress(address _worldCupDataAddress) internal {
         worldCupDataAddress = _worldCupDataAddress;
     }
+
+
 
     function setSubscriptionId(uint64 subscriptionId) external onlyOwner {
          s_subscriptionId = subscriptionId;

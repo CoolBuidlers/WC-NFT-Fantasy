@@ -62,76 +62,73 @@ contract FetchTeamsFour is Ownable {
     }
 
 
-function setThirteenthPlaceTeam(uint _teamId) public {
+function setThirteenthPlaceTeam(string memory _teamId) public {
   require(msg.sender == worldCupDataAddress, "USER_CANT_CALL_FUNCTION");
-      /*
-    14219 - IC Play-Off 1
-    14220 - IC Play-Off 2
-
-    Costa Rica
-    Australia
-    */
-   if(_teamId == 12550) {
-    thirteenthPlaceTeam = worldCupTeams[1];
-   } else if(_teamId == 3080) {
-     thirteenthPlaceTeam =  worldCupTeams[3];
-   } else if(_teamId == 12279) {
-     thirteenthPlaceTeam = worldCupTeams[0];
-   } else if(_teamId == 56) {
-     thirteenthPlaceTeam = worldCupTeams[2];
-   } else if(_teamId == 12302) {
-     thirteenthPlaceTeam = worldCupTeams[4];
-   } else if(_teamId == 12396) {
-     thirteenthPlaceTeam = worldCupTeams[5];
-   } else if(_teamId == 7850) {
-     thirteenthPlaceTeam = worldCupTeams[6];
-   } else if(_teamId == 14218) {
-     thirteenthPlaceTeam = worldCupTeams[7];
-   } else if(_teamId == 12502) {
-     thirteenthPlaceTeam = worldCupTeams[8];
-   } else if(_teamId == 12473) {
+   if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('URU'))) {
+     thirteenthPlaceTeam =  worldCupTeams[30];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('QAT'))) {
+      thirteenthPlaceTeam =  worldCupTeams[0];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('MAR'))) {
+      thirteenthPlaceTeam =  worldCupTeams[22];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('GHA'))) {
+      thirteenthPlaceTeam =  worldCupTeams[29];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('TUN'))) {
+      thirteenthPlaceTeam =  worldCupTeams[15];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('SEN'))) {
+      thirteenthPlaceTeam =  worldCupTeams[2];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('KSA'))) {
+      thirteenthPlaceTeam =  worldCupTeams[9];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('KOR'))) {
+      thirteenthPlaceTeam = worldCupTeams[31];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('USA'))) {
+      thirteenthPlaceTeam =  worldCupTeams[6];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('CAN'))) {
+      thirteenthPlaceTeam =  worldCupTeams[21];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('ECU'))) {
+      thirteenthPlaceTeam =  worldCupTeams[1];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('MEX'))) {
       thirteenthPlaceTeam = worldCupTeams[10];
-   } else if(_teamId == 3011) {
-     thirteenthPlaceTeam = worldCupTeams[11];
-   } else if(_teamId == 767) {
-     thirteenthPlaceTeam = worldCupTeams[9];
-   } else if(_teamId == 3008) {
-     thirteenthPlaceTeam = worldCupTeams[14];
-   } else if(_teamId == 12300) {
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('DEN'))) {
+      thirteenthPlaceTeam =  worldCupTeams[14];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('CRO'))) {
+      thirteenthPlaceTeam =  worldCupTeams[23];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('JPN'))) {
+      thirteenthPlaceTeam =  worldCupTeams[19];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('CRC'))) {
+      thirteenthPlaceTeam = worldCupTeams[17];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('ARG'))) {
+      thirteenthPlaceTeam =  worldCupTeams[8];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('ENG'))) {
+      thirteenthPlaceTeam =  worldCupTeams[4];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('FRA'))) {
      thirteenthPlaceTeam = worldCupTeams[12];
-   } else if(_teamId == 73) {
-     thirteenthPlaceTeam = worldCupTeams[15];
-   } else if(_teamId == 3017) {
-     thirteenthPlaceTeam = worldCupTeams[18];
-   } else if(_teamId == 12397) {
-     thirteenthPlaceTeam = worldCupTeams[19];
-   } else if(_teamId == 3024) {
-     thirteenthPlaceTeam = worldCupTeams[16];
-   } else if(_teamId == 3054) {
-     thirteenthPlaceTeam = worldCupTeams[20];
-   } else if(_teamId == 7835) {
-     thirteenthPlaceTeam = worldCupTeams[21];
-   } else if(_teamId == 3026) {
-     thirteenthPlaceTeam = worldCupTeams[23];
-   } else if(_teamId == 52) {
-     thirteenthPlaceTeam = worldCupTeams[22];
-   } else if(_teamId == 12504) {
-     thirteenthPlaceTeam = worldCupTeams[24];
-   } else if(_teamId == 85) {
-     thirteenthPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3036) {
-     thirteenthPlaceTeam = worldCupTeams[27];
-  } else if(_teamId == 3064) {
-     thirteenthPlaceTeam = worldCupTeams[26];
-  } else if(_teamId == 95) {
-     thirteenthPlaceTeam = worldCupTeams[29];
-  } else if(_teamId == 755) {
-    thirteenthPlaceTeam = worldCupTeams[31];
-  } else if(_teamId == 12299) {
-    thirteenthPlaceTeam = worldCupTeams[28];
-  } else if(_teamId == 12501) {
-    thirteenthPlaceTeam = worldCupTeams[30];
-  }
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('IRN'))) {
+     thirteenthPlaceTeam =  worldCupTeams[5];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('GER'))) {
+     thirteenthPlaceTeam =  worldCupTeams[18];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('NED'))) {
+     thirteenthPlaceTeam = worldCupTeams[3];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('POL'))) {
+     thirteenthPlaceTeam = worldCupTeams[11];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('POR'))) {
+     thirteenthPlaceTeam =  worldCupTeams[28];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('BRA'))) {
+     thirteenthPlaceTeam =  worldCupTeams[24];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('SUI'))) {
+     thirteenthPlaceTeam =  worldCupTeams[26];
+   } else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('ESP'))) {
+     thirteenthPlaceTeam =  worldCupTeams[16];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('WAL'))) {
+     thirteenthPlaceTeam = worldCupTeams[7];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('AUS'))) {
+     thirteenthPlaceTeam =  worldCupTeams[13];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('BEL'))) {
+     thirteenthPlaceTeam =  worldCupTeams[20];
+   }  else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('CMR'))) {
+     thirteenthPlaceTeam =   worldCupTeams[27];
+   }   else if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('SRB'))) {
+     thirteenthPlaceTeam =  worldCupTeams[25];
+   }  
 }
 
  function setFourteenthPlaceTeam(uint _teamId) public {
@@ -366,7 +363,7 @@ function getSixteenthPlaceTeam() public view returns(bytes memory team) {
   return sixteenthPlaceTeam;
 }
 
-  function setWorldCupAddress(address _worldCupDataAddress) public onlyOwner {
+  function setWorldCupDataAddress(address _worldCupDataAddress) external onlyOwner {
     worldCupDataAddress = _worldCupDataAddress;
   }
 }

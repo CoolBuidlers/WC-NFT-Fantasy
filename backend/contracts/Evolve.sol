@@ -27,32 +27,42 @@ function setPause(bool _paused) external onlyOwner {
      paused = _paused;
    }
 
-    function setPredictionAddress(address _predictionAddress) external onlyOwner {
+   function setAddresses(address _predictionAddress, address _fetchTeamOneAddress, address _fetchTeamTwoAddress, address _fetchTeamThreeAddress, address _fetchTeamFourAddress, address _mintTeamOneAddress, address _mintTeamTwoAddress) external onlyOwner {
+     setPredictionAddress(_predictionAddress);
+     getFetchTeamOne(_fetchTeamOneAddress);
+     getFetchTeamTwo(_fetchTeamTwoAddress);
+     getFetchTeamThree(_fetchTeamThreeAddress);
+     getFetchTeamFour(_fetchTeamFourAddress);
+     getMintTeamOneAddress(_mintTeamOneAddress);
+     getMintTeamTwoAddress(_mintTeamTwoAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
     predictionAddress = _predictionAddress;
  }
 
 
-    function getFetchTeamOne(address _fetchTeamOneAddress) external onlyOwner {
+    function getFetchTeamOne(address _fetchTeamOneAddress) internal {
        fetchTeamOneAddress = _fetchTeamOneAddress;
     }
 
-     function getFetchTeamTwo(address _fetchTeamTwoAddress) external onlyOwner {
+     function getFetchTeamTwo(address _fetchTeamTwoAddress) internal {
        fetchTeamTwoAddress = _fetchTeamTwoAddress;
     }
 
-     function getFetchTeamThree(address _fetchTeamThreeAddress) external onlyOwner {
+     function getFetchTeamThree(address _fetchTeamThreeAddress) internal {
        fetchTeamThreeAddress = _fetchTeamThreeAddress;
     }
 
-      function getFetchTeamFour(address _fetchTeamFourAddress) external onlyOwner {
+      function getFetchTeamFour(address _fetchTeamFourAddress) internal {
        fetchTeamFourAddress = _fetchTeamFourAddress;
     }
 
-    function getMintTeamOneAddress(address _mintTeamOneAddress) external onlyOwner {
+    function getMintTeamOneAddress(address _mintTeamOneAddress) internal {
       mintTeamOneAddress = _mintTeamOneAddress;
     }
 
-     function getMintTeamTwoAddress(address _mintTeamTwoAddress) external onlyOwner {
+     function getMintTeamTwoAddress(address _mintTeamTwoAddress) internal {
       mintTeamTwoAddress = _mintTeamTwoAddress;
     }
   
