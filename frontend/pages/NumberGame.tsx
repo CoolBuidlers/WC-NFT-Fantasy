@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Music from "../public/img/music.png";
 import Controller from "../public/img/controller.jpg";
 import Image from "next/image";
@@ -8,7 +8,6 @@ import {
   NUMBER_GUESSING_GAME_ABI,
   NUMBER_GUESSING_GAME_CONTRACT_ADDRESS,
 } from "../Constants/Index";
-import { BigNumber, ethers } from "ethers";
 
 type Props = {};
 
@@ -22,12 +21,11 @@ const NumberGame = (): JSX.Element => {
     signerOrProvider: signer || provider,
   });
 
-  const [isStarted, setIsStarted] = useState<boolean>(true);
-  const [joined, setJoined] = useState<boolean>(true);
-  const [hasGuessed, setHasGuessed] = useState<boolean>(true);
-  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(true);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [joined, setJoined] = useState<boolean>(false);
+  const [hasGuessed, setHasGuessed] = useState<boolean>(false);
+  const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false);
   const [playerGuess, setPlayerGuess] = useState<number>(0);
-  const [randomNumber, setRandomNumber] = useState<number>(0);
 
   // StartGame function here
   const startGame = async (): Promise<void> => {
@@ -67,27 +65,26 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.guessTheNumberValue(val);
       await txn.wait();
       setHasGuessed(true);
+      await checkIfGuessIsCorrect();
     } catch (err: any) {
       console.error(err);
     }
   };
-  // NEED TO ADD A FUNCTION HERE AND FETCH WINNER FROM SUBGRAPHS TO CHECK IF THE USER WON
-  // const checkIfGuessIsCorrect = async (): Promise<void> => {
-  //   try {
-  //     const rand: BigNumber = await contract.randomResult(); // Need you to create a state and add randomResult to it
-  //     setRandomNumber(rand.toNumber());
-  //     if (randomNumber === playerGuess) {
-  //       setGuessedCorrectly(true);
-  //       setHasGuessed(true);
-  //     } else {
-  //       setHasGuessed(true);
-  //       restartGame();
-  //       // message with hot toast
-  //     }
-  //   } catch (err: any) {
-  //     console.error(err);
-  //   }
-  // }
+
+  const checkIfGuessIsCorrect = async (): Promise<void> => {
+    try {
+      const checkPlayerGuess: boolean = await contract.returnGuess();
+      if(checkPlayerGuess) {
+        setGuessedCorrectly(true);
+      }
+      else {
+        setGuessedCorrectly
+      }
+    }
+    catch (err: any) {
+      console.error(err);
+    }
+  }
 
   const restartGame = async (): Promise<void> => {
     try {
@@ -107,6 +104,10 @@ const NumberGame = (): JSX.Element => {
     setPlayerGuess(parseInt(event.target.value));
     console.log(playerGuess);
   }
+
+  useEffect(() => {
+    checkIfGuessIsCorrect();
+  }, [hasGuessed])
 
   const renderButton = (): JSX.Element | undefined => {
     if (!isStarted) {
