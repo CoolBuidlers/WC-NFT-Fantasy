@@ -27,43 +27,6 @@ export const PREDICTION_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "address",
-        name: "predictor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamOne",
-        type: "bytes",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamTwo",
-        type: "bytes",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamThree",
-        type: "bytes",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamFour",
-        type: "bytes",
-      },
-    ],
-    name: "FirstFourTeamsMinted",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "address",
         name: "previousOwner",
@@ -83,25 +46,25 @@ export const PREDICTION_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "address",
-        name: "predictor",
-        type: "address",
+        indexed: true,
+        internalType: "uint256",
+        name: "firstHighestPoints",
+        type: "uint256",
       },
       {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamFive",
-        type: "bytes",
+        indexed: true,
+        internalType: "uint256",
+        name: "secondHighestPoints",
+        type: "uint256",
       },
       {
-        indexed: false,
-        internalType: "bytes",
-        name: "teamSix",
-        type: "bytes",
+        indexed: true,
+        internalType: "uint256",
+        name: "thirdHighestPoints",
+        type: "uint256",
       },
     ],
-    name: "TwoExtraTeamsMinted",
+    name: "TopPoints",
     type: "event",
   },
   {
@@ -135,6 +98,64 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
+    name: "TOP_16_STARTS",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TOP_4_STARTS",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TOP_8_STARTS",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "balances",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "changeOrderAddress",
     outputs: [
       {
@@ -144,13 +165,6 @@ export const PREDICTION_ABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "changeThePhase",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -236,7 +250,7 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
-    name: "getBalance",
+    name: "fewMinutes",
     outputs: [
       {
         internalType: "uint256",
@@ -311,19 +325,6 @@ export const PREDICTION_ABI = [
         internalType: "bool",
         name: "",
         type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "highestAmountOfPoints",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -461,6 +462,19 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
+    name: "oneDay",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "owner",
     outputs: [
       {
@@ -487,7 +501,7 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
-    name: "randomAndRoundAddress",
+    name: "randomAddress",
     outputs: [
       {
         internalType: "address",
@@ -513,40 +527,44 @@ export const PREDICTION_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "secondHighestAmountOfPoints",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
+      {
+        internalType: "address",
+        name: "_randomAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_worldCupData16Address",
+        type: "address",
+      },
       {
         internalType: "address",
         name: "_changeOrderAddress",
         type: "address",
       },
-    ],
-    name: "setChangeOrderAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "address",
         name: "_fetchTeamAddress",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_mintTeamAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_worldCupData8Address",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_worldCupData4Address",
+        type: "address",
+      },
     ],
-    name: "setFetchTeamAddress",
+    name: "setAddresses",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -609,19 +627,6 @@ export const PREDICTION_ABI = [
     inputs: [
       {
         internalType: "address",
-        name: "_mintTeamAddress",
-        type: "address",
-      },
-    ],
-    name: "setMintTeamAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "_predictor",
         type: "address",
       },
@@ -645,19 +650,6 @@ export const PREDICTION_ABI = [
       },
     ],
     name: "setPause",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_randomAndRoundAddress",
-        type: "address",
-      },
-    ],
-    name: "setRandomAndRoundAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -733,32 +725,6 @@ export const PREDICTION_ABI = [
     inputs: [
       {
         internalType: "address",
-        name: "_worldCupDataAddress",
-        type: "address",
-      },
-    ],
-    name: "setWorldCupDataAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "thirdHighestAmountOfPoints",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "newOwner",
         type: "address",
       },
@@ -770,6 +736,19 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
+    name: "viewPoints",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
@@ -777,7 +756,33 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
-    name: "worldCupDataAddress",
+    name: "worldCupData16Address",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "worldCupData4Address",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "worldCupData8Address",
     outputs: [
       {
         internalType: "address",
@@ -793,4 +798,4 @@ export const PREDICTION_ABI = [
     type: "receive",
   },
 ];
-export const PREDICTION_ADDRESS = "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8";
+export const PREDICTION_ADDRESS = "0x24925C115d5183b8029F254BbB2acCeC5A2B838D";

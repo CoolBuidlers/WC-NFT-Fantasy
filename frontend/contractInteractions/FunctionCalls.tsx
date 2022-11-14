@@ -53,6 +53,21 @@ export const mintOtherTwoTeams = async (
   }
 };
 
+export const depositPoints = async (
+  signer: any,
+): Promise<void> => {
+  try {
+    const PredictionContract = new Contract(
+      PREDICTION_ADDRESS,
+      PREDICTION_ABI,
+      signer
+    );
+    await PredictionContract.depositPoints();
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
 export const changeOrderForTop32 = async (
   signer: any,
   teamOne: string,

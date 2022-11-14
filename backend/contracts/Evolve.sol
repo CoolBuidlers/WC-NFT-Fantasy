@@ -16,9 +16,9 @@ address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
 address public predictionAddress;
-mapping(address => bool) evolvedToLevel2;
-mapping(address => bool) evolvedToLevel3;
-mapping(address => bool) evolvedToLevel4;
+mapping(bytes => mapping(address => bool)) alreadyEvolved2;
+mapping(bytes => mapping(address => bool)) alreadyEvolved3;
+mapping(bytes => mapping(address => bool)) alreadyEvolved4;
 
 bool paused;
 modifier onlyWhenNotPaused {
@@ -72,7 +72,7 @@ function setPause(bool _paused) external onlyOwner {
   function evolveToLevel2(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
-    require(evolvedToLevel2[msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
+    require(alreadyEvolved2[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](16);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -101,7 +101,7 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_16");
     } else {
-      evolvedToLevel2[msg.sender] = true;
+      alreadyEvolved2[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamOneAddress).claimLevel2Nft(msg.sender, _teamName);
     }
   }
@@ -109,7 +109,7 @@ function setPause(bool _paused) external onlyOwner {
   function evolveToLevel3(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
-    require(evolvedToLevel3[msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
+    require(alreadyEvolved3[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](8);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -130,7 +130,7 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_8");
     } else {
-      evolvedToLevel3[msg.sender] = true;
+      alreadyEvolved3[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamTwoAddress).claimLevel3Nft(msg.sender, _teamName);
     }
   }
@@ -138,7 +138,7 @@ function setPause(bool _paused) external onlyOwner {
   function evolveToLevel4(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
-    require(evolvedToLevel4[msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
+    require(alreadyEvolved4[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](4);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -155,18 +155,18 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_4");
     } else {
-      evolvedToLevel4[msg.sender] = true;
+      alreadyEvolved4[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamTwoAddress).claimLevel4Nft(msg.sender, _teamName);
     }
   }
   
-  function haveYouEvolvedAlready(uint _evolveLevel) external view returns(bool evolvedAlready) {
+  function haveYouEvolvedAlready(string calldata teamName, uint _evolveLevel) external view returns(bool evolvedAlready) {
     if(_evolveLevel == 2) {
-      return evolvedToLevel2[msg.sender];
+      return alreadyEvolved2[abi.encode(teamName)][msg.sender];
     } else if(_evolveLevel == 3) {
-      return evolvedToLevel3[msg.sender];
+      return alreadyEvolved3[abi.encode(teamName)][msg.sender];
     } else if(_evolveLevel == 4) {
-      return evolvedToLevel4[msg.sender];
+      return alreadyEvolved4[abi.encode(teamName)][msg.sender];
     }
   }
 }

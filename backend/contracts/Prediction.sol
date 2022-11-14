@@ -69,7 +69,7 @@ struct TopPredictions {
     mapping(address => bool) changedOrderForTop8; //check if user has changed team order for top 8
     mapping(address => bool) changedOrderForTop4; //check if user has changed team order for top 4
     mapping(address => bool) depositedPoints; //checks if user has already deposited their points to potentially get chosen as winner
-    mapping(address => uint) balances; //keeps track of the amount of money each user has deposited
+    mapping(address => uint) public balances; //keeps track of the amount of money each user has deposited
 
 
    //Used to keep track of the phases of the worldcup
@@ -212,10 +212,10 @@ struct TopPredictions {
      if(teamOneConfirmed != true || teamTwoConfirmed != true || teamThreeConfirmed != true || teamFourConfirmed != true) {
       revert("TEAMS_MUST_BE_VALID");
      } else {
+      balances[msg.sender] += msg.value;
       Points storage playerPoints = predictorPoints[predictorPointIndex];
       playerPoints.predictor = payable(msg.sender);
       predictors[msg.sender].predictorIndex = predictorPointIndex;
-      balances[msg.sender] += msg.value;
       alreadyMinted[msg.sender] = true;
       unchecked {
          predictorPointIndex++;
@@ -238,6 +238,8 @@ struct TopPredictions {
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+     require(keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamOne) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamTwo) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamThree) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamFour), "CANT_HAVE_DUPLICATE_TEAMS");
+     require(keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamOne) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamTwo) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamThree) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamFour), "CANT_HAVE_DUPLICATE_TEAMS");
      require(keccak256(abi.encode(_teamFive)) != keccak256(abi.encode(_teamSix)), "CANT_HAVE_DUPLICATE_TEAMS");
      bool teamFiveConfirmed;
      bool teamSixConfirmed;
@@ -562,10 +564,6 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
     
     function mintedExtraTwo(address _predictor) public view returns(bool) {
       return extraTwoTeamsMinted[_predictor];
-    }
-
-    function getBalance() external view returns(uint) {
-      return balances[msg.sender];
     }
 
     function hasItBeenThreeMinutes() public view returns(bool) {

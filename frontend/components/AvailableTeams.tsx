@@ -1,6 +1,36 @@
 import React, { useEffect, useState } from "react";
+import Qatar from "../public/NFTs/0.png";
+import Ecuador from "../public/NFTs/4.png";
+import Senegal from "../public/NFTs/8.png";
+import Netherlands from "../public/NFTs/12.png";
+import England from "../public/NFTs/16.png";
 import Iran from "../public/NFTs/20.png";
 import USA from "../public/NFTs/24.png";
+import Wales from "../public/NFTs/28.png";
+import Argentina from "../public/NFTs/32.png";
+import SaudiArabia from "../public/NFTs/36.png";
+import Mexico from "../public/NFTs/40.png";
+import Poland from "../public/NFTs/44.png";
+import France from "../public/NFTs/48.png";
+import Australia from "../public/NFTs/52.png";
+import Denmark from "../public/NFTs/56.png";
+import Tunisia from "../public/NFTs/60.png";
+import Spain from "../public/NFTs/64.png";
+import CostaRica from "../public/NFTs/68.png";
+import Germany from "../public/NFTs/72.png";
+import Japan from "../public/NFTs/76.png";
+import Belgium from "../public/NFTs/80.png";
+import Canada from "../public/NFTs/84.png";
+import Morocco from "../public/NFTs/88.png";
+import Croatia from "../public/NFTs/92.png";
+import Brazil from "../public/NFTs/96.png";
+import Serbia from "../public/NFTs/100.png";
+import Switzerland from "../public/NFTs/104.png";
+import Cameroon from "../public/NFTs/108.png";
+import Portugal from "../public/NFTs/112.png";
+import Ghana from "../public/NFTs/116.png";
+import Uruguay from "../public/NFTs/120.png";
+import Korea from "../public/NFTs/124.png";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { MdClose } from "react-icons/md";
@@ -13,6 +43,11 @@ import {
 } from "../contractInteractions/FunctionCalls";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
+import { EVOLVE_ADDRESS, EVOLVE_ABI } from "../contractInfo/Evolve";
+import {
+  depositPoints,
+  evolveToLevel2,
+ evolveToLevel3, evolveToLevel4} from "../contractInteractions/FunctionCalls";
 import { ethers, Contract } from "ethers";
 
 const AvailableTeams = () => {
@@ -22,8 +57,29 @@ const AvailableTeams = () => {
   const [top32, setTop32] = useState<boolean>(false);
   const [top16, setTop16] = useState<boolean>(false);
   const [top8, setTop8] = useState<boolean>(false);
+  const [top4, setTop4] = useState<boolean>(false);
+  const [changedTop32, setChangedTop32] = useState<boolean>(false);
+  const [changedTop16, setChangedTop16] = useState<boolean>(false);
+  const [changedTop8, setChangedTop8] = useState<boolean>(false);
+  const [changedTop4, setChangedTop4] = useState<boolean>(false);
+  const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] = useState<boolean>(false);
+  const [currentPhase, setCurrentPhase] = useState<number>(0);
+  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked2, setIsClicked2] = useState(false);
+  const [isClicked3, setIsClicked3] = useState(false);
+  const [isClicked4, setIsClicked4] = useState(false);
+  const [isClicked5, setIsClicked5] = useState(false);
+  const [isClicked6, setIsClicked6] = useState(false);
+  const [teamNameArray, setTeamNameArray] = useState<string[]>([])
+
+  const [userEvolveArray2, setUserEvolveArray2] = useState<boolean[]>([])
+
+  const [userEvolveArray3, setUserEvolveArray3] = useState<boolean[]>([])
+
+  const [userEvolveArray4, setUserEvolveArray4] = useState<boolean[]>([])
   const { data: signer } = useSigner();
   const provider = useProvider();
+  const {address} = useAccount();
   const isItTop32 = async () => {
     try {
       const PredictionContract = new Contract(
@@ -33,7 +89,7 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
-      console.log(isTop32);
+      return isTop32
     } catch (error: any) {
       console.log(error);
     }
@@ -46,7 +102,9 @@ const AvailableTeams = () => {
         provider
       );
       const isTop16 = await PredictionContract.isPhase16();
+      console.log("Hello", isTop16)
       setTop16(isTop16);
+       return isTop16;
     } catch (error: any) {
       console.log(error);
     }
@@ -60,10 +118,147 @@ const AvailableTeams = () => {
       );
       const isTop8 = await PredictionContract.isPhase8();
       setTop8(isTop8);
+       return isTop8
     } catch (error: any) {
       console.log(error);
     }
   };
+
+  const isItTop4 = async () => {
+    try {
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const isTop4 = await PredictionContract.isPhase4();
+      setTop4(isTop4);
+      return isTop4;
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const haveYouMintedExtraTwo = async (): Promise<boolean | undefined> => {
+    try {
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const hasUserMintedExtraTwo = await PredictionContract.mintedExtraTwo(
+        address
+      );
+      setHasUserMintedExtraTwo(hasUserMintedExtraTwo);
+      return hasUserMintedExtraTwo;
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+   const haveYouChangedOrder = async () => {
+     try {
+       const PredictionContract = new Contract(
+         PREDICTION_ADDRESS,
+         PREDICTION_ABI,
+         provider
+       );
+       const changedFor32 = await PredictionContract.changedOrder(address, 32);
+       const changedFor16 = await PredictionContract.changedOrder(address, 16);
+       const changedFor8 = await PredictionContract.changedOrder(address, 8);
+       const changedFor4 = await PredictionContract.changedOrder(address, 4);
+       setChangedTop32(changedFor32)
+       setChangedTop16(changedFor16);
+       setChangedTop8(changedFor8);
+       setChangedTop4(changedFor4);
+     } catch (error: any) {
+       console.log(error);
+     }
+   };
+
+ const getCurrentPhase = async () => {
+   try {
+     const PredictionContract = new Contract(
+       PREDICTION_ADDRESS,
+       PREDICTION_ABI,
+       provider
+     );
+     const theCurrentPhase = await PredictionContract.currentPhase();
+     setCurrentPhase(theCurrentPhase);
+   } catch (error: any) {
+     console.log(error);
+   }
+ };
+
+ const fetchEvolveStatus = async () => {
+   try {
+     const EvolveContract = new Contract(
+       EVOLVE_ADDRESS,
+       EVOLVE_ABI,
+       provider
+     );
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const userMintedExtraTwo = await haveYouMintedExtraTwo()
+      if(userMintedExtraTwo) {
+        for (let i = 1; i < 7; i++) {
+          let prediction = await PredictionContract.getPrediction(address, i);
+          let teamName:string = ethers.utils.defaultAbiCoder.decode(
+            ["string"],
+            prediction
+          )[0];
+           setTeamNameArray([...teamNameArray, teamName]);
+          let evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+          setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+           let evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(
+             teamName,
+             3
+           );
+           setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+            let evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(
+              teamName,
+              4
+            );
+            setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+        }
+      } else {
+        for (let i = 1; i < 5; i++) {
+          let prediction = await PredictionContract.getPrediction(address, i);
+          let teamName: string = ethers.utils.defaultAbiCoder.decode(
+            ["string"],
+            prediction
+          )[0];
+          
+          setTeamNameArray([...teamNameArray, teamName]);
+          let evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(
+            teamName,
+            2
+          );
+          setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+          let evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(
+            teamName,
+            3
+          );
+          setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+          let evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(
+            teamName,
+            4
+          );
+          setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+        }
+        console.log("teamArray", teamNameArray);
+      }
+      console.log("userEvolved2", userEvolveArray2)
+   } catch (error: any) {
+     console.log(error);
+   }
+ }
+
+
+  
   const fetchData = async() => {
     // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/leagues/732?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
     // console.log(response.json())
@@ -79,8 +274,15 @@ const AvailableTeams = () => {
     isItTop16();
     isItTop8();
     isItTop32();
-    fetchData()
-  }, [teamSwapOne, teamSwapTwo]);
+    isItTop4()
+    haveYouMintedExtraTwo()
+    haveYouChangedOrder()
+    getCurrentPhase()
+    fetchEvolveStatus()
+    //  setInterval(async () => {
+    //    await fetchEvolveStatus()
+    //  }, 2 * 1000);
+  }, [address]);
   return (
     <div>
       <div>
@@ -92,7 +294,7 @@ const AvailableTeams = () => {
               to-[#F20089] blur-xl"
             ></div>
             <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
-              Flippable: 4
+              Flippable: {hasUserMintedExtraTwo && !top8 ? 6 : 4}
             </h1>
           </div>
         </div>
@@ -151,13 +353,218 @@ const AvailableTeams = () => {
                 top32 && changeOrderForTop32(signer, teamSwapOne, teamSwapTwo);
                 top16 && changeOrderForTop16(teamSwapOne, teamSwapTwo, signer);
                 top8 && changeOrderForTop8(teamSwapOne, teamSwapTwo, signer);
-                top8 && changeOrderForTop4(teamSwapOne, teamSwapTwo, signer);
+                top4 && changeOrderForTop4(teamSwapOne, teamSwapTwo, signer);
               }}
             >
               Confirm
             </a>
           </div>
         </Transition>
+        <div className="max-w-[350px]">
+          <div className=" relative flex justify-center my-4 ">
+            <Transition
+              show={true}
+              enter="transform transition duration-[500ms] ease-in"
+              enterFrom="opacity-0 rotate-[180deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2"
+            >
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
+                1
+              </span>
+            </Transition>
+          </div>
+          <div
+            className="max-w-[250px] relative cursor-pointer"
+            onClick={() => {
+              setIsClicked(!isClicked);
+            }}
+          >
+            {((!userEvolveArray2[0] && top16) ||
+              (!userEvolveArray3[0] && top8) ||
+              (!userEvolveArray4[0] && top4)) && (
+              <Transition
+                show={isClicked}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[0], signer);
+                    top8 && evolveToLevel3(teamNameArray[0], signer);
+                    top4 && evolveToLevel4(teamNameArray[0], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
+            <Image src={Qatar} />
+          </div>
+        </div>
+
+        <div className="max-w-[350px]">
+          <div className=" relative flex justify-center my-4 ">
+            <Transition
+              show={true}
+              enter="transform transition duration-[500ms] ease-in"
+              enterFrom="opacity-0 rotate-[180deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2"
+            >
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-purple-900 text-white rounded-full">
+                2
+              </span>
+            </Transition>
+          </div>
+          <div
+            className="max-w-[250px] cursor-pointer relative"
+            onClick={() => {
+              setIsClicked2(!isClicked2);
+            }}
+          >
+            {((!userEvolveArray2[1] && top16) ||
+              (!userEvolveArray3[1] && top8) ||
+              (!userEvolveArray4[1] && top4)) && (
+              <Transition
+                show={isClicked2}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[1], signer);
+                    top8 && evolveToLevel3(teamNameArray[1], signer);
+                    top4 && evolveToLevel4(teamNameArray[1], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
+            <Image src={Ecuador} className="text-[26rem]" />
+          </div>
+        </div>
+        <div className="max-w-[350px]">
+          <div className=" relative flex justify-center my-4 ">
+            <Transition
+              show={true}
+              enter="transform transition duration-[500ms] ease-in"
+              enterFrom="opacity-0 rotate-[180deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
+            >
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-red-500 text-white rounded-full">
+                3
+              </span>
+            </Transition>
+          </div>
+          <div
+            className="max-w-[250px] relative cursor-pointer"
+            onClick={() => {
+              setIsClicked3(!isClicked3);
+            }}
+          >
+            {((!userEvolveArray2[2] && top16) ||
+              (!userEvolveArray3[2] && top8) ||
+              (!userEvolveArray4[2] && top4)) && (
+              <Transition
+                show={isClicked3}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[2], signer);
+                    top8 && evolveToLevel3(teamNameArray[2], signer);
+                    top4 && evolveToLevel4(teamNameArray[2], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
+            <Image src={Senegal} className="text-[26rem]" />
+          </div>
+        </div>
+        <div className="max-w-[350px] relative">
+          <div className=" relative flex justify-center my-4 ">
+            <Transition
+              show={true}
+              enter="transform transition duration-[500ms] ease-in"
+              enterFrom="opacity-0 rotate-[180deg] scale-0"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
+            >
+              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-[#86761f] text-white rounded-full">
+                4
+              </span>
+            </Transition>
+          </div>
+          <div
+            className="max-w-[250px] relative cursor-pointer"
+            onClick={() => {
+              setIsClicked4(!isClicked4);
+            }}
+          >
+            {((!userEvolveArray2[3] && top16) ||
+              (!userEvolveArray3[3] && top8) ||
+              (!userEvolveArray4[3] && top4)) && (
+              <Transition
+                show={isClicked4}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[3], signer);
+                    top8 && evolveToLevel3(teamNameArray[3], signer);
+                    top4 && evolveToLevel4(teamNameArray[3], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
+            <Image src={Netherlands} className="text-[26rem]" />
+          </div>
+        </div>
         <div className="max-w-[350px]">
           <div className="relative flex justify-center my-4 ">
             <Transition
@@ -175,12 +582,40 @@ const AvailableTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px]">
+          <div
+            className="max-w-[250px] relative cursor-pointer"
+            onClick={() => {
+              setIsClicked5(!isClicked5);
+            }}
+          >
+            {((!userEvolveArray2[4] && top16) ||
+              (!userEvolveArray3[4] && top8)) && (
+              <Transition
+                show={isClicked5}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[4], signer);
+                    top8 && evolveToLevel3(teamNameArray[4], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
             <Image src={Iran} />
           </div>
         </div>
         <div className="max-w-[350px]">
-          <div className=" relative flex justify-center my-4 ">
+          <div className="relative flex justify-center my-4 ">
             <Transition
               show={true}
               enter="transform transition duration-[500ms] ease-in"
@@ -196,17 +631,58 @@ const AvailableTeams = () => {
               </span>
             </Transition>
           </div>
-          <div className="max-w-[250px] mb-10">
+          <div
+            className="max-w-[250px] relative cursor-pointer"
+            onClick={() => {
+              setIsClicked6(!isClicked6);
+            }}
+          >
+            {((!userEvolveArray2[3] && top16) ||
+              (!userEvolveArray3[3] && top8)) && (
+              <Transition
+                show={isClicked6}
+                enter="transform transition duration-[1000ms] "
+                enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                enterTo="opacity-100 rotate-0 scale-100"
+                leave="transform duration-[1000ms] transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+              >
+                <a
+                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                  onClick={() => {
+                    top16 && evolveToLevel2(teamNameArray[5], signer);
+                    top8 && evolveToLevel3(teamNameArray[5], signer);
+                  }}
+                >
+                  Evolve
+                </a>
+              </Transition>
+            )}
             <Image src={USA} />
           </div>
         </div>
       </div>
-      <a
-        className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
-        onClick={() => setShowModal(!showModal)}
-      >
-        Swap Prediction Order
-      </a>
+      {(!changedTop32 && top32) ||
+        (!changedTop16 && top16) ||
+        (!changedTop8 && top8) ||
+        (!changedTop4 && top4 && (
+          <a
+            className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
+            onClick={() => setShowModal(!showModal)}
+          >
+            Swap Prediction Order
+          </a>
+        ))}
+      {currentPhase === 5 && (
+        <a
+          className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
+          onClick={() => depositPoints(signer)}
+        >
+          Deposit Points
+        </a>
+      )}
     </div>
   );
 };

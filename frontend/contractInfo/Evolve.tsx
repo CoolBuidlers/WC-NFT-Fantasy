@@ -112,79 +112,25 @@ export const EVOLVE_ABI = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_fetchTeamFourAddress",
-        type: "address",
+        internalType: "string",
+        name: "teamName",
+        type: "string",
       },
-    ],
-    name: "getFetchTeamFour",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
-        internalType: "address",
-        name: "_fetchTeamOneAddress",
-        type: "address",
+        internalType: "uint256",
+        name: "_evolveLevel",
+        type: "uint256",
       },
     ],
-    name: "getFetchTeamOne",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
+    name: "haveYouEvolvedAlready",
+    outputs: [
       {
-        internalType: "address",
-        name: "_fetchTeamThreeAddress",
-        type: "address",
+        internalType: "bool",
+        name: "evolvedAlready",
+        type: "bool",
       },
     ],
-    name: "getFetchTeamThree",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_fetchTeamTwoAddress",
-        type: "address",
-      },
-    ],
-    name: "getFetchTeamTwo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_mintTeamOneAddress",
-        type: "address",
-      },
-    ],
-    name: "getMintTeamOneAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_mintTeamTwoAddress",
-        type: "address",
-      },
-    ],
-    name: "getMintTeamTwoAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -249,12 +195,42 @@ export const EVOLVE_ABI = [
   {
     inputs: [
       {
-        internalType: "bool",
-        name: "_paused",
-        type: "bool",
+        internalType: "address",
+        name: "_predictionAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_fetchTeamOneAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_fetchTeamTwoAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_fetchTeamThreeAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_fetchTeamFourAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_mintTeamOneAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_mintTeamTwoAddress",
+        type: "address",
       },
     ],
-    name: "setPause",
+    name: "setAddresses",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -262,12 +238,12 @@ export const EVOLVE_ABI = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_predictionAddress",
-        type: "address",
+        internalType: "bool",
+        name: "_paused",
+        type: "bool",
       },
     ],
-    name: "setPredictionAddress",
+    name: "setPause",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -286,4 +262,4 @@ export const EVOLVE_ABI = [
     type: "function",
   },
 ];
-export const EVOLVE_ADDRESS = ""
+export const EVOLVE_ADDRESS = "0xc2cF0357BaB05b29b9dFBc1Bf37b7518a1FBE040";
