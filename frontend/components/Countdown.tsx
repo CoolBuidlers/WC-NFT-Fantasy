@@ -6,8 +6,56 @@ import Image from "next/image";
 import bg from "../public/img/bg.png";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { useContract, useProvider } from "wagmi";
+import { PREDICTION_ABI, PREDICTION_CONTRACT } from "../Constants/Index";
 
 const Countdown = ({}: Props) => {
+  const provider = useProvider();
+  const contract = useContract({
+    addressOrName: PREDICTION_CONTRACT,
+    contractInterface: PREDICTION_ABI,
+    signerOrProvider: provider
+  });
+
+  const [knockoutRound, setKnockoutRound] = useState<string | undefined>();
+  const [quarterFinal, setQuarterFinal] = useState<string | undefined>();
+
+  const fetchRoundOf16Time = async (): Promise<void> => {
+    try {
+      const roundOf16: any = await contract.TOP_16_STARTS();
+      const _timeAfterConversion: any = roundOf16.toNumber();
+      // console.log(_timeAfterConversion)
+      const _timestamp: number = _timeAfterConversion *  1000;
+      let _date: Date = new Date(_timestamp);
+      const data = {
+        Date: _date.toLocaleString()
+      };
+      console.log(data.Date);
+      setKnockoutRound(data.Date);
+    } 
+    catch (err: any) {
+      console.error(err)  
+    }
+  }
+
+  const fetchQuarterFinalsTime = async(): Promise<void> => {
+    try {
+      const _quarterFinals: any = await contract.TOP_8_STARTS();
+      const _timeAfterConversion: any = _quarterFinals.toNumber();
+      const _timestamp: number = _timeAfterConversion * 1000;
+      console.log("Timestamp: QF", _timestamp);
+      let _date: Date = new Date(_timestamp);
+      const data = {
+        Date: _date.toLocaleString()
+      };
+      console.log(data.Date);
+      setQuarterFinal(data.Date);
+    }
+    catch (err: any) {
+      console.error(err);  
+    }
+  }
+
   const textRef = useRef(null);
   const footballRef = useRef(null);
   gsap.registerPlugin(ScrollTrigger);
@@ -91,6 +139,11 @@ const Countdown = ({}: Props) => {
       </span>
     );
   });
+
+  useEffect(() => {
+    fetchRoundOf16Time();
+    fetchQuarterFinalsTime();
+  }, [])
 
   return (
     <section className="relative overflow-hidden">
