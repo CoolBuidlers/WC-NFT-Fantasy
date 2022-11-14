@@ -94,7 +94,6 @@ const NumberGame = (): JSX.Element => {
       setJoined(false);
       setHasGuessed(false);
       setGuessedCorrectly(false);
-      // call some function here to check the same user doesn't play more than once
     } catch (err: any) {
       console.error(err);
     }
@@ -107,7 +106,7 @@ const NumberGame = (): JSX.Element => {
 
   useEffect(() => {
     checkIfGuessIsCorrect();
-  }, [hasGuessed])
+  }, [checkIfGuessIsCorrect, hasGuessed])
 
   const renderButton = (): JSX.Element | undefined => {
     if (!isStarted) {
