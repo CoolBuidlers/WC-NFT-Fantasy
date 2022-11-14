@@ -51,6 +51,7 @@ const Mint = () => {
   const [inputSelection, setInputSelection] = useState<string[]>([]);
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
   const [maticPrice, setMaticPrice] = useState<any>("0");
+  const [maticBiggerThan40, setMaticBiggerThan40] = useState<boolean>(false)
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
@@ -108,7 +109,13 @@ const Mint = () => {
     );
     const re = new RegExp("^-?\\d+(?:.\\d{0," + (2 || -1) + "})?");
     const price = (await PredictionContract.getLatestPrice()) / 100000000;
-    setMaticPrice(price.toString().match(re)?.[0]);
+    const priceWithConversion = await PredictionContract.getLatestPrice()
+    if (priceWithConversion.toNumber() >= 40000000) {
+      setMaticBiggerThan40(true)
+    } else {
+      setMaticBiggerThan40(false)
+    }
+      setMaticPrice(price.toString().match(re)?.[0]);
   };
 
   useEffect(() => {
@@ -147,10 +154,10 @@ const Mint = () => {
             {currentPhase === 1 && (
               <h2 className="text-5xl mb-20">MINT your 2 extra teams</h2>
             )}
-            {parseInt(maticPrice) >= 40000000 && (
+            {maticBiggerThan40 && (
               <p className="text-3xl">Unit Price : 12.5 Matic </p>
             )}
-            {parseInt(maticPrice) < 40000000 && (
+            {!maticBiggerThan40 && (
               <p className="text-3xl">Unit Price : 25 Matic </p>
             )}
           </div>
@@ -767,16 +774,9 @@ const Mint = () => {
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
               ></div>
-              {parseInt(maticPrice) * 100000000 >= 40000000 && (
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
                   1 Matic | {maticPrice} $
                 </span>
-              )}
-              {parseInt(maticPrice) * 100000000 >= 40000000 && (
-                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  1 Matic | {maticPrice} $
-                </span>
-              )}
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
@@ -795,10 +795,10 @@ const Mint = () => {
             {currentPhase === 0 && (
               <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
             )}
-            {parseInt(maticPrice) * 100000000 > 40000000 && (
+            {maticBiggerThan40 && (
               <p className="text-3xl">Unit Price : 25 Matic </p>
             )}
-            {parseInt(maticPrice) * 100000000 < 40000000 && (
+            {!maticBiggerThan40 && (
               <p className="text-3xl">Unit Price : 50 Matic </p>
             )}
           </div>
@@ -1456,17 +1456,10 @@ const Mint = () => {
               <div
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
-              ></div>
-              {parseInt(maticPrice) * 100000000 >= 40000000 && (
+              ></div>  
                 <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
                   1 Matic | {maticPrice} $
-                </span>
-              )}
-              {parseInt(maticPrice) * 100000000 < 40000000 && (
-                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  1 Matic | {maticPrice} $
-                </span>
-              )}
+                </span>      
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
