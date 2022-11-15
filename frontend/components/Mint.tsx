@@ -1410,9 +1410,9 @@ const Mint = () => {
               enterFrom="opacity-0 scale-0"
               enterTo="opacity-100 rotate-0 scale-100"
               leave="transform duration-[300ms] transition ease-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-0 "
-              className="w-[100vw] h-[100vh] bg-[#4d4c4cd9] fixed z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+              leaveFrom="opacity-100 rotate-0 scale-100"
+              leaveTo="opacity-0 scale-0"
+              className="w-[100vw] h-[100vh] bg-[#4d4c4cd9] fixed z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             >
               <div className=" bg-shade-bg sm:max-w-full  h-1/2 sm:w-2/2 sm:h-1/2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 z-50 flex flex-col justify-center items-center">
                 <p className="sm:mb-14 mb-6 text-lg">Please Select Amount</p>
@@ -1432,7 +1432,7 @@ const Mint = () => {
                       setShowModal(!showModal);
                     }}
                   >
-                    <MdClose className="text-4xl text-white" />
+                    <MdClose className="text-4xl text-white cursor-pointer" />
                   </a>
                 </div>
                 <a
