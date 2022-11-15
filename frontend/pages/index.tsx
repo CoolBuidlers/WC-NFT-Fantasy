@@ -6,17 +6,37 @@ import Mint from "../components/Mint";
 import Navbar from "../components/Navbar";
 import Roadmap from "../components/Roadmap";
 import Team from "../components/Team";
-
+import { CircleLoader } from "react-spinners";
+import { useState, useEffect } from "react";
 const Home: NextPage = () => {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3500);
+  }, []);
   return (
-    <div>
-      <Navbar />
-      <Hero />
-      <Countdown />
-      <Mint />
-      <Roadmap />
-      <Team />
-      <Footer />
+    <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
+      {loading ? (
+        <CircleLoader
+          color="#9a00ff"
+          cssOverride={{}}
+          loading
+          size={150}
+          speedMultiplier={0.5}
+        />
+      ) : (
+        <div>
+          <Navbar />
+          <Hero />
+          <Countdown />
+          <Mint />
+          <Roadmap />
+          <Team />
+          <Footer />
+        </div>
+      )}
     </div>
   );
 };

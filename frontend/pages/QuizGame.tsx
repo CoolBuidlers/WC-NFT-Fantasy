@@ -9,6 +9,7 @@ import {
 } from "../Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
+import { CircleLoader } from "react-spinners";
 
 const QuizGame = () => {
   const provider = useProvider();
@@ -193,35 +194,54 @@ const QuizGame = () => {
     }
   };
 
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
   return (
-    <section className="relative">
-      <Navbar />
-      <div className="flex justify-center pb-40">
-        <div className="relative inline-block">
-          <div
-            className="absolute -inset-1 bg-[#D100D1]
+    <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
+      {loading ? (
+        <CircleLoader
+          color="#9a00ff"
+          cssOverride={{}}
+          loading
+          size={150}
+          speedMultiplier={0.5}
+        />
+      ) : (
+        <section className="relative">
+          <Navbar />
+          <div className="flex justify-center pb-40">
+            <div className="relative inline-block">
+              <div
+                className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
-          ></div>
-          <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
-            Quiz Game
-          </h1>
-        </div>
-      </div>
-      <div className="hidden lg:flex justify-between w-full mx-auto">
-        <div className="absolute top-80 overflow-hidden sm:right-[1030px]">
-          <Image src={Music} width={700} height={700} alt="MusicImg" />
-        </div>
-        <div className="absolute top-80 overflow-hidden sm:left-[1030px]">
-          <Image
-            src={Controller}
-            width={600}
-            height={600}
-            alt="controllerImg"
-          />
-        </div>
-      </div>
-      {renderButton()}
-    </section>
+              ></div>
+              <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+                Quiz Game
+              </h1>
+            </div>
+          </div>
+          <div className="hidden lg:flex justify-between w-full mx-auto">
+            <div className="absolute top-80 overflow-hidden sm:right-[1030px]">
+              <Image src={Music} width={700} height={700} alt="MusicImg" />
+            </div>
+            <div className="absolute top-80 overflow-hidden sm:left-[1030px]">
+              <Image
+                src={Controller}
+                width={600}
+                height={600}
+                alt="controllerImg"
+              />
+            </div>
+          </div>
+          {renderButton()}
+        </section>
+      )}
+    </div>
   );
 };
 
