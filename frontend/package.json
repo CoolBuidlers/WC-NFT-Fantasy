@@ -20,6 +20,7 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.0",
     "react-icons": "^4.6.0",
     "react-scroll": "^1.8.8",
     "react-spinners": "^0.13.6",

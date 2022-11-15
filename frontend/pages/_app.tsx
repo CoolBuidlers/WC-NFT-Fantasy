@@ -12,6 +12,7 @@ import {
   createClient,
   WagmiConfig,
 } from 'wagmi';
+import { Toaster } from "react-hot-toast";
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 const { chains, provider } = configureChains(
@@ -44,6 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         fontStack: 'rounded',
 
       })}>
+        <Toaster />
       <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

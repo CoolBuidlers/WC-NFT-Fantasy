@@ -42,9 +42,17 @@ const MainGame = () => {
         </>
       ) : (
         <>
-          <div className="text-white flex justify-center items-center">
-            YOU NEVER MINTED ANY TEAMS BITCH
+        <Navbar />
+          <div className="text-lg text-white pt-40 pb-5 flex justify-center items-center bg-gradient-to-r bg-clip-text text-transparent 
+            from-pink-400 via-purple-500 to-green-400
+            animate-text uppercase">
+            You have not minted any teams fren!
           </div>
+            <a
+              className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl md:mb-0 text-white m-auto"
+            >
+             Click here to mint 
+            </a>
         </>
       )}
     </div>

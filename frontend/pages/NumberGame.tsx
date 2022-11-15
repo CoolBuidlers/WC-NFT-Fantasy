@@ -8,6 +8,7 @@ import {
   NUMBER_GUESSING_GAME_ABI,
   NUMBER_GUESSING_GAME_CONTRACT_ADDRESS,
 } from "../Constants/Index";
+import toast from "react-hot-toast";
 
 type Props = {};
 
@@ -33,10 +34,11 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.startGame();
       await txn.wait();
       setIsStarted(true);
+      toast.success("Game Started!!!")
     }
     catch (err: any) {
       console.error(err)
-      // use the hot toast to display the reason
+      toast.error(err.reason);
     }
   };
 
@@ -46,8 +48,10 @@ const NumberGame = (): JSX.Element => {
       await txn.wait();
       await requestRandomWords();
       setJoined(true);
+      toast.success("Game Joined!!!")
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason)
     }
   };
 
@@ -57,6 +61,7 @@ const NumberGame = (): JSX.Element => {
       await txn.wait();
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason);
     }
   };
 
@@ -66,8 +71,10 @@ const NumberGame = (): JSX.Element => {
       await txn.wait();
       setHasGuessed(true);
       await checkIfGuessIsCorrect();
+      toast.success("Guess made successfully!!!")
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason);
     }
   };
 
@@ -94,14 +101,15 @@ const NumberGame = (): JSX.Element => {
       setJoined(false);
       setHasGuessed(false);
       setGuessedCorrectly(false);
+      toast.success("Game restarted!!!")
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason);
     }
   };
 
   function handleChange(event: any): void {
     setPlayerGuess(parseInt(event.target.value));
-    console.log(playerGuess);
   }
 
   useEffect(() => {
