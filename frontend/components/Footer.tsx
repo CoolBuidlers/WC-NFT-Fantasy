@@ -22,7 +22,7 @@ const Footer = () => {
               <AiOutlineTwitter className="text-5xl bg-transparent rounded-full p-1 cursor-pointer" />
             </a>
           </Link>
-          <Link href="https://github.com/Abbas-Khann">
+          <Link href="https://github.com/CoolBuidlers/WC-NFT-Fantasy">
             <a target="_blank">
               <AiFillGithub className="text-5xl bg-transparent rounded-full p-1 cursor-pointer mx-5" />
             </a>
