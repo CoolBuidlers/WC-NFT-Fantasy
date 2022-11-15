@@ -64,7 +64,7 @@ contract FetchTeamsThree is Ownable {
     }
 
 
-function setNinthPlaceTeam(uint _teamId) public {
+function setNinthPlaceTeam(string memory _teamId) public {
    require(msg.sender == worldCupData16Address || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
    if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('URU'))) {
     ninthPlaceTeam =  worldCupTeams[30];
@@ -133,7 +133,7 @@ function setNinthPlaceTeam(uint _teamId) public {
    }  
 }
 
- function setTenthPlaceTeam(uint _teamId) public {
+ function setTenthPlaceTeam(string memory _teamId) public {
    require(msg.sender == worldCupData16Address || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
    if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('URU'))) {
     tenthPlaceTeam =  worldCupTeams[30];
@@ -202,7 +202,7 @@ function setNinthPlaceTeam(uint _teamId) public {
    }  
 }
 
- function setEleventhPlaceTeam(uint _teamId) public {
+ function setEleventhPlaceTeam(string memory _teamId) public {
     require(msg.sender == worldCupData16Address || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
    if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('URU'))) {
     eleventhPlaceTeam =  worldCupTeams[30];
@@ -271,7 +271,7 @@ function setNinthPlaceTeam(uint _teamId) public {
    }  
  }
 
- function setTwelfthPlaceTeam(uint _teamId) public {
+ function setTwelfthPlaceTeam(string memory _teamId) public {
       require(msg.sender == worldCupData16Address || msg.sender == worldCupData8Address || msg.sender == worldCupData4Address, "USER_CANT_CALL_FUNCTION");
    if(keccak256(abi.encode(_teamId)) == keccak256(abi.encode('URU'))) {
    twelfthPlaceTeam =  worldCupTeams[30];
