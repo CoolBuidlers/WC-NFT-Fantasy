@@ -2,13 +2,12 @@
 pragma solidity ^0.8.17;
 
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
-import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/IPrediction.sol";
 
-contract RetrieveRandomNumber is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOwner {
+contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     using Strings for uint256;
     using Chainlink for Chainlink.Request;
     event RequestSent(uint256 indexed requestId, uint32 indexed numWords);
@@ -16,7 +15,6 @@ contract RetrieveRandomNumber is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOw
     bytes32 private jobId;
     bytes32 keyHash = 0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f;
     uint256 private fee;
-    uint arrayNumber = 5;
      // past requests Id.
     uint256[] public requestIds;
     uint256 public lastRequestId;
@@ -52,7 +50,6 @@ contract RetrieveRandomNumber is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOw
         setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
         s_subscriptionId = subscriptionId;
-        jobId = 'ca98366cc7314957b8c012c72f05aeeb';
         fee = (1 * LINK_DIVISIBILITY);
     }
 

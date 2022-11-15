@@ -181,6 +181,7 @@ struct TopPredictions {
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
      }
+     require(predictorPoints.length != 1000, "PREDICTOR_LIMIT_REACHED");
      //boolean values have to equal true to confirm that the teams entered as arguments in the function are valid and are within the worldcupteam array
      bool teamOneConfirmed;
      bool teamTwoConfirmed;

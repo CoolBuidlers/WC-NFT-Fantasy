@@ -47,7 +47,9 @@ import { EVOLVE_ADDRESS, EVOLVE_ABI } from "../contractInfo/Evolve";
 import {
   depositPoints,
   evolveToLevel2,
- evolveToLevel3, evolveToLevel4} from "../contractInteractions/FunctionCalls";
+  evolveToLevel3,
+  evolveToLevel4,
+} from "../contractInteractions/FunctionCalls";
 import { ethers, Contract } from "ethers";
 
 const AvailableTeams = () => {
@@ -62,7 +64,8 @@ const AvailableTeams = () => {
   const [changedTop16, setChangedTop16] = useState<boolean>(false);
   const [changedTop8, setChangedTop8] = useState<boolean>(false);
   const [changedTop4, setChangedTop4] = useState<boolean>(false);
-  const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] = useState<boolean>(false);
+  const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
+    useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [isClicked, setIsClicked] = useState(false);
   const [isClicked2, setIsClicked2] = useState(false);
@@ -70,16 +73,22 @@ const AvailableTeams = () => {
   const [isClicked4, setIsClicked4] = useState(false);
   const [isClicked5, setIsClicked5] = useState(false);
   const [isClicked6, setIsClicked6] = useState(false);
-  const [teamNameArray, setTeamNameArray] = useState<string[]>([])
+  const [teamName1, setTeamName1] = useState<string>("");
+  const [teamName2, setTeamName2] = useState<string>("");
+  const [teamName3, setTeamName3] = useState<string>("");
+  const [teamName4, setTeamName4] = useState<string>("");
+  const [teamName5, setTeamName5] = useState<string>("");
+  const [teamName6, setTeamName6] = useState<string>("");
 
-  const [userEvolveArray2, setUserEvolveArray2] = useState<boolean[]>([])
+  const [userEvolveArray2, setUserEvolveArray2] = useState<boolean[]>([]);
 
-  const [userEvolveArray3, setUserEvolveArray3] = useState<boolean[]>([])
+  const [userEvolveArray3, setUserEvolveArray3] = useState<boolean[]>([]);
 
-  const [userEvolveArray4, setUserEvolveArray4] = useState<boolean[]>([])
+  const [userEvolveArray4, setUserEvolveArray4] = useState<boolean[]>([]);
+
   const { data: signer } = useSigner();
   const provider = useProvider();
-  const {address} = useAccount();
+  const { address } = useAccount();
   const isItTop32 = async () => {
     try {
       const PredictionContract = new Contract(
@@ -89,7 +98,7 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
-      return isTop32
+      return isTop32;
     } catch (error: any) {
       console.log(error);
     }
@@ -102,9 +111,9 @@ const AvailableTeams = () => {
         provider
       );
       const isTop16 = await PredictionContract.isPhase16();
-      console.log("Hello", isTop16)
+      console.log("Hello", isTop16);
       setTop16(isTop16);
-       return isTop16;
+      return isTop16;
     } catch (error: any) {
       console.log(error);
     }
@@ -118,7 +127,7 @@ const AvailableTeams = () => {
       );
       const isTop8 = await PredictionContract.isPhase8();
       setTop8(isTop8);
-       return isTop8
+      return isTop8;
     } catch (error: any) {
       console.log(error);
     }
@@ -156,132 +165,142 @@ const AvailableTeams = () => {
     }
   };
 
-   const haveYouChangedOrder = async () => {
-     try {
-       const PredictionContract = new Contract(
-         PREDICTION_ADDRESS,
-         PREDICTION_ABI,
-         provider
-       );
-       const changedFor32 = await PredictionContract.changedOrder(address, 32);
-       const changedFor16 = await PredictionContract.changedOrder(address, 16);
-       const changedFor8 = await PredictionContract.changedOrder(address, 8);
-       const changedFor4 = await PredictionContract.changedOrder(address, 4);
-       setChangedTop32(changedFor32)
-       setChangedTop16(changedFor16);
-       setChangedTop8(changedFor8);
-       setChangedTop4(changedFor4);
-     } catch (error: any) {
-       console.log(error);
-     }
-   };
-
- const getCurrentPhase = async () => {
-   try {
-     const PredictionContract = new Contract(
-       PREDICTION_ADDRESS,
-       PREDICTION_ABI,
-       provider
-     );
-     const theCurrentPhase = await PredictionContract.currentPhase();
-     setCurrentPhase(theCurrentPhase);
-   } catch (error: any) {
-     console.log(error);
-   }
- };
-
- const fetchEvolveStatus = async () => {
-   try {
-     const EvolveContract = new Contract(
-       EVOLVE_ADDRESS,
-       EVOLVE_ABI,
-       provider
-     );
+  const haveYouChangedOrder = async () => {
+    try {
       const PredictionContract = new Contract(
         PREDICTION_ADDRESS,
         PREDICTION_ABI,
         provider
       );
-      const userMintedExtraTwo = await haveYouMintedExtraTwo()
-      if(userMintedExtraTwo) {
-        for (let i = 1; i < 7; i++) {
-          let prediction = await PredictionContract.getPrediction(address, i);
-          let teamName:string = ethers.utils.defaultAbiCoder.decode(
-            ["string"],
-            prediction
-          )[0];
-           setTeamNameArray([...teamNameArray, teamName]);
-          let evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
-          setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
-           let evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(
-             teamName,
-             3
-           );
-           setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
-            let evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(
-              teamName,
-              4
-            );
-            setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
-        }
-      } else {
-        for (let i = 1; i < 5; i++) {
-          let prediction = await PredictionContract.getPrediction(address, i);
-          let teamName: string = ethers.utils.defaultAbiCoder.decode(
-            ["string"],
-            prediction
-          )[0];
-          
-          setTeamNameArray([...teamNameArray, teamName]);
-          let evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(
-            teamName,
-            2
-          );
-          setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
-          let evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(
-            teamName,
-            3
-          );
-          setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
-          let evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(
-            teamName,
-            4
-          );
-          setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
-        }
-        console.log("teamArray", teamNameArray);
+      const changedFor32 = await PredictionContract.changedOrder(address, 32);
+      const changedFor16 = await PredictionContract.changedOrder(address, 16);
+      const changedFor8 = await PredictionContract.changedOrder(address, 8);
+      const changedFor4 = await PredictionContract.changedOrder(address, 4);
+      setChangedTop32(changedFor32);
+      setChangedTop16(changedFor16);
+      setChangedTop8(changedFor8);
+      setChangedTop4(changedFor4);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const getCurrentPhase = async () => {
+    try {
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const theCurrentPhase = await PredictionContract.currentPhase();
+      setCurrentPhase(theCurrentPhase);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const fetchEvolveStatus = async () => {
+    let evolvedLevel2, evolvedLevel3, evolvedLevel4, prediction, teamName;
+    try {
+      const EvolveContract = new Contract(EVOLVE_ADDRESS, EVOLVE_ABI, provider);
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const userMintedExtraTwo = await haveYouMintedExtraTwo();
+      prediction = await PredictionContract.getPrediction(address, 1);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName1(teamName);
+      evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+      evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+      evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+      setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+      setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+      setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+
+      prediction = await PredictionContract.getPrediction(address, 2);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName2(teamName);
+      evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+      evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+      evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+      setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+      setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+      setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+
+      prediction = await PredictionContract.getPrediction(address, 3);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName3(teamName);
+      evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+      evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+      evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+      setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+      setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+      setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+
+      prediction = await PredictionContract.getPrediction(address, 4);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName4(teamName);
+      evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+      evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+      evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+      setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+      setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+      setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+
+      if (userMintedExtraTwo) {
+        prediction = await PredictionContract.getPrediction(address, 5);
+        teamName = ethers.utils.defaultAbiCoder.decode(
+          ["string"],
+          prediction
+        )[0];
+        setTeamName5(teamName);
+        evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+        evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+        evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+        setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+        setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+        setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
+
+        prediction = await PredictionContract.getPrediction(address, 6);
+        teamName = ethers.utils.defaultAbiCoder.decode(
+          ["string"],
+          prediction
+        )[0];
+        setTeamName6(teamName);
+        evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
+        evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
+        evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
+        setUserEvolveArray2([...userEvolveArray2, evolvedLevel2]);
+        setUserEvolveArray3([...userEvolveArray3, evolvedLevel3]);
+        setUserEvolveArray4([...userEvolveArray4, evolvedLevel4]);
       }
-      console.log("userEvolved2", userEvolveArray2)
-   } catch (error: any) {
-     console.log(error);
-   }
- }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
-
-  
-  const fetchData = async() => {
+  const fetchData = async () => {
     // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/leagues/732?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
     // console.log(response.json())
     // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/rounds/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
     // console.log(response.json())
-     const response = await fetch(
+    const response = await fetch(
       "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
     );
-    console.log(response.json())
-  }
+    console.log(response.json());
+  };
 
   useEffect(() => {
     isItTop16();
     isItTop8();
     isItTop32();
-    isItTop4()
-    haveYouMintedExtraTwo()
-    haveYouChangedOrder()
-    getCurrentPhase()
-    fetchEvolveStatus()
-    //  setInterval(async () => {
-    //    await fetchEvolveStatus()
-    //  }, 2 * 1000);
+    isItTop4();
+    haveYouMintedExtraTwo();
+    haveYouChangedOrder();
+    getCurrentPhase();
+    fetchEvolveStatus();
   }, [address]);
   return (
     <div>
@@ -399,9 +418,9 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[0], signer);
-                    top8 && evolveToLevel3(teamNameArray[0], signer);
-                    top4 && evolveToLevel4(teamNameArray[0], signer);
+                    top16 && evolveToLevel2(teamName1, signer);
+                    top8 && evolveToLevel3(teamName1, signer);
+                    top4 && evolveToLevel4(teamName1, signer);
                   }}
                 >
                   Evolve
@@ -451,9 +470,9 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[1], signer);
-                    top8 && evolveToLevel3(teamNameArray[1], signer);
-                    top4 && evolveToLevel4(teamNameArray[1], signer);
+                    top16 && evolveToLevel2(teamName2, signer);
+                    top8 && evolveToLevel3(teamName2, signer);
+                    top4 && evolveToLevel4(teamName2, signer);
                   }}
                 >
                   Evolve
@@ -502,9 +521,9 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[2], signer);
-                    top8 && evolveToLevel3(teamNameArray[2], signer);
-                    top4 && evolveToLevel4(teamNameArray[2], signer);
+                    top16 && evolveToLevel2(teamName3, signer);
+                    top8 && evolveToLevel3(teamName3, signer);
+                    top4 && evolveToLevel4(teamName3, signer);
                   }}
                 >
                   Evolve
@@ -553,9 +572,9 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[3], signer);
-                    top8 && evolveToLevel3(teamNameArray[3], signer);
-                    top4 && evolveToLevel4(teamNameArray[3], signer);
+                    top16 && evolveToLevel2(teamName4, signer);
+                    top8 && evolveToLevel3(teamName4, signer);
+                    top4 && evolveToLevel4(teamName4, signer);
                   }}
                 >
                   Evolve
@@ -603,8 +622,8 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[4], signer);
-                    top8 && evolveToLevel3(teamNameArray[4], signer);
+                    top16 && evolveToLevel2(teamName5, signer);
+                    top8 && evolveToLevel3(teamName5, signer);
                   }}
                 >
                   Evolve
@@ -652,8 +671,8 @@ const AvailableTeams = () => {
                 <a
                   className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
                   onClick={() => {
-                    top16 && evolveToLevel2(teamNameArray[5], signer);
-                    top8 && evolveToLevel3(teamNameArray[5], signer);
+                    top16 && evolveToLevel2(teamName6, signer);
+                    top8 && evolveToLevel3(teamName6, signer);
                   }}
                 >
                   Evolve

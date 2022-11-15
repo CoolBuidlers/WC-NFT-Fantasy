@@ -11,23 +11,28 @@ import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { ethers, Contract } from "ethers";
 
 const ChosenTeams = () => {
-  const [userPoints, setUserPoints] = useState<number>(0)
-  const [userBalance, setUserBalance] = useState<string>("0")
- const provider = useProvider();
- const {address} = useAccount();
- const getUserPoints = async (): Promise<void> => {
-   try {
-     const PredictionContract = new Contract(
-       PREDICTION_ADDRESS,
-       PREDICTION_ABI,
-       provider
-     );
-     const points = await PredictionContract.viewPoints();
-     setUserPoints(points.toNumber())
-   } catch (error: any) {
-     console.log(error);
-   }
- };
+  const [userPoints, setUserPoints] = useState<number>(0);
+  const [userBalance, setUserBalance] = useState<string>("0");
+  const provider = useProvider();
+  const { address } = useAccount();
+  const [teamName1, setTeamName1] = useState<string>("");
+  const [teamName2, setTeamName2] = useState<string>("");
+  const [teamName3, setTeamName3] = useState<string>("");
+  const [teamName4, setTeamName4] = useState<string>("");
+
+  const getUserPoints = async (): Promise<void> => {
+    try {
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      const points = await PredictionContract.viewPoints();
+      setUserPoints(points.toNumber());
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
   const getBalance = async (): Promise<void> => {
     try {
       const PredictionContract = new Contract(
@@ -35,16 +40,44 @@ const ChosenTeams = () => {
         PREDICTION_ABI,
         provider
       );
-      const balance = await PredictionContract.balances(address); 
+      const balance = await PredictionContract.balances(address);
       setUserBalance(ethers.utils.formatEther(balance.toString()));
     } catch (error: any) {
       console.log(error);
     }
   };
- useEffect(() => {
-   getUserPoints()
-   getBalance()
- },[address])
+
+  const fetchTeams = async () => {
+    let evolvedLevel2, evolvedLevel3, evolvedLevel4, prediction, teamName;
+    try {
+      const PredictionContract = new Contract(
+        PREDICTION_ADDRESS,
+        PREDICTION_ABI,
+        provider
+      );
+      prediction = await PredictionContract.getPrediction(address, 1);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName1(teamName);
+
+      prediction = await PredictionContract.getPrediction(address, 2);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName2(teamName);
+
+      prediction = await PredictionContract.getPrediction(address, 3);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName3(teamName);
+
+      prediction = await PredictionContract.getPrediction(address, 4);
+      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+      setTeamName4(teamName);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getUserPoints();
+    getBalance();
+  }, [address]);
   return (
     <div>
       <div>
@@ -84,9 +117,7 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div
-            className="max-w-[250px]"
-          >
+          <div className="max-w-[250px]">
             <Image src={Qatar} />
           </div>
         </div>
@@ -108,8 +139,7 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div
-            className="max-w-[250px]">
+          <div className="max-w-[250px]">
             <Image src={Ecuador} className="text-[26rem]" />
           </div>
         </div>
@@ -130,9 +160,7 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div
-            className="max-w-[250px]"
-          >
+          <div className="max-w-[250px]">
             <Image src={Senegal} className="text-[26rem]" />
           </div>
         </div>
@@ -153,9 +181,7 @@ const ChosenTeams = () => {
               </span>
             </Transition>
           </div>
-          <div
-            className="max-w-[250px]"
-          >
+          <div className="max-w-[250px]">
             <Image src={Netherlands} className="text-[26rem]" />
           </div>
         </div>
