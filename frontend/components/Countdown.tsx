@@ -46,7 +46,7 @@ const Countdown = ({}: Props) => {
       console.log("Timestamp: QF", _timestamp);
       let _date: Date = new Date(_timestamp);
       const data = {
-        Date: _date.toLocaleString()
+        Date: _date.toLocaleDateString()
       };
       console.log(data.Date);
       setQuarterFinal(data.Date);
