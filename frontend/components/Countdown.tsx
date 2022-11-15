@@ -164,6 +164,17 @@ const Countdown = ({}: Props) => {
           className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"
           ref={textRef}
         >
+          {timeLeft.days <= 0 ? 
+          <div>
+          <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
+            Next round starts on
+          </p>
+          <p className="md:text-6xl 3xl:text-8xl text-2xl ">
+            {knockoutRound}
+          </p>
+          </div>
+          : 
+            <div>
           <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
             Tournament starts in
           </p>
@@ -171,6 +182,8 @@ const Countdown = ({}: Props) => {
             {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
             {timeLeft.seconds}
           </p>
+          </div>
+          }
         </div>
         <div
           className="absolute xl:-top-[10%] 3xl:-top-[0%] xl:left-[70%] 3xl:left-[70%] z-4 "
