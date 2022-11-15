@@ -50,6 +50,7 @@ const MainGame = () => {
           </div>
             <a
               className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl md:mb-0 text-white m-auto"
+              href="/"
             >
              Click here to mint 
             </a>

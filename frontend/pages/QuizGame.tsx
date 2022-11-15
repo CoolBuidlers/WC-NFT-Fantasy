@@ -209,16 +209,7 @@ const QuizGame = () => {
     }, 1500);
   }, []);
   return (
-    <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
-      {loading ? (
-        <CircleLoader
-          color="#9a00ff"
-          cssOverride={{}}
-          loading
-          size={150}
-          speedMultiplier={0.5}
-        />
-      ) : (
+    <div>
         <section className="relative">
           <Navbar />
           <div className="flex justify-center pb-40">
@@ -247,7 +238,6 @@ const QuizGame = () => {
           </div>
           {renderButton()}
         </section>
-      )}
     </div>
   );
 };
