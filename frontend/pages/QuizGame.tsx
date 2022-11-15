@@ -10,6 +10,7 @@ import {
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
 import { CircleLoader } from "react-spinners";
+import toast from 'react-hot-toast';
 
 const QuizGame = () => {
   const provider = useProvider();
@@ -40,8 +41,10 @@ const QuizGame = () => {
       const txn: any = await contract.startGameOne(); // this will be updated to startGameTwo when the next round starts
       await txn.wait();
       setIsStarted(true);
+      toast.success("Game Started!!!");
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason);
     }
   };
 
@@ -50,8 +53,10 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
+      toast.success("Game Joined!!!")
     } catch (err: any) {
       console.error(err);
+      toast.error(err.reason);
     }
   };
 
@@ -59,9 +64,10 @@ const QuizGame = () => {
     try {
       const txn: any = await contract.claimPrizeOne();
       await txn.wait();
+      toast.success("NFT Claimed");
     } catch (err: any) {
       console.error(err);
-      console.log(err.reason);
+      toast.error(err.reason);
     }
   };
 
@@ -97,8 +103,9 @@ const QuizGame = () => {
         const txn: any = await contract.guessQuestionsOne(val1, val2, val3);
         await txn.wait();
         setHasGuessed(true);
+        toast.success("Submitted Answer!")
       } else {
-        alert("Answer all the questions");
+        toast.error("Answer all the questions");
       }
     } catch (err: any) {
       console.error(err);
