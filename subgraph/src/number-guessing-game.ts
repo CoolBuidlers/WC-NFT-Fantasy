@@ -66,7 +66,7 @@ export function handleNumberGuessingGameWinners(
   let winner = new Winner(id);
 
   // Pass in the Addresses
-  winner.players.push(event.params.winner);
+  winner.players = [event.params.winner];
 
   // Pass in the gameId and game
   winner.gameId = event.params.gameId;
@@ -78,7 +78,7 @@ export function handleNumberGuessingGameWinners(
   // Get the Game Object and make sure it's set to end
   let game = Game.load(event.params.gameId.toString() + "N");
   if (game) {
-    game.status = false;
+    game.status = true;
 
     // Save
     game.save();
@@ -102,10 +102,11 @@ export function handleNumberGuessingGamecurrentGame(
 
     // Status false
     game.status = false;
-  }
 
-  // Add the participating player in
-  game.people.push(event.params.player);
+    game.people = [event.params.player];
+  } else {
+    game.people.push(event.params.player);
+  }
 
   // Save
   game.save();

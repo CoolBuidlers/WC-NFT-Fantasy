@@ -38,13 +38,12 @@ export function handleReceiveTeamTop16(event: ReceiveTeamTop16Event): void {
   let round = Round.load(id);
 
   // Create a round if it does not exist
-  if (!round) round = new Round(id);
-
-  // Getting Team ID From Event
-  let teamID = event.params.teamId;
-
-  // If Team ID exists, then push it into the array
-  if (teamID) round.countryIds.push(teamID);
+  if (!round) {
+    round = new Round(id);
+    round.countryIds = [event.params.teamId];
+  } else {
+    round.countryIds.push(event.params.teamId);
+  }
 
   // Save the Object
   round.save();
@@ -58,13 +57,12 @@ export function handleReceiveTeamTop4(event: ReceiveTeamTop4Event): void {
   let round = Round.load(id);
 
   // Create a round if it does not exist
-  if (!round) round = new Round(id);
-
-  // Getting Team ID From Event
-  let teamID = event.params.teamId;
-
-  // If Team ID exists, then push it into the array
-  if (teamID) round.countryIds.push(teamID);
+  if (!round) {
+    round = new Round(id);
+    round.countryIds = [event.params.teamId];
+  } else {
+    round.countryIds.push(event.params.teamId);
+  }
 
   // Save the Object
   round.save();
@@ -78,13 +76,12 @@ export function handleReceiveTeamTop8(event: ReceiveTeamTop8Event): void {
   let round = Round.load(id);
 
   // Create a round if it does not exist
-  if (!round) round = new Round(id);
-
-  // Getting Team ID From Event
-  let teamID = event.params.teamId;
-
-  // If Team ID exists, then push it into the array
-  if (teamID) round.countryIds.push(teamID);
+  if (!round) {
+    round = new Round(id);
+    round.countryIds = [event.params.teamId];
+  } else {
+    round.countryIds.push(event.params.teamId);
+  }
 
   // Save the Object
   round.save();

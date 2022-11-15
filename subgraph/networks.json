@@ -1,7 +1,7 @@
 {
   "mumbai": {
     "Prediction": {
-      "address": "0x005c5f78760917054a530e543526eaAAB174187C"
+      "address": "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8"
     },
     "RandomNumberAndRound": {
       "address": "0xC1e2222A4471D86E534359E993A1AC5faF316dE0"
@@ -31,7 +31,7 @@
       "address": "0x492c59B84DB1fA23a6bA59C9eac19D1Cc7B15d76"
     },
     "MintTeamsOne": {
-      "address": "0x311cEcaDf95a4EFE92D45E205955297C1054D394"
+      "address": "0xDDCD0Bf64453d38CeBE6E0EB3a2ec1e2f6d131e0"
     },
     "QuizGame": {
       "address": "0x5B319fDd5382D54EF8704B7b6D5C1DB013e08B0c"

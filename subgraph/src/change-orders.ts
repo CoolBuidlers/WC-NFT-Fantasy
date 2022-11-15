@@ -20,8 +20,8 @@ export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
     let first: i32 = 0;
     let second: i32 = 0;
 
-    for (let i = 0; i < predictor.tokens.length; i++) {
-      let _token = Team.load(predictor.tokens[i]);
+    for (let i = 0; i < predictor.tokens!.length; i++) {
+      let _token = Team.load(predictor.tokens![i]);
       if (_token && _token.team == event.params.firstTeam) {
         first = i;
       } else if (_token && _token.team == event.params.secondTeam) {
@@ -29,9 +29,9 @@ export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
       }
     }
 
-    let _side = predictor.tokens[first];
-    predictor.tokens[first] = predictor.tokens[second];
-    predictor.tokens[second] = _side;
+    let _side = predictor.tokens![first];
+    predictor.tokens![first] = predictor.tokens![second];
+    predictor.tokens![second] = _side;
   }
 
   // Create Unique Hash

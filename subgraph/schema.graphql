@@ -55,7 +55,7 @@ type Predictor @entity {
   "user address"
   id: Bytes!
   "all tokens"
-  tokens: [Team!]!
+  tokens: [Team!]
 }
 
 # Top Points

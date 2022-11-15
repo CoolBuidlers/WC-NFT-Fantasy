@@ -17,10 +17,11 @@ event TopPoints(uint indexed firstHighestPoints, uint indexed secondHighestPoint
 export function handleAllPredictors(event: AllPredictors): void {
   // Create Predictor if it doesn't exist
   let predictor = Predictor.load(event.params.predictor);
-  if (!predictor) predictor = new Predictor(event.params.predictor);
-
-  // Save
-  predictor.save();
+  if (!predictor) {
+    predictor = new Predictor(event.params.predictor);
+    // Save
+    predictor.save();
+  }
 
   // Create Game Object if it doesnt exist
   let game = Game.load("0");
@@ -29,10 +30,11 @@ export function handleAllPredictors(event: AllPredictors): void {
     game.gameId = new BigInt(0);
     game.gameType = "Prediction";
     game.status = false;
+    game.people = [event.params.predictor];
+  } else {
+    // Fill in the values
+    game.people.push(event.params.predictor);
   }
-
-  // Fill in the values
-  game.people.push(event.params.predictor);
 
   // Save
   game.save();
@@ -67,9 +69,11 @@ export function handleWinners(event: Winners): void {
   let winners = new Winner(id);
 
   // Push in the Winners
-  winners.players[0] = event.params.winnerOne;
-  winners.players[1] = event.params.winnerTwo;
-  winners.players[2] = event.params.winnerThree;
+  winners.players = [
+    event.params.winnerOne,
+    event.params.winnerTwo,
+    event.params.winnerThree,
+  ];
 
   // Fill in other values
   winners.gameId = BigInt.fromString(id);

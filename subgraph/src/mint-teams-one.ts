@@ -44,7 +44,11 @@ export function handleMint(event: MintEvent): void {
     }
 
     // Push the token into the Predictor
-    predictor.tokens.push(event.params.tokenId.toString());
+    if (!predictor.tokens) {
+      predictor.tokens = [event.params.tokenId.toString()] as string[];
+    } else {
+      predictor.tokens!.push(event.params.tokenId.toString());
+    }
 
     // Save
     predictor.save();

@@ -6,7 +6,7 @@ dataSources:
     name: Prediction
     network: mumbai
     source:
-      address: "0x005c5f78760917054a530e543526eaAAB174187C"
+      address: "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8"
       abi: Prediction
     mapping:
       kind: ethereum/events
@@ -250,7 +250,7 @@ dataSources:
     name: MintTeamsOne
     network: mumbai
     source:
-      address: "0x311cEcaDf95a4EFE92D45E205955297C1054D394"
+      address: "0xDDCD0Bf64453d38CeBE6E0EB3a2ec1e2f6d131e0"
       abi: MintTeamsOne
     mapping:
       kind: ethereum/events

@@ -14,13 +14,16 @@ export function handlecurrentGame(event: currentGameEvent): void {
   const id = event.params.currentGameId.toString() + "Q";
   let game = Game.load(id);
 
-  if (!game) game = new Game(id);
-
-  // Fill in the Info and pass the caller address
-  game.people.push(event.params.caller);
-  game.gameId = event.params.currentGameId;
-  game.gameType = "Quiz";
-  game.status = false;
+  if (!game) {
+    game = new Game(id);
+    game.people = [event.params.caller];
+    game.gameId = event.params.currentGameId;
+    game.gameType = "Quiz";
+    game.status = false;
+  } else {
+    // Fill in the Info and pass the caller address
+    game.people.push(event.params.caller);
+  }
 
   // Save
   game.save();
@@ -29,12 +32,8 @@ export function handlecurrentGame(event: currentGameEvent): void {
 export function handlewinner(event: winnerEvent): void {
   // Create a Winners Object with unique hash
   const id = event.params.gameId.toString() + "Q" + "W";
-  let winner = Winner.load(id);
-
-  if (!winner) winner = new Winner(id);
-
-  // Pass the addresses in
-  winner.players.push(event.params.winner);
+  let winner = new Winner(id);
+  winner.players = [event.params.winner];
   winner.gameId = event.params.gameId;
   winner.game = "Quiz";
 
