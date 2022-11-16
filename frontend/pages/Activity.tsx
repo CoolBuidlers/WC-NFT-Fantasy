@@ -14,7 +14,6 @@ import { ethers } from "ethers";
 const Activity = () => {
   // Holds all the activity that get's tracked
   const [predictors, setPredictors] = useState<any[]>();
-  const [rounds, setRounds] = useState<any[]>();
   const [balance, setBalance] = useState<string>();
 
   // Loading State
@@ -47,19 +46,6 @@ const Activity = () => {
 
     const data = await worldCupQuery(activityQuery);
     setPredictors(data.predictors);
-
-    // The GraphQL query to run
-    const roundsQuery = `
-        query roundsQuery {
-          rounds {
-            id
-            countryIds
-          }
-        }
-      `;
-
-    const roundsData = await worldCupQuery(roundsQuery);
-    setRounds(roundsData.rounds);
   };
 
   // Run this when component loads
@@ -114,7 +100,7 @@ const Activity = () => {
               <PlayersTable predictors={predictors} />
             </div>
             <div className="flex justify-center items-center">
-              <ActivityTable rounds={rounds as any[]} />
+              <ActivityTable />
             </div>
           </div>
           <Footer />
