@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Function to fetch the Query from the subgraphs and return the data
 export async function worldCupQuery(query: any) {
   try {
     const SUBGRAPH_URL =

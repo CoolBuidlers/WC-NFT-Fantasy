@@ -8,6 +8,7 @@ import Tut3 from "../public/img/Tutorial-3.png";
 import Tut4 from "../public/img/Tutorial-4.png";
 import { CircleLoader } from "react-spinners";
 import { useState, useEffect } from "react";
+import { NextSeo } from "next-seo";
 
 type Props = {};
 
@@ -21,6 +22,10 @@ const HowToPlay = (props: Props) => {
   }, []);
   return (
     <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
+      <NextSeo
+        title="How To Play | WC NFT Fantasy"
+        description="Learn How to play WC NFT Fantasy Game"
+      />
       {loading ? (
         <CircleLoader
           color="#9a00ff"

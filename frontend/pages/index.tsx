@@ -8,6 +8,7 @@ import Roadmap from "../components/Roadmap";
 import Team from "../components/Team";
 import { CircleLoader } from "react-spinners";
 import { useState, useEffect } from "react";
+import { NextSeo } from "next-seo";
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -18,6 +19,10 @@ const Home: NextPage = () => {
   }, []);
   return (
     <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
+      <NextSeo
+        title="WC NFT Fantasy"
+        description="Welcome to the Worldcup NFT Fantasy Game!"
+      />
       {loading ? (
         <CircleLoader
           color="#9a00ff"

@@ -9,6 +9,7 @@ import {
   NUMBER_GUESSING_GAME_CONTRACT_ADDRESS,
 } from "../Constants/Index";
 import toast from "react-hot-toast";
+import { NextSeo } from "next-seo";
 
 const NumberGame = (): JSX.Element => {
   const connectedWallet = useAccount();
@@ -32,10 +33,9 @@ const NumberGame = (): JSX.Element => {
       const txn: any = await contract.startGame();
       await txn.wait();
       setIsStarted(true);
-      toast.success("Game Started!!!")
-    }
-    catch (err: any) {
-      console.error(err)
+      toast.success("Game Started!!!");
+    } catch (err: any) {
+      console.error(err);
       toast.error(err.reason);
     }
   };
@@ -46,10 +46,10 @@ const NumberGame = (): JSX.Element => {
       await txn.wait();
       await requestRandomWords();
       setJoined(true);
-      toast.success("Game Joined!!!")
+      toast.success("Game Joined!!!");
     } catch (err: any) {
       console.error(err);
-      toast.error(err.reason)
+      toast.error(err.reason);
     }
   };
 
@@ -69,7 +69,7 @@ const NumberGame = (): JSX.Element => {
       await txn.wait();
       setHasGuessed(true);
       await checkIfGuessIsCorrect();
-      toast.success("Guess made successfully!!!")
+      toast.success("Guess made successfully!!!");
     } catch (err: any) {
       console.error(err);
       toast.error(err.reason);
@@ -79,17 +79,15 @@ const NumberGame = (): JSX.Element => {
   const checkIfGuessIsCorrect = async (): Promise<void> => {
     try {
       const checkPlayerGuess: boolean = await contract.returnGuess();
-      if(checkPlayerGuess) {
+      if (checkPlayerGuess) {
         setGuessedCorrectly(true);
+      } else {
+        setGuessedCorrectly;
       }
-      else {
-        setGuessedCorrectly
-      }
-    }
-    catch (err: any) {
+    } catch (err: any) {
       console.error(err);
     }
-  }
+  };
 
   const restartGame = async (): Promise<void> => {
     try {
@@ -99,7 +97,7 @@ const NumberGame = (): JSX.Element => {
       setJoined(false);
       setHasGuessed(false);
       setGuessedCorrectly(false);
-      toast.success("Game restarted!!!")
+      toast.success("Game restarted!!!");
     } catch (err: any) {
       console.error(err);
       toast.error(err.reason);
@@ -112,7 +110,7 @@ const NumberGame = (): JSX.Element => {
 
   useEffect(() => {
     checkIfGuessIsCorrect();
-  }, [checkIfGuessIsCorrect, hasGuessed])
+  }, [checkIfGuessIsCorrect, hasGuessed]);
 
   const renderButton = (): JSX.Element | undefined => {
     if (!isStarted) {
@@ -177,6 +175,10 @@ const NumberGame = (): JSX.Element => {
 
   return (
     <section className="relative">
+      <NextSeo
+        title="Number Game | WC NFT Fantasy"
+        description="Can you guess the right number in WC NFT Fantasy?"
+      />
       <Navbar />
       <div className="flex justify-center pb-40">
         <div className="relative inline-block">

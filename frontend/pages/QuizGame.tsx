@@ -10,6 +10,7 @@ import {
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
 import toast from "react-hot-toast";
+import { NextSeo } from "next-seo";
 
 const QuizGame = () => {
   const provider = useProvider();
@@ -202,6 +203,10 @@ const QuizGame = () => {
 
   return (
     <div>
+      <NextSeo
+        title="Quiz Game | WC NFT Fantasy"
+        description="Can you answer all of the questions right in WC NFT Fantasy?"
+      />
       <section className="relative">
         <Navbar />
         <div className="flex justify-center pb-40">

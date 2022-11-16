@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { Contract } from "ethers";
 import { useProvider, useAccount } from "wagmi";
+import { NextSeo } from "next-seo";
+import Link from "next/link";
 
 const MainGame = () => {
   const { address } = useAccount();
@@ -29,6 +31,10 @@ const MainGame = () => {
   }, [address]);
   return (
     <div>
+      <NextSeo
+        title="Main Game | WC NFT Fantasy"
+        description="Enter the main game of WC NFT Fantasy"
+      />
       {userMinted ? (
         <>
           <Navbar />
@@ -42,18 +48,19 @@ const MainGame = () => {
         </>
       ) : (
         <>
-        <Navbar />
-          <div className="text-lg text-white pt-40 pb-5 flex justify-center items-center bg-gradient-to-r bg-clip-text text-transparent 
+          <Navbar />
+          <div
+            className="text-lg text-white pt-40 pb-5 flex justify-center items-center bg-gradient-to-r bg-clip-text text-transparent 
             from-pink-400 via-purple-500 to-green-400
-            animate-text uppercase">
+            animate-text uppercase"
+          >
             You have not minted any teams fren!
           </div>
-            <a
-              className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl md:mb-0 text-white m-auto"
-              href="/"
-            >
-             Click here to mint 
-            </a>
+          <Link href="/">
+            <div className="play-btn text-center py-4 max-w-sm sm:w-[25%] block animate-text cursor-pointer hover:animate-text-hover text-2xl md:mb-0 text-white m-auto">
+              Click here to mint
+            </div>
+          </Link>
         </>
       )}
     </div>

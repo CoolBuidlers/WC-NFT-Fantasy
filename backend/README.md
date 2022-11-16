@@ -1,13 +1,21 @@
-# Sample Hardhat Project
+# Backend - WC NFT Fantasy
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+We have made alot of complicated contracts for the game to work in the best way as possible.
 
-Try running some of the following tasks:
+## Contracts
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+- Contract A - description
+- Contract B - description
+
+## Used Tech
+
+- Hardhat
+- Chainlink VRF
+- Chainlink Data Feeds
+- Chainlink Automation
+- Chainlink API
+
+## Installation
+
+1. Install the dependancies using `yarn`
+2. You can deploy the contracts using `npx hardhat run scripts/deploy.ts`. Make sure to configure the location in the `hardhat.config.ts`
