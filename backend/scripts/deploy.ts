@@ -11,8 +11,8 @@ async function main() {
     const NumberGuessingGame = await ethers.getContractFactory("NumberGuessingGame");
     const numberguessinggame = await NumberGuessingGame.deploy(
       2272,
-      "0x7a1bac17ccc5b313516c5e16fb24f7659aa5ebed",
-      "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f"
+      "0xAE975071Be8F8eE67addBC1A82488F1C24858067",
+      "0xd729dc84e21ae57ffb6be0053bf2b0668aa2aaf300a2a7b2ddf7dc0bb6e875a8"
     );
     await numberguessinggame.deployed();
 
@@ -92,29 +92,27 @@ async function main() {
 
   console.log(`MintTeamsTwo deployed to ${mintteamstwo.address}`);
 
-  const WorldCupData = await ethers.getContractFactory("WorldCupData");
-  const worldcupdata = await WorldCupData.deploy();
+  const WorldCupData16 = await ethers.getContractFactory("WorldCupData16");
+  const worldcupdata16 = await WorldCupData16.deploy();
 
-  await worldcupdata.deployed();
+  await worldcupdata16.deployed();
 
-  console.log(`WorldCupData deployed to ${worldcupdata.address}`);
+  console.log(`WorldCupData16 deployed to ${worldcupdata16.address}`);
 
-  await randomnumber.setAddresses(
-    prediction.address,
-    worldcupdata.address
-  );
-  
-  // await changeorders.setPredictionAddress(prediction.address) 
-  // await fetchteamsone.setWorldCupDataAddress(worldcupdata.address)
-  //  await fetchteamstwo.setWorldCupDataAddress(worldcupdata.address);
-  //   await fetchteamsthree.setWorldCupDataAddress(worldcupdata.address);
-  //    await fetchteamsfour.setWorldCupDataAddress(worldcupdata.address);
-  // await evolve.setAddresses(prediction.address, fetchteamsone.address, fetchteamstwo.address, fetchteamsthree.address, fetchteamsfour.address, mintteamsone.address, mintteamstwo.address)
-  // await mintteamsone.setAddresses(prediction.address, evolve.address, mintteamstwo.address, quizgame.address, numberguessinggame.address)
-  // await mintteamstwo.setAddresses(prediction.address, evolve.address, mintteamsone.address)
-  // await numberguessinggame.setMintTeamOneAddress(mintteamsone.address)
-  // await quizgame.setMintTeamOneAddress(mintteamsone.address);
-  // await worldcupdata.setAddresses(randomnumberandround.address, fetchteamsone.address, fetchteamstwo.address, fetchteamsthree.address, fetchteamsfour.address, prediction.address)
+  const WorldCupData8 = await ethers.getContractFactory("WorldCupData8");
+  const worldcupdata8 = await WorldCupData8.deploy();
+
+  await worldcupdata16.deployed();
+
+  console.log(`WorldCupData8 deployed to ${worldcupdata8.address}`);
+
+  const WorldCupData4 = await ethers.getContractFactory("WorldCupData4");
+  const worldcupdata4 = await WorldCupData4.deploy();
+
+  await worldcupdata4.deployed();
+
+  console.log(`WorldCupData4 deployed to ${worldcupdata4.address}`);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
