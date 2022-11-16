@@ -97,7 +97,7 @@ struct TopPredictions {
    }
 
      constructor() {  
-        priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
+        priceFeed = AggregatorV3Interface(0xAB594600376Ec9fD91F8e885dADF0CE036862dE0);
         currentPhase = GamePhases.MINT;
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
@@ -150,7 +150,7 @@ struct TopPredictions {
      modifier payEnoughForFirstFour {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value >= 1 ether, "PAY_MORE_TO_MINT");
+       require(msg.value >= 25 ether, "PAY_MORE_TO_MINT");
      } else {
       require(msg.value >= 50 ether, "PAY_MORE_TO_MINT");
      }
@@ -181,7 +181,6 @@ struct TopPredictions {
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
      }
-     require(predictorPoints.length != 1000, "PREDICTOR_LIMIT_REACHED");
      //boolean values have to equal true to confirm that the teams entered as arguments in the function are valid and are within the worldcupteam array
      bool teamOneConfirmed;
      bool teamTwoConfirmed;
@@ -266,7 +265,7 @@ struct TopPredictions {
    }
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
-        bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) > 0.0001 * 10 ** 18;
+        bool hasLink = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1).balanceOf(address(this)) > 0.0001 * 10 ** 18;
         bool eventHasStarted = block.timestamp > 1669010400;
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;

@@ -20,10 +20,10 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
 
 
    constructor() {
-        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
-        setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
-        jobId = '7d80a6386ef543a3abb52817f6707e3b';
-        fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
+        setChainlinkToken(0xb0897686c545045aFc77CF20eC7A532E3120E0F1);
+        setChainlinkOracle(0x14fB588AD6DA21d7F790D477354DE923AE5BeB07);
+        jobId = '0996e13d921649dfa9aee58214f8cde7';
+        fee = ((15 * LINK_DIVISIBILITY) / 100); // 0,1 * 10**18 (Varies by network and job)
     }
 
     function setAddresses(address _fetchTeamsOneAddress, address _fetchTeamsTwoAddress, address _fetchTeamsThreeAddress, address _fetchTeamsFourAddress,address _predictionAddress ) external onlyOwner {
@@ -323,7 +323,7 @@ contract WorldCupData16 is ChainlinkClient, Ownable {
     }
 
      function withdrawLink() external onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        LinkTokenInterface link = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1);
         require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
     }
 }

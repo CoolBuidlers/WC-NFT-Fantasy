@@ -340,19 +340,19 @@ function setNinthPlaceTeam(string memory _teamId) public {
    }  
 }
 
-function setNinthPlaceTeam() public view returns(bytes memory team) {
+function getNinthPlaceTeam() public view returns(bytes memory team) {
   return ninthPlaceTeam;
 }
 
-function setTenthPlaceTeam() public view returns(bytes memory team) {
+function getTenthPlaceTeam() public view returns(bytes memory team) {
   return tenthPlaceTeam;
 }
 
-function setEleventhPlaceTeam() public view returns(bytes memory team) {
+function getEleventhPlaceTeam() public view returns(bytes memory team) {
   return eleventhPlaceTeam;
 }
 
-function setTwelfthPlaceTeam() public view returns(bytes memory team) {
+function getTwelfthPlaceTeam() public view returns(bytes memory team) {
   return twelfthPlaceTeam;
 }
 

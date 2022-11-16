@@ -4,21 +4,23 @@ import Ecuador from "../public/NFTs/4.png";
 import Senegal from "../public/NFTs/8.png";
 import Netherlands from "../public/NFTs/12.png";
 import USA from "../public/NFTs/24.png";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Transition } from "@headlessui/react";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { ethers, Contract } from "ethers";
+import { getPrediction } from "./PossibleTeams";
 
 const ChosenTeams = () => {
   const [userPoints, setUserPoints] = useState<number>(0);
   const [userBalance, setUserBalance] = useState<string>("0");
   const provider = useProvider();
   const { address } = useAccount();
-  const [teamName1, setTeamName1] = useState<string>("");
-  const [teamName2, setTeamName2] = useState<string>("");
-  const [teamName3, setTeamName3] = useState<string>("");
-  const [teamName4, setTeamName4] = useState<string>("");
+  const [team1, setTeam1] = useState<any>();
+  const [team2, setTeam2] = useState<any>();
+  const [team3, setTeam3] = useState<any>();
+  const [team4, setTeam4] = useState<any>();
+  const [thisArray, setThisArray] = useState();
 
   const getUserPoints = async (): Promise<void> => {
     try {
@@ -48,36 +50,28 @@ const ChosenTeams = () => {
   };
 
   const fetchTeams = async () => {
-    let evolvedLevel2, evolvedLevel3, evolvedLevel4, prediction, teamName;
     try {
-      const PredictionContract = new Contract(
-        PREDICTION_ADDRESS,
-        PREDICTION_ABI,
-        provider
-      );
-      prediction = await PredictionContract.getPrediction(address, 1);
-      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName1(teamName);
-
-      prediction = await PredictionContract.getPrediction(address, 2);
-      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName2(teamName);
-
-      prediction = await PredictionContract.getPrediction(address, 3);
-      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName3(teamName);
-
-      prediction = await PredictionContract.getPrediction(address, 4);
-      teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName4(teamName);
+      const predictionArray: any = [];
+      for (let i = 1; i < 4; i++) {
+        const team = await getPrediction(i, provider, address);
+        !predictionArray.includes(team) && predictionArray.push(team);
+      }
+      setThisArray(predictionArray);
+      console.log(predictionArray);
     } catch (error: any) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getUserPoints();
     getBalance();
   }, [address]);
+
+  useEffect(() => {
+    fetchTeams();
+  }, [address]);
+
   return (
     <div>
       <div>
@@ -118,7 +112,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={Qatar} />
+            <Image src={team1} />
           </div>
         </div>
 
@@ -140,7 +134,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={Ecuador} className="text-[26rem]" />
+            <Image src={team2} className="text-[26rem]" />
           </div>
         </div>
         <div className="max-w-[350px]">
@@ -161,7 +155,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={Senegal} className="text-[26rem]" />
+            <Image src={team3} className="text-[26rem]" />
           </div>
         </div>
         <div className="max-w-[350px] relative">
@@ -182,7 +176,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={Netherlands} className="text-[26rem]" />
+            <Image src={team4} className="text-[26rem]" />
           </div>
         </div>
       </div>

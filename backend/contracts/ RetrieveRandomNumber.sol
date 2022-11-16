@@ -1,20 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/IPrediction.sol";
 
 contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
-    using Strings for uint256;
-    using Chainlink for Chainlink.Request;
     event RequestSent(uint256 indexed requestId, uint32 indexed numWords);
     event RequestFulfilled(uint256 indexed requestId, uint256[] indexed randomWords);
-    bytes32 private jobId;
-    bytes32 keyHash = 0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f;
-    uint256 private fee;
+    bytes32 keyHash = 0xd729dc84e21ae57ffb6be0053bf2b0668aa2aaf300a2a7b2ddf7dc0bb6e875a8;
      // past requests Id.
     uint256[] public requestIds;
     uint256 public lastRequestId;
@@ -31,7 +27,7 @@ contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
-   function setAddresses(address _predictionAddress, address _worldCupDataAddress) external onlyOwner {
+   function setAddresses(address _predictionAddress) external onlyOwner {
        setPredictionAddress(_predictionAddress);
    }
 
@@ -45,12 +41,9 @@ contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     }
 
 
-    constructor(uint64 subscriptionId) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
-        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
-        setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
-        COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
+    constructor(uint64 subscriptionId) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0xAE975071Be8F8eE67addBC1A82488F1C24858067) {
+        COORDINATOR = VRFCoordinatorV2Interface(0xAE975071Be8F8eE67addBC1A82488F1C24858067);
         s_subscriptionId = subscriptionId;
-        fee = (1 * LINK_DIVISIBILITY);
     }
 
     // Assumes the subscription is funded sufficiently.
@@ -85,7 +78,7 @@ contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     }
     
      function withdrawLink() external onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        LinkTokenInterface link = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1);
         require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
     }
 

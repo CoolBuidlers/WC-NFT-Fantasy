@@ -54,7 +54,7 @@ _;
     mapping (uint256 => RequestStatus) s_requests; /* requestId --> requestStatus */
     mapping (address => bool) alreadyGuessed;
     mapping (address => bool) alreadyEntered;
-    address public linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
+    address public linkAddress = 0xb0897686c545045aFc77CF20eC7A532E3120E0F1;
     bytes32 public keyHash;
     uint256 public fee = 0.1 * 10**18;
     bytes32 public currentRequestId;

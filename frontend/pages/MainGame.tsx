@@ -29,7 +29,7 @@ const MainGame = () => {
   }, [address]);
   return (
     <div>
-      {!userMinted ? (
+      {userMinted ? (
         <>
           <Navbar />
           <div className="md:px-10 px-2">
