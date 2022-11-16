@@ -9,7 +9,6 @@ import {
 } from "../Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
-import { CircleLoader } from "react-spinners";
 import toast from 'react-hot-toast';
 
 const QuizGame = () => {

@@ -24,7 +24,6 @@ const Countdown = ({}: Props) => {
     try {
       const roundOf16: any = await contract.TOP_16_STARTS();
       const _timeAfterConversion: any = roundOf16.toNumber();
-      // console.log(_timeAfterConversion)
       const _timestamp: number = _timeAfterConversion *  1000;
       let _date: Date = new Date(_timestamp);
       const data = {
@@ -43,7 +42,6 @@ const Countdown = ({}: Props) => {
       const _quarterFinals: any = await contract.TOP_8_STARTS();
       const _timeAfterConversion: any = _quarterFinals.toNumber();
       const _timestamp: number = _timeAfterConversion * 1000;
-      console.log("Timestamp: QF", _timestamp);
       let _date: Date = new Date(_timestamp);
       const data = {
         Date: _date.toLocaleDateString()
