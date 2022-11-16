@@ -2,97 +2,114 @@ import { ethers } from "hardhat";
 require("dotenv").config({ path: ".env" });
 
 async function main() {
-  
-  const SetAddresses = await ethers.getContractFactory("SetAddresses");
-  const setaddresses = await SetAddresses.deploy();
+  const QuizGame = await ethers.getContractFactory("QuizGame");
+  const quizgame = await QuizGame.deploy();
+  await quizgame.deployed();
 
-  await setaddresses.deployed();
+  console.log("QuizGame", quizgame.address);
 
-  console.log(`SetAddresses deployed to ${setaddresses.address}`);
+  const NumberGuessingGame = await ethers.getContractFactory(
+    "NumberGuessingGame"
+  );
+  const numberguessinggame = await NumberGuessingGame.deploy(
+    2272,
+    "0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed",
+    "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f"
+  );
+  await numberguessinggame.deployed();
 
+  console.log("NumberGame", numberguessinggame.address);
 
   const Prediction = await ethers.getContractFactory("WCNFTFantasy");
-  const prediction = await Prediction.deploy(setaddresses.address);
+  const prediction = await Prediction.deploy();
 
   await prediction.deployed();
 
   console.log(`Prediction deployed to ${prediction.address}`);
-   
-   const randomNumberAndRound = await ethers.getContractFactory(
-     "RetrieveRandomNumberAndWorldCupRound"
-   );
-   const randomnumberandround = await randomNumberAndRound.deploy(2278, setaddresses.address);
 
-   await randomnumberandround.deployed();
+  const randomNumber = await ethers.getContractFactory("RetrieveRandomNumber");
+  const randomnumber = await randomNumber.deploy(2278);
 
-   console.log(`RandomNumberAndRound deployed to ${randomnumberandround.address}`);
+  await randomnumber.deployed();
 
-   const changeOrders = await ethers.getContractFactory("ChangeOrders");
-   const changeorders = await changeOrders.deploy(setaddresses.address);
+  console.log(`randomNumber deployed to ${randomnumber.address}`);
 
-   await changeorders.deployed();
+  const changeOrders = await ethers.getContractFactory("ChangeOrders");
+  const changeorders = await changeOrders.deploy();
 
-   console.log(
-     `ChangeOrders deployed to ${changeorders.address}`
-   );
+  await changeorders.deployed();
 
-   const Evolve = await ethers.getContractFactory("Evolve");
-   const evolve  = await Evolve.deploy(setaddresses.address);
+  console.log(`ChangeOrders deployed to ${changeorders.address}`);
 
-   await evolve.deployed();
+  const Evolve = await ethers.getContractFactory("Evolve");
+  const evolve = await Evolve.deploy();
 
-   console.log(`Evolve deployed to ${evolve.address}`);
+  await evolve.deployed();
+
+  console.log(`Evolve deployed to ${evolve.address}`);
 
   const FetchTeamsOne = await ethers.getContractFactory("FetchTeamsOne");
-  const fetchteamsone  = await FetchTeamsOne.deploy(setaddresses.address);
+  const fetchteamsone = await FetchTeamsOne.deploy();
 
   await fetchteamsone.deployed();
 
   console.log(`FetchTeamsOne deployed to ${fetchteamsone.address}`);
 
   const FetchTeamsTwo = await ethers.getContractFactory("FetchTeamsTwo");
-  const fetchteamstwo = await FetchTeamsTwo.deploy(setaddresses.address);
+  const fetchteamstwo = await FetchTeamsTwo.deploy();
 
   await fetchteamstwo.deployed();
 
   console.log(`FetchTeamsTwo deployed to ${fetchteamstwo.address}`);
 
   const FetchTeamsThree = await ethers.getContractFactory("FetchTeamsThree");
-  const fetchteamsthree = await FetchTeamsThree.deploy(setaddresses.address);
+  const fetchteamsthree = await FetchTeamsThree.deploy();
 
   await fetchteamsthree.deployed();
 
   console.log(`FetchTeamsThree deployed to ${fetchteamsthree.address}`);
-  
-   const FetchTeamsFour = await ethers.getContractFactory("FetchTeamsFour");
-   const fetchteamsfour = await FetchTeamsFour.deploy(setaddresses.address);
 
-   await fetchteamsfour.deployed();
+  const FetchTeamsFour = await ethers.getContractFactory("FetchTeamsFour");
+  const fetchteamsfour = await FetchTeamsFour.deploy();
 
-   console.log(`FetchTeamsFour deployed to ${fetchteamsfour.address}`);
+  await fetchteamsfour.deployed();
 
-    const MintTeamsOne = await ethers.getContractFactory("MintTeamsOne");
-    const mintteamsone = await MintTeamsOne.deploy(setaddresses.address);
+  console.log(`FetchTeamsFour deployed to ${fetchteamsfour.address}`);
 
-    await mintteamsone.deployed();
+  const MintTeamsOne = await ethers.getContractFactory("MintTeamsOne");
+  const mintteamsone = await MintTeamsOne.deploy();
 
-    console.log(`MintTeamsOne deployed to ${mintteamsone.address}`);
+  await mintteamsone.deployed();
 
-    const MintTeamsTwo = await ethers.getContractFactory("MintTeamsTwo");
-    const mintteamstwo = await MintTeamsTwo.deploy(setaddresses.address);
+  console.log(`MintTeamsOne deployed to ${mintteamsone.address}`);
 
-    await mintteamstwo.deployed();
+  const MintTeamsTwo = await ethers.getContractFactory("MintTeamsTwo");
+  const mintteamstwo = await MintTeamsTwo.deploy();
 
-    console.log(`MintTeamsTwo deployed to ${mintteamstwo.address}`);
+  await mintteamstwo.deployed();
 
-      const WorldCupData = await ethers.getContractFactory("WorldCupData");
-      const worldcupdata = await WorldCupData.deploy(setaddresses.address);
+  console.log(`MintTeamsTwo deployed to ${mintteamstwo.address}`);
 
-      await worldcupdata.deployed();
+  const WorldCupData16 = await ethers.getContractFactory("WorldCupData16");
+  const worldcupdata16 = await WorldCupData16.deploy();
 
-      console.log(`WorldCupData deployed to ${worldcupdata.address}`);
-      
-      await setaddresses.setTheAddresses(prediction.address, worldcupdata.address, fetchteamsone.address, fetchteamstwo.address, fetchteamsthree.address, fetchteamsfour.address, mintteamsone.address, mintteamstwo.address, evolve.address, randomnumberandround.address, changeorders.address);
+  await worldcupdata16.deployed();
+
+  console.log(`WorldCupData16 deployed to ${worldcupdata16.address}`);
+
+  const WorldCupData8 = await ethers.getContractFactory("WorldCupData8");
+  const worldcupdata8 = await WorldCupData8.deploy();
+
+  await worldcupdata16.deployed();
+
+  console.log(`WorldCupData8 deployed to ${worldcupdata8.address}`);
+
+  const WorldCupData4 = await ethers.getContractFactory("WorldCupData4");
+  const worldcupdata4 = await WorldCupData4.deploy();
+
+  await worldcupdata4.deployed();
+
+  console.log(`WorldCupData4 deployed to ${worldcupdata4.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

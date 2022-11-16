@@ -11,10 +11,8 @@ contract MintTeamsTwo is Ownable {
     address public evolveAddress;
     address public predictionAddress;
     address public  mintTeamsOneAddress;
-    address public setAddress;
    bytes[32] worldCupTeams;
-   constructor(address _setAddress) {
-       setAddress = _setAddress;
+   constructor() {
       //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -63,23 +61,27 @@ contract MintTeamsTwo is Ownable {
          worldCupTeams[30] = abi.encode("Uruguay");
          worldCupTeams[31] = abi.encode("Korea Republic");
    }
-    function setPredictionAddress(address _predictionAddress)  public {
-      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+
+   function setAddresses(address _predictionAddress, address _evolveAddress, address _mintTeamsOneAddress) external onlyOwner {
+       setPredictionAddress(_predictionAddress);
+       setEvolveAddress(_evolveAddress);
+       setMintTeamOneAddress(_mintTeamsOneAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
        predictionAddress = _predictionAddress;
     }
 
-    function setEvolveAddress(address _evolveAddress)  public {
-      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+    function setEvolveAddress(address _evolveAddress) internal {
        evolveAddress = _evolveAddress;
     }
 
-     function setMintTeamOneAddress(address _mintTeamsOneAddress)  public {
-      require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+     function setMintTeamOneAddress(address _mintTeamsOneAddress) internal {
       mintTeamsOneAddress = _mintTeamsOneAddress;
     }
 
      function claimLevel3Nft(address _predictor, string calldata _teamName) public {
-      require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
+     require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop8 = IPrediction(predictionAddress).isPhase8();
       require(isTop8 == true, "TOP_8_HASNT_FINISHED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {

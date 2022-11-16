@@ -1,25 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
-import '@chainlink/contracts/src/v0.8/ChainlinkClient.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "../interfaces/IPrediction.sol";
-import "../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol";
-import "../interfaces/IWorldCupData.sol";
 
-contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBaseV2, ConfirmedOwner {
-    using Strings for uint256;
-    using Chainlink for Chainlink.Request;
+contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     event RequestSent(uint256 indexed requestId, uint32 indexed numWords);
     event RequestFulfilled(uint256 indexed requestId, uint256[] indexed randomWords);
-    event RoundChanged(bytes32 requestId, uint indexed time, uint indexed round);
-    bytes32 private jobId;
     bytes32 keyHash = 0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f;
-    uint256 private fee;
-    uint arrayNumber = 5;
      // past requests Id.
     uint256[] public requestIds;
     uint256 public lastRequestId;
@@ -28,8 +19,6 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     uint16 requestConfirmations = 3;
     uint32 numWords = 3;
     address public predictionAddress;
-    address public worldCupDataAddress;
-    address public setAddress;
     struct RequestStatus {
         bool fulfilled; 
         bool exists;
@@ -38,34 +27,28 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
     mapping(uint256 => RequestStatus) public s_requests;
     VRFCoordinatorV2Interface COORDINATOR;
 
-    function setPredictionAddress(address _predictionAddress) public {
-        require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+   function setAddresses(address _predictionAddress) external onlyOwner {
+       setPredictionAddress(_predictionAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
         predictionAddress = _predictionAddress;
     }
 
-    function setWorldCupDataAddress(address _worldCupDataAddress) public {
-         require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
-        worldCupDataAddress = _worldCupDataAddress;
-    }
 
     function setSubscriptionId(uint64 subscriptionId) external onlyOwner {
          s_subscriptionId = subscriptionId;
     }
 
 
-    constructor(uint64 subscriptionId, address _setAddress) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
-        setAddress = _setAddress;
-        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
-        setChainlinkOracle(0x40193c8518BB267228Fc409a613bDbD8eC5a97b3);
+    constructor(uint64 subscriptionId) ConfirmedOwner(msg.sender) VRFConsumerBaseV2(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed) {
         COORDINATOR = VRFCoordinatorV2Interface(0x7a1BaC17Ccc5b313516C5E16fb24f7659aA5ebed);
         s_subscriptionId = subscriptionId;
-        jobId = 'ca98366cc7314957b8c012c72f05aeeb';
-        fee = (1 * LINK_DIVISIBILITY);
     }
 
     // Assumes the subscription is funded sufficiently.
     function requestRandomWords() public returns (uint256 requestId) {
-        //require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
+        require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
         // Will revert if subscription is not set and funded.
         requestId = COORDINATOR.requestRandomWords(
             keyHash,
@@ -93,37 +76,9 @@ contract RetrieveRandomNumberAndWorldCupRound is ChainlinkClient, VRFConsumerBas
         RequestStatus memory request = s_requests[lastRequestId];
         return (request.fulfilled, request.randomWords);
     }
-   
-    function fetchCurrentRound() public returns (bytes32 requestId) {
-        //require(msg.sender == predictionAddress, "USER_CANT_CALL_THIS_FUNCTION");
-        Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfillRound.selector);
-        req.add('get', 'https://app.sportdataapi.com/api/v1/soccer/rounds?apikey=API_KEY&season_id=3072');
-        req.add('path', string(abi.encodePacked('data,', arrayNumber.toString(),",",'is_current')));
-        req.addInt('times', 1);
-        return sendChainlinkRequest(req, fee);
-    }
-
-     function fulfillRound(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId) {
-       if(_volume == 1 && arrayNumber == 5) {
-        IWorldCupData(worldCupDataAddress).fetchTop16Teams();
-        IPrediction(predictionAddress).changeThePhase();
-         emit RoundChanged(_requestId, block.timestamp, 16);
-         arrayNumber++;
-       } else if(_volume == 1 && arrayNumber == 6) {
-         IWorldCupData(worldCupDataAddress).fetchTop16Teams();
-        IPrediction(predictionAddress).changeThePhase();
-         emit RoundChanged(_requestId, block.timestamp, 8);
-         arrayNumber++;
-       } else if(_volume == 1 && arrayNumber == 7) {
-          IWorldCupData(worldCupDataAddress).fetchTop16Teams();
-          IPrediction(predictionAddress).changeThePhase();
-          emit RoundChanged(_requestId, block.timestamp, 4);
-          arrayNumber++;
-       }
-    }
     
      function withdrawLink() external onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+        LinkTokenInterface link = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
     }
 

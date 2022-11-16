@@ -18,18 +18,24 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    hardhat: {
+      forking: {
+        url: "https://polygon-mainnet.g.alchemy.com/v2/a5sTbtLzl1n7ScKLksuDRKYWBbFi9di5",
+        enabled: true,
+      },
+    },
     mumbai: {
       url: QUICKNODE_API_KEY_URL,
       accounts: [PRIVATE_KEY !== undefined ? PRIVATE_KEY : ""],
     },
   },
 
-  // etherscan: {
-  //   apiKey:
-  //     process.env.ETHERSCAN_API_KEY !== undefined
-  //       ? process.env.ETHERSCAN_API_KEY
-  //       : "",
-  // },
+  etherscan: {
+    apiKey:
+      process.env.ETHERSCAN_API_KEY !== undefined
+        ? process.env.ETHERSCAN_API_KEY
+        : "",
+  },
 };
 
 export default config;

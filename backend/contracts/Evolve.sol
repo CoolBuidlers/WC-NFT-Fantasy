@@ -16,62 +16,63 @@ address public fetchTeamFourAddress;
 address public mintTeamOneAddress;
 address public mintTeamTwoAddress;
 address public predictionAddress;
-address public setAddress;
+mapping(bytes => mapping(address => bool)) alreadyEvolved2;
+mapping(bytes => mapping(address => bool)) alreadyEvolved3;
+mapping(bytes => mapping(address => bool)) alreadyEvolved4;
+
 bool paused;
 modifier onlyWhenNotPaused {
      require(paused == false, "CONTRACT_IS_PAUSED");
      _;
    }
 
-   constructor(address _setAddress) {
-      setAddress = _setAddress;
-   }
-
 function setPause(bool _paused) external onlyOwner {
      paused = _paused;
    }
 
-    function setPredictionAddress(address _predictionAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
-      predictionAddress = _predictionAddress;
+   function setAddresses(address _predictionAddress, address _fetchTeamOneAddress, address _fetchTeamTwoAddress, address _fetchTeamThreeAddress, address _fetchTeamFourAddress, address _mintTeamOneAddress, address _mintTeamTwoAddress) external onlyOwner {
+     setPredictionAddress(_predictionAddress);
+     getFetchTeamOne(_fetchTeamOneAddress);
+     getFetchTeamTwo(_fetchTeamTwoAddress);
+     getFetchTeamThree(_fetchTeamThreeAddress);
+     getFetchTeamFour(_fetchTeamFourAddress);
+     getMintTeamOneAddress(_mintTeamOneAddress);
+     getMintTeamTwoAddress(_mintTeamTwoAddress);
+   }
+
+    function setPredictionAddress(address _predictionAddress) internal {
+    predictionAddress = _predictionAddress;
  }
 
 
-    function setFetchTeamOne(address _fetchTeamOneAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+    function getFetchTeamOne(address _fetchTeamOneAddress) internal {
        fetchTeamOneAddress = _fetchTeamOneAddress;
     }
 
-     function setFetchTeamTwo(address _fetchTeamTwoAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+     function getFetchTeamTwo(address _fetchTeamTwoAddress) internal {
        fetchTeamTwoAddress = _fetchTeamTwoAddress;
     }
 
-     function setFetchTeamThree(address _fetchTeamThreeAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+     function getFetchTeamThree(address _fetchTeamThreeAddress) internal {
        fetchTeamThreeAddress = _fetchTeamThreeAddress;
     }
 
-      function setFetchTeamFour(address _fetchTeamFourAddress) public {
-         require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+      function getFetchTeamFour(address _fetchTeamFourAddress) internal {
        fetchTeamFourAddress = _fetchTeamFourAddress;
     }
 
-    function setMintTeamOneAddress(address _mintTeamOneAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+    function getMintTeamOneAddress(address _mintTeamOneAddress) internal {
       mintTeamOneAddress = _mintTeamOneAddress;
     }
 
-     function setMintTeamTwoAddress(address _mintTeamTwoAddress) public {
-       require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+     function getMintTeamTwoAddress(address _mintTeamTwoAddress) internal {
       mintTeamTwoAddress = _mintTeamTwoAddress;
     }
   
   function evolveToLevel2(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
-    bool isTop16 = IPrediction(predictionAddress).isPhase16();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
-    require(isTop16 == true, "TOP_16_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
+    require(alreadyEvolved2[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](16);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -100,15 +101,15 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_16");
     } else {
+      alreadyEvolved2[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamOneAddress).claimLevel2Nft(msg.sender, _teamName);
     }
   }
 
   function evolveToLevel3(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
-    bool isTop8 = IPrediction(predictionAddress).isPhase8();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
-    require(isTop8 == true, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
+    require(alreadyEvolved3[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](8);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -129,15 +130,15 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_8");
     } else {
+      alreadyEvolved3[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamTwoAddress).claimLevel3Nft(msg.sender, _teamName);
     }
   }
 
   function evolveToLevel4(string calldata _teamName) external nonReentrant onlyWhenNotPaused  {
-    bool isTop4 = IPrediction(predictionAddress).isPhase4();
     bool beenThreeMinutes = IPrediction(predictionAddress).hasItBeenThreeMinutes();
-    require(isTop4 == true, "TOP_4_HASNT_FINISHED");
     require(beenThreeMinutes == true, "WAIT_FOR_CONFIRMATION");
+    require(alreadyEvolved4[abi.encode(_teamName)][msg.sender] == false, "YOU_HAVE_ALREADY_EVOLVED");
     bytes[] memory teams = new bytes[](4);
     bool teamsMatch;
     teams[0] = IFetchTeams(fetchTeamOneAddress).getFirstPlaceTeam();
@@ -154,7 +155,18 @@ function setPause(bool _paused) external onlyOwner {
     if(teamsMatch == false) {
         revert("TEAM_NOT_IN_TOP_4");
     } else {
+      alreadyEvolved4[abi.encode(_teamName)][msg.sender] = true;
       IMintTeams(mintTeamTwoAddress).claimLevel4Nft(msg.sender, _teamName);
+    }
+  }
+  
+  function haveYouEvolvedAlready(string calldata teamName, uint _evolveLevel) external view returns(bool evolvedAlready) {
+    if(_evolveLevel == 2) {
+      return alreadyEvolved2[abi.encode(teamName)][msg.sender];
+    } else if(_evolveLevel == 3) {
+      return alreadyEvolved3[abi.encode(teamName)][msg.sender];
+    } else if(_evolveLevel == 4) {
+      return alreadyEvolved4[abi.encode(teamName)][msg.sender];
     }
   }
 }

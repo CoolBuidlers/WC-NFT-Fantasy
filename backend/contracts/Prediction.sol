@@ -2,7 +2,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
-import '../interfaces/IRetrieveRandomNumberAndWorldCupRound.sol';
+import '../interfaces/IRetrieveRandomNumber.sol';
 import "../interfaces/IFetchTeams.sol";
 import "../interfaces/IWorldCupData.sol";
 import "../interfaces/IMintTeams.sol";
@@ -18,26 +18,29 @@ import "../interfaces/IMintTeams.sol";
 pragma solidity ^0.8.17;
 
 contract WCNFTFantasy is Ownable, ReentrancyGuard {
-event FirstFourTeamsMinted(address predictor, bytes teamOne, bytes teamTwo, bytes teamThree, bytes teamFour);
-event TwoExtraTeamsMinted(address predictor, bytes teamFive, bytes teamSix);
 event Winners(address winnerOne, address winnerTwo, address winnerThree);
 event AllPredictors(address smartContract, address predictor);
+event TopPoints(uint indexed firstHighestPoints, uint indexed secondHighestPoints, uint indexed thirdHighestPoints);
 AggregatorV3Interface internal priceFeed;
-address public randomAndRoundAddress;
+address public randomAddress;
 address public mintTeamAddress;
-address public worldCupDataAddress;
+address public worldCupData16Address;
+address public worldCupData8Address;
+address public worldCupData4Address;
 address public changeOrderAddress;
 address public fetchTeamAddress;
-address public setAddress;
 address payable[] predictorsWithBiggestPoints;
 address payable[] predictorsWithSecondBiggestPoints;
 address payable[] predictorsWithThirdBiggestPoints;
-uint public highestAmountOfPoints;
-uint public secondHighestAmountOfPoints;
-uint public thirdHighestAmountOfPoints;
+uint highestAmountOfPoints;
+uint secondHighestAmountOfPoints;
+uint thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
-uint oneDay;
-uint fewMinutes;
+uint public oneDay;
+uint public fewMinutes;
+uint public TOP_16_STARTS = 1670090400;
+uint public TOP_8_STARTS = 1670608800;
+uint public TOP_4_STARTS = 1670954400;
 bool paused;
 bool canReceiveRefund;
 //An object that defined the prediction of the top teams
@@ -66,7 +69,7 @@ struct TopPredictions {
     mapping(address => bool) changedOrderForTop8; //check if user has changed team order for top 8
     mapping(address => bool) changedOrderForTop4; //check if user has changed team order for top 4
     mapping(address => bool) depositedPoints; //checks if user has already deposited their points to potentially get chosen as winner
-    mapping(address => uint) balances; //keeps track of the amount of money each user has deposited
+    mapping(address => uint) public balances; //keeps track of the amount of money each user has deposited
 
 
    //Used to keep track of the phases of the worldcup
@@ -93,8 +96,7 @@ struct TopPredictions {
      _;
    }
 
-     constructor(address _setAddress) {  
-        setAddress = _setAddress;
+     constructor() {  
         priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         currentPhase = GamePhases.MINT;
         //Group A
@@ -148,7 +150,7 @@ struct TopPredictions {
      modifier payEnoughForFirstFour {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value >= 25 ether, "PAY_MORE_TO_MINT");
+       require(msg.value >= 1 ether, "PAY_MORE_TO_MINT");
      } else {
       require(msg.value >= 50 ether, "PAY_MORE_TO_MINT");
      }
@@ -158,7 +160,7 @@ struct TopPredictions {
     modifier payEnoughForExtraTwo {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value > 12.5 ether, "PAY_MORE_TO_MINT");
+       require(msg.value > 1 ether, "PAY_MORE_TO_MINT");
      } else {
       require(msg.value > 25 ether, "PAY_MORE_TO_MINT");
      }
@@ -175,7 +177,6 @@ struct TopPredictions {
      require(msg.sender == tx.origin, "NO_BOTS_ALLOWED");
      require(alreadyMinted[msg.sender] == false, "CANT_MINT_TEAMS_TWICE");
      require(currentPhase == GamePhases.MINT, "INITIAL_MINTING_PHASE_OVER");
-     require(predictorPoints.length != 1000, "CAPACITY_LIMIT_REACHED");
     //Makes sure the user doesn't mint duplicate teams
      if(keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamTwo)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamOne)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamThree)) || keccak256(abi.encode(_teamTwo)) == keccak256(abi.encode(_teamFour)) || keccak256(abi.encode(_teamThree)) == keccak256(abi.encode(_teamFour))) {
        revert("CANT_HAVE_DUPLICATE_TEAMS");
@@ -211,25 +212,25 @@ struct TopPredictions {
      if(teamOneConfirmed != true || teamTwoConfirmed != true || teamThreeConfirmed != true || teamFourConfirmed != true) {
       revert("TEAMS_MUST_BE_VALID");
      } else {
+      balances[msg.sender] += msg.value;
       Points storage playerPoints = predictorPoints[predictorPointIndex];
       playerPoints.predictor = payable(msg.sender);
       predictors[msg.sender].predictorIndex = predictorPointIndex;
-      balances[msg.sender] += msg.value;
       alreadyMinted[msg.sender] = true;
       unchecked {
          predictorPointIndex++;
       }
-      mintNFTs(msg.sender, _teamOne, _teamTwo, _teamThree, _teamFour);
-      emit FirstFourTeamsMinted(msg.sender, abi.encode(_teamOne), abi.encode(_teamTwo), abi.encode(_teamThree), abi.encode(_teamFour));
+      changeThePhase();
+      mintNFTs(msg.sender, _teamOne, _teamTwo, _teamThree, _teamFour, true);
       emit AllPredictors(address(this), msg.sender);
      }
    }
 
-   function mintNFTs(address _predictor, string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour) internal {
-      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamOne);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamTwo);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamThree);
-      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamFour);
+   function mintNFTs(address _predictor, string calldata _teamOne, string calldata _teamTwo, string calldata _teamThree, string calldata _teamFour, bool firstFourMinted) internal {
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamOne, firstFourMinted);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamTwo, firstFourMinted);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamThree, firstFourMinted);
+      IMintTeams(mintTeamAddress).claimLevel1Nft(_predictor, _teamFour, firstFourMinted);
    }
   
   //Same concept as the function above 
@@ -238,6 +239,8 @@ struct TopPredictions {
      require(extraTwoTeamsMinted[msg.sender] == false, "ALREADY_MINTED");
      require(alreadyMinted[msg.sender] == true, "MINT_FIRST_FOUR_TEAMS_FIRST");
      require(currentPhase == GamePhases.TOP32, "INITIAL_MINTING_PHASE_HASNT_FINISHED");
+     require(keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamOne) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamTwo) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamThree) && keccak256(abi.encode(_teamFive)) != keccak256(predictors[msg.sender].teamFour), "CANT_HAVE_DUPLICATE_TEAMS");
+     require(keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamOne) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamTwo) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamThree) && keccak256(abi.encode(_teamSix)) != keccak256(predictors[msg.sender].teamFour), "CANT_HAVE_DUPLICATE_TEAMS");
      require(keccak256(abi.encode(_teamFive)) != keccak256(abi.encode(_teamSix)), "CANT_HAVE_DUPLICATE_TEAMS");
      bool teamFiveConfirmed;
      bool teamSixConfirmed;
@@ -255,83 +258,69 @@ struct TopPredictions {
      if(teamFiveConfirmed != true || teamSixConfirmed != true) {
       revert("TEAMS_MUST_BE_VALID");
      } else {
+       changeThePhase();
        balances[msg.sender] += msg.value;
        extraTwoTeamsMinted[msg.sender] = true;
-       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive);
-       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix);
-       emit TwoExtraTeamsMinted(msg.sender, abi.encode(_teamFive), abi.encode(_teamSix));
+       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamFive, false);
+       IMintTeams(mintTeamAddress).claimLevel1Nft(msg.sender, _teamSix, false);
      }
    }
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) > 0.0001 * 10 ** 18;
-        bool eventHasStarted = block.timestamp > 1669010400;
-        bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
-        upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
+        bool phase = currentPhase == GamePhases.TOP16;
+        upkeepNeeded = hasLink && worldCupFinished && phase;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
-      if(currentPhase == GamePhases.MINT) {
-        currentPhase = GamePhases.TOP32;
-        oneDay = block.timestamp + 24 hours;
-      } else if(currentPhase != GamePhases.TOP4) {
-         oneDay = block.timestamp + 24 hours;
-         IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).fetchCurrentRound();
+         IRetrieveRandomNumber(randomAddress).requestRandomWords();
          fewMinutes = block.timestamp + 3 minutes;
-      } else if(currentPhase == GamePhases.TOP4) {
-         if(block.timestamp > 1669096800) {
-          IWorldCupData(worldCupDataAddress).fetchTop16Teams();
-          IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).requestRandomWords();
-          fewMinutes = block.timestamp + 3 minutes;
-          currentPhase = GamePhases.CHOOSE_WINNERS;
-         }
-         oneDay = block.timestamp + 24 hours;
-      } else if(currentPhase == GamePhases.CHOOSE_WINNERS) {
-          retrievePredictorPoints();
-          currentPhase = GamePhases.WORLD_CUP_FINISHED;
-      }
+  }
+
+    function setAddresses(address _randomAddress, address _worldCupData16Address, address _changeOrderAddress, address _fetchTeamAddress, address _mintTeamAddress, address _worldCupData8Address, address _worldCupData4Address) external onlyOwner {
+       setRandomAddress(_randomAddress);
+       setWorldCupDataAddress(_worldCupData16Address, _worldCupData8Address, _worldCupData4Address);
+       setChangeOrderAddress(_changeOrderAddress);
+       setFetchTeamOne(_fetchTeamAddress);
+       setMintTeamOneAddress(_mintTeamAddress);
     }
 
-  function setRandomAndRoundAddress(address _randomAndRoundAddress) public {
-    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
-     randomAndRoundAddress = _randomAndRoundAddress;
+  function setRandomAddress(address _randomAddress) internal {
+     randomAddress = _randomAddress;
   }
 
-  function setWorldCupDataAddress(address _worldCupDataAddress)  public {
-    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
-    worldCupDataAddress = _worldCupDataAddress;
+  function setWorldCupDataAddress(address _worldCupData16Address, address _worldCupData8Address, address _worldCupData4Address) internal {
+    worldCupData16Address = _worldCupData16Address;
+    worldCupData8Address = _worldCupData8Address;
+    worldCupData4Address = _worldCupData4Address;
   }
 
-  function setChangeOrderAddress(address _changeOrderAddress)  public {
-    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+  function setChangeOrderAddress(address _changeOrderAddress) internal {
     changeOrderAddress = _changeOrderAddress;
   }  
 
-  function setFetchTeamOne(address _fetchTeamAddress)  public {
-    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+  function setFetchTeamOne(address _fetchTeamAddress) internal {
     fetchTeamAddress = _fetchTeamAddress;
   }
 
-  function setMintTeamOneAddress(address _mintTeamAddress)  public {
-    require(msg.sender == setAddress, "USER_CANT_CALL_FUNCTION");
+  function setMintTeamOneAddress(address _mintTeamAddress) internal {
      mintTeamAddress = _mintTeamAddress;
   }
 
-  function changeThePhase() public {
-     //require(msg.sender == randomAndRoundAddress, "USER_CANT_CALL_THIS_FUNCTION");
-     if(currentPhase == GamePhases.TOP32) {
-       currentPhase = GamePhases.TOP16;
+  function changeThePhase() internal {
+     if(currentPhase == GamePhases.MINT) {
+       currentPhase = GamePhases.TOP32;
+     } else if(currentPhase == GamePhases.TOP32) {
+        currentPhase = GamePhases.TOP16;
      } else if(currentPhase == GamePhases.TOP16) {
-        currentPhase = GamePhases.TOP8;
-     } else if(currentPhase == GamePhases.TOP8) {
-       currentPhase = GamePhases.TOP4;
+       currentPhase = GamePhases.TOP8;
      }
   }
 
 function depositPoints() external onlyWhenNotPaused nonReentrant {
   require(block.timestamp > fewMinutes, "WAIT_FOR_CONFIRMATION");
-  require(currentPhase == GamePhases.CHOOSE_WINNERS, "CANT_DEPOSITS_POINTS");
+  require(currentPhase == GamePhases.TOP16, "CANT_DEPOSITS_POINTS");
   require(depositedPoints[msg.sender] == false, "CANT_DEPOSIT_POINTS_TWICE");
   require(alreadyMinted[msg.sender] == true, "NEVER_MINTED");
   uint index = predictors[msg.sender].predictorIndex;
@@ -353,9 +342,10 @@ function depositPoints() external onlyWhenNotPaused nonReentrant {
      predictor.points += 125;
   }
   depositedPoints[msg.sender] = true;
+  retrievePredictorPoints();
 }
 
-function retrievePredictorPoints() public {
+function retrievePredictorPoints() private  {
  for(uint i = 0; i < predictorPointIndex+1; i++) {
   Points memory pointer = predictorPoints[i];
    if(pointer.points > highestAmountOfPoints) {
@@ -366,6 +356,7 @@ function retrievePredictorPoints() public {
      thirdHighestAmountOfPoints = pointer.points;
    }
  }
+ emit TopPoints(highestAmountOfPoints, secondHighestAmountOfPoints, thirdHighestAmountOfPoints);
  getWinnerCandidates();
 }
 
@@ -389,7 +380,7 @@ function chooseWinners() private {
   address payable winnerThree;
    
   if(predictorsWithBiggestPoints.length == 0) {
-      (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+      (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
       if(fulfilled == true) {
         winnerOne = predictorPoints[randomWords[0] % predictorPointIndex].predictor;
         winnerTwo = predictorPoints[randomWords[1] % predictorPointIndex].predictor;
@@ -403,7 +394,7 @@ function chooseWinners() private {
         emit Winners(winnerOne, winnerTwo, winnerThree);
       }
   } else if(predictorsWithSecondBiggestPoints.length == 0) {
-    (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+    (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
     if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithBiggestPoints[randomWords[1] % predictorsWithBiggestPoints.length];
@@ -417,7 +408,7 @@ function chooseWinners() private {
       emit Winners(winnerOne, winnerTwo, winnerThree);
     }
   } else if(predictorsWithThirdBiggestPoints.length == 0) {
-     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
     if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
@@ -431,7 +422,7 @@ function chooseWinners() private {
       emit Winners(winnerOne, winnerTwo, winnerThree);
     }
   } else {
-     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumberAndWorldCupRound(randomAndRoundAddress).getRequestStatus();
+     (bool fulfilled, uint[] memory randomWords) = IRetrieveRandomNumber(randomAddress).getRequestStatus();
      if(fulfilled == true) {
        winnerOne = predictorsWithBiggestPoints[randomWords[0] % predictorsWithBiggestPoints.length];
        winnerTwo = predictorsWithSecondBiggestPoints[randomWords[1] % predictorsWithSecondBiggestPoints.length];
@@ -543,18 +534,14 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
       return extraTwoTeamsMinted[_predictor];
     }
 
-    function getBalance() external view returns(uint) {
-      return balances[msg.sender];
-    }
-      
-    function getPoints(address _predictor) external view returns(uint) {
-       uint index = predictors[_predictor].predictorIndex;
-       Points memory playerPoints = predictorPoints[index];
-       return playerPoints.points;
-    }
-
     function hasItBeenThreeMinutes() public view returns(bool) {
       return block.timestamp > fewMinutes;
+    }
+
+    function viewPoints() external view returns(uint) {
+       uint index = predictors[msg.sender].predictorIndex;
+      Points storage predictor = predictorPoints[index];
+      return predictor.points;
     }
 
     function setOrder(address _predictor, uint _num) public {
