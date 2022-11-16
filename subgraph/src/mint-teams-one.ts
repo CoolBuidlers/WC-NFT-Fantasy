@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   LevelUp as LevelUpEvent,
   Mint as MintEvent,
@@ -31,6 +32,8 @@ export function handleMint(event: MintEvent): void {
     team.team = event.params.teamName;
     team.level = event.params.level;
     team.predictor = event.params.account;
+
+    // Save
     team.save();
   }
 }
