@@ -10,8 +10,6 @@ import {
 } from "../Constants/Index";
 import toast from "react-hot-toast";
 
-type Props = {};
-
 const NumberGame = (): JSX.Element => {
   const connectedWallet = useAccount();
   const provider = useProvider();
