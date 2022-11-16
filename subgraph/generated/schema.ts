@@ -243,6 +243,15 @@ export class Team extends Entity {
   set team(value: Bytes) {
     this.set("team", Value.fromBytes(value));
   }
+
+  get predictor(): Bytes {
+    let value = this.get("predictor");
+    return value!.toBytes();
+  }
+
+  set predictor(value: Bytes) {
+    this.set("predictor", Value.fromBytes(value));
+  }
 }
 
 export class Predictor extends Entity {

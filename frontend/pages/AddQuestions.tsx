@@ -6,6 +6,7 @@ import {
   QUIZ_GAME_CONTRACT_ADDRESS,
 } from "../Constants/Index";
 import { useAccount } from "wagmi";
+import { NextSeo } from "next-seo";
 
 const AddQuestions = () => {
   const connectedAddress = useAccount();
@@ -78,50 +79,57 @@ const AddQuestions = () => {
   const renderQuestionInput = (): JSX.Element => {
     if (isOwner) {
       return (
-        <div className="bg-gradient-to-r from-[#E500A4] to-[#8900F2] w-80 text-white flex flex-col mx-auto rounded-3xl pt-8 pb-10 px-10 ">
-          <p>Question</p>
-          <textarea
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl h-32 px-3 mt-1"
-            onChange={handleInput}
-            name="question"
+        <>
+          <NextSeo
+            title="Add Questions | WC NFT Fantasy"
+            description="Interface to add questions - Admins Only"
           />
-          <p>Option One</p>
-          <input
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 my-3 py-1"
-            onChange={handleInput}
-            name="optionOne"
-          />
-          <p>Option Two</p>
-          <input
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
-            onChange={handleInput}
-            name="optionTwo"
-          />
-          <p>Option Three</p>
-          <input
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
-            onChange={handleInput}
-            name="optionThree"
-          />
-          <p>Option Four</p>
-          <input
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
-            onChange={handleInput}
-            name="optionFour"
-          />
-          <p>Answer</p>
-          <input
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
-            onChange={handleInput}
-            name="answer"
-          />
-          <button
-            className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-full py-2 px-5 rounded-lg border-2 border-[#b4b0d4] mt-5"
-            onClick={() => addQuestion(inputData)}
-          >
-            Create Question
-          </button>
-        </div>
+
+          <div className="bg-gradient-to-r from-[#E500A4] to-[#8900F2] w-80 text-white flex flex-col mx-auto rounded-3xl pt-8 pb-10 px-10 ">
+            <p>Question</p>
+            <textarea
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl h-32 px-3 mt-1"
+              onChange={handleInput}
+              name="question"
+            />
+            <p>Option One</p>
+            <input
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 my-3 py-1"
+              onChange={handleInput}
+              name="optionOne"
+            />
+            <p>Option Two</p>
+            <input
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
+              onChange={handleInput}
+              name="optionTwo"
+            />
+            <p>Option Three</p>
+            <input
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
+              onChange={handleInput}
+              name="optionThree"
+            />
+            <p>Option Four</p>
+            <input
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
+              onChange={handleInput}
+              name="optionFour"
+            />
+            <p>Answer</p>
+            <input
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-2 border-white rounded-xl px-3 mb-2 mt-1 py-1"
+              onChange={handleInput}
+              name="answer"
+            />
+            <button
+              className="bg-gradient-to-l from-[#E500A4] to-[#8900F2] border-full py-2 px-5 rounded-lg border-2 border-[#b4b0d4] mt-5"
+              onClick={() => addQuestion(inputData)}
+            >
+              Create Question
+            </button>
+          </div>
+        </>
       );
     }
     return <h1 className="text-center text-2xl text-white">NOT OWNER</h1>;
@@ -129,6 +137,10 @@ const AddQuestions = () => {
 
   return (
     <section>
+      <NextSeo
+        title="Error 404 : Not Found"
+        description="Interface to add questions - Admins Only"
+      />
       <Navbar />
       {/* <div className='bg-gradient-to-r from-[#E500A4] to-[#8900F2] w-80 text-white flex flex-col mx-auto rounded-3xl pt-8 pb-10 px-10 '>
         <p>Question</p>

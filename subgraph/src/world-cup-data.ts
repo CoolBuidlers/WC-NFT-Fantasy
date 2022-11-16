@@ -1,8 +1,4 @@
 import {
-  WorldCupDataChainlinkCancelled as WorldCupDataChainlinkCancelledEvent,
-  WorldCupDataChainlinkFulfilled as WorldCupDataChainlinkFulfilledEvent,
-  WorldCupDataChainlinkRequested as WorldCupDataChainlinkRequestedEvent,
-  WorldCupDataOwnershipTransferred as WorldCupDataOwnershipTransferredEvent,
   ReceiveTeamTop16 as ReceiveTeamTop16Event,
   ReceiveTeamTop4 as ReceiveTeamTop4Event,
   ReceiveTeamTop8 as ReceiveTeamTop8Event,
@@ -13,22 +9,6 @@ import { Round } from "../generated/schema";
   event ReceiveTeamTop8(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
   event ReceiveTeamTop4(bytes32 requestId, uint256 indexed teamId, uint256 indexed round);
 */
-
-export function handleWorldCupDataChainlinkCancelled(
-  event: WorldCupDataChainlinkCancelledEvent
-): void {}
-
-export function handleWorldCupDataChainlinkFulfilled(
-  event: WorldCupDataChainlinkFulfilledEvent
-): void {}
-
-export function handleWorldCupDataChainlinkRequested(
-  event: WorldCupDataChainlinkRequestedEvent
-): void {}
-
-export function handleWorldCupDataOwnershipTransferred(
-  event: WorldCupDataOwnershipTransferredEvent
-): void {}
 
 export function handleReceiveTeamTop16(event: ReceiveTeamTop16Event): void {
   // ID
@@ -42,7 +22,9 @@ export function handleReceiveTeamTop16(event: ReceiveTeamTop16Event): void {
     round = new Round(id);
     round.countryIds = [event.params.teamId];
   } else {
-    round.countryIds.push(event.params.teamId);
+    let _counties = round.countryIds;
+    _counties.push(event.params.teamId);
+    round.countryIds = _counties;
   }
 
   // Save the Object
@@ -61,7 +43,9 @@ export function handleReceiveTeamTop4(event: ReceiveTeamTop4Event): void {
     round = new Round(id);
     round.countryIds = [event.params.teamId];
   } else {
-    round.countryIds.push(event.params.teamId);
+    let _counties = round.countryIds;
+    _counties.push(event.params.teamId);
+    round.countryIds = _counties;
   }
 
   // Save the Object
@@ -80,7 +64,9 @@ export function handleReceiveTeamTop8(event: ReceiveTeamTop8Event): void {
     round = new Round(id);
     round.countryIds = [event.params.teamId];
   } else {
-    round.countryIds.push(event.params.teamId);
+    let _counties = round.countryIds;
+    _counties.push(event.params.teamId);
+    round.countryIds = _counties;
   }
 
   // Save the Object

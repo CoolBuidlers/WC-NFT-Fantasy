@@ -48,6 +48,7 @@ type Team @entity {
   id: String!
   level: BigInt!
   team: Bytes!
+  predictor: Predictor!
 }
 
 # All Predictors
@@ -55,7 +56,7 @@ type Predictor @entity {
   "user address"
   id: Bytes!
   "all tokens"
-  tokens: [Team!]
+  tokens: [Team!] @derivedFrom(field: "predictor")
 }
 
 # Top Points

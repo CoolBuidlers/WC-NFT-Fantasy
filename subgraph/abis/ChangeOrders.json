@@ -22,7 +22,7 @@
         "type": "address"
       }
     ],
-    "name": "ChangeOrdersOwnershipTransferred",
+    "name": "OwnershipTransferred",
     "type": "event"
   },
   {

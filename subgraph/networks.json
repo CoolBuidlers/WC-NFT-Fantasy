@@ -3,26 +3,8 @@
     "Prediction": {
       "address": "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8"
     },
-    "RandomNumberAndRound": {
-      "address": "0xC1e2222A4471D86E534359E993A1AC5faF316dE0"
-    },
     "ChangeOrders": {
       "address": "0x04935e58Db68ede7F053a922CEc44D22AFACEa6D"
-    },
-    "Evolve": {
-      "address": "0x82f4BfA6ec9b57e6bb7470d0c5c46cDB36e46Af7"
-    },
-    "FetchTeamsOne": {
-      "address": "0x0879F285D6444443b8C9A92FAb288Ba9583CDE6a"
-    },
-    "FetchTeamsTwo": {
-      "address": "0x1a05fF2946f50cA274130a50EaCA990127c244DF"
-    },
-    "FetchTeamsThree": {
-      "address": "0x45faF922F5A9eDe2C1E84D880064Ed1516FCE486"
-    },
-    "FetchTeamsFour": {
-      "address": "0x4Bc6Acc04Ca748cDc822c902342f741f3AB15376"
     },
     "MintTeamsTwo": {
       "address": "0xf60f113495e04b253C879bcc835e63efb7db0f21"
@@ -31,7 +13,7 @@
       "address": "0x492c59B84DB1fA23a6bA59C9eac19D1Cc7B15d76"
     },
     "MintTeamsOne": {
-      "address": "0xDDCD0Bf64453d38CeBE6E0EB3a2ec1e2f6d131e0"
+      "address": "0xed201ddd4f48e8cf202391fcbc93224f8d2408c7"
     },
     "QuizGame": {
       "address": "0x5B319fDd5382D54EF8704B7b6D5C1DB013e08B0c"

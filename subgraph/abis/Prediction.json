@@ -1,11 +1,5 @@
 [
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_setAddress", "type": "address" }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
   {
     "anonymous": false,
     "inputs": [
@@ -314,34 +308,34 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "setAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "_randomAndRoundAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_worldCupDataAddress",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "_changeOrderAddress",
         "type": "address"
-      }
-    ],
-    "name": "setChangeOrderAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "address",
         "name": "_fetchTeamAddress",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_mintTeamAddress",
+        "type": "address"
       }
     ],
-    "name": "setFetchTeamOne",
+    "name": "setAddresses",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -378,19 +372,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_mintTeamAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setMintTeamOneAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
       { "internalType": "address", "name": "_predictor", "type": "address" },
       { "internalType": "uint256", "name": "_num", "type": "uint256" }
     ],
@@ -402,19 +383,6 @@
   {
     "inputs": [{ "internalType": "bool", "name": "_paused", "type": "bool" }],
     "name": "setPause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_randomAndRoundAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setRandomAndRoundAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -454,19 +422,6 @@
       { "internalType": "bytes", "name": "_team", "type": "bytes" }
     ],
     "name": "setThirdPrediction",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_worldCupDataAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setWorldCupDataAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

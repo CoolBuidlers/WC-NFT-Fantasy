@@ -544,21 +544,6 @@ export class Prediction extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  setAddress(): Address {
-    let result = super.call("setAddress", "setAddress():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_setAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall("setAddress", "setAddress():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   worldCupDataAddress(): Address {
     let result = super.call(
       "worldCupDataAddress",
@@ -598,10 +583,6 @@ export class ConstructorCall__Inputs {
 
   constructor(call: ConstructorCall) {
     this._call = call;
-  }
-
-  get _setAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
   }
 }
 
@@ -849,62 +830,48 @@ export class RenounceOwnershipCall__Outputs {
   }
 }
 
-export class SetChangeOrderAddressCall extends ethereum.Call {
-  get inputs(): SetChangeOrderAddressCall__Inputs {
-    return new SetChangeOrderAddressCall__Inputs(this);
+export class SetAddressesCall extends ethereum.Call {
+  get inputs(): SetAddressesCall__Inputs {
+    return new SetAddressesCall__Inputs(this);
   }
 
-  get outputs(): SetChangeOrderAddressCall__Outputs {
-    return new SetChangeOrderAddressCall__Outputs(this);
+  get outputs(): SetAddressesCall__Outputs {
+    return new SetAddressesCall__Outputs(this);
   }
 }
 
-export class SetChangeOrderAddressCall__Inputs {
-  _call: SetChangeOrderAddressCall;
+export class SetAddressesCall__Inputs {
+  _call: SetAddressesCall;
 
-  constructor(call: SetChangeOrderAddressCall) {
+  constructor(call: SetAddressesCall) {
     this._call = call;
+  }
+
+  get _randomAndRoundAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _worldCupDataAddress(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 
   get _changeOrderAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetChangeOrderAddressCall__Outputs {
-  _call: SetChangeOrderAddressCall;
-
-  constructor(call: SetChangeOrderAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetFetchTeamOneCall extends ethereum.Call {
-  get inputs(): SetFetchTeamOneCall__Inputs {
-    return new SetFetchTeamOneCall__Inputs(this);
-  }
-
-  get outputs(): SetFetchTeamOneCall__Outputs {
-    return new SetFetchTeamOneCall__Outputs(this);
-  }
-}
-
-export class SetFetchTeamOneCall__Inputs {
-  _call: SetFetchTeamOneCall;
-
-  constructor(call: SetFetchTeamOneCall) {
-    this._call = call;
+    return this._call.inputValues[2].value.toAddress();
   }
 
   get _fetchTeamAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
+  }
+
+  get _mintTeamAddress(): Address {
+    return this._call.inputValues[4].value.toAddress();
   }
 }
 
-export class SetFetchTeamOneCall__Outputs {
-  _call: SetFetchTeamOneCall;
+export class SetAddressesCall__Outputs {
+  _call: SetAddressesCall;
 
-  constructor(call: SetFetchTeamOneCall) {
+  constructor(call: SetAddressesCall) {
     this._call = call;
   }
 }
@@ -1011,36 +978,6 @@ export class SetFourthPredictionCall__Outputs {
   }
 }
 
-export class SetMintTeamOneAddressCall extends ethereum.Call {
-  get inputs(): SetMintTeamOneAddressCall__Inputs {
-    return new SetMintTeamOneAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetMintTeamOneAddressCall__Outputs {
-    return new SetMintTeamOneAddressCall__Outputs(this);
-  }
-}
-
-export class SetMintTeamOneAddressCall__Inputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-
-  get _mintTeamAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetMintTeamOneAddressCall__Outputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-}
-
 export class SetOrderCall extends ethereum.Call {
   get inputs(): SetOrderCall__Inputs {
     return new SetOrderCall__Inputs(this);
@@ -1101,36 +1038,6 @@ export class SetPauseCall__Outputs {
   _call: SetPauseCall;
 
   constructor(call: SetPauseCall) {
-    this._call = call;
-  }
-}
-
-export class SetRandomAndRoundAddressCall extends ethereum.Call {
-  get inputs(): SetRandomAndRoundAddressCall__Inputs {
-    return new SetRandomAndRoundAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetRandomAndRoundAddressCall__Outputs {
-    return new SetRandomAndRoundAddressCall__Outputs(this);
-  }
-}
-
-export class SetRandomAndRoundAddressCall__Inputs {
-  _call: SetRandomAndRoundAddressCall;
-
-  constructor(call: SetRandomAndRoundAddressCall) {
-    this._call = call;
-  }
-
-  get _randomAndRoundAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetRandomAndRoundAddressCall__Outputs {
-  _call: SetRandomAndRoundAddressCall;
-
-  constructor(call: SetRandomAndRoundAddressCall) {
     this._call = call;
   }
 }
@@ -1263,36 +1170,6 @@ export class SetThirdPredictionCall__Outputs {
   _call: SetThirdPredictionCall;
 
   constructor(call: SetThirdPredictionCall) {
-    this._call = call;
-  }
-}
-
-export class SetWorldCupDataAddressCall extends ethereum.Call {
-  get inputs(): SetWorldCupDataAddressCall__Inputs {
-    return new SetWorldCupDataAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetWorldCupDataAddressCall__Outputs {
-    return new SetWorldCupDataAddressCall__Outputs(this);
-  }
-}
-
-export class SetWorldCupDataAddressCall__Inputs {
-  _call: SetWorldCupDataAddressCall;
-
-  constructor(call: SetWorldCupDataAddressCall) {
-    this._call = call;
-  }
-
-  get _worldCupDataAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetWorldCupDataAddressCall__Outputs {
-  _call: SetWorldCupDataAddressCall;
-
-  constructor(call: SetWorldCupDataAddressCall) {
     this._call = call;
   }
 }

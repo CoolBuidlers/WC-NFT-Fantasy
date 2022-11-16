@@ -1,8 +1,6 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
-  Prediction,
   AllPredictors,
-  OwnershipTransferred,
   TopPoints,
   Winners,
 } from "../generated/Prediction/Prediction";
@@ -33,14 +31,14 @@ export function handleAllPredictors(event: AllPredictors): void {
     game.people = [event.params.predictor];
   } else {
     // Fill in the values
-    game.people.push(event.params.predictor);
+    let _people = game.people;
+    _people.push(event.params.predictor);
+    game.people = _people;
   }
 
   // Save
   game.save();
 }
-
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handleTopPoints(event: TopPoints): void {
   // Use the points to make a random ID

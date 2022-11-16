@@ -1,10 +1,6 @@
 import { Bytes } from "@graphprotocol/graph-ts";
 import {
   Ended as EndedEvent,
-  NumberGuessingGameOwnershipTransferRequested as NumberGuessingGameOwnershipTransferRequestedEvent,
-  NumberGuessingGameOwnershipTransferred as NumberGuessingGameOwnershipTransferredEvent,
-  NumberGuessingGameRequestFulfilled as NumberGuessingGameRequestFulfilledEvent,
-  NumberGuessingGameRequestSent as NumberGuessingGameRequestSentEvent,
   NumberGuessingGameWinners as NumberGuessingGameWinnersEvent,
   NumberGuessingGamecurrentGame as NumberGuessingGamecurrentGameEvent,
 } from "../generated/NumberGuessingGame/NumberGuessingGame";
@@ -41,22 +37,6 @@ export function handleEnded(event: EndedEvent): void {
     game.save();
   }
 }
-
-export function handleNumberGuessingGameOwnershipTransferRequested(
-  event: NumberGuessingGameOwnershipTransferRequestedEvent
-): void {}
-
-export function handleNumberGuessingGameOwnershipTransferred(
-  event: NumberGuessingGameOwnershipTransferredEvent
-): void {}
-
-export function handleNumberGuessingGameRequestFulfilled(
-  event: NumberGuessingGameRequestFulfilledEvent
-): void {}
-
-export function handleNumberGuessingGameRequestSent(
-  event: NumberGuessingGameRequestSentEvent
-): void {}
 
 export function handleNumberGuessingGameWinners(
   event: NumberGuessingGameWinnersEvent
@@ -105,7 +85,9 @@ export function handleNumberGuessingGamecurrentGame(
 
     game.people = [event.params.player];
   } else {
-    game.people.push(event.params.player);
+    let _people = game.people;
+    _people.push(event.params.player);
+    game.people = _people;
   }
 
   // Save

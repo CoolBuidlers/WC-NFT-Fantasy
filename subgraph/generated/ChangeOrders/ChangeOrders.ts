@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class ChangeOrdersOwnershipTransferred extends ethereum.Event {
-  get params(): ChangeOrdersOwnershipTransferred__Params {
-    return new ChangeOrdersOwnershipTransferred__Params(this);
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
   }
 }
 
-export class ChangeOrdersOwnershipTransferred__Params {
-  _event: ChangeOrdersOwnershipTransferred;
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
 
-  constructor(event: ChangeOrdersOwnershipTransferred) {
+  constructor(event: OwnershipTransferred) {
     this._event = event;
   }
 

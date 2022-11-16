@@ -5,17 +5,64 @@ import LevelSection from "../components/LevelSection";
 import Navbar from "../components/Navbar";
 import { CircleLoader } from "react-spinners";
 import { useState, useEffect } from "react";
+import PlayersTable from "../components/PlayersTable";
+import { NextSeo } from "next-seo";
+import { worldCupQuery } from "../fetchSubgraphs/subgraphs";
+import { useProvider } from "wagmi";
+import { ethers } from "ethers";
 
 const Activity = () => {
+  // Holds all the activity that get's tracked
+  const [predictors, setPredictors] = useState<any[]>();
+  const [balance, setBalance] = useState<string>();
+
+  // Loading State
   const [loading, setLoading] = useState(false);
+
+  // Using Provider
+  const provider = useProvider();
+
+  // Fetches all Predictors
+  const fetchPredictors = async (): Promise<void> => {
+    // Load Prize Pool
+    const balance = await provider.getBalance(
+      "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8"
+    );
+    setBalance(ethers.utils.formatEther(balance));
+
+    // The GraphQL query to run
+    const activityQuery = `
+          query activityQuery {
+            predictors {
+                id
+                tokens {
+                  id
+                  level
+                  team
+                }
+            }
+          }
+        `;
+
+    const data = await worldCupQuery(activityQuery);
+    setPredictors(data.predictors);
+  };
+
+  // Run this when component loads
   useEffect(() => {
     setLoading(true);
+    fetchPredictors();
     setTimeout(() => {
       setLoading(false);
     }, 1500);
   }, []);
+
   return (
     <main className="flex justify-center items-center min-w-[100vw] min-h-screen">
+      <NextSeo
+        title="Activity | WC NFT Fantasy"
+        description="See your the activity happening on the WC NFT Fantasy Platform"
+      />
       {loading ? (
         <CircleLoader
           color="#9a00ff"
@@ -36,6 +83,10 @@ const Activity = () => {
               <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
                 ACTIVITY
               </h1>
+              <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+                PRIZE POOL OF{" "}
+                {parseInt(balance as string).toString() ?? "ALOT OF"} ETH
+              </h1>
             </div>
           </div>
           <p className="text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto">
@@ -44,8 +95,10 @@ const Activity = () => {
             up as well as the round and the current Teams
           </p>
           <div className="py-10">
-            <LevelSection />
-            <ActivityTable />
+            <LevelSection predictors={predictors} />
+            <div className="w-full flex justify-center items-center">
+              <PlayersTable predictors={predictors} />
+            </div>
           </div>
           <Footer />
         </div>

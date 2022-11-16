@@ -96,16 +96,16 @@ export class Mint__Params {
   }
 }
 
-export class MintTeamsOneOwnershipTransferred extends ethereum.Event {
-  get params(): MintTeamsOneOwnershipTransferred__Params {
-    return new MintTeamsOneOwnershipTransferred__Params(this);
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
   }
 }
 
-export class MintTeamsOneOwnershipTransferred__Params {
-  _event: MintTeamsOneOwnershipTransferred;
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
 
-  constructor(event: MintTeamsOneOwnershipTransferred) {
+  constructor(event: OwnershipTransferred) {
     this._event = event;
   }
 
@@ -432,21 +432,6 @@ export class MintTeamsOne extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  setAddress(): Address {
-    let result = super.call("setAddress", "setAddress():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_setAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall("setAddress", "setAddress():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   supportsInterface(interfaceId: Bytes): boolean {
     let result = super.call(
       "supportsInterface",
@@ -505,10 +490,6 @@ export class ConstructorCall__Inputs {
 
   constructor(call: ConstructorCall) {
     this._call = call;
-  }
-
-  get _setAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
   }
 }
 
@@ -790,6 +771,52 @@ export class SafeTransferFromCall__Outputs {
   }
 }
 
+export class SetAddressesCall extends ethereum.Call {
+  get inputs(): SetAddressesCall__Inputs {
+    return new SetAddressesCall__Inputs(this);
+  }
+
+  get outputs(): SetAddressesCall__Outputs {
+    return new SetAddressesCall__Outputs(this);
+  }
+}
+
+export class SetAddressesCall__Inputs {
+  _call: SetAddressesCall;
+
+  constructor(call: SetAddressesCall) {
+    this._call = call;
+  }
+
+  get _predictionAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _evolveAddress(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get _mintTeamsTwoAddress(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get _quizGameAddress(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
+  get _guessingGameAddress(): Address {
+    return this._call.inputValues[4].value.toAddress();
+  }
+}
+
+export class SetAddressesCall__Outputs {
+  _call: SetAddressesCall;
+
+  constructor(call: SetAddressesCall) {
+    this._call = call;
+  }
+}
+
 export class SetApprovalForAllCall extends ethereum.Call {
   get inputs(): SetApprovalForAllCall__Inputs {
     return new SetApprovalForAllCall__Inputs(this);
@@ -820,156 +847,6 @@ export class SetApprovalForAllCall__Outputs {
   _call: SetApprovalForAllCall;
 
   constructor(call: SetApprovalForAllCall) {
-    this._call = call;
-  }
-}
-
-export class SetEvolveAddressCall extends ethereum.Call {
-  get inputs(): SetEvolveAddressCall__Inputs {
-    return new SetEvolveAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetEvolveAddressCall__Outputs {
-    return new SetEvolveAddressCall__Outputs(this);
-  }
-}
-
-export class SetEvolveAddressCall__Inputs {
-  _call: SetEvolveAddressCall;
-
-  constructor(call: SetEvolveAddressCall) {
-    this._call = call;
-  }
-
-  get _evolveAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetEvolveAddressCall__Outputs {
-  _call: SetEvolveAddressCall;
-
-  constructor(call: SetEvolveAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetGuessingGameAddressCall extends ethereum.Call {
-  get inputs(): SetGuessingGameAddressCall__Inputs {
-    return new SetGuessingGameAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetGuessingGameAddressCall__Outputs {
-    return new SetGuessingGameAddressCall__Outputs(this);
-  }
-}
-
-export class SetGuessingGameAddressCall__Inputs {
-  _call: SetGuessingGameAddressCall;
-
-  constructor(call: SetGuessingGameAddressCall) {
-    this._call = call;
-  }
-
-  get _guessingGameAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetGuessingGameAddressCall__Outputs {
-  _call: SetGuessingGameAddressCall;
-
-  constructor(call: SetGuessingGameAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetMintTeamOneAddressCall extends ethereum.Call {
-  get inputs(): SetMintTeamOneAddressCall__Inputs {
-    return new SetMintTeamOneAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetMintTeamOneAddressCall__Outputs {
-    return new SetMintTeamOneAddressCall__Outputs(this);
-  }
-}
-
-export class SetMintTeamOneAddressCall__Inputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-
-  get _mintTeamsTwoAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetMintTeamOneAddressCall__Outputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetPredictionAddressCall extends ethereum.Call {
-  get inputs(): SetPredictionAddressCall__Inputs {
-    return new SetPredictionAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetPredictionAddressCall__Outputs {
-    return new SetPredictionAddressCall__Outputs(this);
-  }
-}
-
-export class SetPredictionAddressCall__Inputs {
-  _call: SetPredictionAddressCall;
-
-  constructor(call: SetPredictionAddressCall) {
-    this._call = call;
-  }
-
-  get _predictionAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetPredictionAddressCall__Outputs {
-  _call: SetPredictionAddressCall;
-
-  constructor(call: SetPredictionAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetQuizGameAddressCall extends ethereum.Call {
-  get inputs(): SetQuizGameAddressCall__Inputs {
-    return new SetQuizGameAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetQuizGameAddressCall__Outputs {
-    return new SetQuizGameAddressCall__Outputs(this);
-  }
-}
-
-export class SetQuizGameAddressCall__Inputs {
-  _call: SetQuizGameAddressCall;
-
-  constructor(call: SetQuizGameAddressCall) {
-    this._call = call;
-  }
-
-  get _quizGameAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetQuizGameAddressCall__Outputs {
-  _call: SetQuizGameAddressCall;
-
-  constructor(call: SetQuizGameAddressCall) {
     this._call = call;
   }
 }

@@ -1,15 +1,7 @@
-import { BigInt } from "@graphprotocol/graph-ts";
-import {
-  ChangeOrdersOwnershipTransferred as ChangeOrdersOwnershipTransferredEvent,
-  TeamsSwapped as TeamsSwappedEvent,
-} from "../generated/ChangeOrders/ChangeOrders";
+import { TeamsSwapped as TeamsSwappedEvent } from "../generated/ChangeOrders/ChangeOrders";
 import { Predictor, Swap, Team } from "../generated/schema";
 
 // event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
-
-export function handleChangeOrdersOwnershipTransferred(
-  event: ChangeOrdersOwnershipTransferredEvent
-): void {}
 
 export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
   // Get Predictors Object based on the predictor address

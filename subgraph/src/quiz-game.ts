@@ -22,7 +22,9 @@ export function handlecurrentGame(event: currentGameEvent): void {
     game.status = false;
   } else {
     // Fill in the Info and pass the caller address
-    game.people.push(event.params.caller);
+    let _people = game.people;
+    _people.push(event.params.caller);
+    game.people = _people;
   }
 
   // Save

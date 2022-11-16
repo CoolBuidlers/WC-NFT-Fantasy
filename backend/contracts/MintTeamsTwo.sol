@@ -81,9 +81,9 @@ contract MintTeamsTwo is Ownable {
     }
 
      function claimLevel3Nft(address _predictor, string calldata _teamName) public {
-      require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
+     // require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop8 = IPrediction(predictionAddress).isPhase8();
-      require(isTop8 == true, "TOP_8_HASNT_FINISHED");
+      //require(isTop8 == true, "TOP_8_HASNT_FINISHED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
          IMintTeams(mintTeamsOneAddress).burn(_predictor, 1, 1);
          IMintTeams(mintTeamsOneAddress).mint(_predictor, 2, 1, "");
@@ -218,7 +218,7 @@ contract MintTeamsTwo is Ownable {
      function claimLevel4Nft(address _predictor, string calldata _teamName) public {
       require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop4 = IPrediction(predictionAddress).isPhase4();
-      require(isTop4 == true, "TOP_4_HASNT_FINISHED");
+      //require(isTop4 == true, "TOP_4_HASNT_FINISHED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
           IMintTeams(mintTeamsOneAddress).burn(_predictor, 2, 1);
           IMintTeams(mintTeamsOneAddress).mint(_predictor, 3, 1, "");
