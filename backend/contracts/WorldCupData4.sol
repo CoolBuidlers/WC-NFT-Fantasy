@@ -16,7 +16,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
   address public predictionAddress;
   bytes32 private jobId;
   uint256 private fee;
-  event ReceiveTeamTop8(bytes32 requestId, string indexed teamId);
+  event ReceiveTeamTop4(bytes32 requestId, string indexed teamId);
 
 
    constructor() {
@@ -67,7 +67,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
     
     function receiveTeamOne(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setFirstPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
      function receiveTeamTwoStanding() private returns (bytes32 requestId) {
@@ -82,7 +82,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
 
      function receiveTeamTwo(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setSecondPlaceTeam(_teamId); 
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
      function receiveTeamThreeStanding() private returns (bytes32 requestId) {
@@ -97,7 +97,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
 
      function receiveTeamThree(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setThirdPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
         
     }
 
@@ -113,7 +113,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
 
      function receiveTeamFour(bytes32 _requestId, string memory _teamId) public recordChainlinkFulfillment(_requestId) {
         IFetchTeams(fetchTeamsOneAddress).setFourthPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
       function fetchTop4Teams() public {
