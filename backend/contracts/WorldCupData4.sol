@@ -81,7 +81,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
         recordChainlinkFulfillment(_requestId)
     {
         IFetchTeams(fetchTeamsOneAddress).setFirstPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
     function receiveTeamTwoStanding() private returns (bytes32 requestId) {
@@ -106,7 +106,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
         recordChainlinkFulfillment(_requestId)
     {
         IFetchTeams(fetchTeamsOneAddress).setSecondPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
     function receiveTeamThreeStanding() private returns (bytes32 requestId) {
@@ -131,7 +131,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
         recordChainlinkFulfillment(_requestId)
     {
         IFetchTeams(fetchTeamsOneAddress).setThirdPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
     function receiveTeamFourStanding() private returns (bytes32 requestId) {
@@ -156,7 +156,7 @@ contract WorldCupData4 is ChainlinkClient, Ownable {
         recordChainlinkFulfillment(_requestId)
     {
         IFetchTeams(fetchTeamsOneAddress).setFourthPlaceTeam(_teamId);
-        emit ReceiveTeamTop8(_requestId, _teamId);
+        emit ReceiveTeamTop4(_requestId, _teamId);
     }
 
     function fetchTop4Teams() public {

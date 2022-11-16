@@ -318,6 +318,30 @@ const AvailableTeams = () => {
           </div>
         </div>
       </div>
+      {((!userEvolveArray2[0] && top16) ||
+        (!userEvolveArray3[0] && top8) ||
+        (!userEvolveArray4[0] && top4) ||
+        (!userEvolveArray2[1] && top16) ||
+        (!userEvolveArray3[1] && top8) ||
+        (!userEvolveArray4[1] && top4) ||
+        (!userEvolveArray2[2] && top16) ||
+        (!userEvolveArray3[2] && top8) ||
+        (!userEvolveArray4[2] && top4) ||
+        (!userEvolveArray2[3] && top16) ||
+        (!userEvolveArray3[3] && top8) ||
+        (!userEvolveArray4[3] && top4) ||
+        (!userEvolveArray2[4] && top16) ||
+        (!userEvolveArray3[4] && top8) ||
+        (!userEvolveArray2[5] && top16) ||
+        (!userEvolveArray3[5] && top8)) && (
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-4xl tracking-wider py-24 md:px-10 px-2"
+        >
+          Evolving Now Available
+        </div>
+      )}
       <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 pt-4">
         <Transition
           show={showModal}
@@ -656,8 +680,8 @@ const AvailableTeams = () => {
               setIsClicked6(!isClicked6);
             }}
           >
-            {((!userEvolveArray2[3] && top16) ||
-              (!userEvolveArray3[3] && top8)) && (
+            {((!userEvolveArray2[5] && top16) ||
+              (!userEvolveArray3[5] && top8)) && (
               <Transition
                 show={isClicked6}
                 enter="transform transition duration-[1000ms] "

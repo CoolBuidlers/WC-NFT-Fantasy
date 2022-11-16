@@ -126,7 +126,7 @@ const Mint = () => {
   }, [address]);
 
   const renderMintComponent = () => {
-    if (!hasUserMinted && currentPhase === 0) {
+    if (hasUserMinted && currentPhase === 0) {
       return (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
