@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 const Activity = () => {
   // Holds all the activity that get's tracked
   const [predictors, setPredictors] = useState<any[]>();
+  const [rounds, setRounds] = useState<any[]>();
   const [balance, setBalance] = useState<string>();
 
   // Loading State
@@ -23,7 +24,7 @@ const Activity = () => {
   const provider = useProvider();
 
   // Fetches all Predictors
-  const fetchPredictors = async (): Promise<void> => {
+  const fetchData = async (): Promise<void> => {
     // Load Prize Pool
     const balance = await provider.getBalance(
       "0x1Cb18ccfD5e659a4217aa33a365f05A9ea1a66C8"
@@ -46,12 +47,25 @@ const Activity = () => {
 
     const data = await worldCupQuery(activityQuery);
     setPredictors(data.predictors);
+
+    // The GraphQL query to run
+    const roundsQuery = `
+        query roundsQuery {
+          rounds {
+            id
+            countryIds
+          }
+        }
+      `;
+
+    const roundsData = await worldCupQuery(roundsQuery);
+    setRounds(roundsData.rounds);
   };
 
   // Run this when component loads
   useEffect(() => {
     setLoading(true);
-    fetchPredictors();
+    fetchData();
     setTimeout(() => {
       setLoading(false);
     }, 1500);
@@ -80,24 +94,27 @@ const Activity = () => {
                 className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
               ></div>
-              <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
-                ACTIVITY
-              </h1>
-              <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+              <h2 className="relative border-4 p-12 border-[#D100D1] py-2 text-white text-3xl lg:text-5xl">
                 PRIZE POOL OF{" "}
                 {parseInt(balance as string).toString() ?? "ALOT OF"} ETH
-              </h1>
+              </h2>
             </div>
           </div>
+          <h1 className="my-12 w-full relative text-center border-b-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+            ACTIVITY
+          </h1>
           <p className="text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto">
             In this section, you can see all the activity going on in our dApp
             with the prize pot, the address of the players and their levelling
             up as well as the round and the current Teams
           </p>
-          <div className="py-10">
+          <div className="py-10 space-y-24">
             <LevelSection predictors={predictors} />
             <div className="w-full flex justify-center items-center">
               <PlayersTable predictors={predictors} />
+            </div>
+            <div className="flex justify-center items-center">
+              <ActivityTable rounds={rounds as any[]} />
             </div>
           </div>
           <Footer />
