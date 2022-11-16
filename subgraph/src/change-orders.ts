@@ -1,31 +1,9 @@
 import { TeamsSwapped as TeamsSwappedEvent } from "../generated/ChangeOrders/ChangeOrders";
-import { Predictor, Swap, Team } from "../generated/schema";
+import { Swap } from "../generated/schema";
 
 // event TeamsSwapped(address predictor, bytes firstTeam, bytes secondTeam, uint indexed round);
 
 export function handleTeamsSwapped(event: TeamsSwappedEvent): void {
-  // Get Predictors Object based on the predictor address
-  let predictor = Predictor.load(event.params.predictor);
-
-  // Swap teams
-  if (predictor) {
-    let first: i32 = 0;
-    let second: i32 = 0;
-
-    for (let i = 0; i < predictor.tokens!.length; i++) {
-      let _token = Team.load(predictor.tokens![i]);
-      if (_token && _token.team == event.params.firstTeam) {
-        first = i;
-      } else if (_token && _token.team == event.params.secondTeam) {
-        second = i;
-      }
-    }
-
-    let _side = predictor.tokens![first];
-    predictor.tokens![first] = predictor.tokens![second];
-    predictor.tokens![second] = _side;
-  }
-
   // Create Unique Hash
   let uid =
     event.params.predictor.toHexString() +
