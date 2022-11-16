@@ -9,7 +9,7 @@ import {
 } from "../Constants/Index";
 import { useContract, useProvider, useSigner } from "wagmi";
 import Question from "../components/Question";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const QuizGame = () => {
   const provider = useProvider();
@@ -52,7 +52,7 @@ const QuizGame = () => {
       const txn: any = await contract.joinGameOne();
       await txn.wait();
       setJoined(true);
-      toast.success("Game Joined!!!")
+      toast.success("Game Joined!!!");
     } catch (err: any) {
       console.error(err);
       toast.error(err.reason);
@@ -102,7 +102,7 @@ const QuizGame = () => {
         const txn: any = await contract.guessQuestionsOne(val1, val2, val3);
         await txn.wait();
         setHasGuessed(true);
-        toast.success("Submitted Answer!")
+        toast.success("Submitted Answer!");
       } else {
         toast.error("Answer all the questions");
       }
@@ -200,43 +200,36 @@ const QuizGame = () => {
     }
   };
 
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
   return (
     <div>
-        <section className="relative">
-          <Navbar />
-          <div className="flex justify-center pb-40">
-            <div className="relative inline-block">
-              <div
-                className="absolute -inset-1 bg-[#D100D1]
+      <section className="relative">
+        <Navbar />
+        <div className="flex justify-center pb-40">
+          <div className="relative inline-block">
+            <div
+              className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
-              ></div>
-              <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
-                Quiz Game
-              </h1>
-            </div>
+            ></div>
+            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+              Quiz Game
+            </h1>
           </div>
-          <div className="hidden lg:flex justify-between w-full mx-auto">
-            <div className="absolute top-80 overflow-hidden sm:right-[1030px]">
-              <Image src={Music} width={700} height={700} alt="MusicImg" />
-            </div>
-            <div className="absolute top-80 overflow-hidden sm:left-[1030px]">
-              <Image
-                src={Controller}
-                width={600}
-                height={600}
-                alt="controllerImg"
-              />
-            </div>
+        </div>
+        <div className="hidden lg:flex justify-between w-full mx-auto">
+          <div className="absolute top-80 overflow-hidden sm:right-[1030px]">
+            <Image src={Music} width={700} height={700} alt="MusicImg" />
           </div>
-          {renderButton()}
-        </section>
+          <div className="absolute top-80 overflow-hidden sm:left-[1030px]">
+            <Image
+              src={Controller}
+              width={600}
+              height={600}
+              alt="controllerImg"
+            />
+          </div>
+        </div>
+        {renderButton()}
+      </section>
     </div>
   );
 };

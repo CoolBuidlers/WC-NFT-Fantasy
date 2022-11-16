@@ -128,20 +128,32 @@ const Mint = () => {
   const renderMintComponent = () => {
     if (!hasUserMinted && currentPhase === 0) {
       return (
-        <div className="text-white">
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-3xl my-10 mx-6 tracking-wider"
+        >
           Thank you for choosing your teams! Please wait until next worldcup
           round to be able to mint two extra teams!
         </div>
       );
     } else if (!hasUserMinted && currentPhase > 0) {
       return (
-        <div className="text-white">
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-3xl my-10 mx-6 tracking-wider"
+        >
           Sorry, You are no longer able to mint teams
         </div>
       );
     } else if (!hasUserMintedExtraTwo && currentPhase > 1) {
       return (
-        <div className="text-white">
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-3xl my-10 mx-6 tracking-wider"
+        >
           Sorry, You are no longer able to mint your extra teams
         </div>
       );
