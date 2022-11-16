@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class MintTeamsTwoLevelUp extends ethereum.Event {
-  get params(): MintTeamsTwoLevelUp__Params {
-    return new MintTeamsTwoLevelUp__Params(this);
+export class LevelUp extends ethereum.Event {
+  get params(): LevelUp__Params {
+    return new LevelUp__Params(this);
   }
 }
 
-export class MintTeamsTwoLevelUp__Params {
-  _event: MintTeamsTwoLevelUp;
+export class LevelUp__Params {
+  _event: LevelUp;
 
-  constructor(event: MintTeamsTwoLevelUp) {
+  constructor(event: LevelUp) {
     this._event = event;
   }
 
@@ -36,16 +36,16 @@ export class MintTeamsTwoLevelUp__Params {
   }
 }
 
-export class MintTeamsTwoOwnershipTransferred extends ethereum.Event {
-  get params(): MintTeamsTwoOwnershipTransferred__Params {
-    return new MintTeamsTwoOwnershipTransferred__Params(this);
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
   }
 }
 
-export class MintTeamsTwoOwnershipTransferred__Params {
-  _event: MintTeamsTwoOwnershipTransferred;
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
 
-  constructor(event: MintTeamsTwoOwnershipTransferred) {
+  constructor(event: OwnershipTransferred) {
     this._event = event;
   }
 
@@ -142,21 +142,6 @@ export class MintTeamsTwo extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
-
-  setAddress(): Address {
-    let result = super.call("setAddress", "setAddress():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_setAddress(): ethereum.CallResult<Address> {
-    let result = super.tryCall("setAddress", "setAddress():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {
@@ -174,10 +159,6 @@ export class ConstructorCall__Inputs {
 
   constructor(call: ConstructorCall) {
     this._call = call;
-  }
-
-  get _setAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
   }
 }
 
@@ -283,92 +264,40 @@ export class RenounceOwnershipCall__Outputs {
   }
 }
 
-export class SetEvolveAddressCall extends ethereum.Call {
-  get inputs(): SetEvolveAddressCall__Inputs {
-    return new SetEvolveAddressCall__Inputs(this);
+export class SetAddressesCall extends ethereum.Call {
+  get inputs(): SetAddressesCall__Inputs {
+    return new SetAddressesCall__Inputs(this);
   }
 
-  get outputs(): SetEvolveAddressCall__Outputs {
-    return new SetEvolveAddressCall__Outputs(this);
-  }
-}
-
-export class SetEvolveAddressCall__Inputs {
-  _call: SetEvolveAddressCall;
-
-  constructor(call: SetEvolveAddressCall) {
-    this._call = call;
-  }
-
-  get _evolveAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get outputs(): SetAddressesCall__Outputs {
+    return new SetAddressesCall__Outputs(this);
   }
 }
 
-export class SetEvolveAddressCall__Outputs {
-  _call: SetEvolveAddressCall;
+export class SetAddressesCall__Inputs {
+  _call: SetAddressesCall;
 
-  constructor(call: SetEvolveAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetMintTeamOneAddressCall extends ethereum.Call {
-  get inputs(): SetMintTeamOneAddressCall__Inputs {
-    return new SetMintTeamOneAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetMintTeamOneAddressCall__Outputs {
-    return new SetMintTeamOneAddressCall__Outputs(this);
-  }
-}
-
-export class SetMintTeamOneAddressCall__Inputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-
-  get _mintTeamsOneAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetMintTeamOneAddressCall__Outputs {
-  _call: SetMintTeamOneAddressCall;
-
-  constructor(call: SetMintTeamOneAddressCall) {
-    this._call = call;
-  }
-}
-
-export class SetPredictionAddressCall extends ethereum.Call {
-  get inputs(): SetPredictionAddressCall__Inputs {
-    return new SetPredictionAddressCall__Inputs(this);
-  }
-
-  get outputs(): SetPredictionAddressCall__Outputs {
-    return new SetPredictionAddressCall__Outputs(this);
-  }
-}
-
-export class SetPredictionAddressCall__Inputs {
-  _call: SetPredictionAddressCall;
-
-  constructor(call: SetPredictionAddressCall) {
+  constructor(call: SetAddressesCall) {
     this._call = call;
   }
 
   get _predictionAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get _evolveAddress(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get _mintTeamsOneAddress(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
 }
 
-export class SetPredictionAddressCall__Outputs {
-  _call: SetPredictionAddressCall;
+export class SetAddressesCall__Outputs {
+  _call: SetAddressesCall;
 
-  constructor(call: SetPredictionAddressCall) {
+  constructor(call: SetAddressesCall) {
     this._call = call;
   }
 }

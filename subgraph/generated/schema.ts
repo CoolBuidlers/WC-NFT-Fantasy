@@ -185,13 +185,13 @@ export class Round extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get countryIds(): Array<BigInt> {
+  get countryIds(): Array<string> {
     let value = this.get("countryIds");
-    return value!.toBigIntArray();
+    return value!.toStringArray();
   }
 
-  set countryIds(value: Array<BigInt>) {
-    this.set("countryIds", Value.fromBigIntArray(value));
+  set countryIds(value: Array<string>) {
+    this.set("countryIds", Value.fromStringArray(value));
   }
 }
 

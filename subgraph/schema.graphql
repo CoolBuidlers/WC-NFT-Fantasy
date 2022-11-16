@@ -40,7 +40,7 @@ type Round @entity {
   "the name of the Round"
   id: String!
   "ref to the countries"
-  countryIds: [BigInt!]!
+  countryIds: [String!]!
 }
 
 # Each NFT Tokens

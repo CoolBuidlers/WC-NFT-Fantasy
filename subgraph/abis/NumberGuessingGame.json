@@ -1,21 +1,37 @@
 [
   {
     "inputs": [
-      { "internalType": "uint64", "name": "subscriptionId", "type": "uint64" },
+      {
+        "internalType": "uint64",
+        "name": "subscriptionId",
+        "type": "uint64"
+      },
       {
         "internalType": "address",
         "name": "_vrfCoordinator",
         "type": "address"
       },
-      { "internalType": "bytes32", "name": "_keyHash", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "_keyHash",
+        "type": "bytes32"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "have", "type": "address" },
-      { "internalType": "address", "name": "want", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "have",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "want",
+        "type": "address"
+      }
     ],
     "name": "OnlyCoordinatorCanFulfill",
     "type": "error"
@@ -55,7 +71,7 @@
         "type": "address"
       }
     ],
-    "name": "NumberGuessingGameOwnershipTransferRequested",
+    "name": "OwnershipTransferRequested",
     "type": "event"
   },
   {
@@ -74,7 +90,7 @@
         "type": "address"
       }
     ],
-    "name": "NumberGuessingGameOwnershipTransferred",
+    "name": "OwnershipTransferred",
     "type": "event"
   },
   {
@@ -93,7 +109,7 @@
         "type": "uint256[]"
       }
     ],
-    "name": "NumberGuessingGameRequestFulfilled",
+    "name": "RequestFulfilled",
     "type": "event"
   },
   {
@@ -112,7 +128,7 @@
         "type": "uint32"
       }
     ],
-    "name": "NumberGuessingGameRequestSent",
+    "name": "RequestSent",
     "type": "event"
   },
   {
@@ -137,7 +153,7 @@
         "type": "uint256"
       }
     ],
-    "name": "NumberGuessingGameWinners",
+    "name": "Winners",
     "type": "event"
   },
   {
@@ -156,7 +172,7 @@
         "type": "uint256"
       }
     ],
-    "name": "NumberGuessingGamecurrentGame",
+    "name": "currentGame",
     "type": "event"
   },
   {
@@ -176,20 +192,36 @@
   {
     "inputs": [],
     "name": "currentRequestId",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "fee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_guess", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_guess",
+        "type": "uint256"
+      }
     ],
     "name": "guessTheNumberValue",
     "outputs": [],
@@ -206,71 +238,133 @@
   {
     "inputs": [],
     "name": "keyHash",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "linkAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "maxPlayers",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "mintAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "nextRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "nonce",
-    "outputs": [{ "internalType": "uint128", "name": "", "type": "uint128" }],
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "numberIsBiggerThanZero",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "players",
     "outputs": [
-      { "internalType": "address payable", "name": "", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "requestId", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "players",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256[]",
         "name": "randomWords",
@@ -284,8 +378,40 @@
   },
   {
     "inputs": [],
+    "name": "requestRandomWords",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "returnGuess",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "setAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -312,12 +438,24 @@
   {
     "inputs": [],
     "name": "started",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "to", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
