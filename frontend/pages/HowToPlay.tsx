@@ -47,29 +47,36 @@ const HowToPlay = (props: Props) => {
 
             <article className="flex px-4 justify-between items-center flex-wrap mb-36">
               <div className="md:w-1/2">
-                <p className="text-white text-lg mb-10 text-center">
-                  Once the first countdown ends and the tournament begins you can start minting your NFTs start building your team with the countries you think will make it the furthest to win the prestigious World Cup trophy!
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  Once the first countdown ends and the tournament begins you
+                  can start minting your NFTs start building your team with the
+                  countries you think will make it the furthest to win the
+                  prestigious World Cup trophy!
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
-                <Image src={Tut1} alt="First Tutorial image"/>
+                <Image src={Tut1} alt="First Tutorial image" />
               </div>
             </article>
             <article className="flex px-4 justify-between items-center flex-wrap mb-36">
               <div className="md:w-1/2">
-                <p className="text-white text-lg mb-10 text-center">
-                  In this image you can see the price of the NFTs you have chosen to mint as well as a mint button.
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  In this image you can see the price of the NFTs you have
+                  chosen to mint as well as a mint button.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
-                <Image src={Tut2} alt="Second Tutorial imgae"/>
+                <Image src={Tut2} alt="Second Tutorial imgae" />
               </div>
             </article>
             <article className="flex px-4 justify-between items-center flex-wrap mb-36">
               <div className="md:w-1/2">
-                <p className="text-white text-lg mb-10 text-center">
-                  After clicking on the mint button you will be able to see a modal that will ask for the amount of matic you want to pay to mint. 
-                  Now keep in mind you will need to pay a certain amount but this input allows you to send more money to the contract if you wish to.
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  After clicking on the mint button you will be able to see a
+                  modal that will ask for the amount of matic you want to pay to
+                  mint. Now keep in mind you will need to pay a certain amount
+                  but this input allows you to send more money to the contract
+                  if you wish to.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -78,12 +85,15 @@ const HowToPlay = (props: Props) => {
             </article>
             <article className="flex px-4 justify-between items-center flex-wrap mb-10">
               <div className="md:w-1/2">
-                <p className="text-white text-lg mb-10 text-center">
-                  After you choose the order of your teams, And if any of the teams you chose makes it to the next round will then be able to evolve them by clicking on the NFT which will evolve your NFT to another level.
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  After you choose the order of your teams, And if any of the
+                  teams you chose makes it to the next round will then be able
+                  to evolve them by clicking on the NFT which will evolve your
+                  NFT to another level.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
-                <Image src={Tut4} alt="Fourth Tutorial image"/>
+                <Image src={Tut4} alt="Fourth Tutorial image" />
               </div>
             </article>
           </div>

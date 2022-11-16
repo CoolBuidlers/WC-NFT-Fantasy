@@ -51,7 +51,7 @@ const Mint = () => {
   const [inputSelection, setInputSelection] = useState<string[]>([]);
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
   const [maticPrice, setMaticPrice] = useState<any>("0");
-  const [maticBiggerThan40, setMaticBiggerThan40] = useState<boolean>(false)
+  const [maticBiggerThan40, setMaticBiggerThan40] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
@@ -109,13 +109,13 @@ const Mint = () => {
     );
     const re = new RegExp("^-?\\d+(?:.\\d{0," + (2 || -1) + "})?");
     const price = (await PredictionContract.getLatestPrice()) / 100000000;
-    const priceWithConversion = await PredictionContract.getLatestPrice()
+    const priceWithConversion = await PredictionContract.getLatestPrice();
     if (priceWithConversion.toNumber() >= 40000000) {
-      setMaticBiggerThan40(true)
+      setMaticBiggerThan40(true);
     } else {
-      setMaticBiggerThan40(false)
+      setMaticBiggerThan40(false);
     }
-      setMaticPrice(price.toString().match(re)?.[0]);
+    setMaticPrice(price.toString().match(re)?.[0]);
   };
 
   useEffect(() => {
@@ -774,9 +774,9 @@ const Mint = () => {
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
               ></div>
-                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  1 Matic | {maticPrice} $
-                </span>
+              <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                1 Matic | {maticPrice} $
+              </span>
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
@@ -1456,10 +1456,10 @@ const Mint = () => {
               <div
                 className="absolute -inset-2 bg-gradient-to-r from-[#A100F2] via-[#D100D1]
              to-[#F20089] blur-xl transition-all"
-              ></div>  
-                <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
-                  1 Matic | {maticPrice} $
-                </span>      
+              ></div>
+              <span className="relative border-t-2 border-[#D100D1] transition-all divide-x divide-white ">
+                1 Matic | {maticPrice} $
+              </span>
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
