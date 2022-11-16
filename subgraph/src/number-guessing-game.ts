@@ -1,20 +1,18 @@
 import { Bytes } from "@graphprotocol/graph-ts";
 import {
   Ended as EndedEvent,
-  NumberGuessingGameWinners as NumberGuessingGameWinnersEvent,
-  NumberGuessingGamecurrentGame as NumberGuessingGamecurrentGameEvent,
+  Winners as WinnersEvent,
+  currentGame as currentGameEvent,
 } from "../generated/NumberGuessingGame/NumberGuessingGame";
 import { Game, Winner } from "../generated/schema";
 
 /*
-    // event to keep track of the players for the currentGame ID
+    - event to keep track of the players for the currentGame ID
     event currentGame(address player, uint256 gameId);
-    // event to keep track of winners for that gameId alongside the requestId for the VRF
+    - event to keep track of winners for that gameId alongside the requestId for the VRF
     event Winners(address winner, bytes32 requestId, uint256 gameId);
-    // event to keep track of the deleted players after certain conditions are not met
+    - event to keep track of the deleted players after certain conditions are not met
     event Ended(address player, uint256 gameId);
-    event RequestSent(uint256 requestId, uint32 numWords);
-    event RequestFulfilled(uint256 requestId, uint256[] randomWords);
 */
 
 export function handleEnded(event: EndedEvent): void {
@@ -38,9 +36,7 @@ export function handleEnded(event: EndedEvent): void {
   }
 }
 
-export function handleNumberGuessingGameWinners(
-  event: NumberGuessingGameWinnersEvent
-): void {
+export function handleWinners(event: WinnersEvent): void {
   // Create Winners Unique ID
   const id = event.params.gameId.toString() + "N" + "W";
   let winner = new Winner(id);
@@ -65,9 +61,7 @@ export function handleNumberGuessingGameWinners(
   }
 }
 
-export function handleNumberGuessingGamecurrentGame(
-  event: NumberGuessingGamecurrentGameEvent
-): void {
+export function handlecurrentGame(event: currentGameEvent): void {
   // Check if the game exists and create if not based on the game ID
   const id = event.params.gameId.toString() + "N";
   let game = Game.load(id);

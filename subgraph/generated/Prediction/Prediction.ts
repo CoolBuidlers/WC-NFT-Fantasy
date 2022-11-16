@@ -136,6 +136,74 @@ export class Prediction extends ethereum.SmartContract {
     return new Prediction("Prediction", address);
   }
 
+  TOP_16_STARTS(): BigInt {
+    let result = super.call("TOP_16_STARTS", "TOP_16_STARTS():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_TOP_16_STARTS(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "TOP_16_STARTS",
+      "TOP_16_STARTS():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  TOP_4_STARTS(): BigInt {
+    let result = super.call("TOP_4_STARTS", "TOP_4_STARTS():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_TOP_4_STARTS(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("TOP_4_STARTS", "TOP_4_STARTS():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  TOP_8_STARTS(): BigInt {
+    let result = super.call("TOP_8_STARTS", "TOP_8_STARTS():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_TOP_8_STARTS(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("TOP_8_STARTS", "TOP_8_STARTS():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  balances(param0: Address): BigInt {
+    let result = super.call("balances", "balances(address):(uint256)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_balances(param0: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("balances", "balances(address):(uint256)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   changeOrderAddress(): Address {
     let result = super.call(
       "changeOrderAddress",
@@ -268,21 +336,6 @@ export class Prediction extends ethereum.SmartContract {
 
   try_fewMinutes(): ethereum.CallResult<BigInt> {
     let result = super.tryCall("fewMinutes", "fewMinutes():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  getBalance(): BigInt {
-    let result = super.call("getBalance", "getBalance():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_getBalance(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("getBalance", "getBalance():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -521,20 +574,16 @@ export class Prediction extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  randomAndRoundAddress(): Address {
-    let result = super.call(
-      "randomAndRoundAddress",
-      "randomAndRoundAddress():(address)",
-      []
-    );
+  randomAddress(): Address {
+    let result = super.call("randomAddress", "randomAddress():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_randomAndRoundAddress(): ethereum.CallResult<Address> {
+  try_randomAddress(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "randomAndRoundAddress",
-      "randomAndRoundAddress():(address)",
+      "randomAddress",
+      "randomAddress():(address)",
       []
     );
     if (result.reverted) {
@@ -544,20 +593,81 @@ export class Prediction extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  worldCupDataAddress(): Address {
+  viewPoints(): BigInt {
+    let result = super.call("viewPoints", "viewPoints():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_viewPoints(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("viewPoints", "viewPoints():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  worldCupData16Address(): Address {
     let result = super.call(
-      "worldCupDataAddress",
-      "worldCupDataAddress():(address)",
+      "worldCupData16Address",
+      "worldCupData16Address():(address)",
       []
     );
 
     return result[0].toAddress();
   }
 
-  try_worldCupDataAddress(): ethereum.CallResult<Address> {
+  try_worldCupData16Address(): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "worldCupDataAddress",
-      "worldCupDataAddress():(address)",
+      "worldCupData16Address",
+      "worldCupData16Address():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  worldCupData4Address(): Address {
+    let result = super.call(
+      "worldCupData4Address",
+      "worldCupData4Address():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_worldCupData4Address(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "worldCupData4Address",
+      "worldCupData4Address():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  worldCupData8Address(): Address {
+    let result = super.call(
+      "worldCupData8Address",
+      "worldCupData8Address():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_worldCupData8Address(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "worldCupData8Address",
+      "worldCupData8Address():(address)",
       []
     );
     if (result.reverted) {
@@ -616,32 +726,6 @@ export class DefaultCall__Outputs {
   _call: DefaultCall;
 
   constructor(call: DefaultCall) {
-    this._call = call;
-  }
-}
-
-export class ChangeThePhaseCall extends ethereum.Call {
-  get inputs(): ChangeThePhaseCall__Inputs {
-    return new ChangeThePhaseCall__Inputs(this);
-  }
-
-  get outputs(): ChangeThePhaseCall__Outputs {
-    return new ChangeThePhaseCall__Outputs(this);
-  }
-}
-
-export class ChangeThePhaseCall__Inputs {
-  _call: ChangeThePhaseCall;
-
-  constructor(call: ChangeThePhaseCall) {
-    this._call = call;
-  }
-}
-
-export class ChangeThePhaseCall__Outputs {
-  _call: ChangeThePhaseCall;
-
-  constructor(call: ChangeThePhaseCall) {
     this._call = call;
   }
 }
@@ -847,11 +931,11 @@ export class SetAddressesCall__Inputs {
     this._call = call;
   }
 
-  get _randomAndRoundAddress(): Address {
+  get _randomAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _worldCupDataAddress(): Address {
+  get _worldCupData16Address(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
@@ -865,6 +949,14 @@ export class SetAddressesCall__Inputs {
 
   get _mintTeamAddress(): Address {
     return this._call.inputValues[4].value.toAddress();
+  }
+
+  get _worldCupData8Address(): Address {
+    return this._call.inputValues[5].value.toAddress();
+  }
+
+  get _worldCupData4Address(): Address {
+    return this._call.inputValues[6].value.toAddress();
   }
 }
 

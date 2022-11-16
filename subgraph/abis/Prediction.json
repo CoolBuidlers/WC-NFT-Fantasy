@@ -1,5 +1,9 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -88,39 +92,125 @@
     "name": "Winners",
     "type": "event"
   },
-  { "stateMutability": "payable", "type": "fallback" },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
   {
     "inputs": [],
-    "name": "changeOrderAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "TOP_16_STARTS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "changeThePhase",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "TOP_4_STARTS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "TOP_8_STARTS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "uint256", "name": "_num", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    "name": "changedOrder",
+    "name": "balances",
     "outputs": [
-      { "internalType": "bool", "name": "orderChanged", "type": "bool" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+    "inputs": [],
+    "name": "changeOrderAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_num",
+        "type": "uint256"
+      }
+    ],
+    "name": "changedOrder",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "orderChanged",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
     "name": "checkUpkeep",
     "outputs": [
-      { "internalType": "bool", "name": "upkeepNeeded", "type": "bool" },
-      { "internalType": "bytes", "name": "", "type": "bytes" }
+      {
+        "internalType": "bool",
+        "name": "upkeepNeeded",
+        "type": "bool"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -148,89 +238,162 @@
   {
     "inputs": [],
     "name": "fetchTeamAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "fewMinutes",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getBalance",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getLatestPrice",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "uint256", "name": "_num", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_num",
+        "type": "uint256"
+      }
     ],
     "name": "getPrediction",
-    "outputs": [{ "internalType": "bytes", "name": "team", "type": "bytes" }],
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "team",
+        "type": "bytes"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "hasItBeenThreeMinutes",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      }
     ],
     "name": "haveYouMinted",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "isPhase16",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "isPhase32",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "isPhase4",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "isPhase8",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "_teamFive", "type": "string" },
-      { "internalType": "string", "name": "_teamSix", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "_teamFive",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamSix",
+        "type": "string"
+      }
     ],
     "name": "mintOtherTwoTeams",
     "outputs": [],
@@ -240,16 +403,38 @@
   {
     "inputs": [],
     "name": "mintTeamAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "_teamOne", "type": "string" },
-      { "internalType": "string", "name": "_teamTwo", "type": "string" },
-      { "internalType": "string", "name": "_teamThree", "type": "string" },
-      { "internalType": "string", "name": "_teamFour", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "_teamOne",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamThree",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamFour",
+        "type": "string"
+      }
     ],
     "name": "mintTopFourTeams",
     "outputs": [],
@@ -258,29 +443,57 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      }
     ],
     "name": "mintedExtraTwo",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "oneDay",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
     "name": "performUpkeep",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -288,8 +501,14 @@
   },
   {
     "inputs": [],
-    "name": "randomAndRoundAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "randomAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -311,12 +530,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_randomAndRoundAddress",
+        "name": "_randomAddress",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_worldCupDataAddress",
+        "name": "_worldCupData16Address",
         "type": "address"
       },
       {
@@ -333,6 +552,16 @@
         "internalType": "address",
         "name": "_mintTeamAddress",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_worldCupData8Address",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_worldCupData4Address",
+        "type": "address"
       }
     ],
     "name": "setAddresses",
@@ -342,8 +571,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setFifthPrediction",
     "outputs": [],
@@ -352,8 +589,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setFirstPrediction",
     "outputs": [],
@@ -362,8 +607,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setFourthPrediction",
     "outputs": [],
@@ -372,8 +625,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "uint256", "name": "_num", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_num",
+        "type": "uint256"
+      }
     ],
     "name": "setOrder",
     "outputs": [],
@@ -381,7 +642,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "_paused", "type": "bool" }],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
     "name": "setPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -389,7 +656,11 @@
   },
   {
     "inputs": [
-      { "internalType": "bool", "name": "_canReceiveRefund", "type": "bool" }
+      {
+        "internalType": "bool",
+        "name": "_canReceiveRefund",
+        "type": "bool"
+      }
     ],
     "name": "setRefund",
     "outputs": [],
@@ -398,8 +669,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setSecondPrediction",
     "outputs": [],
@@ -408,8 +687,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setSixthPrediction",
     "outputs": [],
@@ -418,8 +705,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "bytes", "name": "_team", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_team",
+        "type": "bytes"
+      }
     ],
     "name": "setThirdPrediction",
     "outputs": [],
@@ -428,11 +723,28 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "viewPoints",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -444,10 +756,45 @@
   },
   {
     "inputs": [],
-    "name": "worldCupDataAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "worldCupData16Address",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" }
+  {
+    "inputs": [],
+    "name": "worldCupData4Address",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "worldCupData8Address",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
 ]

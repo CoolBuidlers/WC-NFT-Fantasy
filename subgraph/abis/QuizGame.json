@@ -1,5 +1,9 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -40,12 +44,36 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "_question", "type": "string" },
-      { "internalType": "string", "name": "_optionOne", "type": "string" },
-      { "internalType": "string", "name": "_optionTwo", "type": "string" },
-      { "internalType": "string", "name": "_optionThree", "type": "string" },
-      { "internalType": "string", "name": "_optionFour", "type": "string" },
-      { "internalType": "string", "name": "answer", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "_question",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionOne",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionThree",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionFour",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "answer",
+        "type": "string"
+      }
     ],
     "name": "AddQuizOne",
     "outputs": [],
@@ -54,12 +82,36 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "_question", "type": "string" },
-      { "internalType": "string", "name": "_optionOne", "type": "string" },
-      { "internalType": "string", "name": "_optionTwo", "type": "string" },
-      { "internalType": "string", "name": "_optionThree", "type": "string" },
-      { "internalType": "string", "name": "_optionFour", "type": "string" },
-      { "internalType": "string", "name": "answer", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "_question",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionOne",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionThree",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_optionFour",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "answer",
+        "type": "string"
+      }
     ],
     "name": "AddQuizTwo",
     "outputs": [],
@@ -83,24 +135,52 @@
   {
     "inputs": [],
     "name": "currentGameId",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "quizId",
+        "type": "uint256"
+      }
     ],
     "name": "getScore",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "guess", "type": "string" },
-      { "internalType": "string", "name": "guessTwo", "type": "string" },
-      { "internalType": "string", "name": "guessThree", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "guess",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guessTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guessThree",
+        "type": "string"
+      }
     ],
     "name": "guessQuestionsOne",
     "outputs": [],
@@ -109,9 +189,21 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "guess", "type": "string" },
-      { "internalType": "string", "name": "guessTwo", "type": "string" },
-      { "internalType": "string", "name": "guessThree", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "guess",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guessTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "guessThree",
+        "type": "string"
+      }
     ],
     "name": "guessQuestionsTwo",
     "outputs": [],
@@ -120,19 +212,39 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "quizId",
+        "type": "uint256"
+      }
     ],
     "name": "haveYouClaimedPrize",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "quizId",
+        "type": "uint256"
+      }
     ],
     "name": "haveYouGuessed",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -152,60 +264,136 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "quizId",
+        "type": "uint256"
+      }
     ],
     "name": "joinedGame",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "mintAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "nextRound",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_quizId",
+        "type": "uint256"
+      }
     ],
     "name": "returnQuizOne",
     "outputs": [
-      { "internalType": "string", "name": "question", "type": "string" },
-      { "internalType": "string", "name": "optionOne", "type": "string" },
-      { "internalType": "string", "name": "optionTwo", "type": "string" },
-      { "internalType": "string", "name": "optionThree", "type": "string" },
-      { "internalType": "string", "name": "optionFour", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "question",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionOne",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionThree",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionFour",
+        "type": "string"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_quizId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_quizId",
+        "type": "uint256"
+      }
     ],
     "name": "returnQuizTwo",
     "outputs": [
-      { "internalType": "string", "name": "question", "type": "string" },
-      { "internalType": "string", "name": "optionOne", "type": "string" },
-      { "internalType": "string", "name": "optionTwo", "type": "string" },
-      { "internalType": "string", "name": "optionThree", "type": "string" },
-      { "internalType": "string", "name": "optionFour", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "question",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionOne",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionTwo",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionThree",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "optionFour",
+        "type": "string"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -224,7 +412,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "_setPause", "type": "bool" }],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_setPause",
+        "type": "bool"
+      }
+    ],
     "name": "setPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -247,21 +441,39 @@
   {
     "inputs": [],
     "name": "startedQuizOne",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "startedQuizTwo",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "timeLimit",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   }

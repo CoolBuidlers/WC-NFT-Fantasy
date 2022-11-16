@@ -1,8 +1,6 @@
 [
   {
-    "inputs": [
-      { "internalType": "address", "name": "_setAddress", "type": "address" }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -28,7 +26,7 @@
         "type": "uint256"
       }
     ],
-    "name": "MintTeamsTwoLevelUp",
+    "name": "LevelUp",
     "type": "event"
   },
   {
@@ -47,13 +45,21 @@
         "type": "address"
       }
     ],
-    "name": "MintTeamsTwoOwnershipTransferred",
+    "name": "OwnershipTransferred",
     "type": "event"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "string", "name": "_teamName", "type": "string" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamName",
+        "type": "string"
+      }
     ],
     "name": "claimLevel3Nft",
     "outputs": [],
@@ -62,8 +68,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_predictor", "type": "address" },
-      { "internalType": "string", "name": "_teamName", "type": "string" }
+      {
+        "internalType": "address",
+        "name": "_predictor",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_teamName",
+        "type": "string"
+      }
     ],
     "name": "claimLevel4Nft",
     "outputs": [],
@@ -73,28 +87,52 @@
   {
     "inputs": [],
     "name": "evolveAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "mintTeamsOneAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "predictionAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -106,30 +144,24 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "setAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
-      { "internalType": "address", "name": "_evolveAddress", "type": "address" }
-    ],
-    "name": "setEvolveAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_predictionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_evolveAddress",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "_mintTeamsOneAddress",
         "type": "address"
       }
     ],
-    "name": "setMintTeamOneAddress",
+    "name": "setAddresses",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -138,18 +170,9 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_predictionAddress",
+        "name": "newOwner",
         "type": "address"
       }
-    ],
-    "name": "setPredictionAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
     "outputs": [],
