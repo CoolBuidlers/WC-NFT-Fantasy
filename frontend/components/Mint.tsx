@@ -158,7 +158,15 @@ const Mint = () => {
         </div>
       );
     } else if (hasUserMintedExtraTwo) {
-      return <div>Thank you for minting!</div>;
+      return (
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-4xl tracking-wider py-48 md:px-10 px-2"
+        >
+          Thank you for minting!
+        </div>
+      );
     } else if (!hasUserMintedExtraTwo && currentPhase === 1) {
       return (
         <section className="">
