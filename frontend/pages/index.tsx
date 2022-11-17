@@ -10,9 +10,9 @@ import { CircleLoader } from "react-spinners";
 import { useState, useEffect } from "react";
 import { NextSeo } from "next-seo";
 const Home: NextPage = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setLoading(true);
+    setLoading(false);
     setTimeout(() => {
       setLoading(false);
     }, 3500);
