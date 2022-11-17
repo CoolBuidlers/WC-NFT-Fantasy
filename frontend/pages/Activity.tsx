@@ -10,10 +10,12 @@ import { NextSeo } from "next-seo";
 import { worldCupQuery } from "../fetchSubgraphs/subgraphs";
 import { useProvider } from "wagmi";
 import { ethers } from "ethers";
+import GamesTable from "../components/GamesTable";
 
 const Activity = () => {
   // Holds all the activity that get's tracked
   const [predictors, setPredictors] = useState<any[]>();
+  const [swaps, setSwaps] = useState<any[]>();
   const [balance, setBalance] = useState<string>();
 
   // Loading State
@@ -46,6 +48,20 @@ const Activity = () => {
 
     const data = await worldCupQuery(activityQuery);
     setPredictors(data.predictors);
+
+    // The GraphQL query to run
+    const swapsQuery = `
+        query swapsQuery {
+          swaps {
+            id
+            first
+            second
+          }
+        }
+      `;
+
+    const temp = await worldCupQuery(swapsQuery);
+    setSwaps(temp.swaps);
   };
 
   // Run this when component loads
@@ -95,11 +111,18 @@ const Activity = () => {
             up as well as the round and the current Teams
           </p>
           <div className="py-10 space-y-24">
-            <LevelSection predictors={predictors} />
-            <div className="w-full flex justify-center items-center">
+            <LevelSection predictors={predictors} swaps={swaps} />
+            <div className="flex flex-col space-y-8 justify-center items-center">
+              <h1 className="text-5xl text-white">Players Status</h1>
               <PlayersTable predictors={predictors} />
             </div>
-            <div className="flex justify-center items-center">
+
+            <div className="flex flex-col space-y-8 justify-center items-center">
+              <h1 className="text-5xl text-white">Game Status</h1>
+              <GamesTable />
+            </div>
+            <div className="flex flex-col space-y-8 justify-center items-center">
+              <h1 className="text-5xl text-white">All Countries</h1>
               <ActivityTable />
             </div>
           </div>
