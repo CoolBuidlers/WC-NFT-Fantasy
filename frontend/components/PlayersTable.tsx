@@ -2,7 +2,7 @@ import React from "react";
 
 const PlayersTable = ({ predictors }: any) => {
   return (
-    <div className="overflow-x-auto relative shadow-2xl shadow-[#8900F2] border-x-[6px] border-t-[6px] border-b-[4px] border-white mx-5 h-[60vh] overflow-y-auto w-11/12">
+    <div className="overflow-x-auto  relative shadow-2xl shadow-[#8900F2] border-x-[6px] border-t-[6px] border-b-[4px] border-white  min-h-[60vh] overflow-y-auto md:w-[80vw] w-[90vw]">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-lg text-white uppercase bg-[#8900F2] text-center">
           <tr>

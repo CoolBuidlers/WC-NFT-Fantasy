@@ -96,7 +96,7 @@ const Activity = () => {
                 className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
               ></div>
-              <h2 className="relative border-4 p-12 border-[#D100D1] py-2 text-white text-3xl lg:text-5xl">
+              <h2 className="relative border-4 p-12 border-[#D100D1] py-2 text-white text-3xl lg:text-5xl text-center mx-4">
                 PRIZE POOL OF{" "}
                 {parseInt(balance as string).toString() ?? "ALOT OF"} ETH
               </h2>
@@ -110,19 +110,19 @@ const Activity = () => {
             with the prize pot, the address of the players and their levelling
             up as well as the round and the current Teams
           </p>
-          <div className="py-10 space-y-24">
+          <div className="py-10 px-6 ">
             <LevelSection predictors={predictors} swaps={swaps} />
             <div className="flex flex-col space-y-8 justify-center items-center">
               <h1 className="text-5xl text-white">Players Status</h1>
               <PlayersTable predictors={predictors} />
             </div>
 
-            <div className="flex flex-col space-y-8 justify-center items-center">
-              <h1 className="text-5xl text-white">Game Status</h1>
+            <div className="flex flex-col space-y-8 justify-center items-center ">
+              <h1 className="text-5xl text-white mt-32">Game Status</h1>
               <GamesTable />
             </div>
             <div className="flex flex-col space-y-8 justify-center items-center">
-              <h1 className="text-5xl text-white">All Countries</h1>
+              <h1 className="text-5xl text-white mt-32">All Countries</h1>
               <ActivityTable />
             </div>
           </div>

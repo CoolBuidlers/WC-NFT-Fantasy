@@ -1,7 +1,7 @@
 const LevelSection = ({ predictors, swaps }: any) => {
   // Makes an entry where time a user mints a token
   return (
-    <div className="border-4 border-white sm:mx-20 mb-20 py-10 shadow-2xl shadow-[#8900F2] overflow-y-scroll h-[35vh]">
+    <div className="border-4 border-white py-4 mx-auto max-w-[90vw] md:max-w-[80vw] mb-32 shadow-2xl shadow-[#8900F2] overflow-y-scroll overflow-x-scroll ">
       {swaps &&
         swaps.length > 0 &&
         swaps.map((swap: any) => {

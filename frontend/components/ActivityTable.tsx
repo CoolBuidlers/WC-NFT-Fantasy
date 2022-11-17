@@ -30,7 +30,7 @@ const ActivityTable = () => {
   }, []);
 
   return (
-    <div className="overflow-x-auto w-11/12 relative shadow-2xl shadow-[#8900F2] h-[60vh] overflow-y-auto border-x-[6px] border-t-[6px] border-b-[4px] border-white mx-5">
+    <div className="overflow-x-auto relative shadow-2xl shadow-[#8900F2] min-h-[60vh] overflow-y-auto border-x-[6px] border-t-[6px] border-b-[4px] border-white md:w-[80vw] w-[90vw]">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-lg text-white uppercase bg-[#8900F2] text-center">
           <tr>
