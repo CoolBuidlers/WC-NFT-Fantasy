@@ -621,4 +621,4 @@ export const MINTTEAMS_ABI = [
     type: "function",
   },
 ];
-export const MINTTEAMS_ADDRESS = "0x57fe6CaC5809F713aaDC96Bd442c4424A4bC5b09";
+export const MINTTEAMS_ADDRESS = "0x6Fb04295443410dAadd2f2C5acc124b76387A62f";
