@@ -22,7 +22,7 @@ contract MintTeamsOne is ERC1155, Ownable {
       _;
    }
 
-    constructor()  ERC1155("") {
+    constructor()  ERC1155("https://ipfs.io/ipfs/QmUjYrUq3wvhbrH3tXYpSXe8MkS3D4NoxZjfRkN6aXVirr/{id}.json") {
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
