@@ -98,6 +98,7 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
+      console.log("isTop32", isTop32)
       return isTop32;
     } catch (error: any) {
       console.log(error);
@@ -212,6 +213,7 @@ const AvailableTeams = () => {
       prediction = await PredictionContract.getPrediction(address, 1);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
       setTeamName1(teamName);
+      console.log("TeamOne", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -222,6 +224,7 @@ const AvailableTeams = () => {
       prediction = await PredictionContract.getPrediction(address, 2);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
       setTeamName2(teamName);
+      console.log("TeamTwo", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -286,10 +289,10 @@ const AvailableTeams = () => {
     // console.log(response.json())
     // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/rounds/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
     // console.log(response.json())
-    const response = await fetch(
-      "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
-    );
-    console.log(response.json());
+    // const response = await fetch(
+    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
+    // );
+    // console.log(response.json());
   };
 
   useEffect(() => {
@@ -301,6 +304,7 @@ const AvailableTeams = () => {
     haveYouChangedOrder();
     getCurrentPhase();
     fetchEvolveStatus();
+    fetchData()
   }, [address]);
   return (
     <div>
@@ -708,17 +712,15 @@ const AvailableTeams = () => {
           </div>
         </div>
       </div>
-      {(!changedTop32 && top32) ||
-        (!changedTop16 && top16) ||
-        (!changedTop8 && top8) ||
-        (!changedTop4 && top4 && (
-          <a
-            className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
-            onClick={() => setShowModal(!showModal)}
-          >
-            Swap Prediction Order
-          </a>
-        ))}
+      {((!changedTop32 && top32) ||
+        (!changedTop16 && top16) || (!changedTop8 && top8) || (!changedTop4 && top4)) && (
+        <a
+          className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
+          onClick={() => setShowModal(!showModal)}
+        >
+          Swap Prediction Order
+        </a>
+      )}
       {currentPhase === 5 && (
         <a
           className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
