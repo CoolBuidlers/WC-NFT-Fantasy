@@ -229,11 +229,11 @@ export const getPrediction = async (
 
   // const userMinted = await haveYouMinted(predictor, provider);
   // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-  for (let i = 1; i < 5; i++) {
-    prediction = await PredictionContract.getPrediction(address, number);
-    teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-    console.log("TeamName", teamName);
-  }
+  // for (let i = 1; i < 7; i++) {
+  //   prediction = await PredictionContract.getPrediction(address, number);
+  //   teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
+  //   console.log("TeamName", teamName);
+  // }
   prediction = await PredictionContract.getPrediction(address, number);
   teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
   let balance;
@@ -282,10 +282,10 @@ export const getPrediction = async (
   }
 
   if ((teamName = "England")) {
-    balance = await MintTeamsContract.balanceOf(address, 19);
-    if (balance.toNumber() > 0) return England4;
-    balance = await MintTeamsContract.balanceOf(address, 18);
-    if (balance.toNumber() > 0) return England3;
+    // balance = await MintTeamsContract.balanceOf(address, 19);
+    // if (balance.toNumber() > 0) return England4;
+    // balance = await MintTeamsContract.balanceOf(address, 18);
+    // if (balance.toNumber() > 0) return England3;
     balance = await MintTeamsContract.balanceOf(address, 17);
     if (balance.toNumber() > 0) return England2;
     balance = await MintTeamsContract.balanceOf(address, 16);
@@ -293,10 +293,10 @@ export const getPrediction = async (
   }
 
   if ((teamName = "IR Iran")) {
-    balance = await MintTeamsContract.balanceOf(address, 23);
-    if (balance.toNumber() > 0) return Iran4;
-    balance = await MintTeamsContract.balanceOf(address, 22);
-    if (balance.toNumber() > 0) return Iran3;
+    // balance = await MintTeamsContract.balanceOf(address, 23);
+    // if (balance.toNumber() > 0) return Iran4;
+    // balance = await MintTeamsContract.balanceOf(address, 22);
+    // if (balance.toNumber() > 0) return Iran3;
     balance = await MintTeamsContract.balanceOf(address, 21);
     if (balance.toNumber() > 0) return Iran2;
     balance = await MintTeamsContract.balanceOf(address, 20);
@@ -304,10 +304,10 @@ export const getPrediction = async (
   }
 
   if ((teamName = "USA")) {
-    balance = await MintTeamsContract.balanceOf(address, 27);
-    if (balance.toNumber() > 0) return USA4;
-    balance = await MintTeamsContract.balanceOf(address, 26);
-    if (balance.toNumber() > 0) return USA3;
+    // balance = await MintTeamsContract.balanceOf(address, 27);
+    // if (balance.toNumber() > 0) return USA4;
+    // balance = await MintTeamsContract.balanceOf(address, 26);
+    // if (balance.toNumber() > 0) return USA3;
     balance = await MintTeamsContract.balanceOf(address, 25);
     if (balance.toNumber() > 0) return USA2;
     balance = await MintTeamsContract.balanceOf(address, 24);

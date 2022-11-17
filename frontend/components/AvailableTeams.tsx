@@ -98,6 +98,7 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
+      console.log("isTop32", isTop32)
       return isTop32;
     } catch (error: any) {
       console.log(error);
@@ -212,6 +213,7 @@ const AvailableTeams = () => {
       prediction = await PredictionContract.getPrediction(address, 1);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
       setTeamName1(teamName);
+      console.log("TeamOne", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -222,6 +224,7 @@ const AvailableTeams = () => {
       prediction = await PredictionContract.getPrediction(address, 2);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
       setTeamName2(teamName);
+      console.log("TeamTwo", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -286,10 +289,10 @@ const AvailableTeams = () => {
     // console.log(response.json())
     // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/rounds/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
     // console.log(response.json())
-    const response = await fetch(
-      "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
-    );
-    console.log(response.json());
+    // const response = await fetch(
+    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
+    // );
+    // console.log(response.json());
   };
 
   useEffect(() => {
@@ -301,18 +304,19 @@ const AvailableTeams = () => {
     haveYouChangedOrder();
     getCurrentPhase();
     fetchEvolveStatus();
+    fetchData()
   }, [address]);
   return (
     <div>
       <div>
         <div className="flex items-center justify-between px-5 py-5">
-          <h3 className="text-3xl lg:text-4xl text-white">Available Teams</h3>
+          <h3 className="text-xl lg:text-4xl text-white">Available Teams</h3>
           <div className="relative inline-block">
             <div
               className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
             ></div>
-            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-xl lg:text-4xl">
               Flippable: {hasUserMintedExtraTwo && !top8 ? 6 : 4}
             </h1>
           </div>
@@ -336,12 +340,13 @@ const AvailableTeams = () => {
         (!userEvolveArray3[5] && top8)) && (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
-        from-white via-green-200 to-green-400
-        animate-text text-xl md:text-4xl tracking-wider py-24 md:px-10 px-2"
+        from-shade-2 via-shade-4 to-shade-8 flex justify-center items-center 
+         text-xl md:text-4xl tracking-wider py-24 animate-bounce"
         >
-          Evolving Now Available
+          <p> Evolving Now Available </p>
         </div>
       )}
+
       <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 pt-4">
         <Transition
           show={showModal}
@@ -608,8 +613,10 @@ const AvailableTeams = () => {
             <Image src={Netherlands} className="text-[26rem]" />
           </div>
         </div>
-        <div className="max-w-[350px]">
-          <div className="relative flex justify-center my-4 ">
+        {hasUserMintedExtraTwo && (
+          <>
+           <div className="max-w-[350px]">
+                  <div className="relative flex justify-center my-4 ">
             <Transition
               show={true}
               enter="transform transition duration-[500ms] ease-in"
@@ -706,19 +713,20 @@ const AvailableTeams = () => {
             <Image src={USA} />
           </div>
         </div>
+        </>
+        )}
+  
       </div>
-      {(!changedTop32 && top32) ||
-        (!changedTop16 && top16) ||
-        (!changedTop8 && top8) ||
-        (!changedTop4 && top4 && (
-          <a
-            className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
-            onClick={() => setShowModal(!showModal)}
-          >
-            Swap Prediction Order
-          </a>
-        ))}
-      {currentPhase === 5 && (
+      {((!changedTop32 && top32) ||
+        (!changedTop16 && top16) || (!changedTop8 && top8) || (!changedTop4 && top4)) && (
+        <a
+          className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
+          onClick={() => setShowModal(!showModal)}
+        >
+          Swap Prediction Order
+        </a>
+      )}
+      {currentPhase === 2 && (
         <a
           className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
           onClick={() => depositPoints(signer)}

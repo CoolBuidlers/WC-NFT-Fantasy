@@ -1,4 +1,5 @@
-export const NUMBER_GUESSING_GAME_CONTRACT_ADDRESS: string = "0xf979BbAf5105C636F6e680c984733Ac6EBbde444"; //paste the contract address here
+export const NUMBER_GUESSING_GAME_CONTRACT_ADDRESS: string =
+  "0x797278Fbeb893F38982425c728C137bb37608cFD"; //paste the contract address here
 export const NUMBER_GUESSING_GAME_ABI = [
   {
     "inputs": [
@@ -463,7 +464,8 @@ export const NUMBER_GUESSING_GAME_ABI = [
     "type": "function"
   }
 ];
-export const QUIZ_GAME_CONTRACT_ADDRESS: string = "0xE14177A99C1261a8f91026EF4e0772E3a92E0918";
+export const QUIZ_GAME_CONTRACT_ADDRESS: string =
+  "0x89A26b5904b2CB58fE49A7Dd885D411d1d44DE5c";
 export const QUIZ_GAME_CONTRACT_ABI = [
     {
       "inputs": [],

@@ -158,7 +158,15 @@ const Mint = () => {
         </div>
       );
     } else if (hasUserMintedExtraTwo) {
-      return <div>Thank you for minting!</div>;
+      return (
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-4xl tracking-wider py-48 md:px-10 px-2"
+        >
+          Thank you for minting!
+        </div>
+      );
     } else if (!hasUserMintedExtraTwo && currentPhase === 1) {
       return (
         <section className="">
@@ -176,14 +184,14 @@ const Mint = () => {
 
           <div className="flex items-center flex-wrap justify-center">
             {teamSelection[0] !== undefined && (
-              <button
-                className="text-white play-btn"
+              <a
+                className="text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded "
                 onClick={() => {
                   setTeamSelection([]), setInputSelection([]);
                 }}
               >
-                delete selections
-              </button>
+                Delete selections
+              </a>
             )}
             {teamSelection[0] !== undefined && (
               <div className="max-w-[350px]">
@@ -196,19 +204,16 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-blue-600 text-white rounded-full">
                       1
                     </span>
                   </Transition>
                 </div>
-                <Image
-                  src={teamSelection[0]}
-                  width={500}
-                  height={500}
-                  alt="Img"
-                />
+                <div className="w-[250px]">
+                  <Image src={teamSelection[0]} layout="responsive" />
+                </div>
               </div>
             )}
             {teamSelection[1] !== undefined && (
@@ -222,19 +227,16 @@ const Mint = () => {
                     leave="transform duration-200 transition ease-in-out"
                     leaveFrom="opacity-100 rotate-0 scale-100 "
                     leaveTo="opacity-0 scale-95 "
-                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2 ml-4 "
+                    className=" max-w-[250px] mx-auto absolute -top-2 left-1/2 transform -translate-x-1/2  "
                   >
                     <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-purple-900 text-white rounded-full">
                       2
                     </span>
                   </Transition>
                 </div>
-                <Image
-                  src={teamSelection[1]}
-                  width={500}
-                  height={500}
-                  alt="Img"
-                />
+                <div className="w-[250px]">
+                  <Image src={teamSelection[1]} layout="responsive" />
+                </div>
               </div>
             )}
           </div>

@@ -51,13 +51,15 @@ const ChosenTeams = () => {
 
   const fetchTeams = async () => {
     try {
-      const predictionArray: any = [];
-      for (let i = 1; i < 4; i++) {
-        const team = await getPrediction(i, provider, address);
-        !predictionArray.includes(team) && predictionArray.push(team);
-      }
-      setThisArray(predictionArray);
-      console.log(predictionArray);
+     
+        let team = await getPrediction(1, provider, address);
+         setTeam1(team)
+        team = await getPrediction(2, provider, address);
+        setTeam2(team);
+         team = await getPrediction(3, provider, address);
+         setTeam3(team);
+          team = await getPrediction(4, provider, address);
+          setTeam4(team);
     } catch (error: any) {
       console.log(error);
     }
@@ -81,13 +83,13 @@ const ChosenTeams = () => {
           </h3>
         </div>
         <div className="flex items-center justify-between px-5 py-5">
-          <h3 className="text-3xl lg:text-4xl text-white">Selected Teams</h3>
+          <h3 className="text-xl lg:text-4xl text-white">Selected Teams</h3>
           <div className="relative inline-block">
             <div
               className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
             ></div>
-            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-xl lg:text-4xl">
               Points: {userPoints}
             </h1>
           </div>
@@ -176,7 +178,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={team4} className="text-[26rem]" />
+            <Image src={Netherlands} className="text-[26rem]" />
           </div>
         </div>
       </div>
