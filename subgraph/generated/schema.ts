@@ -254,6 +254,56 @@ export class Team extends Entity {
   }
 }
 
+export class Levelup extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Levelup entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type Levelup must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Levelup", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static load(id: Bytes): Levelup | null {
+    return changetype<Levelup | null>(store.get("Levelup", id.toHexString()));
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    return value!.toBytes();
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get prevLevel(): BigInt {
+    let value = this.get("prevLevel");
+    return value!.toBigInt();
+  }
+
+  set prevLevel(value: BigInt) {
+    this.set("prevLevel", Value.fromBigInt(value));
+  }
+
+  get nowLevel(): BigInt {
+    let value = this.get("nowLevel");
+    return value!.toBigInt();
+  }
+
+  set nowLevel(value: BigInt) {
+    this.set("nowLevel", Value.fromBigInt(value));
+  }
+}
+
 export class Predictor extends Entity {
   constructor(id: Bytes) {
     super();

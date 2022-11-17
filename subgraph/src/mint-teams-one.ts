@@ -1,9 +1,9 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, store } from "@graphprotocol/graph-ts";
 import {
   LevelUp as LevelUpEvent,
   Mint as MintEvent,
 } from "../generated/MintTeamsOne/MintTeamsOne";
-import { Predictor, Team } from "../generated/schema";
+import { Levelup, Team } from "../generated/schema";
 
 /*
 event Mint(address account, uint indexed tokenId, uint256 indexed level, bytes teamName, bool firstFourMinted);
@@ -11,15 +11,37 @@ event LevelUp(address account, uint indexed tokenId, uint256 indexed level);
 */
 
 export function handleLevelUp(event: LevelUpEvent): void {
-  // Getting the Token Object
-  let team = Team.load(event.params.tokenId.toString());
+  // Getting the Previous Token Object
+  let id = event.params.tokenId.toI32();
+  id = id - 1;
+  let oldTeam = Team.load(id.toString());
 
-  if (team) {
-    // Level Up the relevant token
-    team.level = event.params.level;
+  if (oldTeam) {
+    // Create a new Token
+    let newTeam = new Team(event.params.tokenId.toString());
+
+    // Set Details
+    newTeam.level = event.params.level;
+    newTeam.team = oldTeam.team;
+    newTeam.predictor = event.params.account;
 
     // Save
-    team.save();
+    newTeam.save();
+
+    // Removing old Team
+    store.remove("Team", oldTeam.id);
+
+    // Create a new levelup object in schema
+    let levelup = new Levelup(event.params.account);
+
+    // Set the Previous Level
+    levelup.prevLevel = new BigInt(id);
+
+    // Set the Current Level
+    levelup.nowLevel = event.params.tokenId;
+
+    // Save
+    levelup.save();
   }
 }
 

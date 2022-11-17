@@ -45,10 +45,24 @@ type Round @entity {
 
 # Each NFT Tokens
 type Team @entity {
+  "token id"
   id: String!
+  "level of token"
   level: BigInt!
+  "team id"
   team: Bytes!
+  "predictor address"
   predictor: Predictor!
+}
+
+# Tracks each Level Up Moment
+type Levelup @entity {
+  "account address"
+  id: Bytes!
+  "previous level"
+  prevLevel: BigInt!
+  "current level"
+  nowLevel: BigInt!
 }
 
 # All Predictors
