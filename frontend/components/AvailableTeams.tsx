@@ -306,13 +306,13 @@ const AvailableTeams = () => {
     <div>
       <div>
         <div className="flex items-center justify-between px-5 py-5">
-          <h3 className="text-3xl lg:text-4xl text-white">Available Teams</h3>
+          <h3 className="text-xl lg:text-4xl text-white">Available Teams</h3>
           <div className="relative inline-block">
             <div
               className="absolute -inset-1 bg-[#D100D1]
               to-[#F20089] blur-xl"
             ></div>
-            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
+            <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-xl lg:text-4xl">
               Flippable: {hasUserMintedExtraTwo && !top8 ? 6 : 4}
             </h1>
           </div>
@@ -336,12 +336,13 @@ const AvailableTeams = () => {
         (!userEvolveArray3[5] && top8)) && (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
-        from-white via-green-200 to-green-400
-        animate-text text-xl md:text-4xl tracking-wider py-24 md:px-10 px-2"
+        from-shade-2 via-shade-4 to-shade-8 flex justify-center items-center 
+         text-xl md:text-4xl tracking-wider py-24 animate-bounce"
         >
-          Evolving Now Available
+          <p> Evolving Now Available </p>
         </div>
       )}
+
       <div className="flex justify-center flex-wrap gap-x-3 gap-y-2 pt-4">
         <Transition
           show={showModal}
