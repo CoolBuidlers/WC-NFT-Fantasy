@@ -262,4 +262,4 @@ export const EVOLVE_ABI = [
     type: "function",
   },
 ]
-export const EVOLVE_ADDRESS = "0xA2F311d286da7F6E567f8A9D6a2DB234c6e0cc61";
+export const EVOLVE_ADDRESS = "0x2C706ea3FB07bE5992AaE05AC7c1a6F1D5B3f6F6";

@@ -613,8 +613,10 @@ const AvailableTeams = () => {
             <Image src={Netherlands} className="text-[26rem]" />
           </div>
         </div>
-        <div className="max-w-[350px]">
-          <div className="relative flex justify-center my-4 ">
+        {hasUserMintedExtraTwo && (
+          <>
+           <div className="max-w-[350px]">
+                  <div className="relative flex justify-center my-4 ">
             <Transition
               show={true}
               enter="transform transition duration-[500ms] ease-in"
@@ -711,6 +713,9 @@ const AvailableTeams = () => {
             <Image src={USA} />
           </div>
         </div>
+        </>
+        )}
+  
       </div>
       {((!changedTop32 && top32) ||
         (!changedTop16 && top16) || (!changedTop8 && top8) || (!changedTop4 && top4)) && (
@@ -721,7 +726,7 @@ const AvailableTeams = () => {
           Swap Prediction Order
         </a>
       )}
-      {currentPhase === 5 && (
+      {currentPhase === 2 && (
         <a
           className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
           onClick={() => depositPoints(signer)}
