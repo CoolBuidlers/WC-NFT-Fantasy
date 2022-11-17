@@ -12,10 +12,9 @@ import { NextSeo } from "next-seo";
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setLoading(false);
     setTimeout(() => {
       setLoading(false);
-    }, 3500);
+    }, 1000);
   }, []);
   return (
     <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
