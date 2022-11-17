@@ -1,36 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Qatar from "../public/NFTs/0.png";
-import Ecuador from "../public/NFTs/4.png";
-import Senegal from "../public/NFTs/8.png";
-import Netherlands from "../public/NFTs/12.png";
-import England from "../public/NFTs/16.png";
-import Iran from "../public/NFTs/20.png";
-import USA from "../public/NFTs/24.png";
-import Wales from "../public/NFTs/28.png";
-import Argentina from "../public/NFTs/32.png";
-import SaudiArabia from "../public/NFTs/36.png";
-import Mexico from "../public/NFTs/40.png";
-import Poland from "../public/NFTs/44.png";
-import France from "../public/NFTs/48.png";
-import Australia from "../public/NFTs/52.png";
-import Denmark from "../public/NFTs/56.png";
-import Tunisia from "../public/NFTs/60.png";
-import Spain from "../public/NFTs/64.png";
-import CostaRica from "../public/NFTs/68.png";
-import Germany from "../public/NFTs/72.png";
-import Japan from "../public/NFTs/76.png";
-import Belgium from "../public/NFTs/80.png";
-import Canada from "../public/NFTs/84.png";
-import Morocco from "../public/NFTs/88.png";
-import Croatia from "../public/NFTs/92.png";
-import Brazil from "../public/NFTs/96.png";
-import Serbia from "../public/NFTs/100.png";
-import Switzerland from "../public/NFTs/104.png";
-import Cameroon from "../public/NFTs/108.png";
-import Portugal from "../public/NFTs/112.png";
-import Ghana from "../public/NFTs/116.png";
-import Uruguay from "../public/NFTs/120.png";
-import Korea from "../public/NFTs/124.png";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { MdClose } from "react-icons/md";
@@ -51,8 +19,20 @@ import {
   evolveToLevel4,
 } from "../contractInteractions/FunctionCalls";
 import { ethers, Contract } from "ethers";
+import { getPrediction } from "./PossibleTeams";
 
 const AvailableTeams = () => {
+const { address } = useAccount();
+   const query = `query MyQuery {
+  predictors(where:{id: "${address}"}) {
+    tokens(orderBy:id) {
+      id
+      team
+      level
+    }
+  }
+}`;
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [teamSwapOne, setTeamSwapOne] = useState<string>("");
   const [teamSwapTwo, setTeamSwapTwo] = useState<string>("");
@@ -73,12 +53,12 @@ const AvailableTeams = () => {
   const [isClicked4, setIsClicked4] = useState(false);
   const [isClicked5, setIsClicked5] = useState(false);
   const [isClicked6, setIsClicked6] = useState(false);
-  const [teamName1, setTeamName1] = useState<string>("");
-  const [teamName2, setTeamName2] = useState<string>("");
-  const [teamName3, setTeamName3] = useState<string>("");
-  const [teamName4, setTeamName4] = useState<string>("");
-  const [teamName5, setTeamName5] = useState<string>("");
-  const [teamName6, setTeamName6] = useState<string>("");
+  const [teamName1, setTeamName1] = useState<any>();
+  const [teamName2, setTeamName2] = useState<any>();
+  const [teamName3, setTeamName3] = useState<any>();
+  const [teamName4, setTeamName4] = useState<any>();
+  const [teamName5, setTeamName5] = useState<any>();
+  const [teamName6, setTeamName6] = useState<any>();
 
   const [userEvolveArray2, setUserEvolveArray2] = useState<boolean[]>([]);
 
@@ -88,7 +68,6 @@ const AvailableTeams = () => {
 
   const { data: signer } = useSigner();
   const provider = useProvider();
-  const { address } = useAccount();
   const isItTop32 = async () => {
     try {
       const PredictionContract = new Contract(
@@ -98,7 +77,6 @@ const AvailableTeams = () => {
       );
       const isTop32 = await PredictionContract.isPhase32();
       setTop32(isTop32);
-      console.log("isTop32", isTop32)
       return isTop32;
     } catch (error: any) {
       console.log(error);
@@ -112,7 +90,6 @@ const AvailableTeams = () => {
         provider
       );
       const isTop16 = await PredictionContract.isPhase16();
-      console.log("Hello", isTop16);
       setTop16(isTop16);
       return isTop16;
     } catch (error: any) {
@@ -201,7 +178,11 @@ const AvailableTeams = () => {
   };
 
   const fetchEvolveStatus = async () => {
-    let evolvedLevel2, evolvedLevel3, evolvedLevel4, prediction, teamName;
+    let evolvedLevel2,
+      evolvedLevel3,
+      evolvedLevel4,
+      prediction,
+      teamName
     try {
       const EvolveContract = new Contract(EVOLVE_ADDRESS, EVOLVE_ABI, provider);
       const PredictionContract = new Contract(
@@ -212,8 +193,6 @@ const AvailableTeams = () => {
       const userMintedExtraTwo = await haveYouMintedExtraTwo();
       prediction = await PredictionContract.getPrediction(address, 1);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName1(teamName);
-      console.log("TeamOne", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -223,8 +202,6 @@ const AvailableTeams = () => {
 
       prediction = await PredictionContract.getPrediction(address, 2);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName2(teamName);
-      console.log("TeamTwo", teamName)
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -234,7 +211,6 @@ const AvailableTeams = () => {
 
       prediction = await PredictionContract.getPrediction(address, 3);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName3(teamName);
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -244,7 +220,6 @@ const AvailableTeams = () => {
 
       prediction = await PredictionContract.getPrediction(address, 4);
       teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-      setTeamName4(teamName);
       evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
       evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
       evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -258,7 +233,6 @@ const AvailableTeams = () => {
           ["string"],
           prediction
         )[0];
-        setTeamName5(teamName);
         evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
         evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
         evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -271,7 +245,6 @@ const AvailableTeams = () => {
           ["string"],
           prediction
         )[0];
-        setTeamName6(teamName);
         evolvedLevel2 = await EvolveContract.haveYouEvolvedAlready(teamName, 2);
         evolvedLevel3 = await EvolveContract.haveYouEvolvedAlready(teamName, 3);
         evolvedLevel4 = await EvolveContract.haveYouEvolvedAlready(teamName, 4);
@@ -284,15 +257,20 @@ const AvailableTeams = () => {
     }
   };
 
-  const fetchData = async () => {
-    // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/leagues/732?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
-    // console.log(response.json())
-    // const response = await fetch("https://soccer.sportmonks.com/api/v2.0/rounds/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0")
-    // console.log(response.json())
-    // const response = await fetch(
-    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=TNXNDewLkubGU3dWgVhvsFhAKNn3j8zcTQrdzJWZDV0ZxzdXC1jRSgAxf0c0"
-    // );
-    // console.log(response.json());
+  const fetchTeam = async () => {
+    let team;
+    team = await getPrediction(query, 1, provider, address);
+    setTeamName1(team);
+    team = await getPrediction(query, 2, provider, address);
+    setTeamName2(team);
+    team = await getPrediction(query, 3, provider, address);
+    setTeamName3(team);
+    team = await getPrediction(query, 4, provider, address);
+    setTeamName4(team);
+    team = await getPrediction(query, 5, provider, address);
+    setTeamName5(team);
+     team = await getPrediction(query, 6, provider, address);
+     setTeamName6(team);
   };
 
   useEffect(() => {
@@ -304,7 +282,7 @@ const AvailableTeams = () => {
     haveYouChangedOrder();
     getCurrentPhase();
     fetchEvolveStatus();
-    fetchData()
+    fetchTeam();
   }, [address]);
   return (
     <div>
@@ -317,7 +295,7 @@ const AvailableTeams = () => {
               to-[#F20089] blur-xl"
             ></div>
             <h1 className="relative border-t-4 border-[#D100D1] py-2 text-white text-xl lg:text-4xl">
-              Flippable: {hasUserMintedExtraTwo && !top8 ? 6 : 4}
+              Flippable: {hasUserMintedExtraTwo && (!top8 || !top4) ? 6 : 4}
             </h1>
           </div>
         </div>
@@ -456,7 +434,7 @@ const AvailableTeams = () => {
                 </a>
               </Transition>
             )}
-            <Image src={Qatar} />
+            <Image src={teamName1} />
           </div>
         </div>
 
@@ -508,7 +486,7 @@ const AvailableTeams = () => {
                 </a>
               </Transition>
             )}
-            <Image src={Ecuador} className="text-[26rem]" />
+            <Image src={teamName2} className="text-[26rem]" />
           </div>
         </div>
         <div className="max-w-[350px]">
@@ -559,7 +537,7 @@ const AvailableTeams = () => {
                 </a>
               </Transition>
             )}
-            <Image src={Senegal} className="text-[26rem]" />
+            <Image src={teamName3} className="text-[26rem]" />
           </div>
         </div>
         <div className="max-w-[350px] relative">
@@ -610,115 +588,116 @@ const AvailableTeams = () => {
                 </a>
               </Transition>
             )}
-            <Image src={Netherlands} className="text-[26rem]" />
+            <Image src={teamName4} className="text-[26rem]" />
           </div>
         </div>
         {hasUserMintedExtraTwo && (
           <>
-           <div className="max-w-[350px]">
-                  <div className="relative flex justify-center my-4 ">
-            <Transition
-              show={true}
-              enter="transform transition duration-[500ms] ease-in"
-              enterFrom="opacity-0 rotate-[180deg] scale-0"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
-            >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-green-600 text-white rounded-full">
-                5
-              </span>
-            </Transition>
-          </div>
-          <div
-            className="max-w-[250px] relative cursor-pointer"
-            onClick={() => {
-              setIsClicked5(!isClicked5);
-            }}
-          >
-            {((!userEvolveArray2[4] && top16) ||
-              (!userEvolveArray3[4] && top8)) && (
-              <Transition
-                show={isClicked5}
-                enter="transform transition duration-[1000ms] "
-                enterFrom="opacity-0  -rotate-[360deg] scale-0"
-                enterTo="opacity-100 rotate-0 scale-100"
-                leave="transform duration-[1000ms] transition ease-in-out"
-                leaveFrom="opacity-100 scale-100 "
-                leaveTo="opacity-0 scale-0  rotate-[360deg]"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
-              >
-                <a
-                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
-                  onClick={() => {
-                    top16 && evolveToLevel2(teamName5, signer);
-                    top8 && evolveToLevel3(teamName5, signer);
-                  }}
+            <div className="max-w-[350px]">
+              <div className="relative flex justify-center my-4 ">
+                <Transition
+                  show={true}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
                 >
-                  Evolve
-                </a>
-              </Transition>
-            )}
-            <Image src={Iran} />
-          </div>
-        </div>
-        <div className="max-w-[350px]">
-          <div className="relative flex justify-center my-4 ">
-            <Transition
-              show={true}
-              enter="transform transition duration-[500ms] ease-in"
-              enterFrom="opacity-0 rotate-[180deg] scale-0"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-              className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
-            >
-              <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-cyan-800 text-white rounded-full">
-                6
-              </span>
-            </Transition>
-          </div>
-          <div
-            className="max-w-[250px] relative cursor-pointer"
-            onClick={() => {
-              setIsClicked6(!isClicked6);
-            }}
-          >
-            {((!userEvolveArray2[5] && top16) ||
-              (!userEvolveArray3[5] && top8)) && (
-              <Transition
-                show={isClicked6}
-                enter="transform transition duration-[1000ms] "
-                enterFrom="opacity-0  -rotate-[360deg] scale-0"
-                enterTo="opacity-100 rotate-0 scale-100"
-                leave="transform duration-[1000ms] transition ease-in-out"
-                leaveFrom="opacity-100 scale-100 "
-                leaveTo="opacity-0 scale-0  rotate-[360deg]"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer bg-green-600 text-white rounded-full">
+                    5
+                  </span>
+                </Transition>
+              </div>
+              <div
+                className="max-w-[250px] relative cursor-pointer"
+                onClick={() => {
+                  setIsClicked5(!isClicked5);
+                }}
               >
-                <a
-                  className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
-                  onClick={() => {
-                    top16 && evolveToLevel2(teamName6, signer);
-                    top8 && evolveToLevel3(teamName6, signer);
-                  }}
+                {((!userEvolveArray2[4] && top16) ||
+                  (!userEvolveArray3[4] && top8)) && (
+                  <Transition
+                    show={isClicked5}
+                    enter="transform transition duration-[1000ms] "
+                    enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                    enterTo="opacity-100 rotate-0 scale-100"
+                    leave="transform duration-[1000ms] transition ease-in-out"
+                    leaveFrom="opacity-100 scale-100 "
+                    leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+                  >
+                    <a
+                      className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                      onClick={() => {
+                        top16 && evolveToLevel2(teamName5, signer);
+                        top8 && evolveToLevel3(teamName5, signer);
+                      }}
+                    >
+                      Evolve
+                    </a>
+                  </Transition>
+                )}
+                <Image src={teamName5} />
+              </div>
+            </div>
+            <div className="max-w-[350px]">
+              <div className="relative flex justify-center my-4 ">
+                <Transition
+                  show={true}
+                  enter="transform transition duration-[500ms] ease-in"
+                  enterFrom="opacity-0 rotate-[180deg] scale-0"
+                  enterTo="opacity-100 rotate-0 scale-100"
+                  leave="transform duration-200 transition ease-in-out"
+                  leaveFrom="opacity-100 rotate-0 scale-100 "
+                  leaveTo="opacity-0 scale-95 "
+                  className="absolute -top-2 left-1/2 transform -translate-x-1/2 "
                 >
-                  Evolve
-                </a>
-              </Transition>
-            )}
-            <Image src={USA} />
-          </div>
-        </div>
-        </>
+                  <span className="w-12 h-12 flex justify-center items-center text-2xl cursor-pointer  bg-cyan-800 text-white rounded-full">
+                    6
+                  </span>
+                </Transition>
+              </div>
+              <div
+                className="max-w-[250px] relative cursor-pointer"
+                onClick={() => {
+                  setIsClicked6(!isClicked6);
+                }}
+              >
+                {((!userEvolveArray2[5] && top16) ||
+                  (!userEvolveArray3[5] && top8)) && (
+                  <Transition
+                    show={isClicked6}
+                    enter="transform transition duration-[1000ms] "
+                    enterFrom="opacity-0  -rotate-[360deg] scale-0"
+                    enterTo="opacity-100 rotate-0 scale-100"
+                    leave="transform duration-[1000ms] transition ease-in-out"
+                    leaveFrom="opacity-100 scale-100 "
+                    leaveTo="opacity-0 scale-0  rotate-[360deg]"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[230px] h-[356px] bg-shade-10 rounded-xl  z-40 flex justify-center items-center"
+                  >
+                    <a
+                      className="text-white z-50 w-40 h-20 flex justify-center items-center play-btn cursor-pointer animate-text"
+                      onClick={() => {
+                        top16 && evolveToLevel2(teamName6, signer);
+                        top8 && evolveToLevel3(teamName6, signer);
+                      }}
+                    >
+                      Evolve
+                    </a>
+                  </Transition>
+                )}
+                <Image src={teamName6} />
+              </div>
+            </div>
+          </>
         )}
-  
       </div>
       {((!changedTop32 && top32) ||
-        (!changedTop16 && top16) || (!changedTop8 && top8) || (!changedTop4 && top4)) && (
+        (!changedTop16 && top16) ||
+        (!changedTop8 && top8) ||
+        (!changedTop4 && top4)) && (
         <a
           className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
           onClick={() => setShowModal(!showModal)}

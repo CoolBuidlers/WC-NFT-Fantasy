@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
-import Qatar from "../public/NFTs/0.png";
-import Ecuador from "../public/NFTs/4.png";
-import Senegal from "../public/NFTs/8.png";
-import Netherlands from "../public/NFTs/12.png";
-import USA from "../public/NFTs/24.png";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { Transition } from "@headlessui/react";
-import { useSigner, useProvider, useAccount } from "wagmi";
+import {useProvider, useAccount } from "wagmi";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { ethers, Contract } from "ethers";
 import { getPrediction } from "./PossibleTeams";
 
 const ChosenTeams = () => {
+  const { address } = useAccount();
+  const query = `query MyQuery {
+  predictors(where:{id: "${address}"}) {
+    tokens(orderBy:id) {
+      id
+      team
+      level
+    }
+  }
+}`;
   const [userPoints, setUserPoints] = useState<number>(0);
   const [userBalance, setUserBalance] = useState<string>("0");
   const provider = useProvider();
-  const { address } = useAccount();
   const [team1, setTeam1] = useState<any>();
   const [team2, setTeam2] = useState<any>();
   const [team3, setTeam3] = useState<any>();
   const [team4, setTeam4] = useState<any>();
-  const [thisArray, setThisArray] = useState();
 
   const getUserPoints = async (): Promise<void> => {
     try {
@@ -51,14 +54,13 @@ const ChosenTeams = () => {
 
   const fetchTeams = async () => {
     try {
-     
-        let team = await getPrediction(1, provider, address);
+        let team = await getPrediction(query, 1, provider, address);
          setTeam1(team)
-        team = await getPrediction(2, provider, address);
+        team = await getPrediction(query, 2, provider, address);
         setTeam2(team);
-         team = await getPrediction(3, provider, address);
+         team = await getPrediction(query, 3, provider, address);
          setTeam3(team);
-          team = await getPrediction(4, provider, address);
+          team = await getPrediction(query, 4, provider, address);
           setTeam4(team);
     } catch (error: any) {
       console.log(error);
@@ -178,7 +180,7 @@ const ChosenTeams = () => {
             </Transition>
           </div>
           <div className="max-w-[250px]">
-            <Image src={Netherlands} className="text-[26rem]" />
+            <Image src={team4} className="text-[26rem]" />
           </div>
         </div>
       </div>

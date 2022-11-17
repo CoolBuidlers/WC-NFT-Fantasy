@@ -126,1594 +126,350 @@ import Korea from "../public/NFTs/124.png";
 import Korea2 from "../public/NFTs/125.png";
 import Korea3 from "../public/NFTs/126.png";
 import Korea4 from "../public/NFTs/127.png";
-import { BytesLike, Contract, ethers } from "ethers";
+import {Contract, ethers } from "ethers";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
-import { MINTTEAMS_ADDRESS, MINTTEAMS_ABI } from "../contractInfo/MintTeamsOne";
-import { StaticImageData } from "next/image";
-`query MyQuery {
-  tokens(
-    where: {user: "0xbB7b095D779621cC4db92CdebD08f0a87FBA1D40"}
-    orderBy: position
-  ) {
-    teamId
-    level
-    predictors {
-      id
-    }
-  }
-}`;
-
-//address, teamName
-
-const haveYouMinted = async (predictor: string, provider: any) => {
-  try {
-    const PredictionContract = new Contract(
-      PREDICTION_ADDRESS,
-      PREDICTION_ABI,
-      provider
-    );
-    const hasUserMinted: boolean = await PredictionContract.haveYouMinted(
-      predictor
-    );
-    return hasUserMinted;
-  } catch (error: any) {
-    console.log(error);
-  }
-};
-
-const haveYouMintedExtraTwo = async (predictor: string, provider: any) => {
-  try {
-    const PredictionContract = new Contract(
-      PREDICTION_ADDRESS,
-      PREDICTION_ABI,
-      provider
-    );
-    const hasUserMintedExtraTwo = await PredictionContract.mintedExtraTwo(
-      predictor
-    );
-    return hasUserMintedExtraTwo;
-  } catch (error: any) {
-    console.log(error);
-  }
-};
-
-export const getQatar = async (provider: any, address: string | undefined) => {
-  const PredictionContract = new Contract(
-    PREDICTION_ADDRESS,
-    PREDICTION_ABI,
-    provider
-  );
-
-  const MintTeamsContract = new Contract(
-    MINTTEAMS_ADDRESS,
-    MINTTEAMS_ABI,
-    provider
-  );
-
-  let prediction, teamName;
-  const predictionArray: any = [];
-  // const userMinted = await haveYouMinted(predictor, provider);
-  // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-
-  prediction = await PredictionContract.getPrediction(address, 1);
-  teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  let balance;
-
-  balance = await MintTeamsContract.balanceOf(address, 3);
-  if (balance.toNumber() > 0) return Qatar4;
-  balance = await MintTeamsContract.balanceOf(address, 2);
-  if (balance.toNumber() > 0) return Qatar3;
-  balance = await MintTeamsContract.balanceOf(address, 1);
-  if (balance.toNumber() > 0) return Qatar2;
-  balance = await MintTeamsContract.balanceOf(address, 0);
-  if (balance.toNumber() > 0) return Qatar;
-};
+import { worldCupQuery } from "../fetchSubgraphs/subgraphs";
 
 export const getPrediction = async (
+  query:any,
   number: number,
   provider: any,
   address: string | undefined
 ) => {
+
   const PredictionContract = new Contract(
     PREDICTION_ADDRESS,
     PREDICTION_ABI,
     provider
   );
 
-  const MintTeamsContract = new Contract(
-    MINTTEAMS_ADDRESS,
-    MINTTEAMS_ABI,
-    provider
-  );
-  let prediction, teamName;
-
-  // const userMinted = await haveYouMinted(predictor, provider);
-  // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-  // for (let i = 1; i < 7; i++) {
-  //   prediction = await PredictionContract.getPrediction(address, number);
-  //   teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  //   console.log("TeamName", teamName);
-  // }
-  prediction = await PredictionContract.getPrediction(address, number);
-  teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  let balance;
-  if (teamName === "Qatar") {
-    balance = await MintTeamsContract.balanceOf(address, 3);
-    if (balance.toNumber() > 0) return Qatar4;
-    balance = await MintTeamsContract.balanceOf(address, 2);
-    if (balance.toNumber() > 0) return Qatar3;
-    balance = await MintTeamsContract.balanceOf(address, 1);
-    if (balance.toNumber() > 0) return Qatar2;
-    balance = await MintTeamsContract.balanceOf(address, 0);
-    if (balance.toNumber() > 0) return Qatar;
-  }
-
-  if (teamName === "Ecuador") {
-    balance = await MintTeamsContract.balanceOf(address, 7);
-    if (balance.toNumber() > 0) return Ecuador4;
-    balance = await MintTeamsContract.balanceOf(address, 6);
-    if (balance.toNumber() > 0) return Ecuador3;
-    balance = await MintTeamsContract.balanceOf(address, 5);
-    if (balance.toNumber() > 0) return Ecuador2;
-    balance = await MintTeamsContract.balanceOf(address, 4);
-    if (balance.toNumber() > 0) return Ecuador;
-  }
-
-  if ((teamName = "Senegal")) {
-    balance = await MintTeamsContract.balanceOf(address, 11);
-    if (balance.toNumber() > 0) return Senegal4;
-    balance = await MintTeamsContract.balanceOf(address, 10);
-    if (balance.toNumber() > 0) return Senegal3;
-    balance = await MintTeamsContract.balanceOf(address, 9);
-    if (balance.toNumber() > 0) return Senegal2;
-    balance = await MintTeamsContract.balanceOf(address, 8);
-    if (balance.toNumber() > 0) return Senegal;
-  }
-
-  if ((teamName = "Netherlands")) {
-    balance = await MintTeamsContract.balanceOf(address, 15);
-    if (balance.toNumber() > 0) return Netherlands4;
-    balance = await MintTeamsContract.balanceOf(address, 14);
-    if (balance.toNumber() > 0) return Netherlands3;
-    balance = await MintTeamsContract.balanceOf(address, 13);
-    if (balance.toNumber() > 0) return Netherlands2;
-    balance = await MintTeamsContract.balanceOf(address, 12);
-    if (balance.toNumber() > 0) return Netherlands;
-  }
-
-  if ((teamName = "England")) {
-    // balance = await MintTeamsContract.balanceOf(address, 19);
-    // if (balance.toNumber() > 0) return England4;
-    // balance = await MintTeamsContract.balanceOf(address, 18);
-    // if (balance.toNumber() > 0) return England3;
-    balance = await MintTeamsContract.balanceOf(address, 17);
-    if (balance.toNumber() > 0) return England2;
-    balance = await MintTeamsContract.balanceOf(address, 16);
-    if (balance.toNumber() > 0) return England;
-  }
-
-  if ((teamName = "IR Iran")) {
-    // balance = await MintTeamsContract.balanceOf(address, 23);
-    // if (balance.toNumber() > 0) return Iran4;
-    // balance = await MintTeamsContract.balanceOf(address, 22);
-    // if (balance.toNumber() > 0) return Iran3;
-    balance = await MintTeamsContract.balanceOf(address, 21);
-    if (balance.toNumber() > 0) return Iran2;
-    balance = await MintTeamsContract.balanceOf(address, 20);
-    if (balance.toNumber() > 0) return Iran;
-  }
-
-  if ((teamName = "USA")) {
-    // balance = await MintTeamsContract.balanceOf(address, 27);
-    // if (balance.toNumber() > 0) return USA4;
-    // balance = await MintTeamsContract.balanceOf(address, 26);
-    // if (balance.toNumber() > 0) return USA3;
-    balance = await MintTeamsContract.balanceOf(address, 25);
-    if (balance.toNumber() > 0) return USA2;
-    balance = await MintTeamsContract.balanceOf(address, 24);
-    if (balance.toNumber() > 0) return USA;
-  }
-
-  if ((teamName = "Wales")) {
-    balance = await MintTeamsContract.balanceOf(address, 31);
-    if (balance.toNumber() > 0) return Wales4;
-    balance = await MintTeamsContract.balanceOf(address, 30);
-    if (balance.toNumber() > 0) return Wales3;
-    balance = await MintTeamsContract.balanceOf(address, 29);
-    if (balance.toNumber() > 0) return Wales2;
-    balance = await MintTeamsContract.balanceOf(address, 28);
-    if (balance.toNumber() > 0) return Wales;
-  }
-
-  if ((teamName = "Argentina")) {
-    balance = await MintTeamsContract.balanceOf(address, 35);
-    if (balance.toNumber() > 0) return Argentina4;
-    balance = await MintTeamsContract.balanceOf(address, 34);
-    if (balance.toNumber() > 0) return Argentina3;
-    balance = await MintTeamsContract.balanceOf(address, 33);
-    if (balance.toNumber() > 0) return Argentina2;
-    balance = await MintTeamsContract.balanceOf(address, 32);
-    if (balance.toNumber() > 0) return Argentina;
-  }
-
-  if ((teamName = "Saudi Arabia")) {
-    balance = await MintTeamsContract.balanceOf(address, 39);
-    if (balance.toNumber() > 0) return SaudiArabia4;
-    balance = await MintTeamsContract.balanceOf(address, 38);
-    if (balance.toNumber() > 0) return SaudiArabia3;
-    balance = await MintTeamsContract.balanceOf(address, 37);
-    if (balance.toNumber() > 0) return SaudiArabia2;
-    balance = await MintTeamsContract.balanceOf(address, 36);
-    if (balance.toNumber() > 0) return SaudiArabia;
-  }
-
-  if ((teamName = "Mexico")) {
-    balance = await MintTeamsContract.balanceOf(address, 43);
-    if (balance.toNumber() > 0) return Mexico4;
-    balance = await MintTeamsContract.balanceOf(address, 42);
-    if (balance.toNumber() > 0) return Mexico3;
-    balance = await MintTeamsContract.balanceOf(address, 41);
-    if (balance.toNumber() > 0) return Mexico2;
-    balance = await MintTeamsContract.balanceOf(address, 40);
-    if (balance.toNumber() > 0) return Mexico;
-  }
-
-  if ((teamName = "Poland")) {
-    balance = await MintTeamsContract.balanceOf(address, 47);
-    if (balance.toNumber() > 0) return Poland4;
-    balance = await MintTeamsContract.balanceOf(address, 46);
-    if (balance.toNumber() > 0) return Poland3;
-    balance = await MintTeamsContract.balanceOf(address, 45);
-    if (balance.toNumber() > 0) return Poland2;
-    balance = await MintTeamsContract.balanceOf(address, 44);
-    if (balance.toNumber() > 0) return Poland;
-  }
-
-  if ((teamName = "France")) {
-    balance = await MintTeamsContract.balanceOf(address, 51);
-    if (balance.toNumber() > 0) return France4;
-    balance = await MintTeamsContract.balanceOf(address, 50);
-    if (balance.toNumber() > 0) return France3;
-    balance = await MintTeamsContract.balanceOf(address, 49);
-    if (balance.toNumber() > 0) return France2;
-    balance = await MintTeamsContract.balanceOf(address, 48);
-    if (balance.toNumber() > 0) return France;
-  }
-
-  if ((teamName = "Australia")) {
-    balance = await MintTeamsContract.balanceOf(address, 55);
-    if (balance.toNumber() > 0) return Australia4;
-    balance = await MintTeamsContract.balanceOf(address, 54);
-    if (balance.toNumber() > 0) return Australia3;
-    balance = await MintTeamsContract.balanceOf(address, 53);
-    if (balance.toNumber() > 0) return Australia2;
-    balance = await MintTeamsContract.balanceOf(address, 52);
-    if (balance.toNumber() > 0) return Australia;
-  }
-
-  if ((teamName = "Denmark")) {
-    balance = await MintTeamsContract.balanceOf(address, 59);
-    if (balance.toNumber() > 0) return Denmark4;
-    balance = await MintTeamsContract.balanceOf(address, 58);
-    if (balance.toNumber() > 0) return Denmark3;
-    balance = await MintTeamsContract.balanceOf(address, 57);
-    if (balance.toNumber() > 0) return Denmark2;
-    balance = await MintTeamsContract.balanceOf(address, 56);
-    if (balance.toNumber() > 0) return Denmark;
-  }
-
-  if ((teamName = "Tunisia")) {
-    balance = await MintTeamsContract.balanceOf(address, 63);
-    if (balance.toNumber() > 0) return Tunisia4;
-    balance = await MintTeamsContract.balanceOf(address, 62);
-    if (balance.toNumber() > 0) return Tunisia3;
-    balance = await MintTeamsContract.balanceOf(address, 61);
-    if (balance.toNumber() > 0) return Tunisia2;
-    balance = await MintTeamsContract.balanceOf(address, 60);
-    if (balance.toNumber() > 0) return Tunisia;
-  }
-
-  if ((teamName = "Spain")) {
-    balance = await MintTeamsContract.balanceOf(address, 67);
-    if (balance.toNumber() > 0) return Spain4;
-    balance = await MintTeamsContract.balanceOf(address, 66);
-    if (balance.toNumber() > 0) return Spain3;
-    balance = await MintTeamsContract.balanceOf(address, 65);
-    if (balance.toNumber() > 0) return Spain2;
-    balance = await MintTeamsContract.balanceOf(address, 64);
-    if (balance.toNumber() > 0) return Spain;
-  }
-
-  if ((teamName = "Costa Rica")) {
-    balance = await MintTeamsContract.balanceOf(address, 71);
-    if (balance.toNumber() > 0) return CostaRica4;
-    balance = await MintTeamsContract.balanceOf(address, 70);
-    if (balance.toNumber() > 0) return CostaRica3;
-    balance = await MintTeamsContract.balanceOf(address, 69);
-    if (balance.toNumber() > 0) return CostaRica2;
-    balance = await MintTeamsContract.balanceOf(address, 68);
-    if (balance.toNumber() > 0) return CostaRica;
-  }
-
-  if ((teamName = "Germany")) {
-    balance = await MintTeamsContract.balanceOf(address, 75);
-    if (balance.toNumber() > 0) return Germany4;
-    balance = await MintTeamsContract.balanceOf(address, 74);
-    if (balance.toNumber() > 0) return Germany3;
-    balance = await MintTeamsContract.balanceOf(address, 73);
-    if (balance.toNumber() > 0) return Germany2;
-    balance = await MintTeamsContract.balanceOf(address, 72);
-    if (balance.toNumber() > 0) return Germany;
-  }
-
-  if ((teamName = "Japan")) {
-    balance = await MintTeamsContract.balanceOf(address, 79);
-    if (balance.toNumber() > 0) return Japan4;
-    balance = await MintTeamsContract.balanceOf(address, 78);
-    if (balance.toNumber() > 0) return Japan3;
-    balance = await MintTeamsContract.balanceOf(address, 77);
-    if (balance.toNumber() > 0) return Japan2;
-    balance = await MintTeamsContract.balanceOf(address, 76);
-    if (balance.toNumber() > 0) return Japan;
-  }
-
-  if ((teamName = "Belgium")) {
-    balance = await MintTeamsContract.balanceOf(address, 83);
-    if (balance.toNumber() > 0) return Belgium4;
-    balance = await MintTeamsContract.balanceOf(address, 82);
-    if (balance.toNumber() > 0) return Belgium3;
-    balance = await MintTeamsContract.balanceOf(address, 81);
-    if (balance.toNumber() > 0) return Belgium2;
-    balance = await MintTeamsContract.balanceOf(address, 80);
-    if (balance.toNumber() > 0) return Belgium;
-  }
-
-  if ((teamName = "Canada")) {
-    balance = await MintTeamsContract.balanceOf(address, 87);
-    if (balance.toNumber() > 0) return Canada4;
-    balance = await MintTeamsContract.balanceOf(address, 86);
-    if (balance.toNumber() > 0) return Canada3;
-    balance = await MintTeamsContract.balanceOf(address, 85);
-    if (balance.toNumber() > 0) return Canada2;
-    balance = await MintTeamsContract.balanceOf(address, 84);
-    if (balance.toNumber() > 0) return Canada;
-  }
-
-  if ((teamName = "Morocco")) {
-    balance = await MintTeamsContract.balanceOf(address, 91);
-    if (balance.toNumber() > 0) return Morocco4;
-    balance = await MintTeamsContract.balanceOf(address, 90);
-    if (balance.toNumber() > 0) return Morocco3;
-    balance = await MintTeamsContract.balanceOf(address, 89);
-    if (balance.toNumber() > 0) return Morocco2;
-    balance = await MintTeamsContract.balanceOf(address, 88);
-    if (balance.toNumber() > 0) return Morocco;
-  }
-
-  if ((teamName = "Croatia")) {
-    balance = await MintTeamsContract.balanceOf(address, 95);
-    if (balance.toNumber() > 0) return Croatia4;
-    balance = await MintTeamsContract.balanceOf(address, 94);
-    if (balance.toNumber() > 0) return Croatia3;
-    balance = await MintTeamsContract.balanceOf(address, 93);
-    if (balance.toNumber() > 0) return Croatia2;
-    balance = await MintTeamsContract.balanceOf(address, 92);
-    if (balance.toNumber() > 0) return Croatia;
-  }
-
-  if ((teamName = "Brazil")) {
-    balance = await MintTeamsContract.balanceOf(address, 99);
-    if (balance.toNumber() > 0) return Brazil4;
-    balance = await MintTeamsContract.balanceOf(address, 98);
-    if (balance.toNumber() > 0) return Brazil3;
-    balance = await MintTeamsContract.balanceOf(address, 97);
-    if (balance.toNumber() > 0) return Brazil2;
-    balance = await MintTeamsContract.balanceOf(address, 96);
-    if (balance.toNumber() > 0) return Brazil;
-  }
-
-  if ((teamName = "Serbia")) {
-    balance = await MintTeamsContract.balanceOf(address, 103);
-    if (balance.toNumber() > 0) return Serbia4;
-    balance = await MintTeamsContract.balanceOf(address, 102);
-    if (balance.toNumber() > 0) return Serbia3;
-    balance = await MintTeamsContract.balanceOf(address, 101);
-    if (balance.toNumber() > 0) return Serbia2;
-    balance = await MintTeamsContract.balanceOf(address, 100);
-    if (balance.toNumber() > 0) return Serbia;
-  }
-
-  if ((teamName = "Switzerland")) {
-    balance = await MintTeamsContract.balanceOf(address, 107);
-    if (balance.toNumber() > 0) return Switzerland4;
-    balance = await MintTeamsContract.balanceOf(address, 106);
-    if (balance.toNumber() > 0) return Switzerland3;
-    balance = await MintTeamsContract.balanceOf(address, 105);
-    if (balance.toNumber() > 0) return Switzerland2;
-    balance = await MintTeamsContract.balanceOf(address, 104);
-    if (balance.toNumber() > 0) return Switzerland;
-  }
-
-  if ((teamName = "Cameroon")) {
-    balance = await MintTeamsContract.balanceOf(address, 111);
-    if (balance.toNumber() > 0) return Cameroon4;
-    balance = await MintTeamsContract.balanceOf(address, 110);
-    if (balance.toNumber() > 0) return Cameroon3;
-    balance = await MintTeamsContract.balanceOf(address, 109);
-    if (balance.toNumber() > 0) return Cameroon2;
-    balance = await MintTeamsContract.balanceOf(address, 108);
-    if (balance.toNumber() > 0) return Cameroon;
-  }
-
-  if ((teamName = "Portugal")) {
-    balance = await MintTeamsContract.balanceOf(address, 115);
-    if (balance.toNumber() > 0) return Portugal4;
-    balance = await MintTeamsContract.balanceOf(address, 114);
-    if (balance.toNumber() > 0) return Portugal3;
-    balance = await MintTeamsContract.balanceOf(address, 113);
-    if (balance.toNumber() > 0) return Portugal2;
-    balance = await MintTeamsContract.balanceOf(address, 112);
-    if (balance.toNumber() > 0) return Portugal;
-  }
-
-  if ((teamName = "Ghana")) {
-    balance = await MintTeamsContract.balanceOf(address, 119);
-    if (balance.toNumber() > 0) return Ghana4;
-    balance = await MintTeamsContract.balanceOf(address, 118);
-    if (balance.toNumber() > 0) return Ghana3;
-    balance = await MintTeamsContract.balanceOf(address, 117);
-    if (balance.toNumber() > 0) return Ghana2;
-    balance = await MintTeamsContract.balanceOf(address, 116);
-    if (balance.toNumber() > 0) return Ghana;
-  }
-
-  if ((teamName = "Uruguay")) {
-    balance = await MintTeamsContract.balanceOf(address, 123);
-    if (balance.toNumber() > 0) return Uruguay4;
-    balance = await MintTeamsContract.balanceOf(address, 122);
-    if (balance.toNumber() > 0) return Uruguay3;
-    balance = await MintTeamsContract.balanceOf(address, 121);
-    if (balance.toNumber() > 0) return Uruguay2;
-    balance = await MintTeamsContract.balanceOf(address, 120);
-    if (balance.toNumber() > 0) return Uruguay;
-  }
-
-  if ((teamName = "Korea Republic")) {
-    balance = await MintTeamsContract.balanceOf(address, 127);
-    if (balance.toNumber() > 0) return Korea4;
-    balance = await MintTeamsContract.balanceOf(address, 126);
-    if (balance.toNumber() > 0) return Korea3;
-    balance = await MintTeamsContract.balanceOf(address, 125);
-    if (balance.toNumber() > 0) return Korea2;
-    balance = await MintTeamsContract.balanceOf(address, 124);
-    if (balance.toNumber() > 0) return Korea;
-  }
-};
-
-export const getPredictionTwo = async (
-  provider: any,
-  address: string | undefined
-) => {
-  const PredictionContract = new Contract(
-    PREDICTION_ADDRESS,
-    PREDICTION_ABI,
-    provider
-  );
-
-  const MintTeamsContract = new Contract(
-    MINTTEAMS_ADDRESS,
-    MINTTEAMS_ABI,
-    provider
-  );
-  let prediction, teamName;
-  const predictionArray: any = [];
-  // const userMinted = await haveYouMinted(predictor, provider);
-  // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-
-  prediction = await PredictionContract.getPrediction(address, 2);
-  teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  let balance;
-  if (teamName === "Qatar") {
-    balance = await MintTeamsContract.balanceOf(address, 3);
-    if (balance.toNumber() > 0) return Qatar4;
-    balance = await MintTeamsContract.balanceOf(address, 2);
-    if (balance.toNumber() > 0) return Qatar3;
-    balance = await MintTeamsContract.balanceOf(address, 1);
-    if (balance.toNumber() > 0) return Qatar2;
-    balance = await MintTeamsContract.balanceOf(address, 0);
-    if (balance.toNumber() > 0) return Qatar;
-  }
-
-  if (teamName === "Ecuador") {
-    balance = await MintTeamsContract.balanceOf(address, 7);
-    if (balance.toNumber() > 0) return Ecuador4;
-    balance = await MintTeamsContract.balanceOf(address, 6);
-    if (balance.toNumber() > 0) return Ecuador3;
-    balance = await MintTeamsContract.balanceOf(address, 5);
-    if (balance.toNumber() > 0) return Ecuador2;
-    balance = await MintTeamsContract.balanceOf(address, 4);
-    if (balance.toNumber() > 0) return Ecuador;
-  }
-
-  if ((teamName = "Senegal")) {
-    balance = await MintTeamsContract.balanceOf(address, 11);
-    if (balance.toNumber() > 0) return Senegal4;
-    balance = await MintTeamsContract.balanceOf(address, 10);
-    if (balance.toNumber() > 0) return Senegal3;
-    balance = await MintTeamsContract.balanceOf(address, 9);
-    if (balance.toNumber() > 0) return Senegal2;
-    balance = await MintTeamsContract.balanceOf(address, 8);
-    if (balance.toNumber() > 0) return Senegal;
-  }
-
-  if ((teamName = "Netherlands")) {
-    balance = await MintTeamsContract.balanceOf(address, 15);
-    if (balance.toNumber() > 0) return Netherlands4;
-    balance = await MintTeamsContract.balanceOf(address, 14);
-    if (balance.toNumber() > 0) return Netherlands3;
-    balance = await MintTeamsContract.balanceOf(address, 13);
-    if (balance.toNumber() > 0) return Netherlands2;
-    balance = await MintTeamsContract.balanceOf(address, 12);
-    if (balance.toNumber() > 0) return Netherlands;
-  }
-
-  if ((teamName = "England")) {
-    balance = await MintTeamsContract.balanceOf(address, 19);
-    if (balance.toNumber() > 0) return England4;
-    balance = await MintTeamsContract.balanceOf(address, 18);
-    if (balance.toNumber() > 0) return England3;
-    balance = await MintTeamsContract.balanceOf(address, 17);
-    if (balance.toNumber() > 0) return England2;
-    balance = await MintTeamsContract.balanceOf(address, 16);
-    if (balance.toNumber() > 0) return England;
-  }
-
-  if ((teamName = "IR Iran")) {
-    balance = await MintTeamsContract.balanceOf(address, 23);
-    if (balance.toNumber() > 0) return Iran4;
-    balance = await MintTeamsContract.balanceOf(address, 22);
-    if (balance.toNumber() > 0) return Iran3;
-    balance = await MintTeamsContract.balanceOf(address, 21);
-    if (balance.toNumber() > 0) return Iran2;
-    balance = await MintTeamsContract.balanceOf(address, 20);
-    if (balance.toNumber() > 0) return Iran;
-  }
-
-  if ((teamName = "USA")) {
-    balance = await MintTeamsContract.balanceOf(address, 27);
-    if (balance.toNumber() > 0) return USA4;
-    balance = await MintTeamsContract.balanceOf(address, 26);
-    if (balance.toNumber() > 0) return USA3;
-    balance = await MintTeamsContract.balanceOf(address, 25);
-    if (balance.toNumber() > 0) return USA2;
-    balance = await MintTeamsContract.balanceOf(address, 24);
-    if (balance.toNumber() > 0) return USA;
-  }
-
-  if ((teamName = "Wales")) {
-    balance = await MintTeamsContract.balanceOf(address, 31);
-    if (balance.toNumber() > 0) return Wales4;
-    balance = await MintTeamsContract.balanceOf(address, 30);
-    if (balance.toNumber() > 0) return Wales3;
-    balance = await MintTeamsContract.balanceOf(address, 29);
-    if (balance.toNumber() > 0) return Wales2;
-    balance = await MintTeamsContract.balanceOf(address, 28);
-    if (balance.toNumber() > 0) return Wales;
-  }
-
-  if ((teamName = "Argentina")) {
-    balance = await MintTeamsContract.balanceOf(address, 35);
-    if (balance.toNumber() > 0) return Argentina4;
-    balance = await MintTeamsContract.balanceOf(address, 34);
-    if (balance.toNumber() > 0) return Argentina3;
-    balance = await MintTeamsContract.balanceOf(address, 33);
-    if (balance.toNumber() > 0) return Argentina2;
-    balance = await MintTeamsContract.balanceOf(address, 32);
-    if (balance.toNumber() > 0) return Argentina;
-  }
-
-  if ((teamName = "Saudi Arabia")) {
-    balance = await MintTeamsContract.balanceOf(address, 39);
-    if (balance.toNumber() > 0) return SaudiArabia4;
-    balance = await MintTeamsContract.balanceOf(address, 38);
-    if (balance.toNumber() > 0) return SaudiArabia3;
-    balance = await MintTeamsContract.balanceOf(address, 37);
-    if (balance.toNumber() > 0) return SaudiArabia2;
-    balance = await MintTeamsContract.balanceOf(address, 36);
-    if (balance.toNumber() > 0) return SaudiArabia;
-  }
-
-  if ((teamName = "Mexico")) {
-    balance = await MintTeamsContract.balanceOf(address, 43);
-    if (balance.toNumber() > 0) return Mexico4;
-    balance = await MintTeamsContract.balanceOf(address, 42);
-    if (balance.toNumber() > 0) return Mexico3;
-    balance = await MintTeamsContract.balanceOf(address, 41);
-    if (balance.toNumber() > 0) return Mexico2;
-    balance = await MintTeamsContract.balanceOf(address, 40);
-    if (balance.toNumber() > 0) return Mexico;
-  }
-
-  if ((teamName = "Poland")) {
-    balance = await MintTeamsContract.balanceOf(address, 47);
-    if (balance.toNumber() > 0) return Poland4;
-    balance = await MintTeamsContract.balanceOf(address, 46);
-    if (balance.toNumber() > 0) return Poland3;
-    balance = await MintTeamsContract.balanceOf(address, 45);
-    if (balance.toNumber() > 0) return Poland2;
-    balance = await MintTeamsContract.balanceOf(address, 44);
-    if (balance.toNumber() > 0) return Poland;
-  }
-
-  if ((teamName = "France")) {
-    balance = await MintTeamsContract.balanceOf(address, 51);
-    if (balance.toNumber() > 0) return France4;
-    balance = await MintTeamsContract.balanceOf(address, 50);
-    if (balance.toNumber() > 0) return France3;
-    balance = await MintTeamsContract.balanceOf(address, 49);
-    if (balance.toNumber() > 0) return France2;
-    balance = await MintTeamsContract.balanceOf(address, 48);
-    if (balance.toNumber() > 0) return France;
-  }
-
-  if ((teamName = "Australia")) {
-    balance = await MintTeamsContract.balanceOf(address, 55);
-    if (balance.toNumber() > 0) return Australia4;
-    balance = await MintTeamsContract.balanceOf(address, 54);
-    if (balance.toNumber() > 0) return Australia3;
-    balance = await MintTeamsContract.balanceOf(address, 53);
-    if (balance.toNumber() > 0) return Australia2;
-    balance = await MintTeamsContract.balanceOf(address, 52);
-    if (balance.toNumber() > 0) return Australia;
-  }
-
-  if ((teamName = "Denmark")) {
-    balance = await MintTeamsContract.balanceOf(address, 59);
-    if (balance.toNumber() > 0) return Denmark4;
-    balance = await MintTeamsContract.balanceOf(address, 58);
-    if (balance.toNumber() > 0) return Denmark3;
-    balance = await MintTeamsContract.balanceOf(address, 57);
-    if (balance.toNumber() > 0) return Denmark2;
-    balance = await MintTeamsContract.balanceOf(address, 56);
-    if (balance.toNumber() > 0) return Denmark;
-  }
-
-  if ((teamName = "Tunisia")) {
-    balance = await MintTeamsContract.balanceOf(address, 63);
-    if (balance.toNumber() > 0) return Tunisia4;
-    balance = await MintTeamsContract.balanceOf(address, 62);
-    if (balance.toNumber() > 0) return Tunisia3;
-    balance = await MintTeamsContract.balanceOf(address, 61);
-    if (balance.toNumber() > 0) return Tunisia2;
-    balance = await MintTeamsContract.balanceOf(address, 60);
-    if (balance.toNumber() > 0) return Tunisia;
-  }
-
-  if ((teamName = "Spain")) {
-    balance = await MintTeamsContract.balanceOf(address, 67);
-    if (balance.toNumber() > 0) return Spain4;
-    balance = await MintTeamsContract.balanceOf(address, 66);
-    if (balance.toNumber() > 0) return Spain3;
-    balance = await MintTeamsContract.balanceOf(address, 65);
-    if (balance.toNumber() > 0) return Spain2;
-    balance = await MintTeamsContract.balanceOf(address, 64);
-    if (balance.toNumber() > 0) return Spain;
-  }
-
-  if ((teamName = "Costa Rica")) {
-    balance = await MintTeamsContract.balanceOf(address, 71);
-    if (balance.toNumber() > 0) return CostaRica4;
-    balance = await MintTeamsContract.balanceOf(address, 70);
-    if (balance.toNumber() > 0) return CostaRica3;
-    balance = await MintTeamsContract.balanceOf(address, 69);
-    if (balance.toNumber() > 0) return CostaRica2;
-    balance = await MintTeamsContract.balanceOf(address, 68);
-    if (balance.toNumber() > 0) return CostaRica;
-  }
-
-  if ((teamName = "Germany")) {
-    balance = await MintTeamsContract.balanceOf(address, 75);
-    if (balance.toNumber() > 0) return Germany4;
-    balance = await MintTeamsContract.balanceOf(address, 74);
-    if (balance.toNumber() > 0) return Germany3;
-    balance = await MintTeamsContract.balanceOf(address, 73);
-    if (balance.toNumber() > 0) return Germany2;
-    balance = await MintTeamsContract.balanceOf(address, 72);
-    if (balance.toNumber() > 0) return Germany;
-  }
-
-  if ((teamName = "Japan")) {
-    balance = await MintTeamsContract.balanceOf(address, 79);
-    if (balance.toNumber() > 0) return Japan4;
-    balance = await MintTeamsContract.balanceOf(address, 78);
-    if (balance.toNumber() > 0) return Japan3;
-    balance = await MintTeamsContract.balanceOf(address, 77);
-    if (balance.toNumber() > 0) return Japan2;
-    balance = await MintTeamsContract.balanceOf(address, 76);
-    if (balance.toNumber() > 0) return Japan;
-  }
-
-  if ((teamName = "Belgium")) {
-    balance = await MintTeamsContract.balanceOf(address, 83);
-    if (balance.toNumber() > 0) return Belgium4;
-    balance = await MintTeamsContract.balanceOf(address, 82);
-    if (balance.toNumber() > 0) return Belgium3;
-    balance = await MintTeamsContract.balanceOf(address, 81);
-    if (balance.toNumber() > 0) return Belgium2;
-    balance = await MintTeamsContract.balanceOf(address, 80);
-    if (balance.toNumber() > 0) return Belgium;
-  }
-
-  if ((teamName = "Canada")) {
-    balance = await MintTeamsContract.balanceOf(address, 87);
-    if (balance.toNumber() > 0) return Canada4;
-    balance = await MintTeamsContract.balanceOf(address, 86);
-    if (balance.toNumber() > 0) return Canada3;
-    balance = await MintTeamsContract.balanceOf(address, 85);
-    if (balance.toNumber() > 0) return Canada2;
-    balance = await MintTeamsContract.balanceOf(address, 84);
-    if (balance.toNumber() > 0) return Canada;
-  }
-
-  if ((teamName = "Morocco")) {
-    balance = await MintTeamsContract.balanceOf(address, 91);
-    if (balance.toNumber() > 0) return Morocco4;
-    balance = await MintTeamsContract.balanceOf(address, 90);
-    if (balance.toNumber() > 0) return Morocco3;
-    balance = await MintTeamsContract.balanceOf(address, 89);
-    if (balance.toNumber() > 0) return Morocco2;
-    balance = await MintTeamsContract.balanceOf(address, 88);
-    if (balance.toNumber() > 0) return Morocco;
-  }
-
-  if ((teamName = "Croatia")) {
-    balance = await MintTeamsContract.balanceOf(address, 95);
-    if (balance.toNumber() > 0) return Croatia4;
-    balance = await MintTeamsContract.balanceOf(address, 94);
-    if (balance.toNumber() > 0) return Croatia3;
-    balance = await MintTeamsContract.balanceOf(address, 93);
-    if (balance.toNumber() > 0) return Croatia2;
-    balance = await MintTeamsContract.balanceOf(address, 92);
-    if (balance.toNumber() > 0) return Croatia;
-  }
-
-  if ((teamName = "Brazil")) {
-    balance = await MintTeamsContract.balanceOf(address, 99);
-    if (balance.toNumber() > 0) return Brazil4;
-    balance = await MintTeamsContract.balanceOf(address, 98);
-    if (balance.toNumber() > 0) return Brazil3;
-    balance = await MintTeamsContract.balanceOf(address, 97);
-    if (balance.toNumber() > 0) return Brazil2;
-    balance = await MintTeamsContract.balanceOf(address, 96);
-    if (balance.toNumber() > 0) return Brazil;
-  }
-
-  if ((teamName = "Serbia")) {
-    balance = await MintTeamsContract.balanceOf(address, 103);
-    if (balance.toNumber() > 0) return Serbia4;
-    balance = await MintTeamsContract.balanceOf(address, 102);
-    if (balance.toNumber() > 0) return Serbia3;
-    balance = await MintTeamsContract.balanceOf(address, 101);
-    if (balance.toNumber() > 0) return Serbia2;
-    balance = await MintTeamsContract.balanceOf(address, 100);
-    if (balance.toNumber() > 0) return Serbia;
-  }
-
-  if ((teamName = "Switzerland")) {
-    balance = await MintTeamsContract.balanceOf(address, 107);
-    if (balance.toNumber() > 0) return Switzerland4;
-    balance = await MintTeamsContract.balanceOf(address, 106);
-    if (balance.toNumber() > 0) return Switzerland3;
-    balance = await MintTeamsContract.balanceOf(address, 105);
-    if (balance.toNumber() > 0) return Switzerland2;
-    balance = await MintTeamsContract.balanceOf(address, 104);
-    if (balance.toNumber() > 0) return Switzerland;
-  }
-
-  if ((teamName = "Cameroon")) {
-    balance = await MintTeamsContract.balanceOf(address, 111);
-    if (balance.toNumber() > 0) return Cameroon4;
-    balance = await MintTeamsContract.balanceOf(address, 110);
-    if (balance.toNumber() > 0) return Cameroon3;
-    balance = await MintTeamsContract.balanceOf(address, 109);
-    if (balance.toNumber() > 0) return Cameroon2;
-    balance = await MintTeamsContract.balanceOf(address, 108);
-    if (balance.toNumber() > 0) return Cameroon;
-  }
-
-  if ((teamName = "Portugal")) {
-    balance = await MintTeamsContract.balanceOf(address, 115);
-    if (balance.toNumber() > 0) return Portugal4;
-    balance = await MintTeamsContract.balanceOf(address, 114);
-    if (balance.toNumber() > 0) return Portugal3;
-    balance = await MintTeamsContract.balanceOf(address, 113);
-    if (balance.toNumber() > 0) return Portugal2;
-    balance = await MintTeamsContract.balanceOf(address, 112);
-    if (balance.toNumber() > 0) return Portugal;
-  }
-
-  if ((teamName = "Ghana")) {
-    balance = await MintTeamsContract.balanceOf(address, 119);
-    if (balance.toNumber() > 0) return Ghana4;
-    balance = await MintTeamsContract.balanceOf(address, 118);
-    if (balance.toNumber() > 0) return Ghana3;
-    balance = await MintTeamsContract.balanceOf(address, 117);
-    if (balance.toNumber() > 0) return Ghana2;
-    balance = await MintTeamsContract.balanceOf(address, 116);
-    if (balance.toNumber() > 0) return Ghana;
-  }
-
-  if ((teamName = "Uruguay")) {
-    balance = await MintTeamsContract.balanceOf(address, 123);
-    if (balance.toNumber() > 0) return Uruguay4;
-    balance = await MintTeamsContract.balanceOf(address, 122);
-    if (balance.toNumber() > 0) return Uruguay3;
-    balance = await MintTeamsContract.balanceOf(address, 121);
-    if (balance.toNumber() > 0) return Uruguay2;
-    balance = await MintTeamsContract.balanceOf(address, 120);
-    if (balance.toNumber() > 0) return Uruguay;
-  }
-
-  if ((teamName = "Korea Republic")) {
-    balance = await MintTeamsContract.balanceOf(address, 127);
-    if (balance.toNumber() > 0) return Korea4;
-    balance = await MintTeamsContract.balanceOf(address, 126);
-    if (balance.toNumber() > 0) return Korea3;
-    balance = await MintTeamsContract.balanceOf(address, 125);
-    if (balance.toNumber() > 0) return Korea2;
-    balance = await MintTeamsContract.balanceOf(address, 124);
-    if (balance.toNumber() > 0) return Korea;
-  }
-};
-
-export const getPredictionThree = async (
-  provider: any,
-  address: string | undefined
-) => {
-  const PredictionContract = new Contract(
-    PREDICTION_ADDRESS,
-    PREDICTION_ABI,
-    provider
-  );
-
-  const MintTeamsContract = new Contract(
-    MINTTEAMS_ADDRESS,
-    MINTTEAMS_ABI,
-    provider
-  );
-  let prediction, teamName;
-  const predictionArray: any = [];
-  // const userMinted = await haveYouMinted(predictor, provider);
-  // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-
-  prediction = await PredictionContract.getPrediction(address, 3);
-  teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  let balance;
-  if (teamName === "Qatar") {
-    balance = await MintTeamsContract.balanceOf(address, 3);
-    if (balance.toNumber() > 0) return Qatar4;
-    balance = await MintTeamsContract.balanceOf(address, 2);
-    if (balance.toNumber() > 0) return Qatar3;
-    balance = await MintTeamsContract.balanceOf(address, 1);
-    if (balance.toNumber() > 0) return Qatar2;
-    balance = await MintTeamsContract.balanceOf(address, 0);
-    if (balance.toNumber() > 0) return Qatar;
-  }
-
-  if (teamName === "Ecuador") {
-    balance = await MintTeamsContract.balanceOf(address, 7);
-    if (balance.toNumber() > 0) return Ecuador4;
-    balance = await MintTeamsContract.balanceOf(address, 6);
-    if (balance.toNumber() > 0) return Ecuador3;
-    balance = await MintTeamsContract.balanceOf(address, 5);
-    if (balance.toNumber() > 0) return Ecuador2;
-    balance = await MintTeamsContract.balanceOf(address, 4);
-    if (balance.toNumber() > 0) return Ecuador;
-  }
-
-  if ((teamName = "Senegal")) {
-    balance = await MintTeamsContract.balanceOf(address, 11);
-    if (balance.toNumber() > 0) return Senegal4;
-    balance = await MintTeamsContract.balanceOf(address, 10);
-    if (balance.toNumber() > 0) return Senegal3;
-    balance = await MintTeamsContract.balanceOf(address, 9);
-    if (balance.toNumber() > 0) return Senegal2;
-    balance = await MintTeamsContract.balanceOf(address, 8);
-    if (balance.toNumber() > 0) return Senegal;
-  }
-
-  if ((teamName = "Netherlands")) {
-    balance = await MintTeamsContract.balanceOf(address, 15);
-    if (balance.toNumber() > 0) return Netherlands4;
-    balance = await MintTeamsContract.balanceOf(address, 14);
-    if (balance.toNumber() > 0) return Netherlands3;
-    balance = await MintTeamsContract.balanceOf(address, 13);
-    if (balance.toNumber() > 0) return Netherlands2;
-    balance = await MintTeamsContract.balanceOf(address, 12);
-    if (balance.toNumber() > 0) return Netherlands;
-  }
-
-  if ((teamName = "England")) {
-    balance = await MintTeamsContract.balanceOf(address, 19);
-    if (balance.toNumber() > 0) return England4;
-    balance = await MintTeamsContract.balanceOf(address, 18);
-    if (balance.toNumber() > 0) return England3;
-    balance = await MintTeamsContract.balanceOf(address, 17);
-    if (balance.toNumber() > 0) return England2;
-    balance = await MintTeamsContract.balanceOf(address, 16);
-    if (balance.toNumber() > 0) return England;
-  }
-
-  if ((teamName = "IR Iran")) {
-    balance = await MintTeamsContract.balanceOf(address, 23);
-    if (balance.toNumber() > 0) return Iran4;
-    balance = await MintTeamsContract.balanceOf(address, 22);
-    if (balance.toNumber() > 0) return Iran3;
-    balance = await MintTeamsContract.balanceOf(address, 21);
-    if (balance.toNumber() > 0) return Iran2;
-    balance = await MintTeamsContract.balanceOf(address, 20);
-    if (balance.toNumber() > 0) return Iran;
-  }
-
-  if ((teamName = "USA")) {
-    balance = await MintTeamsContract.balanceOf(address, 27);
-    if (balance.toNumber() > 0) return USA4;
-    balance = await MintTeamsContract.balanceOf(address, 26);
-    if (balance.toNumber() > 0) return USA3;
-    balance = await MintTeamsContract.balanceOf(address, 25);
-    if (balance.toNumber() > 0) return USA2;
-    balance = await MintTeamsContract.balanceOf(address, 24);
-    if (balance.toNumber() > 0) return USA;
-  }
-
-  if ((teamName = "Wales")) {
-    balance = await MintTeamsContract.balanceOf(address, 31);
-    if (balance.toNumber() > 0) return Wales4;
-    balance = await MintTeamsContract.balanceOf(address, 30);
-    if (balance.toNumber() > 0) return Wales3;
-    balance = await MintTeamsContract.balanceOf(address, 29);
-    if (balance.toNumber() > 0) return Wales2;
-    balance = await MintTeamsContract.balanceOf(address, 28);
-    if (balance.toNumber() > 0) return Wales;
-  }
-
-  if ((teamName = "Argentina")) {
-    balance = await MintTeamsContract.balanceOf(address, 35);
-    if (balance.toNumber() > 0) return Argentina4;
-    balance = await MintTeamsContract.balanceOf(address, 34);
-    if (balance.toNumber() > 0) return Argentina3;
-    balance = await MintTeamsContract.balanceOf(address, 33);
-    if (balance.toNumber() > 0) return Argentina2;
-    balance = await MintTeamsContract.balanceOf(address, 32);
-    if (balance.toNumber() > 0) return Argentina;
-  }
-
-  if ((teamName = "Saudi Arabia")) {
-    balance = await MintTeamsContract.balanceOf(address, 39);
-    if (balance.toNumber() > 0) return SaudiArabia4;
-    balance = await MintTeamsContract.balanceOf(address, 38);
-    if (balance.toNumber() > 0) return SaudiArabia3;
-    balance = await MintTeamsContract.balanceOf(address, 37);
-    if (balance.toNumber() > 0) return SaudiArabia2;
-    balance = await MintTeamsContract.balanceOf(address, 36);
-    if (balance.toNumber() > 0) return SaudiArabia;
-  }
-
-  if ((teamName = "Mexico")) {
-    balance = await MintTeamsContract.balanceOf(address, 43);
-    if (balance.toNumber() > 0) return Mexico4;
-    balance = await MintTeamsContract.balanceOf(address, 42);
-    if (balance.toNumber() > 0) return Mexico3;
-    balance = await MintTeamsContract.balanceOf(address, 41);
-    if (balance.toNumber() > 0) return Mexico2;
-    balance = await MintTeamsContract.balanceOf(address, 40);
-    if (balance.toNumber() > 0) return Mexico;
-  }
-
-  if ((teamName = "Poland")) {
-    balance = await MintTeamsContract.balanceOf(address, 47);
-    if (balance.toNumber() > 0) return Poland4;
-    balance = await MintTeamsContract.balanceOf(address, 46);
-    if (balance.toNumber() > 0) return Poland3;
-    balance = await MintTeamsContract.balanceOf(address, 45);
-    if (balance.toNumber() > 0) return Poland2;
-    balance = await MintTeamsContract.balanceOf(address, 44);
-    if (balance.toNumber() > 0) return Poland;
-  }
-
-  if ((teamName = "France")) {
-    balance = await MintTeamsContract.balanceOf(address, 51);
-    if (balance.toNumber() > 0) return France4;
-    balance = await MintTeamsContract.balanceOf(address, 50);
-    if (balance.toNumber() > 0) return France3;
-    balance = await MintTeamsContract.balanceOf(address, 49);
-    if (balance.toNumber() > 0) return France2;
-    balance = await MintTeamsContract.balanceOf(address, 48);
-    if (balance.toNumber() > 0) return France;
-  }
-
-  if ((teamName = "Australia")) {
-    balance = await MintTeamsContract.balanceOf(address, 55);
-    if (balance.toNumber() > 0) return Australia4;
-    balance = await MintTeamsContract.balanceOf(address, 54);
-    if (balance.toNumber() > 0) return Australia3;
-    balance = await MintTeamsContract.balanceOf(address, 53);
-    if (balance.toNumber() > 0) return Australia2;
-    balance = await MintTeamsContract.balanceOf(address, 52);
-    if (balance.toNumber() > 0) return Australia;
-  }
-
-  if ((teamName = "Denmark")) {
-    balance = await MintTeamsContract.balanceOf(address, 59);
-    if (balance.toNumber() > 0) return Denmark4;
-    balance = await MintTeamsContract.balanceOf(address, 58);
-    if (balance.toNumber() > 0) return Denmark3;
-    balance = await MintTeamsContract.balanceOf(address, 57);
-    if (balance.toNumber() > 0) return Denmark2;
-    balance = await MintTeamsContract.balanceOf(address, 56);
-    if (balance.toNumber() > 0) return Denmark;
-  }
-
-  if ((teamName = "Tunisia")) {
-    balance = await MintTeamsContract.balanceOf(address, 63);
-    if (balance.toNumber() > 0) return Tunisia4;
-    balance = await MintTeamsContract.balanceOf(address, 62);
-    if (balance.toNumber() > 0) return Tunisia3;
-    balance = await MintTeamsContract.balanceOf(address, 61);
-    if (balance.toNumber() > 0) return Tunisia2;
-    balance = await MintTeamsContract.balanceOf(address, 60);
-    if (balance.toNumber() > 0) return Tunisia;
-  }
-
-  if ((teamName = "Spain")) {
-    balance = await MintTeamsContract.balanceOf(address, 67);
-    if (balance.toNumber() > 0) return Spain4;
-    balance = await MintTeamsContract.balanceOf(address, 66);
-    if (balance.toNumber() > 0) return Spain3;
-    balance = await MintTeamsContract.balanceOf(address, 65);
-    if (balance.toNumber() > 0) return Spain2;
-    balance = await MintTeamsContract.balanceOf(address, 64);
-    if (balance.toNumber() > 0) return Spain;
-  }
-
-  if ((teamName = "Costa Rica")) {
-    balance = await MintTeamsContract.balanceOf(address, 71);
-    if (balance.toNumber() > 0) return CostaRica4;
-    balance = await MintTeamsContract.balanceOf(address, 70);
-    if (balance.toNumber() > 0) return CostaRica3;
-    balance = await MintTeamsContract.balanceOf(address, 69);
-    if (balance.toNumber() > 0) return CostaRica2;
-    balance = await MintTeamsContract.balanceOf(address, 68);
-    if (balance.toNumber() > 0) return CostaRica;
-  }
-
-  if ((teamName = "Germany")) {
-    balance = await MintTeamsContract.balanceOf(address, 75);
-    if (balance.toNumber() > 0) return Germany4;
-    balance = await MintTeamsContract.balanceOf(address, 74);
-    if (balance.toNumber() > 0) return Germany3;
-    balance = await MintTeamsContract.balanceOf(address, 73);
-    if (balance.toNumber() > 0) return Germany2;
-    balance = await MintTeamsContract.balanceOf(address, 72);
-    if (balance.toNumber() > 0) return Germany;
-  }
-
-  if ((teamName = "Japan")) {
-    balance = await MintTeamsContract.balanceOf(address, 79);
-    if (balance.toNumber() > 0) return Japan4;
-    balance = await MintTeamsContract.balanceOf(address, 78);
-    if (balance.toNumber() > 0) return Japan3;
-    balance = await MintTeamsContract.balanceOf(address, 77);
-    if (balance.toNumber() > 0) return Japan2;
-    balance = await MintTeamsContract.balanceOf(address, 76);
-    if (balance.toNumber() > 0) return Japan;
-  }
-
-  if ((teamName = "Belgium")) {
-    balance = await MintTeamsContract.balanceOf(address, 83);
-    if (balance.toNumber() > 0) return Belgium4;
-    balance = await MintTeamsContract.balanceOf(address, 82);
-    if (balance.toNumber() > 0) return Belgium3;
-    balance = await MintTeamsContract.balanceOf(address, 81);
-    if (balance.toNumber() > 0) return Belgium2;
-    balance = await MintTeamsContract.balanceOf(address, 80);
-    if (balance.toNumber() > 0) return Belgium;
-  }
-
-  if ((teamName = "Canada")) {
-    balance = await MintTeamsContract.balanceOf(address, 87);
-    if (balance.toNumber() > 0) return Canada4;
-    balance = await MintTeamsContract.balanceOf(address, 86);
-    if (balance.toNumber() > 0) return Canada3;
-    balance = await MintTeamsContract.balanceOf(address, 85);
-    if (balance.toNumber() > 0) return Canada2;
-    balance = await MintTeamsContract.balanceOf(address, 84);
-    if (balance.toNumber() > 0) return Canada;
-  }
-
-  if ((teamName = "Morocco")) {
-    balance = await MintTeamsContract.balanceOf(address, 91);
-    if (balance.toNumber() > 0) return Morocco4;
-    balance = await MintTeamsContract.balanceOf(address, 90);
-    if (balance.toNumber() > 0) return Morocco3;
-    balance = await MintTeamsContract.balanceOf(address, 89);
-    if (balance.toNumber() > 0) return Morocco2;
-    balance = await MintTeamsContract.balanceOf(address, 88);
-    if (balance.toNumber() > 0) return Morocco;
-  }
-
-  if ((teamName = "Croatia")) {
-    balance = await MintTeamsContract.balanceOf(address, 95);
-    if (balance.toNumber() > 0) return Croatia4;
-    balance = await MintTeamsContract.balanceOf(address, 94);
-    if (balance.toNumber() > 0) return Croatia3;
-    balance = await MintTeamsContract.balanceOf(address, 93);
-    if (balance.toNumber() > 0) return Croatia2;
-    balance = await MintTeamsContract.balanceOf(address, 92);
-    if (balance.toNumber() > 0) return Croatia;
-  }
-
-  if ((teamName = "Brazil")) {
-    balance = await MintTeamsContract.balanceOf(address, 99);
-    if (balance.toNumber() > 0) return Brazil4;
-    balance = await MintTeamsContract.balanceOf(address, 98);
-    if (balance.toNumber() > 0) return Brazil3;
-    balance = await MintTeamsContract.balanceOf(address, 97);
-    if (balance.toNumber() > 0) return Brazil2;
-    balance = await MintTeamsContract.balanceOf(address, 96);
-    if (balance.toNumber() > 0) return Brazil;
-  }
-
-  if ((teamName = "Serbia")) {
-    balance = await MintTeamsContract.balanceOf(address, 103);
-    if (balance.toNumber() > 0) return Serbia4;
-    balance = await MintTeamsContract.balanceOf(address, 102);
-    if (balance.toNumber() > 0) return Serbia3;
-    balance = await MintTeamsContract.balanceOf(address, 101);
-    if (balance.toNumber() > 0) return Serbia2;
-    balance = await MintTeamsContract.balanceOf(address, 100);
-    if (balance.toNumber() > 0) return Serbia;
-  }
-
-  if ((teamName = "Switzerland")) {
-    balance = await MintTeamsContract.balanceOf(address, 107);
-    if (balance.toNumber() > 0) return Switzerland4;
-    balance = await MintTeamsContract.balanceOf(address, 106);
-    if (balance.toNumber() > 0) return Switzerland3;
-    balance = await MintTeamsContract.balanceOf(address, 105);
-    if (balance.toNumber() > 0) return Switzerland2;
-    balance = await MintTeamsContract.balanceOf(address, 104);
-    if (balance.toNumber() > 0) return Switzerland;
-  }
-
-  if ((teamName = "Cameroon")) {
-    balance = await MintTeamsContract.balanceOf(address, 111);
-    if (balance.toNumber() > 0) return Cameroon4;
-    balance = await MintTeamsContract.balanceOf(address, 110);
-    if (balance.toNumber() > 0) return Cameroon3;
-    balance = await MintTeamsContract.balanceOf(address, 109);
-    if (balance.toNumber() > 0) return Cameroon2;
-    balance = await MintTeamsContract.balanceOf(address, 108);
-    if (balance.toNumber() > 0) return Cameroon;
-  }
-
-  if ((teamName = "Portugal")) {
-    balance = await MintTeamsContract.balanceOf(address, 115);
-    if (balance.toNumber() > 0) return Portugal4;
-    balance = await MintTeamsContract.balanceOf(address, 114);
-    if (balance.toNumber() > 0) return Portugal3;
-    balance = await MintTeamsContract.balanceOf(address, 113);
-    if (balance.toNumber() > 0) return Portugal2;
-    balance = await MintTeamsContract.balanceOf(address, 112);
-    if (balance.toNumber() > 0) return Portugal;
-  }
-
-  if ((teamName = "Ghana")) {
-    balance = await MintTeamsContract.balanceOf(address, 119);
-    if (balance.toNumber() > 0) return Ghana4;
-    balance = await MintTeamsContract.balanceOf(address, 118);
-    if (balance.toNumber() > 0) return Ghana3;
-    balance = await MintTeamsContract.balanceOf(address, 117);
-    if (balance.toNumber() > 0) return Ghana2;
-    balance = await MintTeamsContract.balanceOf(address, 116);
-    if (balance.toNumber() > 0) return Ghana;
-  }
-
-  if ((teamName = "Uruguay")) {
-    balance = await MintTeamsContract.balanceOf(address, 123);
-    if (balance.toNumber() > 0) return Uruguay4;
-    balance = await MintTeamsContract.balanceOf(address, 122);
-    if (balance.toNumber() > 0) return Uruguay3;
-    balance = await MintTeamsContract.balanceOf(address, 121);
-    if (balance.toNumber() > 0) return Uruguay2;
-    balance = await MintTeamsContract.balanceOf(address, 120);
-    if (balance.toNumber() > 0) return Uruguay;
-  }
-
-  if ((teamName = "Korea Republic")) {
-    balance = await MintTeamsContract.balanceOf(address, 127);
-    if (balance.toNumber() > 0) return Korea4;
-    balance = await MintTeamsContract.balanceOf(address, 126);
-    if (balance.toNumber() > 0) return Korea3;
-    balance = await MintTeamsContract.balanceOf(address, 125);
-    if (balance.toNumber() > 0) return Korea2;
-    balance = await MintTeamsContract.balanceOf(address, 124);
-    if (balance.toNumber() > 0) return Korea;
-  }
-};
-
-export const getPredictionFour = async (
-  provider: any,
-  address: string | undefined
-) => {
-  const PredictionContract = new Contract(
-    PREDICTION_ADDRESS,
-    PREDICTION_ABI,
-    provider
-  );
-
-  const MintTeamsContract = new Contract(
-    MINTTEAMS_ADDRESS,
-    MINTTEAMS_ABI,
-    provider
-  );
-  let prediction, teamName;
-  const predictionArray: any = [];
-  // const userMinted = await haveYouMinted(predictor, provider);
-  // const mintedExtraTwo = await haveYouMintedExtraTwo(predictor, provider);
-
-  prediction = await PredictionContract.getPrediction(address, 4);
-  teamName = ethers.utils.defaultAbiCoder.decode(["string"], prediction)[0];
-  let balance;
-  if (teamName === "Qatar") {
-    balance = await MintTeamsContract.balanceOf(address, 3);
-    if (balance.toNumber() > 0) return Qatar4;
-    balance = await MintTeamsContract.balanceOf(address, 2);
-    if (balance.toNumber() > 0) return Qatar3;
-    balance = await MintTeamsContract.balanceOf(address, 1);
-    if (balance.toNumber() > 0) return Qatar2;
-    balance = await MintTeamsContract.balanceOf(address, 0);
-    if (balance.toNumber() > 0) return Qatar;
-  }
-
-  if (teamName === "Ecuador") {
-    balance = await MintTeamsContract.balanceOf(address, 7);
-    if (balance.toNumber() > 0) return Ecuador4;
-    balance = await MintTeamsContract.balanceOf(address, 6);
-    if (balance.toNumber() > 0) return Ecuador3;
-    balance = await MintTeamsContract.balanceOf(address, 5);
-    if (balance.toNumber() > 0) return Ecuador2;
-    balance = await MintTeamsContract.balanceOf(address, 4);
-    if (balance.toNumber() > 0) return Ecuador;
-  }
-
-  if ((teamName = "Senegal")) {
-    balance = await MintTeamsContract.balanceOf(address, 11);
-    if (balance.toNumber() > 0) return Senegal4;
-    balance = await MintTeamsContract.balanceOf(address, 10);
-    if (balance.toNumber() > 0) return Senegal3;
-    balance = await MintTeamsContract.balanceOf(address, 9);
-    if (balance.toNumber() > 0) return Senegal2;
-    balance = await MintTeamsContract.balanceOf(address, 8);
-    if (balance.toNumber() > 0) return Senegal;
-  }
-
-  if ((teamName = "Netherlands")) {
-    balance = await MintTeamsContract.balanceOf(address, 15);
-    if (balance.toNumber() > 0) return Netherlands4;
-    balance = await MintTeamsContract.balanceOf(address, 14);
-    if (balance.toNumber() > 0) return Netherlands3;
-    balance = await MintTeamsContract.balanceOf(address, 13);
-    if (balance.toNumber() > 0) return Netherlands2;
-    balance = await MintTeamsContract.balanceOf(address, 12);
-    if (balance.toNumber() > 0) return Netherlands;
-  }
-
-  if ((teamName = "England")) {
-    balance = await MintTeamsContract.balanceOf(address, 19);
-    if (balance.toNumber() > 0) return England4;
-    balance = await MintTeamsContract.balanceOf(address, 18);
-    if (balance.toNumber() > 0) return England3;
-    balance = await MintTeamsContract.balanceOf(address, 17);
-    if (balance.toNumber() > 0) return England2;
-    balance = await MintTeamsContract.balanceOf(address, 16);
-    if (balance.toNumber() > 0) return England;
-  }
-
-  if ((teamName = "IR Iran")) {
-    balance = await MintTeamsContract.balanceOf(address, 23);
-    if (balance.toNumber() > 0) return Iran4;
-    balance = await MintTeamsContract.balanceOf(address, 22);
-    if (balance.toNumber() > 0) return Iran3;
-    balance = await MintTeamsContract.balanceOf(address, 21);
-    if (balance.toNumber() > 0) return Iran2;
-    balance = await MintTeamsContract.balanceOf(address, 20);
-    if (balance.toNumber() > 0) return Iran;
-  }
-
-  if ((teamName = "USA")) {
-    balance = await MintTeamsContract.balanceOf(address, 27);
-    if (balance.toNumber() > 0) return USA4;
-    balance = await MintTeamsContract.balanceOf(address, 26);
-    if (balance.toNumber() > 0) return USA3;
-    balance = await MintTeamsContract.balanceOf(address, 25);
-    if (balance.toNumber() > 0) return USA2;
-    balance = await MintTeamsContract.balanceOf(address, 24);
-    if (balance.toNumber() > 0) return USA;
-  }
-
-  if ((teamName = "Wales")) {
-    balance = await MintTeamsContract.balanceOf(address, 31);
-    if (balance.toNumber() > 0) return Wales4;
-    balance = await MintTeamsContract.balanceOf(address, 30);
-    if (balance.toNumber() > 0) return Wales3;
-    balance = await MintTeamsContract.balanceOf(address, 29);
-    if (balance.toNumber() > 0) return Wales2;
-    balance = await MintTeamsContract.balanceOf(address, 28);
-    if (balance.toNumber() > 0) return Wales;
-  }
-
-  if ((teamName = "Argentina")) {
-    balance = await MintTeamsContract.balanceOf(address, 35);
-    if (balance.toNumber() > 0) return Argentina4;
-    balance = await MintTeamsContract.balanceOf(address, 34);
-    if (balance.toNumber() > 0) return Argentina3;
-    balance = await MintTeamsContract.balanceOf(address, 33);
-    if (balance.toNumber() > 0) return Argentina2;
-    balance = await MintTeamsContract.balanceOf(address, 32);
-    if (balance.toNumber() > 0) return Argentina;
-  }
-
-  if ((teamName = "Saudi Arabia")) {
-    balance = await MintTeamsContract.balanceOf(address, 39);
-    if (balance.toNumber() > 0) return SaudiArabia4;
-    balance = await MintTeamsContract.balanceOf(address, 38);
-    if (balance.toNumber() > 0) return SaudiArabia3;
-    balance = await MintTeamsContract.balanceOf(address, 37);
-    if (balance.toNumber() > 0) return SaudiArabia2;
-    balance = await MintTeamsContract.balanceOf(address, 36);
-    if (balance.toNumber() > 0) return SaudiArabia;
-  }
-
-  if ((teamName = "Mexico")) {
-    balance = await MintTeamsContract.balanceOf(address, 43);
-    if (balance.toNumber() > 0) return Mexico4;
-    balance = await MintTeamsContract.balanceOf(address, 42);
-    if (balance.toNumber() > 0) return Mexico3;
-    balance = await MintTeamsContract.balanceOf(address, 41);
-    if (balance.toNumber() > 0) return Mexico2;
-    balance = await MintTeamsContract.balanceOf(address, 40);
-    if (balance.toNumber() > 0) return Mexico;
-  }
-
-  if ((teamName = "Poland")) {
-    balance = await MintTeamsContract.balanceOf(address, 47);
-    if (balance.toNumber() > 0) return Poland4;
-    balance = await MintTeamsContract.balanceOf(address, 46);
-    if (balance.toNumber() > 0) return Poland3;
-    balance = await MintTeamsContract.balanceOf(address, 45);
-    if (balance.toNumber() > 0) return Poland2;
-    balance = await MintTeamsContract.balanceOf(address, 44);
-    if (balance.toNumber() > 0) return Poland;
-  }
-
-  if ((teamName = "France")) {
-    balance = await MintTeamsContract.balanceOf(address, 51);
-    if (balance.toNumber() > 0) return France4;
-    balance = await MintTeamsContract.balanceOf(address, 50);
-    if (balance.toNumber() > 0) return France3;
-    balance = await MintTeamsContract.balanceOf(address, 49);
-    if (balance.toNumber() > 0) return France2;
-    balance = await MintTeamsContract.balanceOf(address, 48);
-    if (balance.toNumber() > 0) return France;
-  }
-
-  if ((teamName = "Australia")) {
-    balance = await MintTeamsContract.balanceOf(address, 55);
-    if (balance.toNumber() > 0) return Australia4;
-    balance = await MintTeamsContract.balanceOf(address, 54);
-    if (balance.toNumber() > 0) return Australia3;
-    balance = await MintTeamsContract.balanceOf(address, 53);
-    if (balance.toNumber() > 0) return Australia2;
-    balance = await MintTeamsContract.balanceOf(address, 52);
-    if (balance.toNumber() > 0) return Australia;
-  }
-
-  if ((teamName = "Denmark")) {
-    balance = await MintTeamsContract.balanceOf(address, 59);
-    if (balance.toNumber() > 0) return Denmark4;
-    balance = await MintTeamsContract.balanceOf(address, 58);
-    if (balance.toNumber() > 0) return Denmark3;
-    balance = await MintTeamsContract.balanceOf(address, 57);
-    if (balance.toNumber() > 0) return Denmark2;
-    balance = await MintTeamsContract.balanceOf(address, 56);
-    if (balance.toNumber() > 0) return Denmark;
-  }
-
-  if ((teamName = "Tunisia")) {
-    balance = await MintTeamsContract.balanceOf(address, 63);
-    if (balance.toNumber() > 0) return Tunisia4;
-    balance = await MintTeamsContract.balanceOf(address, 62);
-    if (balance.toNumber() > 0) return Tunisia3;
-    balance = await MintTeamsContract.balanceOf(address, 61);
-    if (balance.toNumber() > 0) return Tunisia2;
-    balance = await MintTeamsContract.balanceOf(address, 60);
-    if (balance.toNumber() > 0) return Tunisia;
-  }
-
-  if ((teamName = "Spain")) {
-    balance = await MintTeamsContract.balanceOf(address, 67);
-    if (balance.toNumber() > 0) return Spain4;
-    balance = await MintTeamsContract.balanceOf(address, 66);
-    if (balance.toNumber() > 0) return Spain3;
-    balance = await MintTeamsContract.balanceOf(address, 65);
-    if (balance.toNumber() > 0) return Spain2;
-    balance = await MintTeamsContract.balanceOf(address, 64);
-    if (balance.toNumber() > 0) return Spain;
-  }
-
-  if ((teamName = "Costa Rica")) {
-    balance = await MintTeamsContract.balanceOf(address, 71);
-    if (balance.toNumber() > 0) return CostaRica4;
-    balance = await MintTeamsContract.balanceOf(address, 70);
-    if (balance.toNumber() > 0) return CostaRica3;
-    balance = await MintTeamsContract.balanceOf(address, 69);
-    if (balance.toNumber() > 0) return CostaRica2;
-    balance = await MintTeamsContract.balanceOf(address, 68);
-    if (balance.toNumber() > 0) return CostaRica;
-  }
-
-  if ((teamName = "Germany")) {
-    balance = await MintTeamsContract.balanceOf(address, 75);
-    if (balance.toNumber() > 0) return Germany4;
-    balance = await MintTeamsContract.balanceOf(address, 74);
-    if (balance.toNumber() > 0) return Germany3;
-    balance = await MintTeamsContract.balanceOf(address, 73);
-    if (balance.toNumber() > 0) return Germany2;
-    balance = await MintTeamsContract.balanceOf(address, 72);
-    if (balance.toNumber() > 0) return Germany;
-  }
-
-  if ((teamName = "Japan")) {
-    balance = await MintTeamsContract.balanceOf(address, 79);
-    if (balance.toNumber() > 0) return Japan4;
-    balance = await MintTeamsContract.balanceOf(address, 78);
-    if (balance.toNumber() > 0) return Japan3;
-    balance = await MintTeamsContract.balanceOf(address, 77);
-    if (balance.toNumber() > 0) return Japan2;
-    balance = await MintTeamsContract.balanceOf(address, 76);
-    if (balance.toNumber() > 0) return Japan;
-  }
-
-  if ((teamName = "Belgium")) {
-    balance = await MintTeamsContract.balanceOf(address, 83);
-    if (balance.toNumber() > 0) return Belgium4;
-    balance = await MintTeamsContract.balanceOf(address, 82);
-    if (balance.toNumber() > 0) return Belgium3;
-    balance = await MintTeamsContract.balanceOf(address, 81);
-    if (balance.toNumber() > 0) return Belgium2;
-    balance = await MintTeamsContract.balanceOf(address, 80);
-    if (balance.toNumber() > 0) return Belgium;
-  }
-
-  if ((teamName = "Canada")) {
-    balance = await MintTeamsContract.balanceOf(address, 87);
-    if (balance.toNumber() > 0) return Canada4;
-    balance = await MintTeamsContract.balanceOf(address, 86);
-    if (balance.toNumber() > 0) return Canada3;
-    balance = await MintTeamsContract.balanceOf(address, 85);
-    if (balance.toNumber() > 0) return Canada2;
-    balance = await MintTeamsContract.balanceOf(address, 84);
-    if (balance.toNumber() > 0) return Canada;
-  }
-
-  if ((teamName = "Morocco")) {
-    balance = await MintTeamsContract.balanceOf(address, 91);
-    if (balance.toNumber() > 0) return Morocco4;
-    balance = await MintTeamsContract.balanceOf(address, 90);
-    if (balance.toNumber() > 0) return Morocco3;
-    balance = await MintTeamsContract.balanceOf(address, 89);
-    if (balance.toNumber() > 0) return Morocco2;
-    balance = await MintTeamsContract.balanceOf(address, 88);
-    if (balance.toNumber() > 0) return Morocco;
-  }
-
-  if ((teamName = "Croatia")) {
-    balance = await MintTeamsContract.balanceOf(address, 95);
-    if (balance.toNumber() > 0) return Croatia4;
-    balance = await MintTeamsContract.balanceOf(address, 94);
-    if (balance.toNumber() > 0) return Croatia3;
-    balance = await MintTeamsContract.balanceOf(address, 93);
-    if (balance.toNumber() > 0) return Croatia2;
-    balance = await MintTeamsContract.balanceOf(address, 92);
-    if (balance.toNumber() > 0) return Croatia;
-  }
-
-  if ((teamName = "Brazil")) {
-    balance = await MintTeamsContract.balanceOf(address, 99);
-    if (balance.toNumber() > 0) return Brazil4;
-    balance = await MintTeamsContract.balanceOf(address, 98);
-    if (balance.toNumber() > 0) return Brazil3;
-    balance = await MintTeamsContract.balanceOf(address, 97);
-    if (balance.toNumber() > 0) return Brazil2;
-    balance = await MintTeamsContract.balanceOf(address, 96);
-    if (balance.toNumber() > 0) return Brazil;
-  }
-
-  if ((teamName = "Serbia")) {
-    balance = await MintTeamsContract.balanceOf(address, 103);
-    if (balance.toNumber() > 0) return Serbia4;
-    balance = await MintTeamsContract.balanceOf(address, 102);
-    if (balance.toNumber() > 0) return Serbia3;
-    balance = await MintTeamsContract.balanceOf(address, 101);
-    if (balance.toNumber() > 0) return Serbia2;
-    balance = await MintTeamsContract.balanceOf(address, 100);
-    if (balance.toNumber() > 0) return Serbia;
-  }
-
-  if ((teamName = "Switzerland")) {
-    balance = await MintTeamsContract.balanceOf(address, 107);
-    if (balance.toNumber() > 0) return Switzerland4;
-    balance = await MintTeamsContract.balanceOf(address, 106);
-    if (balance.toNumber() > 0) return Switzerland3;
-    balance = await MintTeamsContract.balanceOf(address, 105);
-    if (balance.toNumber() > 0) return Switzerland2;
-    balance = await MintTeamsContract.balanceOf(address, 104);
-    if (balance.toNumber() > 0) return Switzerland;
-  }
-
-  if ((teamName = "Cameroon")) {
-    balance = await MintTeamsContract.balanceOf(address, 111);
-    if (balance.toNumber() > 0) return Cameroon4;
-    balance = await MintTeamsContract.balanceOf(address, 110);
-    if (balance.toNumber() > 0) return Cameroon3;
-    balance = await MintTeamsContract.balanceOf(address, 109);
-    if (balance.toNumber() > 0) return Cameroon2;
-    balance = await MintTeamsContract.balanceOf(address, 108);
-    if (balance.toNumber() > 0) return Cameroon;
-  }
-
-  if ((teamName = "Portugal")) {
-    balance = await MintTeamsContract.balanceOf(address, 115);
-    if (balance.toNumber() > 0) return Portugal4;
-    balance = await MintTeamsContract.balanceOf(address, 114);
-    if (balance.toNumber() > 0) return Portugal3;
-    balance = await MintTeamsContract.balanceOf(address, 113);
-    if (balance.toNumber() > 0) return Portugal2;
-    balance = await MintTeamsContract.balanceOf(address, 112);
-    if (balance.toNumber() > 0) return Portugal;
-  }
-
-  if ((teamName = "Ghana")) {
-    balance = await MintTeamsContract.balanceOf(address, 119);
-    if (balance.toNumber() > 0) return Ghana4;
-    balance = await MintTeamsContract.balanceOf(address, 118);
-    if (balance.toNumber() > 0) return Ghana3;
-    balance = await MintTeamsContract.balanceOf(address, 117);
-    if (balance.toNumber() > 0) return Ghana2;
-    balance = await MintTeamsContract.balanceOf(address, 116);
-    if (balance.toNumber() > 0) return Ghana;
-  }
-
-  if ((teamName = "Uruguay")) {
-    balance = await MintTeamsContract.balanceOf(address, 123);
-    if (balance.toNumber() > 0) return Uruguay4;
-    balance = await MintTeamsContract.balanceOf(address, 122);
-    if (balance.toNumber() > 0) return Uruguay3;
-    balance = await MintTeamsContract.balanceOf(address, 121);
-    if (balance.toNumber() > 0) return Uruguay2;
-    balance = await MintTeamsContract.balanceOf(address, 120);
-    if (balance.toNumber() > 0) return Uruguay;
-  }
 
-  if ((teamName = "Korea Republic")) {
-    balance = await MintTeamsContract.balanceOf(address, 127);
-    if (balance.toNumber() > 0) return Korea4;
-    balance = await MintTeamsContract.balanceOf(address, 126);
-    if (balance.toNumber() > 0) return Korea3;
-    balance = await MintTeamsContract.balanceOf(address, 125);
-    if (balance.toNumber() > 0) return Korea2;
-    balance = await MintTeamsContract.balanceOf(address, 124);
-    if (balance.toNumber() > 0) return Korea;
+  let level
+
+  const data = await worldCupQuery(query);
+  const predictionOne = await PredictionContract.getPrediction(address, number);
+
+  data.predictors[0].tokens.forEach((token: any) => {
+    if (token.team === predictionOne) {
+      level = token.level;
+    }
+  });
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Qatar"
+  ) {
+    if (level === "4") return Qatar4;
+    if (level === "3") return Qatar3;
+    if (level === "2") return Qatar2;
+    if (level === "1") return Qatar;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Ecuador"
+  ) {
+    if (level === "4") return Ecuador4;
+    if (level === "3") return Ecuador3;
+    if (level === "2") return Ecuador2;
+    if (level === "1") return Ecuador;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Senegal"
+  ) {
+    if (level === "4") return Senegal4;
+    if (level === "3") return Senegal3;
+    if (level === "2") return Senegal2;
+    if (level === "1") return Senegal;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Netherlands"
+  ) {
+    if (level === "4") return Netherlands4;
+    if (level === "3") return Netherlands3;
+    if (level === "2") return Netherlands2;
+    if (level === "1") return Netherlands;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "England"
+  ) {
+    if (level === "4") return England4;
+    if (level === "3") return England3;
+    if (level === "2") return England2;
+    if (level === "1") return England;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "IR Iran"
+  ) {
+    if (level === "4") return Iran4;
+    if (level === "3") return Iran3;
+    if (level === "2") return Iran2;
+    if (level === "1") return Iran;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] === "USA"
+  ) {
+    if (level === "4") return USA4;
+    if (level === "3") return USA3;
+    if (level === "2") return USA2;
+    if (level === "1") return USA;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Wales"
+  ) {
+    if (level === "4") return Wales4;
+    if (level === "3") return Wales3;
+    if (level === "2") return Wales2;
+    if (level === "1") return Wales;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Argentina"
+  ) {
+    if (level === "4") return Argentina4;
+    if (level === "4") return Argentina3;
+    if (level === "4") return Argentina2;
+    if (level === "4") return Argentina;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Saudi Arabia"
+  ) {
+    if (level === "4") return SaudiArabia4;
+    if (level === "3") return SaudiArabia3;
+    if (level === "2") return SaudiArabia2;
+    if (level === "1") return SaudiArabia;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Mexico"
+  ) {
+    if (level === "4") return Mexico4;
+    if (level === "3") return Mexico3;
+    if (level === "2") return Mexico2;
+    if (level === "1") return Mexico;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Poland"
+  ) {
+    if (level === "4") return Poland4;
+    if (level === "3") return Poland3;
+    if (level === "2") return Poland2;
+    if (level === "1") return Poland;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "France"
+  ) {
+    if (level === "4") return France4;
+    if (level === "3") return France3;
+    if (level === "2") return France2;
+    if (level === "1") return France;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Australia"
+  ) {
+    if (level === "4") return Australia4;
+    if (level === "3") return Australia3;
+    if (level === "2") return Australia2;
+    if (level === "1") return Australia;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Denmark"
+  ) {
+   if (level === "4") return Denmark4;
+   if (level === "3") return Denmark3;
+   if (level === "2") return Denmark2;
+    if (level === "1") return Denmark;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Tunisia"
+  ) {
+   if (level === "4") return Tunisia4;
+   if (level === "3")  return Tunisia3;
+   if (level === "2") return Tunisia2;
+   if (level === "1") return Tunisia;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Spain"
+  ) {
+   if (level === "4") return Spain4;
+   if (level === "3") return Spain3;
+   if (level === "2") return Spain2;
+   if (level === "1") return Spain;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Costa Rica"
+  ) {
+   if (level === "4") return CostaRica4;
+   if (level === "3") return CostaRica3;
+   if (level === "2") return CostaRica2;
+   if (level === "1") return CostaRica;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Germany"
+  ) {
+    if (level === "4") return Germany4;
+    if (level === "3") return Germany3;
+    if (level === "2") return Germany2;
+    if (level === "1") return Germany;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Japan"
+  ) {
+    if (level === "4") return Japan4;
+     if (level === "3") return Japan3;
+    if (level === "2") return Japan2;
+     if (level === "1") return Japan;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Belgium"
+  ) {
+    if (level === "4") return Belgium4;
+     if (level === "3") return Belgium3;
+    if (level === "2") return Belgium2;
+    if (level === "1") return Belgium;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Canada"
+  ) {
+     if (level === "4") return Canada4;
+     if (level === "3") return Canada3;
+    if (level === "2") return Canada2;
+    if (level === "1") return Canada;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Morocco"
+  ) {
+     if (level === "4") return Morocco4;
+     if (level === "3") return Morocco3;
+    if (level === "2") return Morocco2;
+    if (level === "1") return Morocco;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Croatia"
+  ) {
+    if (level === "4") return Croatia4;
+    if (level === "3") return Croatia3;
+    if (level === "2") return Croatia2;
+    if (level === "1") return Croatia;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Brazil"
+  ) {
+    if (level === "4") return Brazil4;
+     if (level === "3") return Brazil3;
+    if (level === "2") return Brazil2;
+     if (level === "1") return Brazil;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Serbia"
+  ) {
+    if (level === "4") return Serbia4;
+    if (level === "3") return Serbia3;
+   if (level === "2") return Serbia2;
+    if (level === "1") return Serbia;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Switzerland"
+  ) {
+    if (level === "4")  return Switzerland4;
+     if (level === "3") return Switzerland3;
+    if (level === "2") return Switzerland2;
+     if (level === "1") return Switzerland;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Cameroon"
+  ) {
+     if (level === "4") return Cameroon4;
+     if (level === "3") return Cameroon3;
+    if (level === "2") return Cameroon2;
+     if (level === "1") return Cameroon;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Portugal"
+  ) {
+    if (level === "4") return Portugal4;
+    if (level === "3") return Portugal3;
+    if (level === "2") return Portugal2;
+    if (level === "1") return Portugal;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Ghana"
+  ) {
+     if (level === "4") return Ghana4;
+    if (level === "3") return Ghana3;
+     if (level === "2") return Ghana2;
+     if (level === "1") return Ghana;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Uruguay"
+  ) {
+   if (level === "4") return Uruguay4;
+    if (level === "3") return Uruguay3;
+   if (level === "2") return Uruguay2;
+   if (level === "1") return Uruguay;
+  }
+
+  if (
+    ethers.utils.defaultAbiCoder.decode(["string"], predictionOne)[0] ===
+    "Korea Republic"
+  ) {
+    if (level === "4") return Korea4;
+    if (level === "3") return Korea3;
+    if (level === "2") return Korea2;
+    if (level === "1") return Korea;
   }
 };

@@ -43,6 +43,7 @@ import { ethers, Contract } from "ethers";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
+import { worldCupQuery } from "../fetchSubgraphs/subgraphs";
 const Mint = () => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
@@ -56,6 +57,9 @@ const Mint = () => {
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
     useState<boolean>(false);
+    const [winner1, setWinner1] = useState()
+     const [winner2, setWinner2] = useState()
+      const [winner3, setWinner3] = useState()
   const provider = useProvider();
   const haveYouMinted = async () => {
     try {
@@ -70,6 +74,13 @@ const Mint = () => {
       console.log(error);
     }
   };
+
+    const query = `query MyQuery {
+  winners(where: {id: "0"}) {
+    players
+  }
+}`;
+
 
   const haveYouMintedExtraTwo = async () => {
     try {
@@ -118,7 +129,15 @@ const Mint = () => {
     setMaticPrice(price.toString().match(re)?.[0]);
   };
 
+  const fetchSubgraph = async() => {
+     const data = await worldCupQuery(query);
+     setWinner1(data.winners[0])
+     setWinner2(data.winners[1]);
+     setWinner3(data.winners[2]);
+  }
+
   useEffect(() => {
+   fetchSubgraph()
     haveYouMinted();
     getCurrentPhase();
     haveYouMintedExtraTwo();
@@ -157,6 +176,19 @@ const Mint = () => {
           Sorry, You are no longer able to mint your extra teams
         </div>
       );
+    } else if (currentPhase === 2) {
+      return (
+         <div
+        className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-2"
+      >
+        <h1>The Winners Are:</h1>
+        <div>{winner1}</div>
+        <div>{winner2}</div>
+        <div>{winner3}</div>
+      </div>
+      )
     } else if (hasUserMintedExtraTwo) {
       return (
         <div
