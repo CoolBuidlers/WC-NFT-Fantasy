@@ -28,22 +28,30 @@ Having it on the on chain (on the blockchain) enables us to use smart contracts 
 
 - [Larry Cutts](https://github.com/ljcutts)
 - [Abbas Khann](https://github.com/Abbas-Khann)
-- [Haroon](https://github.com/Haroonrules)
+- [Haroon Hassan](https://github.com/Haroonrules)
 - [Yanuka Deneth](https://github.com/yanukadeneth99)
 
 ## ☄️ What's next?
 
 This is just the start of this amazing game we've build together. There will be more cooler additions that will added later extending this game and interface!
 
+- [ ] Deploy this project on the Mainnet
+- [ ] Build a community of 20,000 people
+
 ## ⚡ Hackathon
 
 This project was made for [Chainlink hackathon](https://chain.link/hackathon) targetting the following bounties :
 
-- [Chainlink Oracles](https://docs.chain.link/docs/architecture-overview/) enables us to build the core functionalities of this game.This includes Random Number using [Chainlink VRF](https://docs.chain.link/docs/vrf/v2/introduction/), API calls using [Chainlink Any-API](https://docs.chain.link/docs/any-api/introduction/), dynamically getting the prices from the market using [Chainlink DataFeeds](https://docs.chain.link/docs/data-feeds/) and more.
+- [Chainlink Price Feed](https://docs.chain.link/data-feeds) - Determine how much users pay for teams.
+- [Chainlink VRF](https://docs.chain.link/docs/vrf/v2/introduction/) - Choose winners based on who predicted and the amount of points they scored.
+- [Chainlink Keepers](https://docs.chain.link/chainlink-automation/introduction) - Autocall functions when different rounds start in the World Cup.
+- [Chainlink Adapters](https://docs.chain.link/any-api/introduction) - Call the API to receive the players that are still in the World Cup.
 
-- [Valist](https://www.valist.io/) enables us to deploy the dapp (web frontend) in a decentralized environment making sure that the website will not crash under any circumstances.
+- [IPFS](https://ipfs.tech/) - Stored and deployed the NFT Images and the NFT Metadata in a decentralized way so that they cannot get altered by anyone including us and, the data will always be publicly accessible.
 
-- [Polygon](https://polygon.technology/) enables us to deploy contracts in L2 blockchain which helps handle traffic for the rush in the event in buying tickets.
+- [Quicknode](https://www.quicknode.com/) - We used Quicknode to deploy all our smart contracts on the network.
+
+- [Polygon](https://polygon.technology/) enables us to deploy contracts in L2 blockchain which helps handle traffic for the rush in the event of buying tickets.
 
 ## 🔩 Project Structure
 
