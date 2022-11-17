@@ -27,7 +27,6 @@ const ActivityTable = () => {
   // Runs when the component loads
   useEffect(() => {
     getData();
-    console.log("SSS", process.env.NEXT_PUBLIC_API_KEY);
   }, []);
 
   return (

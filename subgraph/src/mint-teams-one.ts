@@ -28,20 +28,20 @@ export function handleLevelUp(event: LevelUpEvent): void {
     // Save
     newTeam.save();
 
-    // Removing old Team
-    store.remove("Team", oldTeam.id);
-
     // Create a new levelup object in schema
     let levelup = new Levelup(event.params.account);
 
     // Set the Previous Level
-    levelup.prevLevel = new BigInt(id);
+    levelup.prevLevel = oldTeam.level;
 
     // Set the Current Level
-    levelup.nowLevel = event.params.tokenId;
+    levelup.nowLevel = event.params.level;
 
     // Save
     levelup.save();
+
+    // Removing old Team
+    store.remove("Team", oldTeam.id);
   }
 }
 
