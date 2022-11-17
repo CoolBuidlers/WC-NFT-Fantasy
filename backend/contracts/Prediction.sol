@@ -267,16 +267,20 @@ struct TopPredictions {
    }
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
-        bool hasLink = LinkTokenInterface(0x326C977E6efc84E512bB9C30f76E30c160eD06FB).balanceOf(address(this)) > 0.0001 * 10 ** 18;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
         bool phase = currentPhase == GamePhases.TOP16;
-        upkeepNeeded = hasLink && worldCupFinished && phase;
+        bool time = fewMinutes == 0;
+        upkeepNeeded = worldCupFinished && phase && time;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
-         IRetrieveRandomNumber(randomAddress).requestRandomWords();
+         callRandomWords();
          fewMinutes = block.timestamp + 3 minutes;
   }
+
+   function callRandomWords() internal {
+        IRetrieveRandomNumber(randomAddress).requestRandomWords();
+     }
 
     function setAddresses(address _randomAddress, address _worldCupData16Address, address _changeOrderAddress, address _fetchTeamAddress, address _mintTeamAddress, address _worldCupData8Address, address _worldCupData4Address) external onlyOwner {
        setRandomAddress(_randomAddress);

@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "hardhat": "^2.12.1"
+    "hardhat": "^2.12.1",
+    "ts-node": "^10.9.1"
   }
 }
