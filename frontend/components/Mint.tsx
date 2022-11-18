@@ -156,17 +156,17 @@ const Mint = () => {
   }, [address]);
 
   const renderMintComponent = () => {
-   if (currentPhase === 2) {
+    if (currentPhase === 2) {
       return (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
-        from-white via-green-200 to-green-400
-        animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-2"
+        from-white via-red-200 to-red-500
+        animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-4 animate-pulse"
         >
-          <h1>The Winners Are:</h1>
-          <div>{winner1}</div>
-          <div>{winner2}</div>
-          <div>{winner3}</div>
+          <h1 className="mb-10">The Winners Are:</h1>
+          <div className="mb-10 break-all">{winner1}</div>
+          <div className="mb-10 break-all">{winner2}</div>
+          <div className="mb-10 break-all">{winner3}</div>
         </div>
       );
     } else if (hasUserMinted && currentPhase === 0) {
