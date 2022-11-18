@@ -67,7 +67,7 @@ const HowToPlay = (props: Props) => {
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
                   In this image you can see the price of the NFTs you have
-                  chosen to mint as well as a mint button.
+                  chosen to mint as well as a mint button.After which you will be able to deposit points in your main game page.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -94,7 +94,7 @@ const HowToPlay = (props: Props) => {
                   After you choose the order of your teams, And if any of the
                   teams you chose makes it to the next round will then be able
                   to evolve them by clicking on the NFT which will evolve your
-                  NFT to another level.
+                  NFT to another level. After which you can also swap your NFTs.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
