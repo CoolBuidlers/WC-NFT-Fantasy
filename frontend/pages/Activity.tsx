@@ -105,7 +105,7 @@ const Activity = () => {
           <h1 className="my-12 w-full relative text-center border-b-4 border-[#D100D1] py-2 text-white text-3xl lg:text-4xl">
             ACTIVITY
           </h1>
-          <p className="text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto">
+          <p className="text-white text-xl text-center w-full sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 mx-auto px-4">
             In this section, you can see all the activity going on in our dApp
             with the prize pot, the address of the players and their levelling
             up as well as the round and the current Teams
