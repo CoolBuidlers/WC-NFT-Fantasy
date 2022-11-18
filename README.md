@@ -61,4 +61,4 @@ This project was made for [Chainlink hackathon](https://chain.link/hackathon) ta
 
 ## 🚫 License
 
-This Application uses **MIT LICENSE**.
+This Application uses [**MIT LICENSE**](https://choosealicense.com/licenses/mit/).
