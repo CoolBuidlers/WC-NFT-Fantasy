@@ -32,7 +32,11 @@ dataSources:
     name: ChangeOrders
     network: mumbai
     source:
+<<<<<<< Updated upstream
       address: "0x14d8ef5e7e880cca4f3b7193c7970b7fc9f1f796"
+=======
+      address: "0x14d8Ef5e7e880cCA4F3b7193c7970B7Fc9f1f796"
+>>>>>>> Stashed changes
       abi: ChangeOrders
       startBlock: 29200323
     mapping:
@@ -72,7 +76,11 @@ dataSources:
     name: MintTeamsOne
     network: mumbai
     source:
+<<<<<<< Updated upstream
       address: "0x6fb04295443410daadd2f2c5acc124b76387a62f"
+=======
+      address: "0x6Fb04295443410dAadd2f2C5acc124b76387A62f"
+>>>>>>> Stashed changes
       abi: MintTeamsOne
       startBlock: 29200323
     mapping:

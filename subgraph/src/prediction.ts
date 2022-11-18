@@ -77,6 +77,9 @@ export function handleWinners(event: Winners): void {
   winners.gameId = BigInt.fromString(id);
   winners.game = "Prediction";
 
+  // Save
+  winners.save();
+
   // -----
 
   // Get Game Object

@@ -1,16 +1,16 @@
 {
   "mumbai": {
     "Prediction": {
-      "address": "0xb1521571f8047380b0EC41A81F2499Be3f828e42"
+      "address": "0x7CbB3b8cA1882d37b93e233540Ea9b17bE6d2264"
     },
     "ChangeOrders": {
-      "address": "0xBf76B8CC93fb6B8104D0e00CDEd145E080F4Ee95"
+      "address": "0x14d8Ef5e7e880cCA4F3b7193c7970B7Fc9f1f796"
     },
     "MintTeamsTwo": {
       "address": "0xC00c37675247A357CE7e0B2252C8533E76F11b40"
     },
     "MintTeamsOne": {
-      "address": "0xaaF8e1e8b59beD86cE4442355cB847CF87D0A213"
+      "address": "0x6Fb04295443410dAadd2f2C5acc124b76387A62f"
     },
     "QuizGame": {
       "address": "0x8E6790f3d16E35860d4B465C2d4cD37662A8C3B4"
