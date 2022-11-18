@@ -57,9 +57,9 @@ const Mint = () => {
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
     useState<boolean>(false);
-    const [winner1, setWinner1] = useState()
-     const [winner2, setWinner2] = useState()
-      const [winner3, setWinner3] = useState()
+  const [winner1, setWinner1] = useState();
+  const [winner2, setWinner2] = useState();
+  const [winner3, setWinner3] = useState();
   const provider = useProvider();
   const haveYouMinted = async () => {
     try {
@@ -75,12 +75,11 @@ const Mint = () => {
     }
   };
 
-    const query = `query MyQuery {
+  const query = `query MyQuery {
   winners(where: {id: "0"}) {
     players
   }
 }`;
-
 
   const haveYouMintedExtraTwo = async () => {
     try {
@@ -107,7 +106,7 @@ const Mint = () => {
       );
       const theCurrentPhase = await PredictionContract.currentPhase();
       // setCurrentPhase(theCurrentPhase);
-      setCurrentPhase(0)
+      setCurrentPhase(0);
     } catch (error: any) {
       console.log(error);
     }
@@ -130,31 +129,31 @@ const Mint = () => {
     setMaticPrice(price.toString().match(re)?.[0]);
   };
 
-  const fetchSubgraph = async() => {
-     const data = await worldCupQuery(query);
-     setWinner1(data.winners[0])
-     setWinner2(data.winners[1]);
-     setWinner3(data.winners[2]);
-  }
-const fetchData = async () => {
-  // const response = await fetch(
-  //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
-  // );
-  const response = await fetch(
-    "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
-  );
-  console.log(response.json());
-};
+  const fetchSubgraph = async () => {
+    const data = await worldCupQuery(query);
+    setWinner1(data.winners[0]);
+    setWinner2(data.winners[1]);
+    setWinner3(data.winners[2]);
+  };
+  const fetchData = async () => {
+    // const response = await fetch(
+    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+    // );
+    const response = await fetch(
+      "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+    );
+    console.log(response.json());
+  };
 
-console.log("current phase: ", currentPhase)
+  console.log("current phase: ", currentPhase);
 
   useEffect(() => {
-   fetchSubgraph()
+    fetchSubgraph();
     haveYouMinted();
     getCurrentPhase();
     haveYouMintedExtraTwo();
     getMaticPrice();
-    fetchData()
+    fetchData();
   }, [address]);
 
   const renderMintComponent = () => {
@@ -191,17 +190,17 @@ console.log("current phase: ", currentPhase)
       );
     } else if (currentPhase === 2) {
       return (
-         <div
-        className="bg-gradient-to-r bg-clip-text text-transparent 
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
         from-white via-green-200 to-green-400
         animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-2"
-      >
-        <h1>The Winners Are:</h1>
-        <div>{winner1}</div>
-        <div>{winner2}</div>
-        <div>{winner3}</div>
-      </div>
-      )
+        >
+          <h1>The Winners Are:</h1>
+          <div>{winner1}</div>
+          <div>{winner2}</div>
+          <div>{winner3}</div>
+        </div>
+      );
     } else if (hasUserMintedExtraTwo) {
       return (
         <div
@@ -852,7 +851,9 @@ console.log("current phase: ", currentPhase)
         <section className="">
           <div className="text-white sm:flex justify-between px-6 mt-28 mb-10">
             {currentPhase === 0 && (
-              <h2 className="text-5xl mb-20">MINT your 4 teams</h2>
+              <h2 className="md:text-5xl text-3xl mb-10 md:mb-20">
+                MINT your 4 teams
+              </h2>
             )}
             {maticBiggerThan40 && (
               <p className="text-3xl">Unit Price : 25 Matic </p>
@@ -865,7 +866,7 @@ console.log("current phase: ", currentPhase)
           <div className="flex items-center flex-wrap justify-center px-2">
             {teamSelection[0] !== undefined && (
               <a
-                className="text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded "
+                className="text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded my-10 "
                 onClick={() => {
                   setTeamSelection([]), setInputSelection([]);
                 }}
@@ -1522,7 +1523,7 @@ console.log("current phase: ", currentPhase)
             </div>
           </div>
           <div className=" max-w-2xl mt-10 mb-20 mx-auto text-center">
-            <p className="text-white text-2xl ">
+            <p className="text-white text-2xl px-3">
               Mint your NFTs here when the World Cup starts, You can only own
               upto 6 NFTs and select 4 of them to be your top 4 teams for the
               World Cup.
