@@ -38,7 +38,7 @@ const MainGame = () => {
   };
   const { address } = useAccount();
   const provider = useProvider();
-  const [userMinted, setHasUserMinted] = useState<boolean>(true);
+  const [userMinted, setHasUserMinted] = useState<boolean>(false);
   const haveYouMinted = async () => {
     try {
       const PredictionContract = new Contract(
