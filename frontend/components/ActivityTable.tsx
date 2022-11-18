@@ -1,4 +1,5 @@
 import axios from "axios";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const ActivityTable = () => {
@@ -40,6 +41,9 @@ const ActivityTable = () => {
             <th scope="col" className="py-3 px-6">
               Name
             </th>
+            <th scope="col" className="py-3 px-6">
+              Flag
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +61,14 @@ const ActivityTable = () => {
                     {country.id}
                   </th>
                   <td className="py-4 px-6">{country.name}</td>
+                  <td className="py-4 px-6">
+                    <Image
+                      src={country.logo_path}
+                      alt="Logo"
+                      width={25}
+                      height={25}
+                    />
+                  </td>
                 </tr>
               );
             })
