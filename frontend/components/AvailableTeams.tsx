@@ -707,7 +707,7 @@ const { address } = useAccount();
           Swap Prediction Order
         </a>
       )}
-      {currentPhase === 2 && (
+      {currentPhase === 5 && (
         <a
           className="mt-10 text-white px-10 py-4 play-btn animate-text hover:animate-text-hover cursor-pointer rounded flex justify-center items-center mx-auto sm:max-w-lg"
           onClick={() => depositPoints(signer)}

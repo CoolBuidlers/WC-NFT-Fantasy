@@ -134,17 +134,6 @@ const Mint = () => {
     setWinner2(data.winners[0].players[1]);
     setWinner3(data.winners[0].players[2]);
   };
-  const fetchData = async () => {
-    // const response = await fetch(
-    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA&include=stages"
-    // );
-    // const response = await fetch(
-    //   "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
-    // );
-    //  console.log(response.json());
-  };
-
-  console.log("current phase: ", currentPhase);
 
   useEffect(() => {
     fetchSubgraph();
@@ -152,11 +141,10 @@ const Mint = () => {
     getCurrentPhase();
     haveYouMintedExtraTwo();
     getMaticPrice();
-    //fetchData();
   }, [address]);
 
   const renderMintComponent = () => {
-    if (currentPhase === 2) {
+    if (currentPhase === 5) {
       return (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
@@ -218,10 +206,10 @@ const Mint = () => {
               <h2 className="text-5xl mb-20">MINT your 2 extra teams</h2>
             )}
             {maticBiggerThan40 && (
-              <p className="text-3xl">Unit Price : 12.5 Matic </p>
+              <p className="text-3xl">Unit Price : 2 Matic </p>
             )}
             {!maticBiggerThan40 && (
-              <p className="text-3xl">Unit Price : 25 Matic </p>
+              <p className="text-3xl">Unit Price : 1 Matic </p>
             )}
           </div>
 
@@ -855,10 +843,10 @@ const Mint = () => {
               </h2>
             )}
             {maticBiggerThan40 && (
-              <p className="text-3xl">Unit Price : 25 Matic </p>
+              <p className="text-3xl">Unit Price : 4 Matic </p>
             )}
             {!maticBiggerThan40 && (
-              <p className="text-3xl">Unit Price : 50 Matic </p>
+              <p className="text-3xl">Unit Price : 2 Matic </p>
             )}
           </div>
 
