@@ -266,14 +266,18 @@ struct TopPredictions {
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool hasLink = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1).balanceOf(address(this)) > 0.0001 * 10 ** 18;
-        bool eventHasStarted = block.timestamp > 1669010400;
+        bool eventHasStarted = block.timestamp > 1669226400;
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
         upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
-      if(currentPhase == GamePhases.MINT) {
+      callKeepers();
+  }
+
+  function callKeepers() internal {
+    if(currentPhase == GamePhases.MINT) {
         currentPhase = GamePhases.TOP32;
         oneDay = block.timestamp + 24 hours;
       } else if(currentPhase == GamePhases.TOP32) {

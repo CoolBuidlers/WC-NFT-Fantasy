@@ -33,13 +33,11 @@ uint public oneDay = 0;
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
-        bool phaseChanged = currentPhase == GamePhases.TOP32;
-        upkeepNeeded = oneDayPassed && worldCupFinished && phaseChanged;
+        upkeepNeeded = oneDayPassed && worldCupFinished;
     }
 
       function performUpkeep(bytes calldata /*performData*/) external {
           callRandomWords();
-          oneDay = block.timestamp + 1 minutes;
       }
 
      function changePhase() public {
@@ -47,7 +45,9 @@ uint public oneDay = 0;
      }
 
      function callRandomWords() internal {
-        IRetrieveRandomNumber(randomAddress).requestRandomWords();
+        if(currentPhase == GamePhases.TOP32) {
+          IRetrieveRandomNumber(randomAddress).requestRandomWords();
+        }
      }
    
 }

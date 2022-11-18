@@ -105,8 +105,7 @@ const Mint = () => {
         provider
       );
       const theCurrentPhase = await PredictionContract.currentPhase();
-      // setCurrentPhase(theCurrentPhase);
-      setCurrentPhase(0);
+      setCurrentPhase(theCurrentPhase);
     } catch (error: any) {
       console.log(error);
     }
@@ -131,18 +130,18 @@ const Mint = () => {
 
   const fetchSubgraph = async () => {
     const data = await worldCupQuery(query);
-    setWinner1(data.winners[0]);
-    setWinner2(data.winners[1]);
-    setWinner3(data.winners[2]);
+    setWinner1(data.winners[0].players[0]);
+    setWinner2(data.winners[0].players[1]);
+    setWinner3(data.winners[0].players[2]);
   };
   const fetchData = async () => {
     // const response = await fetch(
-    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+    //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA&include=stages"
     // );
-    const response = await fetch(
-      "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
-    );
-    console.log(response.json());
+    // const response = await fetch(
+    //   "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+    // );
+    //  console.log(response.json());
   };
 
   console.log("current phase: ", currentPhase);
@@ -153,11 +152,24 @@ const Mint = () => {
     getCurrentPhase();
     haveYouMintedExtraTwo();
     getMaticPrice();
-    fetchData();
+    //fetchData();
   }, [address]);
 
   const renderMintComponent = () => {
-    if (hasUserMinted && currentPhase === 0) {
+   if (currentPhase === 2) {
+      return (
+        <div
+          className="bg-gradient-to-r bg-clip-text text-transparent 
+        from-white via-green-200 to-green-400
+        animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-2"
+        >
+          <h1>The Winners Are:</h1>
+          <div>{winner1}</div>
+          <div>{winner2}</div>
+          <div>{winner3}</div>
+        </div>
+      );
+    } else if (hasUserMinted && currentPhase === 0) {
       return (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 
@@ -186,19 +198,6 @@ const Mint = () => {
         animate-text text-xl md:text-4xl tracking-wider py-48 md:px-10 px-2"
         >
           Sorry, You are no longer able to mint your extra teams
-        </div>
-      );
-    } else if (currentPhase === 2) {
-      return (
-        <div
-          className="bg-gradient-to-r bg-clip-text text-transparent 
-        from-white via-green-200 to-green-400
-        animate-text text-xl md:text-4xl tracking-wider flex flex-col py-48 md:px-10 px-2"
-        >
-          <h1>The Winners Are:</h1>
-          <div>{winner1}</div>
-          <div>{winner2}</div>
-          <div>{winner3}</div>
         </div>
       );
     } else if (hasUserMintedExtraTwo) {
