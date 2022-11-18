@@ -33,7 +33,7 @@ Having it on the on chain (on the blockchain) enables us to use smart contracts 
 
 This is just the start of this amazing game we've build together. There will be more cooler additions that will added later extending this game and interface!
 
-- [] Monitor The Game While Predictors Interact With It On Mainnet
+- [ ] Monitor The Game While Predictors Interact With It On Mainnet
 
 
 ## ⚡ Hackathon
