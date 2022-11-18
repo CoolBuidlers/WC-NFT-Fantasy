@@ -1,4 +1,4 @@
-import { BigInt, store } from "@graphprotocol/graph-ts";
+import { store } from "@graphprotocol/graph-ts";
 import {
   LevelUp as LevelUpEvent,
   Mint as MintEvent,
