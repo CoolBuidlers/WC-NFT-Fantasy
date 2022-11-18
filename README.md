@@ -4,9 +4,7 @@
 
 _Click on the video to view it on YouTube_
 
-You are a fan of the Football WorldCup. You have seen every game, you can predict which teams are gonna win. Does this sound like you? Then enter the game :
-
-[Load Website - Valist](#), or try [this](https://wc-nft-fantasy.vercel.app)
+You are a fan of the Football WorldCup. You have seen every game, you can predict which teams are gonna win. Does this sound like you? Then enter [WC NFT Fantasy](https://wc-nft-fantasy.xyz/)
 
 ## 🤷‍♀️ Question Time
 
@@ -61,4 +59,4 @@ This project was made for [Chainlink hackathon](https://chain.link/hackathon) ta
 
 ## 🚫 License
 
-This Application uses [**MIT LICENSE**](/LICENSE).
+This Application uses [**MIT LICENSE**](/LICENSE)
