@@ -28,7 +28,7 @@ async function main() {
   const randomNumber = await ethers.getContractFactory(
     "RetrieveRandomNumber"
   );
-  const randomnumber = await randomNumber.deploy(2278);
+  const randomnumber = await randomNumber.deploy(443);
 
   await randomnumber.deployed();
 

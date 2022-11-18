@@ -29,7 +29,6 @@ const Countdown = ({}: Props) => {
       const data = {
         Date: _date.toLocaleString()
       };
-      console.log(data.Date);
       setKnockoutRound(data.Date);
     } 
     catch (err: any) {
@@ -46,7 +45,6 @@ const Countdown = ({}: Props) => {
       const data = {
         Date: _date.toLocaleDateString()
       };
-      console.log(data.Date);
       setQuarterFinal(data.Date);
     }
     catch (err: any) {

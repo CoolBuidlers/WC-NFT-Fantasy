@@ -261,5 +261,5 @@ export const EVOLVE_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
-export const EVOLVE_ADDRESS = "0x88414c4348bdEe9ac9264d44Db857AB187351B41";
+];
+export const EVOLVE_ADDRESS = "0x510035be6E39beE67AA1eD5384346A2768dBE4b8";

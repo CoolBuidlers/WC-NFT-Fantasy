@@ -756,6 +756,13 @@ export const PREDICTION_ABI = [
   },
   {
     inputs: [],
+    name: "withdrawAnyRemainingFunds",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "worldCupData16Address",
     outputs: [
       {
@@ -798,5 +805,5 @@ export const PREDICTION_ABI = [
     type: "receive",
   },
 ];
-export const PREDICTION_ADDRESS = "0x7CbB3b8cA1882d37b93e233540Ea9b17bE6d2264";
+export const PREDICTION_ADDRESS = "0x8Ef484Bd170BCcA098D07B5956afcC97E000e5F6";
 

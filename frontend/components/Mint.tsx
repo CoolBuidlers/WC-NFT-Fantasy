@@ -1531,9 +1531,6 @@ const Mint = () => {
       <AiOutlineArrowRight className="text-2xl text-white" />
     </button>
   );
-  useEffect(() => {
-    console.log(inputSelection);
-  }, [inputSelection]);
   return <main>{renderMintComponent()}</main>;
 };
 

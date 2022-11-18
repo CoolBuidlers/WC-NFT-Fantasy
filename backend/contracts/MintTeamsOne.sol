@@ -75,7 +75,7 @@ contract MintTeamsOne is ERC1155, Ownable {
     function setAddresses(address _predictionAddress, address _evolveAddress, address _mintTeamsTwoAddress, address _quizGameAddress, address _guessingGameAddress) external onlyOwner {
       setPredictionAddress(_predictionAddress);
       setEvolveAddress(_evolveAddress);
-      setMintTeamOneAddress(_mintTeamsTwoAddress);
+      setMintTeamTwoAddress(_mintTeamsTwoAddress);
       setQuizGameAddress(_quizGameAddress);
       setGuessingGameAddress(_guessingGameAddress);
     }
@@ -88,7 +88,7 @@ contract MintTeamsOne is ERC1155, Ownable {
        evolveAddress = _evolveAddress;
     }
 
-    function setMintTeamOneAddress(address _mintTeamsTwoAddress) internal {
+    function setMintTeamTwoAddress(address _mintTeamsTwoAddress) internal {
       mintTeamsTwoAddress = _mintTeamsTwoAddress;
     }
 
