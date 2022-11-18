@@ -33,8 +33,8 @@ Having it on the on chain (on the blockchain) enables us to use smart contracts 
 
 This is just the start of this amazing game we've build together. There will be more cooler additions that will added later extending this game and interface!
 
-- [ ] Deploy this project on the Mainnet
-- [ ] Build a community of 20,000 people
+- Monitor The Game While Predictors Interact With It On Mainnet
+
 
 ## ⚡ Hackathon
 
