@@ -1,6 +1,6 @@
 # 🥳 World Cup NFT Fantasy
 
-[![Hackathon-Video](https://media.giphy.com/media/FQMVedBETa0dVfCB7D/giphy.gif)](https://www.youtube.com/watch?v=MY-cvrlX3ao "Hackathon Video")
+[![Hackathon-Video](https://i.imgur.com/bD0samS.gif)](https://youtu.be/ni5wa0Ry3SQ "Hackathon Video")
 
 _Click on the video to view it on YouTube_
 
