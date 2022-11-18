@@ -49,7 +49,7 @@ This project was made for [Chainlink hackathon](https://chain.link/hackathon) ta
 
 - [Quicknode](https://www.quicknode.com/) - We used Quicknode to deploy all our smart contracts on the network.
 
-- [Polygon](https://polygon.technology/) enables us to deploy contracts in L2 blockchain which helps handle traffic for the rush in the event of buying tickets.
+- [Polygon](https://polygon.technology/) - Enables us to deploy contracts in L2 blockchain which helps handle traffic for the rush in the event of buying tickets.
 
 ## 🔩 Project Structure
 
