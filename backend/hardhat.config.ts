@@ -20,7 +20,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url: "https://polygon-mainnet.g.alchemy.com/v2/a5sTbtLzl1n7ScKLksuDRKYWBbFi9di5",
+        url: "https://cold-thrumming-card.matic-testnet.discover.quiknode.pro/7e16a39a608d405b5a7751989f0acbc8ec2bca10/",
         enabled: true,
       },
     },
