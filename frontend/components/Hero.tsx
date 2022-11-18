@@ -1,7 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { useAccount } from "wagmi";
+import toast from "react-hot-toast";
 
 const Hero = () => {
+   const { address } = useAccount();
   return (
     <section className="px-2 py-20 text-white">
       <div className="flex justify-start">
@@ -31,13 +34,21 @@ const Hero = () => {
               Click here to learn how to play like an expert!
             </a>
           </Link>
-          <div>
+          {address === undefined ? (
+              <span onClick={() => {
+                toast.error("Please Connect Wallet First");
+              }} className="play-btn text-center py-4 mt-8 w-[90%] sm:w-[60%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
+                PlayGame
+              </span>
+          ) : (
             <Link href="/MainGame">
               <span className="play-btn text-center py-4 mt-8 w-[90%] sm:w-[60%] block animate-text cursor-pointer hover:animate-text-hover text-2xl">
                 PlayGame
               </span>
             </Link>
-          </div>
+          )}
+
+          <div></div>
         </div>
       </div>
     </section>

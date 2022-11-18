@@ -273,6 +273,8 @@ const { address } = useAccount();
      setTeamName6(team);
   };
 
+
+
   useEffect(() => {
     isItTop16();
     isItTop8();

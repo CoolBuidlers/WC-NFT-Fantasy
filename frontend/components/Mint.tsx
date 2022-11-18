@@ -39,7 +39,7 @@ import {
   mintOtherTwoTeams,
 } from "../contractInteractions/FunctionCalls";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
-import { ethers, Contract } from "ethers";
+import { Contract } from "ethers";
 import { useSigner, useProvider, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
@@ -135,6 +135,15 @@ const Mint = () => {
      setWinner2(data.winners[1]);
      setWinner3(data.winners[2]);
   }
+const fetchData = async () => {
+  // const response = await fetch(
+  //   "https://soccer.sportmonks.com/api/v2.0/teams/season/18017?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+  // );
+  const response = await fetch(
+    "https://soccer.sportmonks.com/api/v2.0/teams/15251?api_token=BdZi5qPte6XCovajg3Xa2pkApJcEIu53d3DsfUOqlKirhBxlCUCfzC56pqEA"
+  );
+  console.log(response.json());
+};
 
   useEffect(() => {
    fetchSubgraph()
@@ -142,6 +151,7 @@ const Mint = () => {
     getCurrentPhase();
     haveYouMintedExtraTwo();
     getMaticPrice();
+    fetchData()
   }, [address]);
 
   const renderMintComponent = () => {
