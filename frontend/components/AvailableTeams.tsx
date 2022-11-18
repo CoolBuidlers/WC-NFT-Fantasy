@@ -22,8 +22,8 @@ import { ethers, Contract } from "ethers";
 import { getPrediction } from "./PossibleTeams";
 
 const AvailableTeams = () => {
-const { address } = useAccount();
-   const query = `query MyQuery {
+  const { address } = useAccount();
+  const query = `query MyQuery {
   predictors(where:{id: "${address}"}) {
     tokens(orderBy:id) {
       id
@@ -178,11 +178,7 @@ const { address } = useAccount();
   };
 
   const fetchEvolveStatus = async () => {
-    let evolvedLevel2,
-      evolvedLevel3,
-      evolvedLevel4,
-      prediction,
-      teamName
+    let evolvedLevel2, evolvedLevel3, evolvedLevel4, prediction, teamName;
     try {
       const EvolveContract = new Contract(EVOLVE_ADDRESS, EVOLVE_ABI, provider);
       const PredictionContract = new Contract(
@@ -257,7 +253,7 @@ const { address } = useAccount();
     }
   };
 
-  const fetchTeam = async () => {
+  const fetchTeams = async () => {
     let team;
     team = await getPrediction(query, 1, provider, address);
     setTeamName1(team);
@@ -269,11 +265,9 @@ const { address } = useAccount();
     setTeamName4(team);
     team = await getPrediction(query, 5, provider, address);
     setTeamName5(team);
-     team = await getPrediction(query, 6, provider, address);
-     setTeamName6(team);
+    team = await getPrediction(query, 6, provider, address);
+    setTeamName6(team);
   };
-
-
 
   useEffect(() => {
     isItTop16();
@@ -284,7 +278,7 @@ const { address } = useAccount();
     haveYouChangedOrder();
     getCurrentPhase();
     fetchEvolveStatus();
-    fetchTeam();
+    fetchTeams();
   }, [address]);
   return (
     <div>
@@ -378,7 +372,7 @@ const { address } = useAccount();
             <a
               className="play-btn text-center py-4 w-[90%] sm:w-[55%] block animate-text cursor-pointer hover:animate-text-hover text-2xl mt-10"
               onClick={() => {
-                top32 && changeOrderForTop32(signer, teamSwapOne, teamSwapTwo);
+                top32 && changeOrderForTop32(teamSwapOne, teamSwapTwo, signer);
                 top16 && changeOrderForTop16(teamSwapOne, teamSwapTwo, signer);
                 top8 && changeOrderForTop8(teamSwapOne, teamSwapTwo, signer);
                 top4 && changeOrderForTop4(teamSwapOne, teamSwapTwo, signer);

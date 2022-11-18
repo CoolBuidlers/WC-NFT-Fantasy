@@ -83,12 +83,12 @@ export const depositPoints = async (
 };
 
 export const changeOrderForTop32 = async (
-  signer: any,
   teamOne: string,
-  teamTwo: string
+  teamTwo: string,
+  signer: any
 ): Promise<void> => {
   try {
-    let tx
+    let tx;
     const ChangeOrderContract = new Contract(
       CHANGE_ORDERS_ADDRESS,
       CHANGE_ORDERS_ABI,
@@ -98,91 +98,93 @@ export const changeOrderForTop32 = async (
       (teamOne === "1" && teamTwo === "2") ||
       (teamOne === "2" && teamTwo === "1")
     ) {
-     tx = await ChangeOrderContract.changeOrderForTop32(1);
+      tx = await ChangeOrderContract.changeOrderForTop32(1);
     }
     if (
       (teamOne === "1" && teamTwo === "3") ||
       (teamOne === "3" && teamTwo === "1")
     ) {
-     tx = await ChangeOrderContract.changeOrderForTop32(2);
+      tx = await ChangeOrderContract.changeOrderForTop32(2);
     }
     if (
       (teamOne === "1" && teamTwo === "4") ||
       (teamOne === "4" && teamTwo === "1")
     ) {
-       tx = await ChangeOrderContract.changeOrderForTop32(3);
+      tx = await ChangeOrderContract.changeOrderForTop32(3);
     }
     if (
       (teamOne === "1" && teamTwo === "5") ||
       (teamOne === "5" && teamTwo === "1")
     ) {
-        tx =  await ChangeOrderContract.changeOrderForTop32(4);
+      tx = await ChangeOrderContract.changeOrderForTop32(4);
     }
     if (
       (teamOne === "1" && teamTwo === "6") ||
       (teamOne === "6" && teamTwo === "1")
     ) {
-       tx = await ChangeOrderContract.changeOrderForTop32(5);
+      tx = await ChangeOrderContract.changeOrderForTop32(5);
     }
-     if (
-       (teamOne === "2" && teamTwo === "3") ||
-       (teamOne === "3" && teamTwo === "2")
-     ) {
-        tx = await ChangeOrderContract.changeOrderForTop32(6);
-     }
-      if (
-        (teamOne === "2" && teamTwo === "4") ||
-        (teamOne === "4" && teamTwo === "2")
-      ) {
-         tx = await ChangeOrderContract.changeOrderForTop32(7);
-      }
-       if (
-         (teamOne === "2" && teamTwo === "5") ||
-         (teamOne === "5" && teamTwo === "2")
-       ) {
-          tx = await ChangeOrderContract.changeOrderForTop32(8);
-       }
-       if (
-         (teamOne === "2" && teamTwo === "6") ||
-         (teamOne === "6" && teamTwo === "2")
-       ) {
-           tx = await ChangeOrderContract.changeOrderForTop32(9);
-       }
-        if (
-          (teamOne === "3" && teamTwo === "4") ||
-          (teamOne === "4" && teamTwo === "3")
-        ) {
-           tx = await ChangeOrderContract.changeOrderForTop32(10);
-        }
-         if (
-           (teamOne === "3" && teamTwo === "5") ||
-           (teamOne === "5" && teamTwo === "3")
-         ) {
-            tx = await ChangeOrderContract.changeOrderForTop32(11);
-         }
-         if (
-           (teamOne === "3" && teamTwo === "6") ||
-           (teamOne === "6" && teamTwo === "3")
-         ) {
-            tx = await ChangeOrderContract.changeOrderForTop32(12);
-         }
-           if (
-             (teamOne === "4" && teamTwo === "5") ||
-             (teamOne === "5" && teamTwo === "4")
-           ) {
-              tx = await ChangeOrderContract.changeOrderForTop32(13);
-           }
-            if (
-              (teamOne === "4" && teamTwo === "6") ||
-              (teamOne === "6" && teamTwo === "4")
-            ) {
-              tx = await ChangeOrderContract.changeOrderForTop32(14);
-            }
-            await tx.wait()
-            toast.success(`You Have Successfully Swapped Teams ${teamOne} and ${teamTwo}!!!`)
+    if (
+      (teamOne === "2" && teamTwo === "3") ||
+      (teamOne === "3" && teamTwo === "2")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(6);
+    }
+    if (
+      (teamOne === "2" && teamTwo === "4") ||
+      (teamOne === "4" && teamTwo === "2")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(7);
+    }
+    if (
+      (teamOne === "2" && teamTwo === "5") ||
+      (teamOne === "5" && teamTwo === "2")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(8);
+    }
+    if (
+      (teamOne === "2" && teamTwo === "6") ||
+      (teamOne === "6" && teamTwo === "2")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(9);
+    }
+    if (
+      (teamOne === "3" && teamTwo === "4") ||
+      (teamOne === "4" && teamTwo === "3")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(10);
+    }
+    if (
+      (teamOne === "3" && teamTwo === "5") ||
+      (teamOne === "5" && teamTwo === "3")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(11);
+    }
+    if (
+      (teamOne === "3" && teamTwo === "6") ||
+      (teamOne === "6" && teamTwo === "3")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(12);
+    }
+    if (
+      (teamOne === "4" && teamTwo === "5") ||
+      (teamOne === "5" && teamTwo === "4")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(13);
+    }
+    if (
+      (teamOne === "4" && teamTwo === "6") ||
+      (teamOne === "6" && teamTwo === "4")
+    ) {
+      tx = await ChangeOrderContract.changeOrderForTop32(14);
+    }
+    await tx.wait();
+    toast.success(
+      `You Have Successfully Swapped Teams ${teamOne} and ${teamTwo}!!!`
+    );
   } catch (error: any) {
     console.log(error);
-    toast.error("Make Sure You Haven't Swapped in Top32 Already")
+    toast.error("Make Sure You Haven't Swapped in Top32 Already");
   }
 };
 

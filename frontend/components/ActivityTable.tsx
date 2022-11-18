@@ -18,7 +18,7 @@ const ActivityTable = () => {
         console.error(res.data.errors);
         throw new Error("Query Error");
       }
-
+      console.log(res.data);
       setCountries(res.data.data);
     } catch (err) {
       console.error(err);

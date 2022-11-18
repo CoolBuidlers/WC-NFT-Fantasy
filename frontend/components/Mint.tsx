@@ -51,15 +51,15 @@ const Mint = () => {
   const [teamSelection, setTeamSelection] = useState<StaticImageData[]>([]);
   const [inputSelection, setInputSelection] = useState<string[]>([]);
   const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
-  const [maticPrice, setMaticPrice] = useState<any>("0");
+  const [maticPrice, setMaticPrice] = useState<string | undefined>("0");
   const [maticBiggerThan40, setMaticBiggerThan40] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<number>(0);
   const [amount, setAmount] = useState<string>("0");
   const [hasUserMintedExtraTwo, setHasUserMintedExtraTwo] =
     useState<boolean>(false);
-  const [winner1, setWinner1] = useState();
-  const [winner2, setWinner2] = useState();
-  const [winner3, setWinner3] = useState();
+  const [winner1, setWinner1] = useState("0x");
+  const [winner2, setWinner2] = useState("0x");
+  const [winner3, setWinner3] = useState("0x");
   const provider = useProvider();
   const haveYouMinted = async () => {
     try {
@@ -144,7 +144,7 @@ const Mint = () => {
   }, [address]);
 
   const renderMintComponent = () => {
-    if (currentPhase === 5) {
+    if (currentPhase === 5 && winner1 !== undefined) {
       return (
         <div
           className="bg-gradient-to-r bg-clip-text text-transparent 

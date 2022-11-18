@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
-import {useProvider, useAccount } from "wagmi";
+import { useProvider, useAccount } from "wagmi";
 import { PREDICTION_ADDRESS, PREDICTION_ABI } from "../contractInfo/Prediction";
 import { ethers, Contract } from "ethers";
 import { getPrediction } from "./PossibleTeams";
@@ -54,14 +54,14 @@ const ChosenTeams = () => {
 
   const fetchTeams = async () => {
     try {
-        let team = await getPrediction(query, 1, provider, address);
-         setTeam1(team)
-        team = await getPrediction(query, 2, provider, address);
-        setTeam2(team);
-         team = await getPrediction(query, 3, provider, address);
-         setTeam3(team);
-          team = await getPrediction(query, 4, provider, address);
-          setTeam4(team);
+      let team = await getPrediction(query, 1, provider, address);
+      setTeam1(team);
+      team = await getPrediction(query, 2, provider, address);
+      setTeam2(team);
+      team = await getPrediction(query, 3, provider, address);
+      setTeam3(team);
+      team = await getPrediction(query, 4, provider, address);
+      setTeam4(team);
     } catch (error: any) {
       console.log(error);
     }
