@@ -106,7 +106,8 @@ const Mint = () => {
         provider
       );
       const theCurrentPhase = await PredictionContract.currentPhase();
-      setCurrentPhase(theCurrentPhase);
+      // setCurrentPhase(theCurrentPhase);
+      setCurrentPhase(0)
     } catch (error: any) {
       console.log(error);
     }
@@ -144,6 +145,8 @@ const fetchData = async () => {
   );
   console.log(response.json());
 };
+
+console.log("current phase: ", currentPhase)
 
   useEffect(() => {
    fetchSubgraph()
