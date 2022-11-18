@@ -10,7 +10,7 @@ You are a fan of the Football WorldCup. You have seen every game, you can predic
 
 ### 👨‍🔬 What is this?
 
-WC NFT Fantasy is a Prediction game where you can play a game to win a prize if you guessed the winning teams right. Extending the idea of [CryptoFishx](https://twitter.com/cryptofishx/status/1572600038114873348?s=20&t=3Oq9kM_I6EdHV26yWCLSmg) we have built an application that anyone can participate and win with the confidence that noone is going to tamper or cheat in the system.
+WC NFT Fantasy is a Prediction game where you can play a game to win a prize if you guessed the winning teams right. Extending the idea of [CryptoFishx](https://twitter.com/cryptofishx/status/1572600038114873348?s=20&t=3Oq9kM_I6EdHV26yWCLSmg) we have built an application that anyone can participate and win with the confidence that no one is going to tamper or cheat in the system.
 
 Apart from the main game, there are two more side games that you can play to win more points to have fun and earn more points!
 
