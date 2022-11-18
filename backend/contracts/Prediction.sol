@@ -38,9 +38,9 @@ uint thirdHighestAmountOfPoints;
 //Amount of points rewarded for each correct guess when the 4 teams are finalized
 uint public oneDay;
 uint public fewMinutes;
-uint public TOP_16_STARTS = 1670090400;
-uint public TOP_8_STARTS = 1670608800;
-uint public TOP_4_STARTS = 1670954400;
+uint public TOP_16_STARTS = 1670119200;
+uint public TOP_8_STARTS = 1670637600;
+uint public TOP_4_STARTS = 1670983200;
 bool paused;
 bool canReceiveRefund;
 //An object that defined the prediction of the top teams
@@ -165,9 +165,9 @@ struct TopPredictions {
     modifier payEnoughForExtraTwo {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value > 2 ether, "PAY_MORE_TO_MINT");
+       require(msg.value >= 2 ether, "PAY_MORE_TO_MINT");
      } else {
-      require(msg.value > 1 ether, "PAY_MORE_TO_MINT");
+      require(msg.value >= 1 ether, "PAY_MORE_TO_MINT");
      }
      _;
    }
@@ -306,7 +306,7 @@ struct TopPredictions {
             fewMinutes = block.timestamp + 3 minutes;
          }  
     } else if(currentPhase == GamePhases.TOP4) {
-         if(block.timestamp > 1671516000) {
+         if(block.timestamp > 1671559200) {
           IWorldCupData(worldCupData4Address).fetchTop4Teams();
           IRetrieveRandomNumber(randomAddress).requestRandomWords();
           fewMinutes = block.timestamp + 3 minutes;

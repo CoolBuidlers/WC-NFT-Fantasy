@@ -95,7 +95,7 @@ contract QuizGame {
         mintAddress = _mintTeamOneAddress;
     }
 
-     function startGameOne() external onlyOwner {
+     function startGameOne() external {
         require(quizIdOne == 3, "Make three questions first");
         require(startedQuizOne == false, "Game already started!");
         startedQuizOne = true;
@@ -103,7 +103,7 @@ contract QuizGame {
         nextRound = block.timestamp + 5 days;
     }
 
-    function startGameTwo() external onlyOwner {
+    function startGameTwo() external {
         require(quizIdTwo == 3, "Make three questions first");
         require(block.timestamp > nextRound, "CANT_START_GAME_YET");
         require(startedQuizTwo == false, "Game is already started!");

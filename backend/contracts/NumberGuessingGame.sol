@@ -43,11 +43,10 @@ _;
     // address override owner;
     address payable[] public players;
     address public mintAddress;
-    address public setAddress;
     bool public started;
-    uint32 callbackGasLimit = 100000;
+    uint32 callbackGasLimit = 500000;
     // The default is 3, but you can set this higher.
-    uint16 requestConfirmations = 3;
+    uint16 requestConfirmations = 5;
     // For this example, retrieve 2 random values in one request.
     // Cannot exceed VRFCoordinatorV2.MAX_NUM_WORDS.
     uint32 numWords = 1;
@@ -70,6 +69,10 @@ _;
         COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);
         keyHash = _keyHash;
         s_subscriptionId = subscriptionId;
+    }
+
+     function setSubscriptionId(uint64 subscriptionId) external onlyOwner {
+         s_subscriptionId = subscriptionId;
     }
 
     function startGame() external onlyOwner {
@@ -109,12 +112,12 @@ _;
         alreadyEntered[msg.sender] = true;
         players.push(payable(msg.sender));
         emit currentGame(msg.sender, currentGameId);
-        // if(players.length == maxPlayers) {
+        if(players.length == maxPlayers) {
          requestRandomWords();
-        //}
+        }
     }
 
-    function requestRandomWords() public returns (uint256 requestId) {
+    function requestRandomWords() internal returns (uint256 requestId) {
         // Will revert if subscription is not set and funded.
         requestId = COORDINATOR.requestRandomWords(
             keyHash,

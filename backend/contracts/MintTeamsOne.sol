@@ -22,7 +22,7 @@ contract MintTeamsOne is ERC1155, Ownable {
       _;
    }
 
-    constructor()  ERC1155("https://ipfs.io/ipfs/QmUjYrUq3wvhbrH3tXYpSXe8MkS3D4NoxZjfRkN6aXVirr/{id}.json") {
+    constructor() ERC1155("https://ipfs.io/ipfs/QmUjYrUq3wvhbrH3tXYpSXe8MkS3D4NoxZjfRkN6aXVirr/{id}.json") {
         //Group A
          worldCupTeams[0] = abi.encode("Qatar");
          worldCupTeams[1] = abi.encode("Ecuador");
@@ -129,7 +129,7 @@ contract MintTeamsOne is ERC1155, Ownable {
     }
 
     function claimLevel1Nft(address _predictor, string calldata _teamName, bool firstFourMinted) public {
-     require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
+      require(msg.sender == predictionAddress, "USER_CANT_CALL_FUNCTION");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
          _mint(_predictor, 0, 1, "");
         emit Mint(_predictor, 0, 1, abi.encode(_teamName), firstFourMinted);
@@ -232,7 +232,7 @@ contract MintTeamsOne is ERC1155, Ownable {
     function claimLevel2Nft(address _predictor, string calldata _teamName) public {
       require(msg.sender == evolveAddress, "USER_CANT_CALL_FUNCTION");
       bool isTop16 = IPrediction(predictionAddress).isPhase16();
-      require(isTop16 == true, "TOP_16_HASNT_FINISHED");
+      require(isTop16 == true, "TOP_16_HASNT_STARTED");
       if(keccak256(abi.encode(_teamName)) == keccak256(worldCupTeams[0])) {
          _burn(_predictor, 0, 1);
          _mint(_predictor, 1, 1, "");

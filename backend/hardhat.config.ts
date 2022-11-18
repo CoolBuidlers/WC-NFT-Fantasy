@@ -24,7 +24,7 @@ const config: HardhatUserConfig = {
         enabled: true,
       },
     },
-    mumbai: {
+    polygon: {
       url: QUICKNODE_API_KEY_URL,
       accounts: [PRIVATE_KEY !== undefined ? PRIVATE_KEY : ""],
     },

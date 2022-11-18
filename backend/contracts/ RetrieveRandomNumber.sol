@@ -5,18 +5,17 @@ import '@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
-import "../interfaces/IPrediction.sol";
 
 contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
     event RequestSent(uint256 indexed requestId, uint32 indexed numWords);
     event RequestFulfilled(uint256 indexed requestId, uint256[] indexed randomWords);
-    bytes32 keyHash = 0xd729dc84e21ae57ffb6be0053bf2b0668aa2aaf300a2a7b2ddf7dc0bb6e875a8;
+    bytes32 keyHash = 0xcc294a196eeeb44da2888d17c0625cc88d70d9760a69d58d853ba6581a9ab0cd;
      // past requests Id.
     uint256[] public requestIds;
     uint256 public lastRequestId;
     uint64 s_subscriptionId;
-    uint32 callbackGasLimit = 100000;
-    uint16 requestConfirmations = 3;
+    uint32 callbackGasLimit = 500000;
+    uint16 requestConfirmations = 5;
     uint32 numWords = 3;
     address public predictionAddress;
     struct RequestStatus {
@@ -75,11 +74,6 @@ contract RetrieveRandomNumber is VRFConsumerBaseV2, ConfirmedOwner {
         require(s_requests[lastRequestId].exists, 'request not found');
         RequestStatus memory request = s_requests[lastRequestId];
         return (request.fulfilled, request.randomWords);
-    }
-    
-     function withdrawLink() external onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1);
-        require(link.transfer(msg.sender, link.balanceOf(address(this))), 'Unable to transfer');
     }
 
 }
