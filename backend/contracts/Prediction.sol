@@ -11,8 +11,8 @@ import "../interfaces/IMintTeams.sol";
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
     function performUpkeep(bytes calldata performData) external;
 }
-//User pays 25 matic if price is above 40 cents
-//If Matic is below 40 cents, the user will pay 50 matic
+//User pays 4 matic if price is above 40 cents
+//If Matic is below 40 cents, the user will pay 2 matic
 
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -58,7 +58,7 @@ struct TopPredictions {
      address payable predictor;
   }
     uint predictorPointIndex;
-    Points[1000] predictorPoints;
+    Points[10000] predictorPoints;
     //An array that stores all the world cup teams
     bytes[32] worldCupTeams;
     mapping(address => TopPredictions) predictors; //keeps track of all users predictions
@@ -88,6 +88,11 @@ struct TopPredictions {
 //Makes sure you can only interact with function after the world cup finishes
    modifier afterEvent {
      require(currentPhase == GamePhases.WORLD_CUP_FINISHED,"CAN_WITHDRAW_ONLY_AFTER_EVENT");
+     _;
+   }
+
+    modifier tenDaysAfterEvent {
+     require(block.timestamp > 1672380000, "CANT_WITHDRAW_YET");
      _;
    }
 
@@ -150,9 +155,9 @@ struct TopPredictions {
      modifier payEnoughForFirstFour {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value >= 25 ether, "PAY_MORE_TO_MINT");
+       require(msg.value >= 4 ether, "PAY_MORE_TO_MINT");
      } else {
-      require(msg.value >= 50 ether, "PAY_MORE_TO_MINT");
+      require(msg.value >= 2 ether, "PAY_MORE_TO_MINT");
      }
      _;
    }
@@ -160,9 +165,9 @@ struct TopPredictions {
     modifier payEnoughForExtraTwo {
       (uint maticPrice) = getLatestPrice();
      if(maticPrice >= 40000000) {
-       require(msg.value > 12.5 ether, "PAY_MORE_TO_MINT");
+       require(msg.value > 2 ether, "PAY_MORE_TO_MINT");
      } else {
-      require(msg.value > 25 ether, "PAY_MORE_TO_MINT");
+      require(msg.value > 1 ether, "PAY_MORE_TO_MINT");
      }
      _;
    }
@@ -265,11 +270,10 @@ struct TopPredictions {
    }
 
    function checkUpkeep(bytes calldata /*checkData*/) external view returns (bool upkeepNeeded, bytes memory /*performData*/) {
-        bool hasLink = LinkTokenInterface(0xb0897686c545045aFc77CF20eC7A532E3120E0F1).balanceOf(address(this)) > 0.0001 * 10 ** 18;
         bool eventHasStarted = block.timestamp > 1669226400;
         bool oneDayPassed = block.timestamp > oneDay;
         bool worldCupFinished = currentPhase != GamePhases.WORLD_CUP_FINISHED;
-        upkeepNeeded = hasLink && eventHasStarted && oneDayPassed && worldCupFinished;
+        upkeepNeeded = eventHasStarted && oneDayPassed && worldCupFinished;
     }
 
      function performUpkeep(bytes calldata /*performData*/) external {
@@ -497,6 +501,13 @@ function setRefund(bool _canReceiveRefund) external onlyOwner {
         address _owner = owner();
         uint256 amount = address(this).balance;
         (bool sent, ) = _owner.call{value: ((amount * 10)/100)}("");
+        require(sent, "Failed to send Funds");
+  }
+
+  function withdrawAnyRemainingFunds() external onlyOwner tenDaysAfterEvent {
+        address _owner = owner();
+        uint256 amount = address(this).balance;
+        (bool sent, ) = _owner.call{value: amount}("");
         require(sent, "Failed to send Funds");
   }
 
