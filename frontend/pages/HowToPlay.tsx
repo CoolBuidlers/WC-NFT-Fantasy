@@ -69,8 +69,7 @@ const HowToPlay = (props: Props) => {
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
                   In this image you can see the price of the NFTs you have
-                  chosen to mint as well as a mint button.After which you will
-                  be able to deposit points in your main game page.
+                  chosen to mint as well as a mint button.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -97,7 +96,7 @@ const HowToPlay = (props: Props) => {
                   After you choose the order of your teams, And if any of the
                   teams you chose makes it to the next round will then be able
                   to evolve them by clicking on the NFT which will evolve your
-                  NFT to another level.After which you can also swap your NFTs.
+                  NFT to another level.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -107,10 +106,7 @@ const HowToPlay = (props: Props) => {
             <article className="flex px-4 justify-between items-center flex-wrap mb-36">
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
-                  voluptates sint sed provident accusantium enim aut
-                  consequuntur, nulla et quos distinctio. Porro, officiis
-                  impedit eaque distinctio dicta totam nemo! Dolorum.
+                  You can also swap the order of the teams that you think will be winners, runner ups, third place of fourth place in the competition by clicking the shown button. This will pop up a modal and then you would be inputting the two teams you want to swap inside the modal.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -120,10 +116,7 @@ const HowToPlay = (props: Props) => {
             <article className="flex px-4 justify-between items-center flex-wrap mb-10">
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Deserunt excepturi saepe rem voluptatem cum quas, nemo
-                  repudiandae! Nesciunt corporis, vero natus in voluptatum error
-                  laborum expedita beatae enim accusamus culpa.
+                  Here you can click on the deposit points button to finally deposit your points into your main game page. This is necessary since this process is not automated so everytime you buy, upgrade or earn a new NFT make sure to deposit your points into the main game dapp.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
