@@ -1,9 +1,5 @@
 [
-  {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
   {
     "anonymous": false,
     "inputs": [
@@ -84,52 +80,28 @@
   {
     "inputs": [],
     "name": "fetchTeamsFourAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "fetchTeamsOneAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "fetchTeamsThreeAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "fetchTeamsTwoAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -143,41 +115,21 @@
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "predictionAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamEight",
     "outputs": [],
@@ -186,16 +138,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamFive",
     "outputs": [],
@@ -204,16 +148,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamFour",
     "outputs": [],
@@ -222,16 +158,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamOne",
     "outputs": [],
@@ -240,16 +168,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamSeven",
     "outputs": [],
@@ -258,16 +178,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamSix",
     "outputs": [],
@@ -276,16 +188,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamThree",
     "outputs": [],
@@ -294,16 +198,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_requestId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamId",
-        "type": "string"
-      }
+      { "internalType": "bytes32", "name": "_requestId", "type": "bytes32" },
+      { "internalType": "string", "name": "_teamId", "type": "string" }
     ],
     "name": "receiveTeamTwo",
     "outputs": [],
@@ -352,11 +248,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
     "outputs": [],

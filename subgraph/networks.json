@@ -1,31 +1,31 @@
 {
-  "mumbai": {
+  "matic": {
     "Prediction": {
-      "address": "0x7CbB3b8cA1882d37b93e233540Ea9b17bE6d2264"
+      "address": "0x8Ef484Bd170BCcA098D07B5956afcC97E000e5F6"
     },
     "ChangeOrders": {
-      "address": "0x14d8Ef5e7e880cCA4F3b7193c7970B7Fc9f1f796"
+      "address": "0xd9D944eA52265B9d307c0FBa090E08E386A3e34c"
     },
     "MintTeamsTwo": {
-      "address": "0xC00c37675247A357CE7e0B2252C8533E76F11b40"
+      "address": "0x23D03B8D3af3Ef25a0Af91be12963cc119d84261"
     },
     "MintTeamsOne": {
-      "address": "0x6Fb04295443410dAadd2f2C5acc124b76387A62f"
+      "address": "0xd9a725366610E49733AA1aa5C9a9C37ca46d4bD1"
     },
     "QuizGame": {
-      "address": "0x8E6790f3d16E35860d4B465C2d4cD37662A8C3B4"
+      "address": "0xA9e7555f03DE71Af83D7a473e38CA450500eFd6A"
     },
     "NumberGuessingGame": {
-      "address": "0x1A833F46039cef272a8cb8ed90e29eB1916C0628"
+      "address": "0xf19719b7D08276C08809A3027DA279aA137683bC"
     },
     "WorldCupData4": {
-      "address": "0xe0B060415a97B2386a05f2B4DFef3f094E723D4C"
+      "address": "0x7650DC69358075cDaEfdb54Df386171e43B54D0f"
     },
     "WorldCupData8": {
-      "address": "0xEF2004D0Ca6E4Eb0a637Da288edA7aBD0A28B124"
+      "address": "0x5c824ef8E60ADa057781Eec04900d9B2B454558A"
     },
     "WorldCupData16": {
-      "address": "0x3Dbc81E6fd9c519702adED884105d2B0B6718Ca3"
+      "address": "0xcF732660f48CD76F6b576b3959cBb7D97353e889"
     }
   }
 }
