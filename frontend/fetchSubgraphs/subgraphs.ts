@@ -4,7 +4,7 @@ import axios from "axios";
 export async function worldCupQuery(query: any) {
   try {
     const SUBGRAPH_URL =
-      "https://api.thegraph.com/subgraphs/name/yanukadeneth99/wc-nft-fantasy";
+      "https://api.thegraph.com/subgraphs/name/ljcutts/wc-nft-fantasy";
     const response = await axios.post(SUBGRAPH_URL, {
       query,
     });

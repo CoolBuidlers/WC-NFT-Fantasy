@@ -1,9 +1,5 @@
 [
-  {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
   {
     "anonymous": false,
     "inputs": [
@@ -50,16 +46,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_predictor",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamName",
-        "type": "string"
-      }
+      { "internalType": "address", "name": "_predictor", "type": "address" },
+      { "internalType": "string", "name": "_teamName", "type": "string" }
     ],
     "name": "claimLevel3Nft",
     "outputs": [],
@@ -68,16 +56,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_predictor",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_teamName",
-        "type": "string"
-      }
+      { "internalType": "address", "name": "_predictor", "type": "address" },
+      { "internalType": "string", "name": "_teamName", "type": "string" }
     ],
     "name": "claimLevel4Nft",
     "outputs": [],
@@ -87,52 +67,28 @@
   {
     "inputs": [],
     "name": "evolveAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "mintTeamsOneAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "predictionAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -168,11 +124,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
     "outputs": [],

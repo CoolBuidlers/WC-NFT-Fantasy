@@ -51,11 +51,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_scenario",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
     ],
     "name": "changeOrderForTop16",
     "outputs": [],
@@ -64,11 +60,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_scenario",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
     ],
     "name": "changeOrderForTop32",
     "outputs": [],
@@ -77,11 +69,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_scenario",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
     ],
     "name": "changeOrderForTop4",
     "outputs": [],
@@ -90,11 +78,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_scenario",
-        "type": "uint256"
-      }
+      { "internalType": "uint256", "name": "_scenario", "type": "uint256" }
     ],
     "name": "changeOrderForTop8",
     "outputs": [],
@@ -104,26 +88,14 @@
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "predictionAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -135,13 +107,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
+    "inputs": [{ "internalType": "bool", "name": "_paused", "type": "bool" }],
     "name": "setPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -162,11 +128,7 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
     "outputs": [],

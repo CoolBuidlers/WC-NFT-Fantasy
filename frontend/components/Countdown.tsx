@@ -14,7 +14,7 @@ const Countdown = ({}: Props) => {
   const contract = useContract({
     addressOrName: PREDICTION_CONTRACT,
     contractInterface: PREDICTION_ABI,
-    signerOrProvider: provider
+    signerOrProvider: provider,
   });
 
   const [knockoutRound, setKnockoutRound] = useState<string | undefined>();
@@ -24,33 +24,31 @@ const Countdown = ({}: Props) => {
     try {
       const roundOf16: any = await contract.TOP_16_STARTS();
       const _timeAfterConversion: any = roundOf16.toNumber();
-      const _timestamp: number = _timeAfterConversion *  1000;
+      const _timestamp: number = _timeAfterConversion * 1000;
       let _date: Date = new Date(_timestamp);
       const data = {
-        Date: _date.toLocaleString()
+        Date: _date.toLocaleString(),
       };
       setKnockoutRound(data.Date);
-    } 
-    catch (err: any) {
-      console.error(err)  
+    } catch (err: any) {
+      console.error(err);
     }
-  }
+  };
 
-  const fetchQuarterFinalsTime = async(): Promise<void> => {
+  const fetchQuarterFinalsTime = async (): Promise<void> => {
     try {
       const _quarterFinals: any = await contract.TOP_8_STARTS();
       const _timeAfterConversion: any = _quarterFinals.toNumber();
       const _timestamp: number = _timeAfterConversion * 1000;
       let _date: Date = new Date(_timestamp);
       const data = {
-        Date: _date.toLocaleDateString()
+        Date: _date.toLocaleDateString(),
       };
       setQuarterFinal(data.Date);
+    } catch (err: any) {
+      console.error(err);
     }
-    catch (err: any) {
-      console.error(err);  
-    }
-  }
+  };
 
   const textRef = useRef(null);
   const footballRef = useRef(null);
@@ -139,7 +137,7 @@ const Countdown = ({}: Props) => {
   useEffect(() => {
     fetchRoundOf16Time();
     fetchQuarterFinalsTime();
-  }, [])
+  }, []);
 
   return (
     <section className="relative overflow-hidden">
@@ -157,29 +155,29 @@ const Countdown = ({}: Props) => {
           />
         </div>
         <div
-          className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"
+          className="absolute top-[35%] left-[15%]  sm:left-[10%] sm:top-1/2"
           ref={textRef}
         >
-          {timeLeft.days <= 0 ? 
-          <div>
-          <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
-            Next round starts on
-          </p>
-          <p className="md:text-6xl 3xl:text-8xl text-2xl ">
-            {knockoutRound}
-          </p>
-          </div>
-          : 
+          {timeLeft.days <= 0 ? (
             <div>
-          <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
-            Tournament starts in
-          </p>
-          <p className="md:text-6xl 3xl:text-8xl text-2xl ">
-            {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
-            {timeLeft.seconds}
-          </p>
-          </div>
-          }
+              <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
+                Next round starts on
+              </p>
+              <p className="md:text-6xl 3xl:text-8xl text-2xl ">
+                {knockoutRound}
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className="md:text-3xl 3xl:text-5xl  text-xl sm:text-xl">
+                Tournament starts in
+              </p>
+              <p className="md:text-6xl 3xl:text-8xl text-2xl ">
+                {timeLeft.days} : {timeLeft.hours} : {timeLeft.minutes} :{" "}
+                {timeLeft.seconds}
+              </p>
+            </div>
+          )}
         </div>
         <div
           className="absolute xl:-top-[10%] 3xl:-top-[0%] xl:left-[70%] 3xl:left-[70%] z-4 "

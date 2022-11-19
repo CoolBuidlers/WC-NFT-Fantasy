@@ -6,6 +6,8 @@ import Tut1 from "../public/img/Tutorial-1.png";
 import Tut2 from "../public/img/Tutorial-2.png";
 import Tut3 from "../public/img/Tutorial-3.png";
 import Tut4 from "../public/img/Tutorial-4.png";
+import Tut5 from "../public/img/Tutorial-5.png";
+import Tut6 from "../public/img/Tutorial-6.png";
 import { CircleLoader } from "react-spinners";
 import { useState, useEffect } from "react";
 import { NextSeo } from "next-seo";
@@ -67,7 +69,8 @@ const HowToPlay = (props: Props) => {
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
                   In this image you can see the price of the NFTs you have
-                  chosen to mint as well as a mint button.After which you will be able to deposit points in your main game page.
+                  chosen to mint as well as a mint button.After which you will
+                  be able to deposit points in your main game page.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
@@ -88,7 +91,7 @@ const HowToPlay = (props: Props) => {
                 <Image src={Tut3} alt="Third tutorial image" />
               </div>
             </article>
-            <article className="flex px-4 justify-between items-center flex-wrap mb-10">
+            <article className="flex px-4 justify-between items-center flex-wrap mb-36">
               <div className="md:w-1/2">
                 <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
                   After you choose the order of your teams, And if any of the
@@ -99,6 +102,32 @@ const HowToPlay = (props: Props) => {
               </div>
               <div className="max-w-xl border-8 border-shade-2">
                 <Image src={Tut4} alt="Fourth Tutorial image" />
+              </div>
+            </article>
+            <article className="flex px-4 justify-between items-center flex-wrap mb-36">
+              <div className="md:w-1/2">
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
+                  voluptates sint sed provident accusantium enim aut
+                  consequuntur, nulla et quos distinctio. Porro, officiis
+                  impedit eaque distinctio dicta totam nemo! Dolorum.
+                </p>
+              </div>
+              <div className="max-w-xl border-8 border-shade-2">
+                <Image src={Tut5} alt="Third tutorial image" />
+              </div>
+            </article>
+            <article className="flex px-4 justify-between items-center flex-wrap mb-10">
+              <div className="md:w-1/2">
+                <p className="text-white text-2xl tracking-wider mb-10 text-justiy">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Deserunt excepturi saepe rem voluptatem cum quas, nemo
+                  repudiandae! Nesciunt corporis, vero natus in voluptatum error
+                  laborum expedita beatae enim accusamus culpa.
+                </p>
+              </div>
+              <div className="max-w-xl border-8 border-shade-2">
+                <Image src={Tut6} alt="Fourth Tutorial image" />
               </div>
             </article>
           </div>
