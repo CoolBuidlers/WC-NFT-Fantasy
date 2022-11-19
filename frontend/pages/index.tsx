@@ -9,7 +9,7 @@ import Team from "../components/Team";
 import { NextSeo } from "next-seo";
 const Home: NextPage = () => {
   return (
-    <div className="flex justify-center items-center min-w-[100vw] min-h-screen">
+    <div className="flex justify-center items-center min-w-[100vw] min-h-screen ">
       <NextSeo
         title="WC NFT Fantasy"
         description="Welcome to the Worldcup NFT Fantasy Game!"

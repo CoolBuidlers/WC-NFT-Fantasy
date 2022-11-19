@@ -140,12 +140,12 @@ const Countdown = ({}: Props) => {
   }, []);
 
   return (
-    <section className="relative ">
+    <section className="relative overflow-hidden">
       <div
         className="text-white
       w-full -z-10 "
       >
-        <div className="w-[100vw] h-[30vh] sm:h-[70vh] ">
+        <div className="w-[100vw] h-[30vh] sm:h-[70vh] overflow-hidden">
           <Image
             src={bg}
             layout="fill"
@@ -155,7 +155,7 @@ const Countdown = ({}: Props) => {
           />
         </div>
         <div
-          className="absolute top-[40%] left-[25%]  sm:left-[10%] sm:top-1/2"
+          className="absolute top-[35%] left-[15%]  sm:left-[10%] sm:top-1/2"
           ref={textRef}
         >
           {timeLeft.days <= 0 ? (
@@ -180,10 +180,10 @@ const Countdown = ({}: Props) => {
           )}
         </div>
         <div
-          className="absolute xl:-top-[1%] 3xl:-top-[0%] xl:left-[60%] 3xl:left-[70%] z-4 "
+          className="absolute xl:-top-[10%] 3xl:-top-[0%] xl:left-[70%] 3xl:left-[70%] z-4 "
           ref={footballRef}
         >
-          <Ball className="lg:text-[500px] 3xl:text-[1000px] hidden xl:block animate-spin" />
+          <Ball className="lg:text-[600px] 3xl:text-[1000px] hidden xl:block animate-spin" />
         </div>
       </div>
     </section>
