@@ -94,7 +94,7 @@ const HowToPlay = (props: Props) => {
                   After you choose the order of your teams, And if any of the
                   teams you chose makes it to the next round will then be able
                   to evolve them by clicking on the NFT which will evolve your
-                  NFT to another level. After which you can also swap your NFTs.
+                  NFT to another level.After which you can also swap your NFTs.
                 </p>
               </div>
               <div className="max-w-xl border-8 border-shade-2">
