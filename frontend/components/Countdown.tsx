@@ -180,10 +180,10 @@ const Countdown = ({}: Props) => {
           )}
         </div>
         <div
-          className="absolute xl:-top-[10%] 3xl:-top-[0%] xl:left-[60%] 3xl:left-[70%] z-4 "
+          className="absolute xl:-top-[1%] 3xl:-top-[0%] xl:left-[60%] 3xl:left-[70%] z-4 "
           ref={footballRef}
         >
-          <Ball className="lg:text-[600px] 3xl:text-[1000px] hidden xl:block animate-spin" />
+          <Ball className="lg:text-[500px] 3xl:text-[1000px] hidden xl:block animate-spin" />
         </div>
       </div>
     </section>
