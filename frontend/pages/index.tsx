@@ -6,8 +6,6 @@ import Mint from "../components/Mint";
 import Navbar from "../components/Navbar";
 import Roadmap from "../components/Roadmap";
 import Team from "../components/Team";
-import { CircleLoader } from "react-spinners";
-import { useState, useEffect } from "react";
 import { NextSeo } from "next-seo";
 const Home: NextPage = () => {
   return (
